@@ -25,7 +25,7 @@ export class AppProvider extends React.Component<{}, State> {
     dispatch: (action: any) => {
       this.setState(state => reducer(state, action));
     },
-    error: true,
+    error: false,
     errorMessage: "Fetch failed.",
   };
   render() {
