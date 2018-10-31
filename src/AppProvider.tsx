@@ -13,6 +13,8 @@ type State = {
   userName: string,
   userRole: string,
   dispatch: (action: any) => void;
+  error: boolean,
+  errorMessage?: string,
 }
 
 export class AppProvider extends React.Component<{}, State> {
@@ -22,7 +24,9 @@ export class AppProvider extends React.Component<{}, State> {
     userRole: "admin",
     dispatch: (action: any) => {
       this.setState(state => reducer(state, action));
-    }
+    },
+    error: true,
+    errorMessage: "Fetch failed.",
   };
   render() {
     const { state, props: { children } } = this;

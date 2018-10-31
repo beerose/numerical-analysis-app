@@ -5,6 +5,7 @@ import { RouteComponentProps } from "react-router";
 
 import { MainMenu } from "../Components/";
 import { Consumer } from "../Context";
+import { ErrorMessage } from '../Components/Error';
 
 const { Content, Header } = Layout;
 
@@ -16,6 +17,10 @@ const headerStyles = css`
     line-height: 106px;
   }
 `;
+
+const layoutStyles = css`
+  height: 100%;
+`
 
 const Title = styled("p")`
   color: white;
@@ -32,14 +37,14 @@ export class BaseLayer extends React.Component<Props> {
 
     return (
       <Consumer>
-        {({ userRole, dispatch }) => (
-          <Layout className="layout">
+        {({ userRole, error, errorMessage }) => (
+          <Layout className={layoutStyles}>
             <Header className={headerStyles}>
               <Title>Analiza Numeryczna M</Title>
               <MainMenu userRole={userRole} location={this.props.location} />
             </Header>
-            <Content style={{ padding: "0 50px" }}>
-              {this.props.children}
+            <Content style={{ padding: "0 50px", height: "100%" }}>
+              {error ? <ErrorMessage message={errorMessage} /> : this.props.children}
             </Content>
           </Layout>
         )}
