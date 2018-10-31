@@ -1,6 +1,11 @@
 import * as React from "react";
 import { Table, Input, Form, Button, Select } from "antd";
-import { FormComponentProps, WrappedFormUtils } from 'antd/lib/form/Form';
+import { FormComponentProps, WrappedFormUtils } from "antd/lib/form/Form";
+import { css } from "react-emotion";
+
+const newRowButtonStyles = css`
+  margin: 20px 20px 20px 0;
+`;
 
 type User = {
   key: string;
@@ -30,31 +35,26 @@ const EditableRow = ({ form, ...props }: FormComponentProps) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 type EditableCellProps = {
-  editing: boolean,
-  dataIndex: never,
-  record: string[],
-  options?: string[],
-}
+  editing: boolean;
+  dataIndex: never;
+  record: string[];
+  options?: string[];
+};
 class EditableCell extends React.Component<EditableCellProps> {
   getInput = () => {
     if (this.props.options) {
       const options = this.props.options.map(o => (
-        <Select.Option key={`${o}`} value={`${o}`}>{o}</Select.Option>
-      ))
-      return <Select style={{ width: 120 }}>
-        {options}
-      </Select>
+        <Select.Option key={`${o}`} value={`${o}`}>
+          {o}
+        </Select.Option>
+      ));
+      return <Select style={{ width: 120 }}>{options}</Select>;
     }
     return <Input />;
   };
 
   render() {
-    const {
-      editing,
-      dataIndex,
-      record,
-      ...restProps
-    } = this.props;
+    const { editing, dataIndex, record, ...restProps } = this.props;
     return (
       <EditableContext.Consumer>
         {(form: WrappedFormUtils) => {
@@ -78,11 +78,11 @@ class EditableCell extends React.Component<EditableCellProps> {
   }
 }
 
-type EditableTableState = {
+type UsersTableState = {
   data: User[];
   editingKey: string;
 };
-export class EditableTable extends React.Component<{}, EditableTableState> {
+export class UsersTable extends React.Component<{}, UsersTableState> {
   state = { data, editingKey: "" };
   columns = [
     {
@@ -114,7 +114,7 @@ export class EditableTable extends React.Component<{}, EditableTableState> {
     {
       dataIndex: "edit",
       width: "auto",
-      render: (_: any, record: { key: string}) => {
+      render: (_: any, record: { key: string }) => {
         const editable = this.isEditing(record);
         return (
           <div>
@@ -176,7 +176,6 @@ export class EditableTable extends React.Component<{}, EditableTableState> {
   }
 
   delete(key: string) {
-    console.log(key);
     const newData = this.state.data.filter(i => key !== i.key);
     this.setState({ data: newData });
   }
@@ -193,8 +192,11 @@ export class EditableTable extends React.Component<{}, EditableTableState> {
       email: "",
       index: "",
       role: "",
-    }
-    this.setState({ data: [newRow, ...data], editingKey: data.length.toString() });
+    };
+    this.setState({
+      data: [newRow, ...data],
+      editingKey: data.length.toString(),
+    });
   }
 
   render() {
@@ -222,14 +224,21 @@ export class EditableTable extends React.Component<{}, EditableTableState> {
     });
 
     return (
-    <>
-      <Button type="default" icon="user-add" onClick={() => this.addNewUser()}>Nowy użytkownik</Button>
-      <Table
-        components={components}
-        dataSource={this.state.data}
-        columns={columns}
-      />
-    </>
+      <>
+        <Button
+          type="default"
+          icon="user-add"
+          onClick={() => this.addNewUser()}
+          className={newRowButtonStyles}
+        >
+          Nowy użytkownik
+        </Button>
+        <Table
+          components={components}
+          dataSource={this.state.data}
+          columns={columns}
+        />
+      </>
     );
   }
 }
