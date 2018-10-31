@@ -1,9 +1,9 @@
 import * as React from "react";
-import { Table, Input, Form, Button, Select } from "antd";
+import { Table, Input, Form, Button, Select, Upload } from "antd";
 import { FormComponentProps, WrappedFormUtils } from "antd/lib/form/Form";
 import { css } from "react-emotion";
 
-const newRowButtonStyles = css`
+const buttonStyles = css`
   margin: 20px 20px 20px 0;
 `;
 
@@ -229,10 +229,15 @@ export class UsersTable extends React.Component<{}, UsersTableState> {
           type="default"
           icon="user-add"
           onClick={() => this.addNewUser()}
-          className={newRowButtonStyles}
+          className={buttonStyles}
         >
           Nowy użytkownik
         </Button>
+        <Upload accept="text/csv" showUploadList={false}>
+          <Button type="default" icon="upload" className={buttonStyles}>
+            CSV Upload
+          </Button>
+        </Upload>
         <Table
           components={components}
           dataSource={this.state.data}
