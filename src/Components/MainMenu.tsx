@@ -60,7 +60,12 @@ export class MainMenu extends React.Component<Props> {
     const menuItems = this.getMenuItemsForUserRole(this.props.userRole);
 
     return (
-      <Menu theme="dark" mode="horizontal" className={mainMenuStyles} defaultSelectedKeys={[this.getSelectedItem()]}>
+      <Menu
+        theme="dark"
+        mode="horizontal"
+        className={mainMenuStyles}
+        defaultSelectedKeys={[this.getSelectedItem()]}
+      >
         {menuItems.map(item => (
           <Menu.Item key={item.key}>
             <Link to={item.path}>

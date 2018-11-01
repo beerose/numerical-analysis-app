@@ -29,8 +29,7 @@
     "strictNullChecks": true,
     "pretty": true,
     "removeComments": true,
-    "sourceMap": true,
-    "types": ["node_modules/@types", "src/declarations.d.ts"]
+    "sourceMap": true
   },
   "include": ["src"],
   "exclude": ["../node_modules"]
