@@ -3,19 +3,20 @@ INSERT INTO
   users (
     user_name,
     email,
-    student_index,
     user_role,
-    created_at,
-    updated_at
+    student_index
   )
-VALUES (?, ?, ?, ?, ?)
-ON DUPLICATE KEY UPDATE
-  user_name = VALUES(user_name),
-  email = VALUES(email),
-  student_index = VALUES(student_index),
-  user_role = VALUES(user_role),
-  created_at = VALUES(created_at),
-  updated_at = VALUES(updated_at);
+VALUES (?, ?, ?, ?);
+`;
+
+export const updateUserQuery = `
+UPDATE
+  users
+SET
+  user_name = ?,
+  user_role = ?,
+  student_index = ?
+WHERE email = ?;
 `;
 
 export const deleteUserQuery = `
@@ -27,16 +28,16 @@ export const getUserRoleQuery = `
 `;
 
 const searchSubQuery = (searchParam: string) => `
-  (MATCH(user_name) AGAINST (${searchParam})
-  OR MATCH(email) AGAINST (${searchParam})
-  OR MATCH(index) AGAINST (${searchParam}))
+  (MATCH(user_name) AGAINST ("${searchParam}")
+  OR MATCH(email) AGAINST ("${searchParam}")
+  OR MATCH(student_index) AGAINST ("${searchParam}"))
 `;
 
 const roleSubQuery = (role: string) => `
-  user_role = ${role}
+  user_role = "${role}"
 `;
 
-export const listUsersQuery = (
+export const prepareListUsersQuery = (
   searchParam?: string,
   role?: string
 ) => `
@@ -48,6 +49,6 @@ export const listUsersQuery = (
   ${searchParam ? searchSubQuery(searchParam) : ''}
   ${searchParam && role ? 'OR' : ''}
   ${role ? roleSubQuery(role) : ''}
-  ORDER_BY updated_at
+  ORDER BY updated_at
   LIMIT ? OFFSET ?;
 `;
