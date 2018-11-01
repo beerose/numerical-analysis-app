@@ -9,13 +9,13 @@ For DB migrations make sure you have migrate tool installed:
 1. Start MySQL server and create `numerical_analysis` database:
 
 ```
-DATABSE_URL="mysql://<username>:<password>@127.0.0.1:3306/numerical_analysis" dbmate create
+DATABASE_URL="mysql://<username>:<password>@127.0.0.1:3306/numerical_analysis" dbmate create
 ```
 
 2. Create database structure:
 
 ```
-DATABSE_URL="mysql://<username>:<password>@127.0.0.1:3306/numerical_analysis" dbmate -d ./migrations/ up
+DATABASE_URL="mysql://<username>:<password>@127.0.0.1:3306/numerical_analysis" dbmate -d ./migrations/ up
 ```
 
 3. Start the service:

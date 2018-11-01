@@ -5,3 +5,6 @@ dist
 .env
 
 .vscode/
+
+# migration tool data
+db/
