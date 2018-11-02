@@ -1,28 +1,24 @@
 import * as qs from 'query-string';
+import { ListUsersResponseDTO, UserDTO } from './userApiDTO';
 import { SERVER_URL } from './urls';
-import {
-  ListUsersRequestDTO,
-  ListUsersResponseDTO,
-  UserDTO,
-} from './userApiDTO';
 
 enum UserApiRoutes {
-  List = '/users',
-  Add = '/users/add',
-  Update = '/users/update',
-  Delete = '/users/delete',
+  List = '/users/',
+  Add = '/users/add/',
+  Update = '/users/update/',
+  Delete = '/users/delete/',
 }
 
-export const listUsers = async ({
-  search_param,
-  role,
-}: ListUsersRequestDTO): Promise<ListUsersResponseDTO> => {
+export const listUsers = async (
+  search_param: string | undefined,
+  roles: string[] | undefined
+): Promise<ListUsersResponseDTO> => {
   const response = await fetch(
     SERVER_URL +
       UserApiRoutes.List +
       qs.stringify({
-        search_param,
-        role,
+        search_param: search_param,
+        role: roles,
       }),
     {
       method: 'GET',

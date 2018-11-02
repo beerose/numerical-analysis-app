@@ -40,19 +40,10 @@ export class BaseLayer extends React.Component<Props> {
           <Layout className={layoutStyles}>
             <Header className={headerStyles}>
               <Title>Analiza Numeryczna M</Title>
-              <MainMenu
-                userRole={userRole}
-                location={this.props.location}
-              />
+              <MainMenu userRole={userRole} location={this.props.location} />
             </Header>
-            <Content
-              style={{ padding: '0 50px', background: 'inherit' }}
-            >
-              {error ? (
-                <ErrorMessage message={errorMessage} />
-              ) : (
-                this.props.children
-              )}
+            <Content style={{ padding: '0 50px', background: 'inherit' }}>
+              {error ? <ErrorMessage message={errorMessage} /> : this.props.children}
             </Content>
           </Layout>
         )}
