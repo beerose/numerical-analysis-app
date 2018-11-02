@@ -24,6 +24,10 @@ DATABASE_URL="mysql://<username>:<password>@127.0.0.1:3306/numerical_analysis" d
 yarn start
 ```
 
+App will be served on `locaholst:3000`.
+
+---
+
 To speed up development process run service in watch mode:
 
 - In first terminal:
@@ -37,3 +41,13 @@ To speed up development process run service in watch mode:
 ```
     yarn watch-run
 ```
+
+## API Documentation
+
+Documentation was created with [Swagger UI](https://swagger.io/) and is hosted within the app:
+
+```
+yarn start
+```
+
+Documentation will be server on `localhost:3000/api-docs`
