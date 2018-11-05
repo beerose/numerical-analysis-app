@@ -1,13 +1,24 @@
 import * as React from 'react';
+import Form, { FormComponentProps, WrappedFormUtils } from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
-import { EditableConsumer } from './Context';
 import { Input, Select } from 'antd';
-import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { LABELS } from '../../utils/labels';
+
+export const { Provider: EditableProvider, Consumer: EditableConsumer } = React.createContext({});
+
+const EditableRow = ({ form, ...props }: FormComponentProps) => (
+  <EditableProvider value={form}>
+    <tr {...props} />
+  </EditableProvider>
+);
+
+export const EditableFormRow = Form.create()(EditableRow);
 
 type EditableCellProps = {
   editing: boolean;
   dataIndex: never;
   record: string[];
+  title: string;
   options?: string[];
 };
 export class EditableCell extends React.Component<EditableCellProps> {
@@ -24,7 +35,7 @@ export class EditableCell extends React.Component<EditableCellProps> {
   };
 
   render() {
-    const { editing, dataIndex, record, ...restProps } = this.props;
+    const { editing, dataIndex, record, title, ...restProps } = this.props;
     return (
       <EditableConsumer>
         {(form: WrappedFormUtils) => {
@@ -34,6 +45,12 @@ export class EditableCell extends React.Component<EditableCellProps> {
               {editing ? (
                 <FormItem style={{ margin: 0 }}>
                   {getFieldDecorator(dataIndex, {
+                    rules: [
+                      {
+                        required: true,
+                        message: LABELS.requiredField,
+                      },
+                    ],
                     initialValue: record[dataIndex],
                   })(this.getInput())}
                 </FormItem>

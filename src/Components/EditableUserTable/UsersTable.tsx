@@ -1,31 +1,14 @@
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
-import {
-  Button,
-  Form,
-  Table,
-  Upload
-  } from 'antd';
-import { EditableCell } from './EditableCell';
-import { EditableProvider } from './Context';
-import { FormComponentProps } from 'antd/lib/form/Form';
+import styled from 'react-emotion';
+import { Table } from 'antd';
+import { EditableCell, EditableFormRow } from './EditableRow';
+import { LABELS } from '../../utils/labels';
 import { UserDTO } from '../../api/userApiDTO';
-
-const buttonStyles = css`
-  margin: 20px 20px 20px 0;
-`;
+import { userRoleOptions } from '../../utils/utils';
 
 const ActionLink = styled('a')`
   margin-right: 8px;
 `;
-
-const EditableRow = ({ form, ...props }: FormComponentProps) => (
-  <EditableProvider value={form}>
-    <tr {...props} />
-  </EditableProvider>
-);
-
-const EditableFormRow = Form.create()(EditableRow);
 
 type TableColumn = {
   dataIndex: string;
@@ -53,14 +36,13 @@ const tableColumns: TableColumn[] = [
 ];
 
 type ExtraColumnTypes = 'role' | 'index';
-
 const extraTableColumns: Record<ExtraColumnTypes, TableColumn> = {
   role: {
     title: 'Rola',
     dataIndex: 'user_role',
     width: '15%',
     editable: true,
-    options: ['admin', 'superUser', 'student'],
+    options: userRoleOptions,
   },
   index: {
     title: 'Index',
@@ -92,21 +74,23 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
         const editable = this.isEditing(record);
         return editable ? (
           <span>
-            <ActionLink onClick={() => this.save(record)}>Save</ActionLink>
-            <ActionLink onClick={this.cancelEdit}>Cancel</ActionLink>
+            <ActionLink onClick={() => this.save(record)}>{LABELS.save}</ActionLink>
+            <ActionLink onClick={this.cancelEdit}>{LABELS.cancel}</ActionLink>
           </span>
         ) : (
-          <ActionLink onClick={() => this.edit(record.email)}>Edytuj</ActionLink>
+          <ActionLink onClick={() => this.edit(record.email)}>{LABELS.edit}</ActionLink>
         );
       },
     },
     {
       dataIndex: 'delete',
       render: (_: any, record: { email: string }) => {
-        return <ActionLink onClick={() => this.delete(record.email)}>Usuń</ActionLink>;
+        return <ActionLink onClick={() => this.delete(record.email)}>{LABELS.delete}</ActionLink>;
       },
     },
   ];
+
+  validateRecord = (record: UserDTO) => record.email && record.user_name && record.user_role;
 
   componentWillReceiveProps(nextProps: UsersTableProps) {
     this.setState({ data: nextProps.users });
@@ -121,7 +105,6 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
   }
 
   save(record: any) {
-    console.log(record);
     // form.validateFields((error, row) => {
     //   console.log(row);
     // });
@@ -136,20 +119,6 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
   cancelEdit = () => {
     this.setState({ editingKey: '' });
   };
-
-  addNewUser() {
-    const { data } = this.state;
-    const newRow = {
-      user_name: '',
-      email: '',
-      index: '',
-      user_role: '',
-    };
-    this.setState({
-      data: [newRow, ...data],
-      editingKey: data.length.toString(),
-    });
-  }
 
   render() {
     const components = {
@@ -176,22 +145,13 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     });
 
     return (
-      <>
-        <Button
-          type="default"
-          icon="user-add"
-          onClick={() => this.addNewUser()}
-          className={buttonStyles}
-        >
-          Nowy użytkownik
-        </Button>
-        <Upload accept="text/csv" showUploadList={false}>
-          <Button type="default" icon="upload" className={buttonStyles}>
-            CSV Upload
-          </Button>
-        </Upload>
-        <Table rowKey="id" components={components} dataSource={this.state.data} columns={columns} />
-      </>
+      <Table
+        style={{ wordWrap: 'initial' }}
+        rowKey="id"
+        components={components}
+        dataSource={this.state.data}
+        columns={columns}
+      />
     );
   }
 }
