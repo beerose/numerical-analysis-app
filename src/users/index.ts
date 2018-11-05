@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import * as HTTPStatus from 'http-status-codes';
 
+import { apiMessages } from '../apiMessages';
 import { connection } from '../store/connection';
 import { UserModel } from '../store/model';
 import {
@@ -23,7 +24,7 @@ export const add = (req: AddUserRequest, res: Response) => {
   if (!validateUserRequest(user)) {
     return res
       .status(HTTPStatus.BAD_REQUEST)
-      .send('User name, user email and role are required.');
+      .send({ error: apiMessages.invalidUserData });
   }
   return connection.query(
     {
@@ -39,18 +40,18 @@ export const add = (req: AddUserRequest, res: Response) => {
       if (error) {
         switch (error.code) {
           case DUPLICATE_ENTRY:
-            return res
-              .status(HTTPStatus.CONFLICT)
-              .send(
-                `User with email: "${user.email}" already exists.`
-              );
+            return res.status(HTTPStatus.CONFLICT).send({
+              error: apiMessages.userAlreadyExists,
+            });
           default:
             return res
               .status(HTTPStatus.INTERNAL_SERVER_ERROR)
-              .send(`Cannot create user: ${error}`);
+              .send({ error: apiMessages.internalError });
         }
       }
-      return res.status(HTTPStatus.OK).send('User created.');
+      return res
+        .status(HTTPStatus.OK)
+        .send({ message: apiMessages.userCreated });
     }
   );
 };
@@ -150,7 +151,7 @@ export const list = (
       if (error) {
         return res
           .status(HTTPStatus.INTERNAL_SERVER_ERROR)
-          .send(`Cannot list users: ${error}`);
+          .send({ error: apiMessages.internalError });
       }
       return res.status(HTTPStatus.OK).send({ users: results });
     }
