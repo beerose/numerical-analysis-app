@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import * as HTTPStatus from 'http-status-codes';
 
-import { apiMessages } from '../apiMessages';
+import { UserDTO } from '../../../common/api';
+import { apiMessages } from '../../../common/apiMessages';
 import { connection } from '../store/connection';
-import { UserModel } from '../store/model';
 import {
   addUserQuery,
   deleteUserQuery,
@@ -14,7 +14,7 @@ import {
 const DUPLICATE_ENTRY = 'ER_DUP_ENTRY';
 
 interface AddUserRequest extends Request {
-  body: UserModel;
+  body: UserDTO;
 }
 const validateUserRequest = (user: Record<string, any>) =>
   user.user_name && user.email && user.user_role;
@@ -33,7 +33,7 @@ export const add = (req: AddUserRequest, res: Response) => {
         user.user_name,
         user.email,
         user.user_role,
-        user.index,
+        user.student_index,
       ],
     },
     error => {
@@ -57,7 +57,7 @@ export const add = (req: AddUserRequest, res: Response) => {
 };
 
 interface UpdateUserRequest extends Request {
-  body: UserModel;
+  body: UserDTO;
 }
 export const update = (req: UpdateUserRequest, res: Response) => {
   const user = req.body;
@@ -67,7 +67,7 @@ export const update = (req: UpdateUserRequest, res: Response) => {
       values: [
         user.user_name,
         user.user_role,
-        user.index,
+        user.student_index,
         user.email,
       ],
     },
@@ -132,7 +132,7 @@ interface ListUsersRequest extends Request {
   };
 }
 interface ListUsersResponse extends Response {
-  send: (body: { users: UserModel[] }) => Response;
+  send: (body: { users: UserDTO[] }) => Response;
 }
 export const list = (
   req: ListUsersRequest,

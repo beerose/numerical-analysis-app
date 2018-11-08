@@ -49,6 +49,6 @@ export const prepareListUsersQuery = (
   ${searchParam ? searchSubQuery(searchParam) : ''}
   ${searchParam && role ? 'OR' : ''}
   ${role ? roleSubQuery(role) : ''}
-  ORDER BY updated_at
+  ORDER BY updated_at DESC
   LIMIT ? OFFSET ?;
 `;
