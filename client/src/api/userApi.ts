@@ -28,12 +28,12 @@ export const addUser = async (
   user: UserDTO
 ): Promise<ApiResponse> => {
   const response = await fetch(SERVER_URL + USERS.add, {
-    method: 'POST',
+    body: JSON.stringify(user),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(user),
+    method: 'POST',
   });
   return response.json();
 };
@@ -54,12 +54,12 @@ export const updateUser = async (
   user: UserDTO
 ): Promise<ApiResponse> => {
   const response = await fetch(SERVER_URL + USERS.update, {
-    method: 'POST',
+    body: JSON.stringify(user),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(user),
+    method: 'POST',
   });
   return response.json();
 };

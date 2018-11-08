@@ -19,6 +19,7 @@
       "ban-keywords",
       "check-format",
       "allow-pascal-case",
+      "allow-snake-case",
       "allow-leading-underscore"
     ],
     "prefer-array-literal": false,
@@ -35,6 +36,7 @@
       "check-type",
       "check-typecast"
     ],
+    "object-literal-sort-keys": [true, "shorthand-first"],
     "no-unused-expression": [true, "allow-tagged-template"],
     "no-submodule-imports": false,
     "no-object-literal-type-assertion": false,
