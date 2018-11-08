@@ -59,7 +59,7 @@ class NewUserForm extends React.Component<Props> {
           )}
         </FormItem>
         <FormItem>
-          {getFieldDecorator('index', {
+          {getFieldDecorator('student_index', {
             rules: [{ required: false }],
           })(
             <Input

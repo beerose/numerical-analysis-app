@@ -1,13 +1,12 @@
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 import { Button, Input, Select, Upload, Modal, message, Spin } from 'antd';
-import { listUsers, addUser, hasError } from '../../api/userApi';
+import { listUsers, addUser, updateUser } from '../../api/userApi';
 import { UserDTO } from '../../api/userApiDTO';
 import { UsersTable } from '../EditableUserTable/';
 import { LABELS } from '../../utils/labels';
 import { WrappedNewUserForm } from './AddUserForm';
 import { userRoleOptions } from '../../utils/utils';
-import { type } from 'os';
 
 const SearchPanel = styled('div')`
   margin: 20px 0 20px 0;
@@ -63,7 +62,18 @@ export class UsersPanelContainer extends React.Component<{}, State> {
   handleAddNewUser = (user: UserDTO) => {
     addUser(user).then(res => {
       this.setState({ addUserModalVisible: false });
-      if (hasError(res)) {
+      if (res.error) {
+        message.error(res.error);
+        return;
+      }
+      message.success(res.message);
+      this.updateUsersList();
+    });
+  };
+
+  handleUpdateUser = (user: UserDTO) => {
+    updateUser(user).then(res => {
+      if (res.error) {
         message.error(res.error);
         return;
       }
@@ -83,7 +93,7 @@ export class UsersPanelContainer extends React.Component<{}, State> {
             placeholder={LABELS.searchByRolePlaceholder}
           >
             {userRoleOptions.map(o => (
-              <Select.Option key={`${0}`}>o</Select.Option>
+              <Select.Option key={o}>{o}</Select.Option>
             ))}
           </Select>
           <Button shape="circle" icon="search" />
@@ -110,7 +120,11 @@ export class UsersPanelContainer extends React.Component<{}, State> {
           </Button>
         </Upload>
         <Spin spinning={this.state.isLoading}>
-          <UsersTable users={this.state.users} extraColumns={['role', 'index']} />
+          <UsersTable
+            onUpdate={this.handleUpdateUser}
+            users={this.state.users}
+            extraColumns={['role', 'index']}
+          />
         </Spin>
       </>
     );

@@ -1,10 +1,11 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 import { Table } from 'antd';
-import { EditableCell, EditableFormRow } from './EditableRow';
+import { EditableCell, EditableFormRow, EditableConsumer } from './EditableRow';
 import { LABELS } from '../../utils/labels';
 import { UserDTO } from '../../api/userApiDTO';
 import { userRoleOptions } from '../../utils/utils';
+import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 const ActionLink = styled('a')`
   margin-right: 8px;
@@ -45,9 +46,10 @@ const extraTableColumns: Record<ExtraColumnTypes, TableColumn> = {
     options: userRoleOptions,
   },
   index: {
-    title: 'Index',
-    dataIndex: 'index',
+    title: 'Indeks',
+    dataIndex: 'student_index',
     width: '15%',
+    required: false,
     editable: true,
   },
 };
@@ -62,6 +64,8 @@ type UsersTableState = {
 type UsersTableProps = {
   users: UserDTO[];
   extraColumns?: ExtraColumnTypes[];
+  onUpdate: (user: UserDTO) => void;
+  onDelete: () => void;
 };
 export class UsersTable extends React.Component<UsersTableProps, UsersTableState> {
   state = { data: [] as UserDTO[], editingKey: '' };
@@ -70,11 +74,16 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     ...getExtraColumnsForRender(this.props.extraColumns),
     {
       dataIndex: 'edit',
+      width: '10%',
       render: (_: any, record: UserDTO) => {
         const editable = this.isEditing(record);
         return editable ? (
           <span>
-            <ActionLink onClick={() => this.save(record)}>{LABELS.save}</ActionLink>
+            <EditableConsumer>
+              {(form: WrappedFormUtils) => (
+                <ActionLink onClick={() => this.onUpdate(form)}>{LABELS.save}</ActionLink>
+              )}
+            </EditableConsumer>
             <ActionLink onClick={this.cancelEdit}>{LABELS.cancel}</ActionLink>
           </span>
         ) : (
@@ -84,6 +93,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     },
     {
       dataIndex: 'delete',
+      width: '10%',
       render: (_: any, record: { email: string }) => {
         return <ActionLink onClick={() => this.delete(record.email)}>{LABELS.delete}</ActionLink>;
       },
@@ -104,10 +114,10 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     this.setState({ editingKey: email });
   }
 
-  save(record: any) {
-    // form.validateFields((error, row) => {
-    //   console.log(row);
-    // });
+  onUpdate(form: WrappedFormUtils) {
+    form.validateFields((error, row) => {
+      this.props.onUpdate(row);
+    });
     this.setState({ editingKey: '' });
   }
 

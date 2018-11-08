@@ -18,7 +18,7 @@ const headerStyles = css`
 `;
 
 const layoutStyles = css`
-  height: 100%;
+  background: 'inherit';
 `;
 
 const Title = styled('p')`
