@@ -1,11 +1,14 @@
+import { Table } from 'antd';
+import { WrappedFormUtils } from 'antd/lib/form/Form';
 import * as React from 'react';
 import styled from 'react-emotion';
-import { Table } from 'antd';
-import { EditableCell, EditableFormRow, EditableConsumer } from './EditableRow';
+
+import { UserDTO } from '../../../../common/api';
 import { LABELS } from '../../utils/labels';
-import { UserDTO } from '../../api/userApiDTO';
 import { userRoleOptions } from '../../utils/utils';
-import { WrappedFormUtils } from 'antd/lib/form/Form';
+
+import { EditableConsumer } from './Context';
+import { EditableCell, EditableFormRow } from './EditableRow';
 
 const ActionLink = styled('a')`
   margin-right: 8px;
@@ -17,40 +20,37 @@ type TableColumn = {
   width?: string;
   options?: string[];
   editable?: boolean;
-  required?: boolean;
   render?: any;
 };
 const tableColumns: TableColumn[] = [
   {
-    title: 'Imię i nazwisko',
     dataIndex: 'user_name',
-    width: '25%',
     editable: true,
-    required: false,
+    title: 'Imię i nazwisko',
+    width: '25%',
   },
   {
-    title: 'Email',
     dataIndex: 'email',
-    width: '15%',
     editable: true,
+    title: 'Email',
+    width: '15%',
   },
 ];
 
 type ExtraColumnTypes = 'role' | 'index';
 const extraTableColumns: Record<ExtraColumnTypes, TableColumn> = {
-  role: {
-    title: 'Rola',
-    dataIndex: 'user_role',
+  index: {
+    dataIndex: 'student_index',
+    editable: true,
+    title: 'Indeks',
     width: '15%',
+  },
+  role: {
+    dataIndex: 'user_role',
     editable: true,
     options: userRoleOptions,
-  },
-  index: {
-    title: 'Indeks',
-    dataIndex: 'student_index',
+    title: 'Rola',
     width: '15%',
-    required: false,
-    editable: true,
   },
 };
 
@@ -74,33 +74,39 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     ...getExtraColumnsForRender(this.props.extraColumns),
     {
       dataIndex: 'edit',
-      width: '10%',
       render: (_: any, record: UserDTO) => {
         const editable = this.isEditing(record);
         return editable ? (
           <span>
             <EditableConsumer>
               {(form: WrappedFormUtils) => (
-                <ActionLink onClick={() => this.onUpdate(form)}>{LABELS.save}</ActionLink>
+                <ActionLink onClick={() => this.onUpdate(form, record.id)}>
+                  {LABELS.save}
+                </ActionLink>
               )}
             </EditableConsumer>
-            <ActionLink onClick={this.cancelEdit}>{LABELS.cancel}</ActionLink>
+            <ActionLink onClick={this.handleCancelEdit}>{LABELS.cancel}</ActionLink>
           </span>
         ) : (
-          <ActionLink onClick={() => this.edit(record.email)}>{LABELS.edit}</ActionLink>
+          <ActionLink onClick={() => this.handleEdit(record.email)}>
+            {LABELS.edit}
+          </ActionLink>
         );
       },
+      width: '10%',
     },
     {
       dataIndex: 'delete',
-      width: '10%',
       render: (_: any, record: { email: string }) => {
-        return <ActionLink onClick={() => this.delete(record.email)}>{LABELS.delete}</ActionLink>;
+        return (
+          <ActionLink onClick={() => this.onDelete(record.email)}>
+            {LABELS.delete}
+          </ActionLink>
+        );
       },
+      width: '10%',
     },
   ];
-
-  validateRecord = (record: UserDTO) => record.email && record.user_name && record.user_role;
 
   componentWillReceiveProps(nextProps: UsersTableProps) {
     this.setState({ data: nextProps.users });
@@ -110,31 +116,31 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     return email === this.state.editingKey;
   };
 
-  edit(email: string) {
+  handleEdit(email: string) {
     this.setState({ editingKey: email });
   }
 
-  onUpdate(form: WrappedFormUtils) {
-    form.validateFields((error, row) => {
-      this.props.onUpdate(row);
+  handleCancelEdit = () => {
+    this.setState({ editingKey: '' });
+  };
+
+  onUpdate(form: WrappedFormUtils, id: string) {
+    form.validateFields((_, row) => {
+      this.props.onUpdate({ id, ...row });
     });
     this.setState({ editingKey: '' });
   }
 
-  delete(email: string) {
+  onDelete(email: string) {
     const newData = this.state.data.filter(i => email !== i.email);
     this.setState({ data: newData });
   }
 
-  cancelEdit = () => {
-    this.setState({ editingKey: '' });
-  };
-
   render() {
     const components = {
       body: {
-        row: EditableFormRow,
         cell: EditableCell,
+        row: EditableFormRow,
       },
     };
 
@@ -147,9 +153,9 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
         onCell: (record: UserDTO) => ({
           record,
           dataIndex: col.dataIndex,
+          editing: this.isEditing(record),
           options: col.options,
           title: col.title,
-          editing: this.isEditing(record),
         }),
       };
     });

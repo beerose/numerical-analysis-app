@@ -1,10 +1,11 @@
-import * as React from 'react';
+import { Input, Select } from 'antd';
 import Form, { FormComponentProps, WrappedFormUtils } from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
-import { Input, Select } from 'antd';
+import * as React from 'react';
+
 import { LABELS } from '../../utils/labels';
 
-export const { Provider: EditableProvider, Consumer: EditableConsumer } = React.createContext({});
+import { EditableConsumer, EditableProvider } from './Context';
 
 const EditableRow = ({ form, ...props }: FormComponentProps) => (
   <EditableProvider value={form}>
@@ -14,10 +15,13 @@ const EditableRow = ({ form, ...props }: FormComponentProps) => (
 
 export const EditableFormRow = Form.create()(EditableRow);
 
+const requiredFields = ['user_name', 'email', 'user_role'];
+
 type EditableCellProps = {
   editing: boolean;
   dataIndex: never;
   record: string[];
+  required: boolean;
   title: string;
   options?: string[];
 };
@@ -35,7 +39,7 @@ export class EditableCell extends React.Component<EditableCellProps> {
   };
 
   render() {
-    const { editing, dataIndex, record, title, ...restProps } = this.props;
+    const { editing, dataIndex, required, record, title, ...restProps } = this.props;
     return (
       <EditableConsumer>
         {(form: WrappedFormUtils) => {
@@ -45,13 +49,15 @@ export class EditableCell extends React.Component<EditableCellProps> {
               {editing ? (
                 <FormItem style={{ margin: 0 }}>
                   {getFieldDecorator(dataIndex, {
+                    initialValue: record[dataIndex],
                     rules: [
                       {
-                        required: true,
                         message: LABELS.requiredField,
+                        required: requiredFields.find(f => f === dataIndex)
+                          ? true
+                          : false,
                       },
                     ],
-                    initialValue: record[dataIndex],
                   })(this.getInput())}
                 </FormItem>
               ) : (

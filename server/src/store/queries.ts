@@ -13,10 +13,11 @@ export const updateUserQuery = `
 UPDATE
   users
 SET
+  email = ?,
   user_name = ?,
   user_role = ?,
   student_index = ?
-WHERE email = ?;
+WHERE id = ?;
 `;
 
 export const deleteUserQuery = `
@@ -37,12 +38,9 @@ const roleSubQuery = (role: string) => `
   user_role = "${role}"
 `;
 
-export const prepareListUsersQuery = (
-  searchParam?: string,
-  role?: string
-) => `
+export const prepareListUsersQuery = (searchParam?: string, role?: string) => `
   SELECT
-    *
+    id, user_name, email, student_index, user_role
   FROM
     users
   ${searchParam || role ? 'WHERE' : ''}

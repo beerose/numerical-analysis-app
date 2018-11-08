@@ -9,7 +9,7 @@ const { USERS } = ROUTES;
 export const listUsers = async (
   search_param: string | undefined,
   roles: string[] | undefined
-): Promise<UserDTO[]> => {
+): Promise<{ users: UserDTO[] }> => {
   const response = await fetch(
     SERVER_URL +
       ROUTES.USERS.list +

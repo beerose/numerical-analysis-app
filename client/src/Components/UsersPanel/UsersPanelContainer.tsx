@@ -1,12 +1,14 @@
+import { Button, Input, message, Modal, Select, Spin, Upload } from 'antd';
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
-import { Button, Input, Select, Upload, Modal, message, Spin } from 'antd';
-import { listUsers, addUser, updateUser } from '../../api/userApi';
-import { UserDTO } from '../../api/userApiDTO';
-import { UsersTable } from '../EditableUserTable/';
+
+import { UserDTO } from '../../../../common/api';
+import { addUser, listUsers, updateUser } from '../../api/userApi';
 import { LABELS } from '../../utils/labels';
-import { WrappedNewUserForm } from './AddUserForm';
 import { userRoleOptions } from '../../utils/utils';
+import { UsersTable } from '../EditableUserTable/';
+
+import { WrappedNewUserForm } from './AddUserForm';
 
 const SearchPanel = styled('div')`
   margin: 20px 0 20px 0;
@@ -23,12 +25,12 @@ const buttonStyles = css`
 `;
 
 const defaultState = {
+  addUserModalVisible: false,
   currentPage: '1',
   isLoading: false,
-  users: [] as UserDTO[],
-  searchValue: undefined,
   searchRoles: undefined,
-  addUserModalVisible: false,
+  searchValue: undefined,
+  users: [] as UserDTO[],
 };
 type State = typeof defaultState;
 
@@ -121,6 +123,7 @@ export class UsersPanelContainer extends React.Component<{}, State> {
         </Upload>
         <Spin spinning={this.state.isLoading}>
           <UsersTable
+            onDelete={() => null}
             onUpdate={this.handleUpdateUser}
             users={this.state.users}
             extraColumns={['role', 'index']}

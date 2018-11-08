@@ -16,12 +16,12 @@ const DUPLICATE_ENTRY = 'ER_DUP_ENTRY';
 interface AddUserRequest extends Request {
   body: UserDTO;
 }
-const validateUserRequest = (user: Record<string, any>) =>
+const validateAddUserRequest = (user: Record<string, any>) =>
   user.user_name && user.email && user.user_role;
 
 export const add = (req: AddUserRequest, res: Response) => {
   const user = req.body;
-  if (!validateUserRequest(user)) {
+  if (!validateAddUserRequest(user)) {
     return res
       .status(HTTPStatus.BAD_REQUEST)
       .send({ error: apiMessages.invalidUserData });
@@ -29,12 +29,7 @@ export const add = (req: AddUserRequest, res: Response) => {
   return connection.query(
     {
       sql: addUserQuery,
-      values: [
-        user.user_name,
-        user.email,
-        user.user_role,
-        user.student_index,
-      ],
+      values: [user.user_name, user.email, user.user_role, user.student_index],
     },
     error => {
       if (error) {
@@ -49,9 +44,7 @@ export const add = (req: AddUserRequest, res: Response) => {
               .send({ error: apiMessages.internalError });
         }
       }
-      return res
-        .status(HTTPStatus.OK)
-        .send({ message: apiMessages.userCreated });
+      return res.status(HTTPStatus.OK).send({ message: apiMessages.userCreated });
     }
   );
 };
@@ -59,17 +52,19 @@ export const add = (req: AddUserRequest, res: Response) => {
 interface UpdateUserRequest extends Request {
   body: UserDTO;
 }
+const validateUpdateUserRequest = (user: Record<string, any>) =>
+  user.user_name && user.email && user.user_role && user.id;
 export const update = (req: UpdateUserRequest, res: Response) => {
   const user = req.body;
+  if (!validateUpdateUserRequest(user)) {
+    return res
+      .status(HTTPStatus.BAD_REQUEST)
+      .send({ error: apiMessages.invalidUserData });
+  }
   return connection.query(
     {
       sql: updateUserQuery,
-      values: [
-        user.user_name,
-        user.user_role,
-        user.student_index,
-        user.email,
-      ],
+      values: [user.email, user.user_name, user.user_role, user.student_index, user.id],
     },
     error => {
       if (error) {
@@ -84,9 +79,7 @@ export const update = (req: UpdateUserRequest, res: Response) => {
               .send({ error: apiMessages.internalError });
         }
       }
-      return res
-        .status(HTTPStatus.OK)
-        .send({ message: apiMessages.userUpdated });
+      return res.status(HTTPStatus.OK).send({ message: apiMessages.userUpdated });
     }
   );
 };
@@ -98,9 +91,7 @@ interface DeleteUserRequest extends Request {
 }
 export const deleteUser = (req: DeleteUserRequest, res: Response) => {
   if (!req.query.email) {
-    return res
-      .status(HTTPStatus.BAD_REQUEST)
-      .send({ error: apiMessages.emailRequired });
+    return res.status(HTTPStatus.BAD_REQUEST).send({ error: apiMessages.emailRequired });
   }
   return connection.query(
     {
@@ -114,13 +105,9 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
           .send({ error: apiMessages.internalError });
       }
       if (!results.affectedRows) {
-        return res
-          .status(HTTPStatus.NOT_FOUND)
-          .send({ error: apiMessages.userNotFound });
+        return res.status(HTTPStatus.NOT_FOUND).send({ error: apiMessages.userNotFound });
       }
-      return res
-        .status(HTTPStatus.OK)
-        .send({ message: apiMessages.userDeleted });
+      return res.status(HTTPStatus.OK).send({ message: apiMessages.userDeleted });
     }
   );
 };
@@ -134,14 +121,8 @@ interface ListUsersRequest extends Request {
 interface ListUsersResponse extends Response {
   send: (body: { users: UserDTO[] }) => Response;
 }
-export const list = (
-  req: ListUsersRequest,
-  res: ListUsersResponse
-) => {
-  const listUsersQuery = prepareListUsersQuery(
-    req.query.search_param,
-    req.query.role
-  );
+export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
+  const listUsersQuery = prepareListUsersQuery(req.query.search_param, req.query.role);
   return connection.query(
     {
       sql: listUsersQuery,
