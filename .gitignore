@@ -6,5 +6,7 @@
 
 **/.vscode/
 
+.DS_Store
+
 # migration tool data
 server/db/
