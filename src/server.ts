@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
-import morgan from 'morgan';
+import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 import swaggerUi from 'swagger-ui-express';
 
@@ -13,7 +13,7 @@ const PORT = 3000;
 
 const app = express();
 
-app.use(morgan('tiny'));
+morganBody(app);
 app.use(cors());
 app.use(bodyParser.json());
 
