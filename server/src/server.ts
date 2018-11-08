@@ -5,6 +5,8 @@ import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 import swaggerUi from 'swagger-ui-express';
 
+import { ROUTES } from '../../common/api';
+
 import { isAuthenticated } from './auth';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
@@ -28,10 +30,11 @@ app.get('/', isAuthenticated, (_req: Request, res: Response, _next: NextFunction
   res.status(200).send('Hello ;)')
 );
 
-app.get('/users', isAuthenticated, users.list);
-app.post('/users/add', isAuthenticated, validateAddRequest, users.add);
-app.post('/users/update', isAuthenticated, validateUpdateRequest, users.update);
-app.delete('/users/delete', isAuthenticated, validateDeleteRequest, users.deleteUser);
+const { USERS } = ROUTES;
+app.get(USERS.list, isAuthenticated, users.list);
+app.post(USERS.add, isAuthenticated, validateAddRequest, users.add);
+app.post(USERS.update, isAuthenticated, validateUpdateRequest, users.update);
+app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUser);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

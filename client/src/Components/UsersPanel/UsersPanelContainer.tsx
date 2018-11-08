@@ -1,4 +1,5 @@
 import { Button, Input, Modal, Select, Spin, Upload } from 'antd';
+import { SelectValue } from 'antd/lib/select';
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 
@@ -24,6 +25,15 @@ const buttonStyles = css`
   margin: 20px 20px 20px 0;
 `;
 
+type State = {
+  addUserModalVisible: boolean;
+  currentPage: string;
+  isLoading: boolean;
+  searchRoles: string[] | undefined;
+  searchValue: string | undefined;
+  users: UserDTO[];
+};
+
 const defaultState = {
   addUserModalVisible: false,
   currentPage: '1',
@@ -32,7 +42,6 @@ const defaultState = {
   searchValue: undefined,
   users: [] as UserDTO[],
 };
-type State = typeof defaultState;
 
 export const { Consumer, Provider } = React.createContext(defaultState);
 
@@ -80,21 +89,38 @@ export class UsersPanelContainer extends React.Component<{}, State> {
     });
   };
 
+  onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchValue: e.target.value });
+  };
+
+  onSearchRoleChange = (value: SelectValue) => {
+    this.setState({ searchRoles: value as string[] });
+  };
+
+  handleSearchClick = () => {
+    this.updateUsersList();
+  };
+
   render() {
     return (
       <>
         <SearchPanel>
-          <Input placeholder={LABELS.searchUserPlaceholder} className={inputStyles} />
+          <Input
+            placeholder={LABELS.searchUserPlaceholder}
+            className={inputStyles}
+            onChange={this.onSearchInputChange}
+          />
           <Select
             mode="multiple"
             className={inputStyles}
             placeholder={LABELS.searchByRolePlaceholder}
+            onChange={this.onSearchRoleChange}
           >
             {userRoleOptions.map(o => (
               <Select.Option key={o}>{o}</Select.Option>
             ))}
           </Select>
-          <Button shape="circle" icon="search" />
+          <Button shape="circle" icon="search" onClick={this.handleSearchClick} />
         </SearchPanel>
         <Button
           type="default"

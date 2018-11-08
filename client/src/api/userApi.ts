@@ -12,12 +12,10 @@ export const listUsers = async (
   roles: string[] | undefined
 ): Promise<{ users: UserDTO[] }> => {
   const response = await fetch(
-    SERVER_URL +
-      ROUTES.USERS.list +
-      qs.stringify({
-        search_param,
-        role: roles,
-      }),
+    `${SERVER_URL}${ROUTES.USERS.list}?${qs.stringify({
+      search_param,
+      role: roles,
+    })}`,
     {
       method: 'GET',
     }
