@@ -4,5 +4,9 @@
     "client",
     "server",
     "common"
-  ]
+  ],
+  "scripts": {
+    "start": "concurrently 'cd server/ && yarn start' 'cd client/ && yarn dev'",
+    "dev": "concurrently 'cd server/ && yarn dev' 'cd client/ && yarn dev'"
+  }
 }

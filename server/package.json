@@ -7,7 +7,8 @@
     "watch-run": "nodemon dist/index.js",
     "build": "parcel build ./src/index.ts --target=node",
     "launch": "node dist/index.js",
-    "start": "npm run build && npm run launch"
+    "start": "npm run build && npm run launch",
+    "dev": "concurrently -c red,yellow -n p,n 'yarn watch-compile' 'yarn watch-run'"
   },
   "dependencies": {
     "@types/body-parser": "^1.17.0",
@@ -29,6 +30,7 @@
   "repository": {},
   "license": "MIT",
   "devDependencies": {
+    "concurrently": "^4.0.1",
     "morgan-body": "^2.4.5",
     "nodemon": "^1.17.5",
     "prettier": "^1.11.1",
