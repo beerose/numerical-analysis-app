@@ -77,16 +77,16 @@ export const update = (req: UpdateUserRequest, res: Response) => {
           case DUPLICATE_ENTRY:
             return res
               .status(HTTPStatus.CONFLICT)
-              .send(
-                `User with email: "${user.email}" already exists.`
-              );
+              .send({ error: apiMessages.userAlreadyExists });
           default:
             return res
               .status(HTTPStatus.INTERNAL_SERVER_ERROR)
-              .send(`Cannot create user: ${error}`);
+              .send({ error: apiMessages.internalError });
         }
       }
-      return res.status(HTTPStatus.OK).send('User updated.');
+      return res
+        .status(HTTPStatus.OK)
+        .send({ message: apiMessages.userUpdated });
     }
   );
 };
@@ -100,7 +100,7 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
   if (!req.query.email) {
     return res
       .status(HTTPStatus.BAD_REQUEST)
-      .send('User email is required.');
+      .send({ error: apiMessages.emailRequired });
   }
   return connection.query(
     {
@@ -111,16 +111,16 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
       if (error) {
         return res
           .status(HTTPStatus.INTERNAL_SERVER_ERROR)
-          .send(`Cannot delete user: ${error}`);
+          .send({ error: apiMessages.internalError });
       }
       if (!results.affectedRows) {
         return res
           .status(HTTPStatus.NOT_FOUND)
-          .send(
-            `User with email: ${req.query.email} does not exists.`
-          );
+          .send({ error: apiMessages.userNotFound });
       }
-      return res.status(HTTPStatus.OK).send('User deleted.');
+      return res
+        .status(HTTPStatus.OK)
+        .send({ message: apiMessages.userDeleted });
     }
   );
 };
