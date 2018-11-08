@@ -1,6 +1,7 @@
 import * as qs from 'query-string';
 
-import { ApiResponse, ROUTES, UserDTO } from '../../../common/api';
+import { ROUTES, UserDTO } from '../../../common/api';
+import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from './urls';
 
@@ -24,9 +25,7 @@ export const listUsers = async (
   return response.json();
 };
 
-export const addUser = async (
-  user: UserDTO
-): Promise<ApiResponse> => {
+export const addUser = async (user: UserDTO) => {
   const response = await fetch(SERVER_URL + USERS.add, {
     body: JSON.stringify(user),
     headers: {
@@ -35,24 +34,17 @@ export const addUser = async (
     },
     method: 'POST',
   });
-  return response.json();
+  response.json().then(res => showMessage(res));
 };
 
-export const deleteUser = async (
-  email: string
-): Promise<ApiResponse> => {
-  const response = await fetch(
-    SERVER_URL + USERS.delete + qs.stringify({ email }),
-    {
-      method: 'GET',
-    }
-  );
-  return response.json();
+export const deleteUser = async (id: string) => {
+  const response = await fetch(SERVER_URL + USERS.delete + qs.stringify({ id }), {
+    method: 'GET',
+  });
+  response.json().then(res => showMessage(res));
 };
 
-export const updateUser = async (
-  user: UserDTO
-): Promise<ApiResponse> => {
+export const updateUser = async (user: UserDTO) => {
   const response = await fetch(SERVER_URL + USERS.update, {
     body: JSON.stringify(user),
     headers: {
@@ -61,5 +53,5 @@ export const updateUser = async (
     },
     method: 'POST',
   });
-  return response.json();
+  response.json().then(res => showMessage(res));
 };

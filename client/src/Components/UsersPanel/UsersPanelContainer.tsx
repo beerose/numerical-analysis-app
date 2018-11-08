@@ -1,9 +1,9 @@
-import { Button, Input, message, Modal, Select, Spin, Upload } from 'antd';
+import { Button, Input, Modal, Select, Spin, Upload } from 'antd';
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 
 import { UserDTO } from '../../../../common/api';
-import { addUser, listUsers, updateUser } from '../../api/userApi';
+import { addUser, deleteUser, listUsers, updateUser } from '../../api/userApi';
 import { LABELS } from '../../utils/labels';
 import { userRoleOptions } from '../../utils/utils';
 import { UsersTable } from '../EditableUserTable/';
@@ -62,24 +62,20 @@ export class UsersPanelContainer extends React.Component<{}, State> {
   };
 
   handleAddNewUser = (user: UserDTO) => {
-    addUser(user).then(res => {
+    addUser(user).then(() => {
       this.setState({ addUserModalVisible: false });
-      if (res.error) {
-        message.error(res.error);
-        return;
-      }
-      message.success(res.message);
       this.updateUsersList();
     });
   };
 
   handleUpdateUser = (user: UserDTO) => {
-    updateUser(user).then(res => {
-      if (res.error) {
-        message.error(res.error);
-        return;
-      }
-      message.success(res.message);
+    updateUser(user).then(() => {
+      this.updateUsersList();
+    });
+  };
+
+  handleDeleteUser = (id: string) => {
+    deleteUser(id).then(() => {
       this.updateUsersList();
     });
   };
