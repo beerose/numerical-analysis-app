@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ROUTES = {
     USERS: {
-        list: "/users/",
-        add: "/users/add/",
-        update: "/users/update/",
-        delete: "/users/delete/",
+        add: '/users/add/',
+        delete: '/users/delete/',
+        list: '/users/',
+        update: '/users/update/',
     },
 };

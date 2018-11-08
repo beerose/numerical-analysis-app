@@ -4,16 +4,16 @@ export interface ApiResponse {
 }
 export declare const ROUTES: {
     USERS: {
-        list: string;
         add: string;
-        update: string;
         delete: string;
+        list: string;
+        update: string;
     };
 };
 export declare type UserDTO = {
-    id?: string;
-    user_name?: string;
-    email?: string;
+    id: string;
+    user_name: string;
+    email: string;
     student_index?: string;
-    user_role?: string;
+    user_role: string;
 };

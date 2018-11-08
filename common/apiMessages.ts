@@ -1,5 +1,6 @@
 export const apiMessages = {
   emailRequired: 'Email jest wymagany',
+  idRequired: 'Id jest wymagane',
   internalError: 'Wystąpił błąd, spróbuj ponownie',
   invalidUserData: 'Pola Imię i nazwisko, Rola i Email są wymagane',
   userAlreadyExists: 'Użytkownik o tym adresie email już istnieje',

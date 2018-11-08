@@ -76,7 +76,7 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
   return connection.query(
     {
       sql: deleteUserQuery,
-      values: [req.query.id],
+      values: [req.body.id],
     },
     (error, results) => {
       if (error) {

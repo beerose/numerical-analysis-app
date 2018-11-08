@@ -38,8 +38,13 @@ export const addUser = async (user: UserDTO) => {
 };
 
 export const deleteUser = async (id: string) => {
-  const response = await fetch(SERVER_URL + USERS.delete + qs.stringify({ id }), {
-    method: 'GET',
+  const response = await fetch(SERVER_URL + USERS.delete, {
+    body: JSON.stringify({ id }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+    },
+    method: 'DELETE',
   });
   response.json().then(res => showMessage(res));
 };

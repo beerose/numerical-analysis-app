@@ -119,7 +119,7 @@ export class UsersPanelContainer extends React.Component<{}, State> {
         </Upload>
         <Spin spinning={this.state.isLoading}>
           <UsersTable
-            onDelete={() => null}
+            onDelete={this.handleDeleteUser}
             onUpdate={this.handleUpdateUser}
             users={this.state.users}
             extraColumns={['role', 'index']}

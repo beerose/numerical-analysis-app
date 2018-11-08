@@ -28,8 +28,8 @@ export const validateDeleteRequest = (
   res: Response,
   next: NextFunction
 ) => {
-  if (req.query.id) {
+  if (req.body.id) {
     return next();
   }
-  return res.status(HTTPStatus.BAD_REQUEST).send({ error: apiMessages.emailRequired });
+  return res.status(HTTPStatus.BAD_REQUEST).send({ error: apiMessages.idRequired });
 };

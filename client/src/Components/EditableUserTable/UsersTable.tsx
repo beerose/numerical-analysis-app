@@ -65,7 +65,7 @@ type UsersTableProps = {
   users: UserDTO[];
   extraColumns?: ExtraColumnTypes[];
   onUpdate: (user: UserDTO) => void;
-  onDelete: () => void;
+  onDelete: (id: string) => void;
 };
 export class UsersTable extends React.Component<UsersTableProps, UsersTableState> {
   state = { data: [] as UserDTO[], editingKey: '' };
@@ -80,7 +80,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
           <span>
             <EditableConsumer>
               {(form: WrappedFormUtils) => (
-                <ActionLink onClick={() => this.onUpdate(form, record.id)}>
+                <ActionLink onClick={() => this.handleUpdate(form, record.id)}>
                   {LABELS.save}
                 </ActionLink>
               )}
@@ -97,9 +97,9 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     },
     {
       dataIndex: 'delete',
-      render: (_: any, record: { email: string }) => {
+      render: (_: any, record: UserDTO) => {
         return (
-          <ActionLink onClick={() => this.onDelete(record.email)}>
+          <ActionLink onClick={() => this.handleDelete(record.id)}>
             {LABELS.delete}
           </ActionLink>
         );
@@ -124,16 +124,15 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     this.setState({ editingKey: '' });
   };
 
-  onUpdate(form: WrappedFormUtils, id: string) {
+  handleUpdate(form: WrappedFormUtils, id: string) {
     form.validateFields((_, row) => {
       this.props.onUpdate({ id, ...row });
     });
     this.setState({ editingKey: '' });
   }
 
-  onDelete(email: string) {
-    const newData = this.state.data.filter(i => email !== i.email);
-    this.setState({ data: newData });
+  handleDelete(id: string) {
+    this.props.onDelete(id);
   }
 
   render() {
