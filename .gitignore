@@ -1,10 +1,10 @@
-node_modules
-dist
-.data
-.cache
-.env
+**/node_modules
+**/dist
+**/.data
+**/.cache
+**/.env
 
-.vscode/
+**/.vscode/
 
 # migration tool data
-db/
+server/db/

@@ -18,5 +18,6 @@
     "jsx": "react",
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "exclude": ["node_modules", "build", "scripts", "jest"]
+  "exclude": ["node_modules", "build", "scripts", "jest"],
+  "references": [{ "path": "../common" }]
 }
