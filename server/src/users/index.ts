@@ -16,16 +16,8 @@ const DUPLICATE_ENTRY = 'ER_DUP_ENTRY';
 interface AddUserRequest extends Request {
   body: UserDTO;
 }
-const validateAddUserRequest = (user: Record<string, any>) =>
-  user.user_name && user.email && user.user_role;
-
 export const add = (req: AddUserRequest, res: Response) => {
   const user = req.body;
-  if (!validateAddUserRequest(user)) {
-    return res
-      .status(HTTPStatus.BAD_REQUEST)
-      .send({ error: apiMessages.invalidUserData });
-  }
   return connection.query(
     {
       sql: addUserQuery,
@@ -52,15 +44,8 @@ export const add = (req: AddUserRequest, res: Response) => {
 interface UpdateUserRequest extends Request {
   body: UserDTO;
 }
-const validateUpdateUserRequest = (user: Record<string, any>) =>
-  user.user_name && user.email && user.user_role && user.id;
 export const update = (req: UpdateUserRequest, res: Response) => {
   const user = req.body;
-  if (!validateUpdateUserRequest(user)) {
-    return res
-      .status(HTTPStatus.BAD_REQUEST)
-      .send({ error: apiMessages.invalidUserData });
-  }
   return connection.query(
     {
       sql: updateUserQuery,
@@ -85,18 +70,13 @@ export const update = (req: UpdateUserRequest, res: Response) => {
 };
 
 interface DeleteUserRequest extends Request {
-  query: {
-    email: string;
-  };
+  query: { id: string };
 }
 export const deleteUser = (req: DeleteUserRequest, res: Response) => {
-  if (!req.query.email) {
-    return res.status(HTTPStatus.BAD_REQUEST).send({ error: apiMessages.emailRequired });
-  }
   return connection.query(
     {
       sql: deleteUserQuery,
-      values: [req.query.email],
+      values: [req.query.id],
     },
     (error, results) => {
       if (error) {

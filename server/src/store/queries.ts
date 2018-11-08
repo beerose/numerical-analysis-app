@@ -21,7 +21,7 @@ WHERE id = ?;
 `;
 
 export const deleteUserQuery = `
-  DELETE FROM users WHERE email = ?;
+  DELETE FROM users WHERE id = ?;
 `;
 
 export const getUserRoleQuery = `
