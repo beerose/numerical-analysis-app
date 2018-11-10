@@ -41,20 +41,16 @@ type State = {
   users: UserDTO[];
 };
 
-const defaultState = {
-  addUserModalVisible: false,
-  currentPage: 1,
-  isLoading: false,
-  searchRoles: undefined,
-  searchValue: undefined,
-  total: 50,
-  users: [] as UserDTO[],
-};
-
-export const { Consumer, Provider } = React.createContext(defaultState);
-
 export class UsersPanelContainer extends React.Component<{}, State> {
-  state = defaultState;
+  state = {
+    addUserModalVisible: false,
+    currentPage: 1,
+    isLoading: false,
+    searchRoles: undefined,
+    searchValue: undefined,
+    total: 0,
+    users: [],
+  };
 
   componentWillMount() {
     this.updateUsersList(1);
@@ -62,11 +58,11 @@ export class UsersPanelContainer extends React.Component<{}, State> {
 
   updateUsersList = (currentPage: number) => {
     const { searchValue, searchRoles } = this.state;
-    this.setState({ isLoading: true });
+    this.setState({ currentPage, isLoading: true });
     usersService
       .listUsers(searchValue, searchRoles, currentPage)
       .then(({ users, total }) =>
-        this.setState({ users, isLoading: false, total: parseInt(total, 10) })
+        this.setState({ users, total: parseInt(total, 10), isLoading: false })
       );
   };
 
@@ -82,7 +78,7 @@ export class UsersPanelContainer extends React.Component<{}, State> {
 
   addNewUser = (user: UserDTO) => {
     usersService.addUser(user).then(() => {
-      this.setState({ addUserModalVisible: false, currentPage: 1 });
+      this.setState({ addUserModalVisible: false });
       this.updateUsersList(1);
     });
   };
@@ -99,18 +95,6 @@ export class UsersPanelContainer extends React.Component<{}, State> {
     });
   };
 
-  onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ searchValue: e.target.value });
-  };
-
-  onSearchRoleChange = (value: SelectValue) => {
-    this.setState({ searchRoles: value as string[] });
-  };
-
-  handleSearchClick = () => {
-    this.updateUsersList(1);
-  };
-
   handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
       this.updateUsersList(1);
@@ -118,8 +102,15 @@ export class UsersPanelContainer extends React.Component<{}, State> {
   };
 
   handlePaginationChange = (cfg: PaginationConfig) => {
-    this.setState({ currentPage: cfg.current || 1 });
     this.updateUsersList(cfg.current || 1);
+  };
+
+  onSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ searchValue: e.target.value });
+  };
+
+  onSearchRoleChange = (value: SelectValue) => {
+    this.setState({ searchRoles: value as string[] });
   };
 
   render() {
@@ -137,7 +128,7 @@ export class UsersPanelContainer extends React.Component<{}, State> {
             placeholder={LABELS.searchByRolePlaceholder}
             mode={'multiple'}
           />
-          <Button shape="circle" icon="search" onClick={this.handleSearchClick} />
+          <Button shape="circle" icon="search" onClick={() => this.updateUsersList(1)} />
         </SearchPanel>
         <Button
           type="default"

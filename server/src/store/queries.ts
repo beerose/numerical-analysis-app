@@ -51,7 +51,7 @@ export const prepareListUsersQuery = (
     users
   ${searchParam || roles ? 'WHERE' : ''}
   ${searchParam ? searchSubQuery(searchParam) : ''}
-  ${searchParam && roles ? 'OR' : ''}
+  ${searchParam && roles ? 'AND' : ''}
   ${roles ? roleSubQuery(roles) : ''}
   ORDER BY updated_at DESC
   LIMIT ? OFFSET ?;
@@ -67,6 +67,6 @@ export const prepareCountUsersQuery = (
     users
   ${searchParam || roles ? 'WHERE' : ''}
   ${searchParam ? searchSubQuery(searchParam) : ''}
-  ${searchParam && roles ? 'OR' : ''}
+  ${searchParam && roles ? 'AND' : ''}
   ${roles ? roleSubQuery(roles) : ''};
 `;
