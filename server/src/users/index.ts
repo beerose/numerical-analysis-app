@@ -7,6 +7,7 @@ import { connection } from '../store/connection';
 import {
   addUserQuery,
   deleteUserQuery,
+  prepareCountUsersQuery,
   prepareListUsersQuery,
   updateUserQuery,
 } from '../store/queries';
@@ -95,28 +96,43 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
 interface ListUsersRequest extends Request {
   query: {
     search_param?: string;
-    roles?: string[];
+    roles?: string | string[];
+    limit?: string;
+    offset?: string;
   };
 }
 interface ListUsersResponse extends Response {
-  send: (body: { users: UserDTO[] }) => Response;
+  send: (body: { users: UserDTO[]; total: number }) => Response;
 }
 export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
-  const listUsersQuery = prepareListUsersQuery(req.query.search_param, req.query.roles);
-  console.log(listUsersQuery);
+  const { search_param, roles, offset, limit } = req.query;
+  const listUsersQuery = prepareListUsersQuery(search_param, roles);
+  const countUsersQuery = prepareCountUsersQuery(search_param, roles);
   return connection.query(
     {
       sql: listUsersQuery,
-      values: [10, 0],
+      values: [limit ? parseInt(limit, 10) : 10, offset ? parseInt(offset, 10) : 0],
     },
-    (error, results) => {
-      if (error) {
-        console.log(error);
+    (listErr, users) => {
+      if (listErr) {
         return res
           .status(HTTPStatus.INTERNAL_SERVER_ERROR)
           .send({ error: apiMessages.internalError });
       }
-      return res.status(HTTPStatus.OK).send({ users: results });
+      return connection.query(
+        {
+          sql: countUsersQuery,
+          values: [limit ? parseInt(limit, 10) : 10, offset ? parseInt(offset, 10) : 0],
+        },
+        (countErr, [{ total }]) => {
+          if (countErr) {
+            return res
+              .status(HTTPStatus.INTERNAL_SERVER_ERROR)
+              .send({ error: apiMessages.internalError });
+          }
+          return res.status(HTTPStatus.OK).send({ users, total });
+        }
+      );
     }
   );
 };

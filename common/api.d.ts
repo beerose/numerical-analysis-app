@@ -17,3 +17,7 @@ export declare type UserDTO = {
     student_index?: string;
     user_role: string;
 };
+export declare type Pagination = {
+    offset: number;
+    limit: number;
+};

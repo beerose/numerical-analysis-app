@@ -7,14 +7,19 @@ import { SERVER_URL } from './urls';
 
 const { USERS } = ROUTES;
 
+const LIMIT = 10;
+
 export const listUsers = async (
-  search_param: string | undefined,
-  roles: string[] | undefined
-): Promise<{ users: UserDTO[] }> => {
+  searchParam: string | undefined,
+  roles: string[] | undefined,
+  currentPage: number
+): Promise<{ users: UserDTO[]; total: string }> => {
   const response = await fetch(
     `${SERVER_URL}${ROUTES.USERS.list}?${qs.stringify({
       roles,
-      search_param,
+      limit: LIMIT,
+      offset: (currentPage - 1) * LIMIT,
+      search_param: searchParam,
     })}`,
     {
       method: 'GET',

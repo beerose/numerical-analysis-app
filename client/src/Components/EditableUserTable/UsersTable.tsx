@@ -1,5 +1,6 @@
-import { Popconfirm, Table } from 'antd';
+import { Pagination, Popconfirm, Table } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { PaginationConfig } from 'antd/lib/table';
 import * as React from 'react';
 import styled from 'react-emotion';
 
@@ -58,17 +59,21 @@ const getExtraColumnsForRender = (extraColumns: ExtraColumnTypes[] = []) =>
   extraColumns.map(column => extraTableColumns[column]);
 
 type UsersTableState = {
+  currentPage: number;
   data: UserDTO[];
   editingKey: string;
 };
 type UsersTableProps = {
+  currentPage: number;
   users: UserDTO[];
+  total: number;
   extraColumns?: ExtraColumnTypes[];
   onUpdate: (user: UserDTO) => void;
   onDelete: (id: string) => void;
+  onTableChange: (cfg: PaginationConfig) => void;
 };
 export class UsersTable extends React.Component<UsersTableProps, UsersTableState> {
-  state = { data: [] as UserDTO[], editingKey: '' };
+  state = { data: [] as UserDTO[], editingKey: '', currentPage: 1 };
   columns: TableColumn[] = [
     ...tableColumns,
     ...getExtraColumnsForRender(this.props.extraColumns),
@@ -116,7 +121,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
   ];
 
   componentWillReceiveProps(nextProps: UsersTableProps) {
-    this.setState({ data: nextProps.users });
+    this.setState({ data: nextProps.users, currentPage: nextProps.currentPage });
   }
 
   isEditing = ({ email }: UserDTO) => {
@@ -166,6 +171,13 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
       };
     });
 
+    const paginationConfig = {
+      current: this.state.currentPage,
+      pageSize: 10,
+      superSimple: true,
+      total: this.props.total,
+    };
+
     return (
       <Table
         style={{ wordWrap: 'initial' }}
@@ -173,6 +185,8 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
         components={components}
         dataSource={this.state.data}
         columns={columns}
+        pagination={paginationConfig}
+        onChange={this.props.onTableChange}
       />
     );
   }

@@ -56,3 +56,17 @@ export const prepareListUsersQuery = (
   ORDER BY updated_at DESC
   LIMIT ? OFFSET ?;
 `;
+
+export const prepareCountUsersQuery = (
+  searchParam?: string,
+  roles?: string | string[]
+) => `
+  SELECT
+    count(*) as total
+  FROM
+    users
+  ${searchParam || roles ? 'WHERE' : ''}
+  ${searchParam ? searchSubQuery(searchParam) : ''}
+  ${searchParam && roles ? 'OR' : ''}
+  ${roles ? roleSubQuery(roles) : ''};
+`;
