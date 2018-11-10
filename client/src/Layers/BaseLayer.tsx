@@ -1,10 +1,11 @@
+import { Layout } from 'antd';
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
-import { Consumer } from '../Context';
-import { ErrorMessage } from '../Components/Error';
-import { Layout } from 'antd';
-import { MainMenu } from '../Components/';
 import { RouteComponentProps } from 'react-router';
+
+import { MainMenu } from '../Components/';
+import { ErrorMessage } from '../Components/Error';
+import { Consumer } from '../Context';
 
 const { Content, Header } = Layout;
 
@@ -18,7 +19,7 @@ const headerStyles = css`
 `;
 
 const layoutStyles = css`
-  background: 'inherit';
+  min-height: 100%;
 `;
 
 const Title = styled('p')`

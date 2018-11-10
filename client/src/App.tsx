@@ -1,10 +1,10 @@
-import React from "react";
-import { BaseLayer, RouterLayer } from "./Layers/";
-import { BrowserRouter as Router, withRouter } from "react-router-dom";
-
 import 'antd/dist/antd.css';
-import "./styles.css";
+import React from 'react';
+import { BrowserRouter as Router, withRouter } from 'react-router-dom';
+
+import './styles.css';
 import { AppProvider } from './AppProvider';
+import { BaseLayer, RouterLayer } from './Layers/';
 
 const BaseLayerWithRouter = withRouter(BaseLayer);
 
