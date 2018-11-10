@@ -1,8 +1,9 @@
-import { Form, Icon, Input, Button, Select } from 'antd';
-import * as React from 'react';
+import { Button, Form, Icon, Input, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import * as React from 'react';
+
+import { UserDTO } from '../../../../common/api';
 import { userRoleOptions } from '../../utils/utils';
-import { UserDTO } from '@src/src/api/userApiDTO';
 
 const FormItem = Form.Item;
 
@@ -18,6 +19,7 @@ class NewUserForm extends React.Component<Props> {
       }
       this.props.onSubmit(values);
     });
+    setTimeout(() => this.props.form.resetFields(), 1000);
   };
 
   render() {
