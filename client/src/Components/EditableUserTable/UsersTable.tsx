@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Popconfirm, Table } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import * as React from 'react';
 import styled from 'react-emotion';
@@ -99,9 +99,16 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
       dataIndex: 'delete',
       render: (_: any, record: UserDTO) => {
         return (
-          <ActionLink onClick={() => this.handleDelete(record.id)}>
-            {LABELS.delete}
-          </ActionLink>
+          <Popconfirm
+            title={LABELS.areYouSure}
+            onConfirm={() => this.handleDelete(record.id)}
+            okText={LABELS.yes}
+            okType="danger"
+            placement="topRight"
+            cancelText={LABELS.no}
+          >
+            <ActionLink>{LABELS.delete}</ActionLink>
+          </Popconfirm>
         );
       },
       width: '10%',
