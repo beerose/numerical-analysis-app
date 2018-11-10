@@ -1,13 +1,13 @@
-import { Button, Input, Modal, Select, Spin, Upload } from 'antd';
+import { Button, Input, Modal, Spin, Upload } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 
 import { UserDTO } from '../../../../common/api';
-import { addUser, deleteUser, listUsers, updateUser } from '../../api/userApi';
+import * as usersService from '../../api/userApi';
 import { LABELS } from '../../utils/labels';
-import { userRoleOptions } from '../../utils/utils';
 import { UsersTable } from '../EditableUserTable/';
+import { SelectRole } from '../SelectRole';
 
 import { WrappedNewUserForm } from './AddUserForm';
 
@@ -17,7 +17,12 @@ const SearchPanel = styled('div')`
 `;
 
 const inputStyles = css`
-  width: 25vw;
+  width: 400px;
+  margin-right: 10px;
+`;
+
+const selectStyles = css`
+  width: 300px;
   margin-right: 10px;
 `;
 
@@ -55,9 +60,9 @@ export class UsersPanelContainer extends React.Component<{}, State> {
   updateUsersList = () => {
     const { searchValue, searchRoles } = this.state;
     this.setState({ isLoading: true });
-    listUsers(searchValue, searchRoles).then(({ users }) =>
-      this.setState({ users, isLoading: false })
-    );
+    usersService
+      .listUsers(searchValue, searchRoles)
+      .then(({ users }) => this.setState({ users, isLoading: false }));
   };
 
   showAddUserModal = () => {
@@ -66,25 +71,25 @@ export class UsersPanelContainer extends React.Component<{}, State> {
     });
   };
 
-  handleCancelAddUser = () => {
+  cancelAddUser = () => {
     this.setState({ addUserModalVisible: false });
   };
 
-  handleAddNewUser = (user: UserDTO) => {
-    addUser(user).then(() => {
+  addNewUser = (user: UserDTO) => {
+    usersService.addUser(user).then(() => {
       this.setState({ addUserModalVisible: false });
       this.updateUsersList();
     });
   };
 
   handleUpdateUser = (user: UserDTO) => {
-    updateUser(user).then(() => {
+    usersService.updateUser(user).then(() => {
       this.updateUsersList();
     });
   };
 
   handleDeleteUser = (id: string) => {
-    deleteUser(id).then(() => {
+    usersService.deleteUser(id).then(() => {
       this.updateUsersList();
     });
   };
@@ -116,16 +121,7 @@ export class UsersPanelContainer extends React.Component<{}, State> {
             className={inputStyles}
             onChange={this.onSearchInputChange}
           />
-          <Select
-            mode="multiple"
-            className={inputStyles}
-            placeholder={LABELS.searchByRolePlaceholder}
-            onChange={this.onSearchRoleChange}
-          >
-            {userRoleOptions.map(o => (
-              <Select.Option key={o}>{o}</Select.Option>
-            ))}
-          </Select>
+          <SelectRole onChange={this.onSearchRoleChange} className={selectStyles} />
           <Button shape="circle" icon="search" onClick={this.handleSearchClick} />
         </SearchPanel>
         <Button
@@ -139,10 +135,10 @@ export class UsersPanelContainer extends React.Component<{}, State> {
         <Modal
           visible={this.state.addUserModalVisible}
           title="Nowy użytkownik"
-          onCancel={this.handleCancelAddUser}
+          onCancel={this.cancelAddUser}
           footer={null}
         >
-          <WrappedNewUserForm onSubmit={this.handleAddNewUser} />
+          <WrappedNewUserForm onSubmit={this.addNewUser} />
         </Modal>
         <Upload accept="text/csv" showUploadList={false}>
           <Button type="default" icon="upload" className={buttonStyles}>

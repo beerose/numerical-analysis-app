@@ -34,11 +34,17 @@ const searchSubQuery = (searchParam: string) => `
   OR MATCH(student_index) AGAINST ("${searchParam}"))
 `;
 
-const roleSubQuery = (roles: string[]) => `
-  user_role IN (${roles.map(role => `"${role}"`)})
-`;
+const roleSubQuery = (roles: string | string[]) => {
+  if (typeof roles === 'string') {
+    return `user_role = ("${roles}")`;
+  }
+  return `user_role IN (${roles.map(role => `"${role}"`)})`;
+};
 
-export const prepareListUsersQuery = (searchParam?: string, roles?: string[]) => `
+export const prepareListUsersQuery = (
+  searchParam?: string,
+  roles?: string | string[]
+) => `
   SELECT
     id, user_name, email, student_index, user_role
   FROM

@@ -95,14 +95,15 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
 interface ListUsersRequest extends Request {
   query: {
     search_param?: string;
-    role?: string[];
+    roles?: string[];
   };
 }
 interface ListUsersResponse extends Response {
   send: (body: { users: UserDTO[] }) => Response;
 }
 export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
-  const listUsersQuery = prepareListUsersQuery(req.query.search_param, req.query.role);
+  const listUsersQuery = prepareListUsersQuery(req.query.search_param, req.query.roles);
+  console.log(listUsersQuery);
   return connection.query(
     {
       sql: listUsersQuery,

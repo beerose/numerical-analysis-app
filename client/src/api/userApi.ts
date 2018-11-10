@@ -13,8 +13,8 @@ export const listUsers = async (
 ): Promise<{ users: UserDTO[] }> => {
   const response = await fetch(
     `${SERVER_URL}${ROUTES.USERS.list}?${qs.stringify({
+      roles,
       search_param,
-      role: roles,
     })}`,
     {
       method: 'GET',
