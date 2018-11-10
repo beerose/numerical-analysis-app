@@ -1,7 +1,7 @@
-import { Menu, Icon } from "antd";
-import * as React from "react";
-import { css } from "react-emotion";
-import { Link } from "react-router-dom";
+import { Icon, Menu } from 'antd';
+import * as React from 'react';
+import { css } from 'react-emotion';
+import { Link } from 'react-router-dom';
 
 const mainMenuStyles = css`
   line-height: inherit;
@@ -13,22 +13,22 @@ type MenuItem = { key: string; label: string; icon?: string; path: string };
 
 const MENU_ITEMS: Record<string, MenuItem> = {
   groups: {
-    key: "groups",
-    label: "Grupy",
-    icon: "team",
-    path: "/groups",
-  },
-  users: {
-    key: "users",
-    label: "Użytkownicy",
-    icon: "user",
-    path: "/users",
+    icon: 'team',
+    key: 'groups',
+    label: 'Grupy',
+    path: '/groups',
   },
   settings: {
-    key: "settings",
-    label: "Ustawienia",
-    icon: "setting",
-    path: "settings",
+    icon: 'setting',
+    key: 'settings',
+    label: 'Ustawienia',
+    path: 'settings',
+  },
+  users: {
+    icon: 'user',
+    key: 'users',
+    label: 'Użytkownicy',
+    path: '/users',
   },
 };
 
@@ -41,11 +41,11 @@ type Props = {
 export class MainMenu extends React.Component<Props> {
   getMenuItemsForUserRole(userRole: string) {
     switch (userRole) {
-      case "admin":
+      case 'admin':
         return [MENU_ITEMS.groups, MENU_ITEMS.users, MENU_ITEMS.settings];
-      case "superUser":
+      case 'superUser':
         return [MENU_ITEMS.groups, MENU_ITEMS.settings];
-      case "student":
+      case 'student':
         return [MENU_ITEMS.groups, MENU_ITEMS.settings];
       default:
         return [];
@@ -53,7 +53,7 @@ export class MainMenu extends React.Component<Props> {
   }
 
   getSelectedItem() {
-    return this.props.location.pathname.replace("/", "");
+    return this.props.location.pathname.replace('/', '');
   }
 
   render() {

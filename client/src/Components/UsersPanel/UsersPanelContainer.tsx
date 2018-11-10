@@ -131,7 +131,11 @@ export class UsersPanelContainer extends React.Component<{}, State> {
             className={inputStyles}
             onChange={this.onSearchInputChange}
           />
-          <SelectRole onChange={this.onSearchRoleChange} className={selectStyles} />
+          <SelectRole
+            onChange={this.onSearchRoleChange}
+            className={selectStyles}
+            placeholder={LABELS.searchByRolePlaceholder}
+          />
           <Button shape="circle" icon="search" onClick={this.handleSearchClick} />
         </SearchPanel>
         <Button

@@ -1,4 +1,4 @@
-import { Pagination, Popconfirm, Table } from 'antd';
+import { Popconfirm, Table } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { PaginationConfig } from 'antd/lib/table';
 import * as React from 'react';

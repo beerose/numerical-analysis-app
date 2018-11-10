@@ -1,9 +1,10 @@
-import { Button, Form, Icon, Input, Select } from 'antd';
+import { Button, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
+import { LABELS } from 'src/utils/labels';
 
 import { UserDTO } from '../../../../common/api';
-import { userRoleOptions } from '../../utils/utils';
+import { SelectRole } from '../SelectRole';
 
 const FormItem = Form.Item;
 
@@ -29,36 +30,28 @@ class NewUserForm extends React.Component<Props> {
       <Form onSubmit={this.handleSubmit}>
         <FormItem>
           {getFieldDecorator('user_name', {
-            rules: [{ required: true, message: 'Należy podać imię i nazwisko' }],
+            rules: [{ required: true, message: LABELS.nameRequired }],
           })(
             <Input
               prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Imię i nazwisko"
+              placeholder={LABELS.name}
             />
           )}
         </FormItem>
         <FormItem>
           {getFieldDecorator('email', {
-            rules: [{ required: true, message: 'Należy podać email' }],
+            rules: [{ required: true, message: LABELS.emailRequired }],
           })(
             <Input
               prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Email"
+              placeholder={LABELS.email}
             />
           )}
         </FormItem>
         <FormItem>
           {getFieldDecorator('user_role', {
-            rules: [{ required: true, message: 'Należy podać rolę użytkownika' }],
-          })(
-            <Select placeholder="Wybierz rolę użytkownika">
-              {userRoleOptions.map(o => (
-                <Select.Option key={`${o}`} value={`${o}`}>
-                  {o}
-                </Select.Option>
-              ))}
-            </Select>
-          )}
+            rules: [{ required: true, message: LABELS.roleRequired }],
+          })(<SelectRole placeholder={LABELS.roleRequired} />)}
         </FormItem>
         <FormItem>
           {getFieldDecorator('student_index', {
@@ -66,7 +59,7 @@ class NewUserForm extends React.Component<Props> {
           })(
             <Input
               prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Indeks studenta (opcjonalnie)"
+              placeholder={LABELS.optionalIndex}
             />
           )}
         </FormItem>
