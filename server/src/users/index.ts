@@ -95,7 +95,7 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
 interface ListUsersRequest extends Request {
   query: {
     search_param?: string;
-    role?: string;
+    role?: string[];
   };
 }
 interface ListUsersResponse extends Response {
@@ -110,6 +110,7 @@ export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
     },
     (error, results) => {
       if (error) {
+        console.log(error);
         return res
           .status(HTTPStatus.INTERNAL_SERVER_ERROR)
           .send({ error: apiMessages.internalError });

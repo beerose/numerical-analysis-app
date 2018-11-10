@@ -34,19 +34,19 @@ const searchSubQuery = (searchParam: string) => `
   OR MATCH(student_index) AGAINST ("${searchParam}"))
 `;
 
-const roleSubQuery = (role: string) => `
-  user_role = "${role}"
+const roleSubQuery = (roles: string[]) => `
+  user_role IN (${roles.map(role => `"${role}"`)})
 `;
 
-export const prepareListUsersQuery = (searchParam?: string, role?: string) => `
+export const prepareListUsersQuery = (searchParam?: string, roles?: string[]) => `
   SELECT
     id, user_name, email, student_index, user_role
   FROM
     users
-  ${searchParam || role ? 'WHERE' : ''}
+  ${searchParam || roles ? 'WHERE' : ''}
   ${searchParam ? searchSubQuery(searchParam) : ''}
-  ${searchParam && role ? 'OR' : ''}
-  ${role ? roleSubQuery(role) : ''}
+  ${searchParam && roles ? 'OR' : ''}
+  ${roles ? roleSubQuery(roles) : ''}
   ORDER BY updated_at DESC
   LIMIT ? OFFSET ?;
 `;

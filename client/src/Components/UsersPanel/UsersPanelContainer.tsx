@@ -101,10 +101,16 @@ export class UsersPanelContainer extends React.Component<{}, State> {
     this.updateUsersList();
   };
 
+  handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === 'Enter') {
+      this.updateUsersList();
+    }
+  };
+
   render() {
     return (
       <>
-        <SearchPanel>
+        <SearchPanel onKeyPress={this.handleKeyPress}>
           <Input
             placeholder={LABELS.searchUserPlaceholder}
             className={inputStyles}
