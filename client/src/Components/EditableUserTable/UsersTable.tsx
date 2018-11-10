@@ -13,6 +13,7 @@ import { EditableCell, EditableFormRow } from './EditableRow';
 
 const ActionLink = styled('a')`
   margin-right: 8px;
+  word-break: keep-all;
 `;
 
 type TableColumn = {
@@ -28,7 +29,7 @@ const tableColumns: TableColumn[] = [
     dataIndex: 'user_name',
     editable: true,
     title: 'Imię i nazwisko',
-    width: '25%',
+    width: '15%',
   },
   {
     dataIndex: 'email',
@@ -44,14 +45,14 @@ const extraTableColumns: Record<ExtraColumnTypes, TableColumn> = {
     dataIndex: 'student_index',
     editable: true,
     title: 'Indeks',
-    width: '15%',
+    width: '10%',
   },
   role: {
     dataIndex: 'user_role',
     editable: true,
     options: userRoleOptions,
     title: 'Rola',
-    width: '15%',
+    width: '10%',
   },
 };
 

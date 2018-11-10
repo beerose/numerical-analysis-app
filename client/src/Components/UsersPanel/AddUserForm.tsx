@@ -1,9 +1,9 @@
 import { Button, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
-import { LABELS } from 'src/utils/labels';
 
 import { UserDTO } from '../../../../common/api';
+import { LABELS } from '../../utils/labels';
 import { SelectRole } from '../SelectRole';
 
 const FormItem = Form.Item;
@@ -51,7 +51,7 @@ class NewUserForm extends React.Component<Props> {
         <FormItem>
           {getFieldDecorator('user_role', {
             rules: [{ required: true, message: LABELS.roleRequired }],
-          })(<SelectRole placeholder={LABELS.roleRequired} />)}
+          })(<SelectRole placeholder={LABELS.role} mode={'single'} />)}
         </FormItem>
         <FormItem>
           {getFieldDecorator('student_index', {

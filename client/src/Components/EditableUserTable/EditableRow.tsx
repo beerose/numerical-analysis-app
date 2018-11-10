@@ -1,9 +1,11 @@
-import { Input, Select } from 'antd';
+import { Input } from 'antd';
 import Form, { FormComponentProps, WrappedFormUtils } from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
 import * as React from 'react';
 
+import { UserDTO } from '../../../../common/api';
 import { LABELS } from '../../utils/labels';
+import { SelectRole } from '../SelectRole';
 
 import { EditableConsumer, EditableProvider } from './Context';
 
@@ -20,7 +22,7 @@ const requiredFields = ['user_name', 'email', 'user_role'];
 type EditableCellProps = {
   editing: boolean;
   dataIndex: never;
-  record: string[];
+  record: UserDTO;
   required: boolean;
   title: string;
   options?: string[];
@@ -28,12 +30,7 @@ type EditableCellProps = {
 export class EditableCell extends React.Component<EditableCellProps> {
   getInput = () => {
     if (this.props.options) {
-      const options = this.props.options.map(o => (
-        <Select.Option key={`${o}`} value={`${o}`}>
-          {o}
-        </Select.Option>
-      ));
-      return <Select style={{ width: 120 }}>{options}</Select>;
+      return <SelectRole mode="single" initialValue={this.props.record.user_role} />;
     }
     return <Input />;
   };

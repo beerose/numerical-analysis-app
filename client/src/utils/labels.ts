@@ -12,6 +12,7 @@ export const LABELS = {
   no: 'nie',
   optionalIndex: 'Indeks studenta (opcjonalnie)',
   requiredField: 'Pole jest wymagane',
+  role: 'Rola użytkownika',
   roleRequired: 'Należy podać rolę użytkownika',
   save: 'zapisz',
   searchByRolePlaceholder: 'Szukaj według roli użytkownika',
