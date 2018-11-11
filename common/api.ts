@@ -5,7 +5,7 @@ export interface ApiResponse {
 
 export const ROUTES = {
   GROUPS: {
-    upload: 'groups/upload',
+    upload: '/groups/upload',
   },
   USERS: {
     add: '/users/add',

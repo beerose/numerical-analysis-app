@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ROUTES = {
     GROUPS: {
-        upload: 'groups/upload',
+        upload: '/groups/upload',
     },
     USERS: {
         add: '/users/add',

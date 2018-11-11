@@ -8,6 +8,8 @@ import swaggerUi from 'swagger-ui-express';
 import { ROUTES } from '../../common/api';
 
 import { isAuthenticated } from './auth';
+import * as groups from './groups';
+import { validateUploadRequest } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
 import {
@@ -37,7 +39,7 @@ app.post(USERS.add, isAuthenticated, validateAddRequest, users.add);
 app.post(USERS.update, isAuthenticated, validateUpdateRequest, users.update);
 app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUser);
 
-app.post(GROUPS.upload, isAuthenticated, users.upload);
+app.post(GROUPS.upload, isAuthenticated, validateUploadRequest, groups.upload);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

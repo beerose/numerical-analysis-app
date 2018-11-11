@@ -1,5 +1,4 @@
 import { UserDTO } from '../../../common/api';
-import { apiMessages } from '../../../common/apiMessages';
 import { ROLES } from '../../../common/roles';
 
 const DELIMITER = ',';

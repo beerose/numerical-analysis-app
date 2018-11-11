@@ -1,4 +1,3 @@
-import atob from 'atob';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
@@ -12,7 +11,6 @@ import {
   prepareListUsersQuery,
   updateUserQuery,
 } from '../store/queries';
-import { readCSV } from '../utils/uploadUtils';
 
 const DUPLICATE_ENTRY = 'ER_DUP_ENTRY';
 
@@ -58,9 +56,7 @@ export const update = (req: UpdateUserRequest, res: Response) => {
       if (error) {
         switch (error.code) {
           case DUPLICATE_ENTRY:
-            return res
-              .status(codes.CONFLICT)
-              .send({ error: apiMessages.userAlreadyExists });
+            return res.status(codes.CONFLICT).send({ error: apiMessages.userAlreadyExists });
           default:
             return res
               .status(codes.INTERNAL_SERVER_ERROR)
@@ -83,9 +79,7 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
     },
     (error, results) => {
       if (error) {
-        return res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
       if (!results.affectedRows) {
         return res.status(codes.NOT_FOUND).send({ error: apiMessages.userNotFound });
@@ -117,9 +111,7 @@ export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
     },
     (listErr, users) => {
       if (listErr) {
-        return res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
       return connection.query(
         {
@@ -137,65 +129,4 @@ export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
       );
     }
   );
-};
-
-interface UploadRequest extends Request {
-  body: { data: string };
-}
-export const upload = (req: UploadRequest, res: Response) => {
-  const decodesdData = atob(req.body.data);
-  const { users, isValid } = readCSV(decodesdData);
-  if (!isValid) {
-    return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
-  }
-  if (!users || !users.length) {
-    return res.status(codes.PRECONDITION_FAILED).send({ error: apiMessages.emptyCSV });
-  }
-
-  const userRows = users.map(user => [
-    user.user_name,
-    user.email,
-    user.user_role,
-    user.student_index,
-  ]);
-  return connection.beginTransaction(beginError => {
-    if (beginError) {
-      return res
-        .status(codes.INTERNAL_SERVER_ERROR)
-        .send({ error: apiMessages.internalError });
-    }
-    return connection.query(
-      {
-        sql: addUserQuery,
-        values: [userRows],
-      },
-      addErr => {
-        if (addErr) {
-          switch (addErr.code) {
-            case DUPLICATE_ENTRY:
-              return res
-                .status(codes.CONFLICT)
-                .send({ error: apiMessages.userAlreadyExists + addErr.message });
-            default:
-              return connection.rollback(() => {
-                return res
-                  .status(codes.INTERNAL_SERVER_ERROR)
-                  .send({ error: apiMessages.internalError });
-              });
-          }
-        }
-        connection.commit(commitErr => {
-          if (commitErr) {
-            console.error(commitErr);
-            return connection.rollback(() => {
-              return res
-                .status(codes.INTERNAL_SERVER_ERROR)
-                .send({ error: apiMessages.internalError });
-            });
-          }
-          return res.status(codes.OK).send({ message: users });
-        });
-      }
-    );
-  });
 };

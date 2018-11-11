@@ -20,6 +20,19 @@ SET
 WHERE id = ?;
 `;
 
+export const upsertUserQuery = `
+INSERT INTO
+  users (
+    user_name,
+    email,
+    user_role,
+    student_index,
+    course_group
+  )
+VALUES ?
+ON DUPLICATE KEY UPDATE course_group = VALUES(course_group);
+`;
+
 export const deleteUserQuery = `
   DELETE FROM users WHERE id = ?;
 `;
@@ -41,10 +54,7 @@ const roleSubQuery = (roles: string | string[]) => {
   return `user_role IN (${roles.map(role => `"${role}"`)})`;
 };
 
-export const prepareListUsersQuery = (
-  searchParam?: string,
-  roles?: string | string[]
-) => `
+export const prepareListUsersQuery = (searchParam?: string, roles?: string | string[]) => `
   SELECT
     id, user_name, email, student_index, user_role
   FROM
@@ -57,10 +67,7 @@ export const prepareListUsersQuery = (
   LIMIT ? OFFSET ?;
 `;
 
-export const prepareCountUsersQuery = (
-  searchParam?: string,
-  roles?: string | string[]
-) => `
+export const prepareCountUsersQuery = (searchParam?: string, roles?: string | string[]) => `
   SELECT
     count(*) as total
   FROM
