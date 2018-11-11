@@ -9,6 +9,7 @@ export const ROUTES = {
     delete: '/users/delete',
     list: '/users',
     update: '/users/update',
+    upload: '/upload',
   },
 };
 

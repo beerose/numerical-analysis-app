@@ -1,4 +1,4 @@
-import { Button, Input, Modal, Spin, Upload } from 'antd';
+import { Button, Input, Spin } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import { PaginationConfig } from 'antd/lib/table';
 import * as React from 'react';
@@ -10,7 +10,8 @@ import { LABELS } from '../../utils/labels';
 import { UsersTable } from '../EditableUserTable/';
 import { SelectRole } from '../SelectRole';
 
-import { WrappedNewUserForm } from './AddUserForm';
+import { WrappedNewUserModalForm } from './AddUserForm';
+import { UploadUsers } from './UploadUsers';
 
 const SearchPanel = styled('div')`
   margin: 20px 0 20px 0;
@@ -56,6 +57,10 @@ export class UsersPanelContainer extends React.Component<{}, State> {
     this.updateUsersList(1);
   }
 
+  clearFilters() {
+    this.setState({ searchRoles: undefined, searchValue: undefined });
+  }
+
   updateUsersList = (currentPage: number) => {
     const { searchValue, searchRoles } = this.state;
     this.setState({ currentPage, isLoading: true });
@@ -78,7 +83,11 @@ export class UsersPanelContainer extends React.Component<{}, State> {
 
   addNewUser = (user: UserDTO) => {
     usersService.addUser(user).then(() => {
-      this.setState({ addUserModalVisible: false });
+      this.setState({
+        addUserModalVisible: false,
+        searchRoles: undefined,
+        searchValue: undefined,
+      });
       this.updateUsersList(1);
     });
   };
@@ -113,7 +122,17 @@ export class UsersPanelContainer extends React.Component<{}, State> {
     this.setState({ searchRoles: value as string[] });
   };
 
+  onUpload = (base64file: string) => {
+    this.setState({ isLoading: true });
+    usersService.uploadUsers(base64file).then(res => {
+      console.log(res);
+      this.setState({ isLoading: false, searchRoles: undefined, searchValue: undefined });
+      this.updateUsersList(1);
+    });
+  };
+
   render() {
+    const { addUserModalVisible, users, total, currentPage, isLoading } = this.state;
     return (
       <>
         <SearchPanel onKeyPress={this.handleKeyPress}>
@@ -130,34 +149,22 @@ export class UsersPanelContainer extends React.Component<{}, State> {
           />
           <Button shape="circle" icon="search" onClick={() => this.updateUsersList(1)} />
         </SearchPanel>
-        <Button
-          type="default"
-          icon="user-add"
-          onClick={this.showAddUserModal}
-          className={buttonStyles}
-        >
+        <Button icon="user-add" onClick={this.showAddUserModal} className={buttonStyles}>
           {LABELS.addNewUser}
         </Button>
-        <Modal
-          visible={this.state.addUserModalVisible}
-          title="Nowy użytkownik"
+        <WrappedNewUserModalForm
+          onSubmit={this.addNewUser}
+          visible={addUserModalVisible}
           onCancel={this.cancelAddUser}
-          footer={null}
-        >
-          <WrappedNewUserForm onSubmit={this.addNewUser} />
-        </Modal>
-        <Upload accept="text/csv" showUploadList={false}>
-          <Button type="default" icon="upload" className={buttonStyles}>
-            {LABELS.upload}
-          </Button>
-        </Upload>
-        <Spin spinning={this.state.isLoading}>
+        />
+        <UploadUsers className={buttonStyles} onUpload={this.onUpload} />
+        <Spin spinning={isLoading}>
           <UsersTable
-            currentPage={this.state.currentPage}
+            currentPage={currentPage}
             onDelete={this.handleDeleteUser}
             onUpdate={this.handleUpdateUser}
-            users={this.state.users}
-            total={this.state.total}
+            users={users}
+            total={total}
             extraColumns={['role', 'index']}
             onTableChange={this.handlePaginationChange}
           />

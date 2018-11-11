@@ -8,6 +8,7 @@ export declare const ROUTES: {
         delete: string;
         list: string;
         update: string;
+        upload: string;
     };
 };
 export declare type UserDTO = {

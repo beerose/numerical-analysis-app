@@ -136,3 +136,8 @@ export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
     }
   );
 };
+
+export const upload = (req: Request, res: Response) => {
+  console.log(req.body);
+  return res.status(HTTPStatus.OK).send({ message: 'sentd' });
+};

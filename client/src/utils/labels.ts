@@ -9,6 +9,7 @@ export const LABELS = {
   fillActiveWarning: 'Uzupełnij lub usuń aktualnie dodawanego użytkownika',
   name: 'Imię i nazwisko',
   nameRequired: 'Należy podać imię i nazwisko',
+  newUser: 'Nowy użytkownik',
   no: 'nie',
   optionalIndex: 'Indeks studenta (opcjonalnie)',
   requiredField: 'Pole jest wymagane',

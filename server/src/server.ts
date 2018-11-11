@@ -35,6 +35,7 @@ app.get(USERS.list, isAuthenticated, users.list);
 app.post(USERS.add, isAuthenticated, validateAddRequest, users.add);
 app.post(USERS.update, isAuthenticated, validateUpdateRequest, users.update);
 app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUser);
+app.post(USERS.upload, isAuthenticated, users.upload);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

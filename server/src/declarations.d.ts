@@ -1,10 +1,4 @@
-declare var process: {
-  env: {
-    NODE_ENV: string;
-    PUBLIC_URL: string;
-    IP: string;
-  };
-};
+declare var process: NodeJS.Process;
 
 declare module '*.json' {
   const value: any;
