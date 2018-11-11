@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
-    "watch-compile": "parcel watch ./src/index.ts --target=node",
+    "watch-compile": "PORT=3003 parcel watch ./src/index.ts --target=node",
     "watch-run": "PORT=3000 nodemon dist/index.js",
     "build": "parcel build ./src/index.ts --target=node",
     "launch": "node dist/index.js",

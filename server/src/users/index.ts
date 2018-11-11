@@ -22,7 +22,7 @@ export const add = (req: AddUserRequest, res: Response) => {
   return connection.query(
     {
       sql: addUserQuery,
-      values: [[user.user_name, user.email, user.user_role, user.student_index]],
+      values: [user.user_name, user.email, user.user_role, user.student_index],
     },
     error => {
       if (error) {

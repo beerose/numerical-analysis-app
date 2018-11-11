@@ -6,7 +6,7 @@ INSERT INTO
     user_role,
     student_index
   )
-VALUES ?;
+VALUES (?, ?, ?, ?);
 `;
 
 export const updateUserQuery = `
