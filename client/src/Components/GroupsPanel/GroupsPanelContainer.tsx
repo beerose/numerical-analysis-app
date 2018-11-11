@@ -6,8 +6,8 @@ import { groupsService } from '../../api';
 import { UploadUsers } from './';
 
 export const GroupsPanelContainer = () => {
-  const onUpload = (base64file: string) => {
-    groupsService.uploadUsers(base64file).then(res => {
+  const onUpload = (fileContent: string) => {
+    groupsService.uploadUsers(fileContent).then(res => {
       console.log(res);
     });
   };

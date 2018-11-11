@@ -13,7 +13,6 @@ import { EditableCell, EditableFormRow } from './EditableRow';
 
 const ActionLink = styled('a')`
   margin-right: 8px;
-  word-break: keep-all;
 `;
 
 type TableColumn = {
@@ -29,13 +28,13 @@ const tableColumns: TableColumn[] = [
     dataIndex: 'user_name',
     editable: true,
     title: 'Imię i nazwisko',
-    width: '15%',
+    width: '10%',
   },
   {
     dataIndex: 'email',
     editable: true,
     title: 'Email',
-    width: '15%',
+    width: '10%',
   },
 ];
 
@@ -45,14 +44,14 @@ const extraTableColumns: Record<ExtraColumnTypes, TableColumn> = {
     dataIndex: 'student_index',
     editable: true,
     title: 'Indeks',
-    width: '10%',
+    width: '5%',
   },
   role: {
     dataIndex: 'user_role',
     editable: true,
     options: userRoleOptions,
     title: 'Rola',
-    width: '10%',
+    width: '5%',
   },
 };
 
@@ -83,7 +82,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
       render: (_: any, record: UserDTO) => {
         const editable = this.isEditing(record);
         return editable ? (
-          <span>
+          <>
             <EditableConsumer>
               {(form: WrappedFormUtils) => (
                 <ActionLink onClick={() => this.handleUpdate(form, record.id!)}>
@@ -92,14 +91,12 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
               )}
             </EditableConsumer>
             <ActionLink onClick={this.handleCancelEdit}>{LABELS.cancel}</ActionLink>
-          </span>
+          </>
         ) : (
-          <ActionLink onClick={() => this.handleEdit(record.email)}>
-            {LABELS.edit}
-          </ActionLink>
+          <ActionLink onClick={() => this.handleEdit(record.email)}>{LABELS.edit}</ActionLink>
         );
       },
-      width: '10%',
+      width: '5%',
     },
     {
       dataIndex: 'delete',
@@ -117,7 +114,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
           </Popconfirm>
         );
       },
-      width: '10%',
+      width: '5%',
     },
   ];
 
@@ -181,7 +178,6 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
 
     return (
       <Table
-        style={{ wordWrap: 'initial' }}
         rowKey="id"
         components={components}
         dataSource={this.state.data}

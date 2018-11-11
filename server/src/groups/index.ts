@@ -1,6 +1,7 @@
 import atob from 'atob';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
+import { Base64 } from 'js-base64';
 
 import { apiMessages } from '../../../common/apiMessages';
 import { connection } from '../store/connection';
@@ -12,8 +13,9 @@ interface UploadRequest extends Request {
   body: { data: string; group: string };
 }
 export const upload = (req: UploadRequest, res: Response) => {
-  const decodesdData = atob(req.body.data);
-  const { users, isValid } = readCSV(decodesdData);
+  // const decodesdData = Base64.atob(req.body.data);
+  console.log(req.body.data);
+  const { users, isValid } = readCSV(req.body.data);
   if (!isValid) {
     return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
   }

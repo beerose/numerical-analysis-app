@@ -22,7 +22,7 @@ export const SelectRole = React.forwardRef(
       placeholder={placeholder}
       onChange={onChange}
       className={className}
-      style={{ minWidth: '100px' }}
+      style={{ minWidth: '120px' }}
       defaultValue={initialValue}
       ref={ref}
     >

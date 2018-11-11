@@ -1,4 +1,5 @@
 import { Button, Upload } from 'antd';
+import { Base64 } from 'js-base64';
 import * as React from 'react';
 
 import { LABELS } from '../../utils/labels';
@@ -12,17 +13,18 @@ export const UploadUsers = ({
   onUpload,
 }: {
   className?: string;
-  onUpload: (a: any) => void;
+  onUpload: (fileContent: any) => void;
 }) => {
   const handleUpload = (uploadObject: UploadObject) => {
     const { file } = uploadObject;
     const reader = new FileReader();
-    reader.readAsBinaryString(file);
+    reader.readAsText(file);
 
     reader.onload = () => {
-      onUpload(btoa(reader.result as string));
+      onUpload(reader.result);
     };
   };
+
   return (
     <Upload accept="text/csv" showUploadList={false} customRequest={handleUpload}>
       <Button type="default" icon="upload" className={className}>

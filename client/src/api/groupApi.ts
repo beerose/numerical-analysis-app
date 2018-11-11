@@ -4,9 +4,9 @@ import { SERVER_URL } from '.';
 
 const { GROUPS } = ROUTES;
 
-export const uploadUsers = async (base64file: string) => {
+export const uploadUsers = async (fileContent: string) => {
   const response = await fetch(SERVER_URL + GROUPS.upload, {
-    body: JSON.stringify({ data: base64file, group: 'test' }),
+    body: JSON.stringify({ data: fileContent, group: 'test' }),
     headers: {
       Accept: 'application/json, text/plain, */*',
       'Content-Type': 'application/json',
