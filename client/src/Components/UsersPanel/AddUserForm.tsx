@@ -24,9 +24,11 @@ export const NewUserModalForm = (props: Props) => {
       setTimeout(() => {
         props.form.resetFields();
         // workaround for ant bug
-        const selected = document.getElementsByClassName('ant-select-selection-selected-value')[0];
-        selected.innerHTML =
-          '<div unselectable="on" class="ant-select-selection__placeholder" style="display: block; user-select: none;">Rola użytkownika</div>';
+        const selected = document.getElementsByClassName('ant-select-selection-selected-value');
+        if (selected && selected[0]) {
+          selected[0].innerHTML =
+            '<div unselectable="on" class="ant-select-selection__placeholder" style="display: block; user-select: none;">Rola użytkownika</div>';
+        }
       }, 1000);
     });
   };
