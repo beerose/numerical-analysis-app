@@ -21,8 +21,14 @@ export const NewUserModalForm = (props: Props) => {
         return;
       }
       props.onSubmit(values);
+      setTimeout(() => {
+        props.form.resetFields();
+        // workaround for ant bug
+        const selected = document.getElementsByClassName('ant-select-selection-selected-value')[0];
+        selected.innerHTML =
+          '<div unselectable="on" class="ant-select-selection__placeholder" style="display: block; user-select: none;">Rola użytkownika</div>';
+      }, 1000);
     });
-    setTimeout(() => props.form.resetFields(), 1000);
   };
 
   const { getFieldDecorator } = props.form;

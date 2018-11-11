@@ -25,6 +25,7 @@ export const SelectRole = React.forwardRef(
       style={{ minWidth: '120px' }}
       defaultValue={initialValue}
       ref={ref}
+      id="selectt"
     >
       {userRoleOptions.map(o => (
         <Select.Option value={o} key={o}>
