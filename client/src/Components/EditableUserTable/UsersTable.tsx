@@ -176,6 +176,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
 
     return (
       <Table
+        size="small"
         rowKey="id"
         components={components}
         dataSource={this.state.data}

@@ -5,4 +5,9 @@
 
 .ant-table-thead>tr>th, .ant-table-tbody>tr>td {
     word-break: keep-all;
+    padding: 10px !important;
+}
+
+.ant-table-small>.ant-table-content>.ant-table-body {
+    margin: 0;
 }

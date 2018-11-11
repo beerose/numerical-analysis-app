@@ -1,5 +1,4 @@
 import { Button, Upload } from 'antd';
-import { Base64 } from 'js-base64';
 import * as React from 'react';
 
 import { LABELS } from '../../utils/labels';
