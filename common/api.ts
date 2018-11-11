@@ -4,17 +4,19 @@ export interface ApiResponse {
 }
 
 export const ROUTES = {
+  GROUPS: {
+    upload: 'groups/upload',
+  },
   USERS: {
     add: '/users/add',
     delete: '/users/delete',
     list: '/users',
     update: '/users/update',
-    upload: '/upload',
   },
 };
 
 export type UserDTO = {
-  id: string;
+  id?: string;
   user_name: string;
   email: string;
   student_index?: string;

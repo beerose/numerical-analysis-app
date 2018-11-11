@@ -5,13 +5,12 @@ import * as React from 'react';
 import styled, { css } from 'react-emotion';
 
 import { UserDTO } from '../../../../common/api';
-import * as usersService from '../../api/userApi';
+import { usersService } from '../../api/';
 import { LABELS } from '../../utils/labels';
 import { UsersTable } from '../EditableUserTable/';
 import { SelectRole } from '../SelectRole';
 
 import { WrappedNewUserModalForm } from './AddUserForm';
-import { UploadUsers } from './UploadUsers';
 
 const SearchPanel = styled('div')`
   margin: 20px 0 20px 0;
@@ -122,15 +121,6 @@ export class UsersPanelContainer extends React.Component<{}, State> {
     this.setState({ searchRoles: value as string[] });
   };
 
-  onUpload = (base64file: string) => {
-    this.setState({ isLoading: true });
-    usersService.uploadUsers(base64file).then(res => {
-      console.log(res);
-      this.setState({ isLoading: false, searchRoles: undefined, searchValue: undefined });
-      this.updateUsersList(1);
-    });
-  };
-
   render() {
     const { addUserModalVisible, users, total, currentPage, isLoading } = this.state;
     return (
@@ -145,7 +135,7 @@ export class UsersPanelContainer extends React.Component<{}, State> {
             onChange={this.onSearchRoleChange}
             className={selectStyles}
             placeholder={LABELS.searchByRolePlaceholder}
-            mode={'multiple'}
+            mode="multiple"
           />
           <Button shape="circle" icon="search" onClick={() => this.updateUsersList(1)} />
         </SearchPanel>
@@ -157,7 +147,6 @@ export class UsersPanelContainer extends React.Component<{}, State> {
           visible={addUserModalVisible}
           onCancel={this.cancelAddUser}
         />
-        <UploadUsers className={buttonStyles} onUpload={this.onUpload} />
         <Spin spinning={isLoading}>
           <UsersTable
             currentPage={currentPage}

@@ -1,5 +1,6 @@
+import atob from 'atob';
 import { Request, Response } from 'express';
-import * as HTTPStatus from 'http-status-codes';
+import * as codes from 'http-status-codes';
 
 import { UserDTO } from '../../../common/api';
 import { apiMessages } from '../../../common/apiMessages';
@@ -11,6 +12,7 @@ import {
   prepareListUsersQuery,
   updateUserQuery,
 } from '../store/queries';
+import { readCSV } from '../utils/uploadUtils';
 
 const DUPLICATE_ENTRY = 'ER_DUP_ENTRY';
 
@@ -22,22 +24,22 @@ export const add = (req: AddUserRequest, res: Response) => {
   return connection.query(
     {
       sql: addUserQuery,
-      values: [user.user_name, user.email, user.user_role, user.student_index],
+      values: [[user.user_name, user.email, user.user_role, user.student_index]],
     },
     error => {
       if (error) {
         switch (error.code) {
           case DUPLICATE_ENTRY:
-            return res.status(HTTPStatus.CONFLICT).send({
+            return res.status(codes.CONFLICT).send({
               error: apiMessages.userAlreadyExists,
             });
           default:
             return res
-              .status(HTTPStatus.INTERNAL_SERVER_ERROR)
+              .status(codes.INTERNAL_SERVER_ERROR)
               .send({ error: apiMessages.internalError });
         }
       }
-      return res.status(HTTPStatus.OK).send({ message: apiMessages.userCreated });
+      return res.status(codes.OK).send({ message: apiMessages.userCreated });
     }
   );
 };
@@ -57,21 +59,21 @@ export const update = (req: UpdateUserRequest, res: Response) => {
         switch (error.code) {
           case DUPLICATE_ENTRY:
             return res
-              .status(HTTPStatus.CONFLICT)
+              .status(codes.CONFLICT)
               .send({ error: apiMessages.userAlreadyExists });
           default:
             return res
-              .status(HTTPStatus.INTERNAL_SERVER_ERROR)
+              .status(codes.INTERNAL_SERVER_ERROR)
               .send({ error: apiMessages.internalError });
         }
       }
-      return res.status(HTTPStatus.OK).send({ message: apiMessages.userUpdated });
+      return res.status(codes.OK).send({ message: apiMessages.userUpdated });
     }
   );
 };
 
 interface DeleteUserRequest extends Request {
-  query: { id: string };
+  body: { id: string };
 }
 export const deleteUser = (req: DeleteUserRequest, res: Response) => {
   return connection.query(
@@ -82,13 +84,13 @@ export const deleteUser = (req: DeleteUserRequest, res: Response) => {
     (error, results) => {
       if (error) {
         return res
-          .status(HTTPStatus.INTERNAL_SERVER_ERROR)
+          .status(codes.INTERNAL_SERVER_ERROR)
           .send({ error: apiMessages.internalError });
       }
       if (!results.affectedRows) {
-        return res.status(HTTPStatus.NOT_FOUND).send({ error: apiMessages.userNotFound });
+        return res.status(codes.NOT_FOUND).send({ error: apiMessages.userNotFound });
       }
-      return res.status(HTTPStatus.OK).send({ message: apiMessages.userDeleted });
+      return res.status(codes.OK).send({ message: apiMessages.userDeleted });
     }
   );
 };
@@ -116,7 +118,7 @@ export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
     (listErr, users) => {
       if (listErr) {
         return res
-          .status(HTTPStatus.INTERNAL_SERVER_ERROR)
+          .status(codes.INTERNAL_SERVER_ERROR)
           .send({ error: apiMessages.internalError });
       }
       return connection.query(
@@ -127,17 +129,73 @@ export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
         (countErr, [{ total }]) => {
           if (countErr) {
             return res
-              .status(HTTPStatus.INTERNAL_SERVER_ERROR)
+              .status(codes.INTERNAL_SERVER_ERROR)
               .send({ error: apiMessages.internalError });
           }
-          return res.status(HTTPStatus.OK).send({ users, total });
+          return res.status(codes.OK).send({ users, total });
         }
       );
     }
   );
 };
 
-export const upload = (req: Request, res: Response) => {
-  console.log(req.body);
-  return res.status(HTTPStatus.OK).send({ message: 'sentd' });
+interface UploadRequest extends Request {
+  body: { data: string };
+}
+export const upload = (req: UploadRequest, res: Response) => {
+  const decodesdData = atob(req.body.data);
+  const { users, isValid } = readCSV(decodesdData);
+  if (!isValid) {
+    return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
+  }
+  if (!users || !users.length) {
+    return res.status(codes.PRECONDITION_FAILED).send({ error: apiMessages.emptyCSV });
+  }
+
+  const userRows = users.map(user => [
+    user.user_name,
+    user.email,
+    user.user_role,
+    user.student_index,
+  ]);
+  return connection.beginTransaction(beginError => {
+    if (beginError) {
+      return res
+        .status(codes.INTERNAL_SERVER_ERROR)
+        .send({ error: apiMessages.internalError });
+    }
+    return connection.query(
+      {
+        sql: addUserQuery,
+        values: [userRows],
+      },
+      addErr => {
+        if (addErr) {
+          switch (addErr.code) {
+            case DUPLICATE_ENTRY:
+              return res
+                .status(codes.CONFLICT)
+                .send({ error: apiMessages.userAlreadyExists + addErr.message });
+            default:
+              return connection.rollback(() => {
+                return res
+                  .status(codes.INTERNAL_SERVER_ERROR)
+                  .send({ error: apiMessages.internalError });
+              });
+          }
+        }
+        connection.commit(commitErr => {
+          if (commitErr) {
+            console.error(commitErr);
+            return connection.rollback(() => {
+              return res
+                .status(codes.INTERNAL_SERVER_ERROR)
+                .send({ error: apiMessages.internalError });
+            });
+          }
+          return res.status(codes.OK).send({ message: users });
+        });
+      }
+    );
+  });
 };

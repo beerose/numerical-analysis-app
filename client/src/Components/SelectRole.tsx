@@ -2,7 +2,7 @@ import { Select } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import * as React from 'react';
 
-import { userRoleOptions } from '../utils/utils';
+import { userRoleOptions } from '../../../common/roles';
 
 type Props = {
   onChange?: (value: SelectValue) => void;

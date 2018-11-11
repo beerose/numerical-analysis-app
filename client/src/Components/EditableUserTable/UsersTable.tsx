@@ -5,8 +5,8 @@ import * as React from 'react';
 import styled from 'react-emotion';
 
 import { UserDTO } from '../../../../common/api';
+import { userRoleOptions } from '../../../../common/roles';
 import { LABELS } from '../../utils/labels';
-import { userRoleOptions } from '../../utils/utils';
 
 import { EditableConsumer } from './Context';
 import { EditableCell, EditableFormRow } from './EditableRow';
@@ -86,7 +86,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
           <span>
             <EditableConsumer>
               {(form: WrappedFormUtils) => (
-                <ActionLink onClick={() => this.handleUpdate(form, record.id)}>
+                <ActionLink onClick={() => this.handleUpdate(form, record.id!)}>
                   {LABELS.save}
                 </ActionLink>
               )}
@@ -107,7 +107,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
         return (
           <Popconfirm
             title={LABELS.areYouSure}
-            onConfirm={() => this.handleDelete(record.id)}
+            onConfirm={() => this.handleDelete(record.id!)}
             okText={LABELS.yes}
             okType="danger"
             placement="topRight"
