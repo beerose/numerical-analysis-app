@@ -1,1 +1,1 @@
-export { UsersPanelContainer } from './UsersPanelContainer';
+export { ListUsersContainer } from './ListUsersContainer';

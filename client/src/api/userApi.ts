@@ -12,7 +12,7 @@ const LIMIT = 10;
 export const listUsers = async (
   searchParam: string | undefined,
   roles: string[] | undefined,
-  currentPage: number
+  currentPage: number | undefined = 1
 ): Promise<{ users: UserDTO[]; total: string }> => {
   const response = await fetch(
     `${SERVER_URL}${ROUTES.USERS.list}?${qs.stringify({

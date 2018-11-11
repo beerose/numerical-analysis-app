@@ -5,9 +5,9 @@ import * as React from 'react';
 import styled, { css } from 'react-emotion';
 
 import { UserDTO } from '../../../../common/api';
-import { usersService } from '../../api/';
+import { usersService } from '../../api';
 import { LABELS } from '../../utils/labels';
-import { UsersTable } from '../EditableUserTable/';
+import { UsersTable } from '../EditableUserTable';
 import { SelectRole } from '../SelectRole';
 
 import { WrappedNewUserModalForm } from './AddUserForm';
@@ -41,7 +41,7 @@ type State = {
   users: UserDTO[];
 };
 
-export class UsersPanelContainer extends React.Component<{}, State> {
+export class ListUsersContainer extends React.Component<{}, State> {
   state = {
     addUserModalVisible: false,
     currentPage: 1,
