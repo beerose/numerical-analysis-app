@@ -28,13 +28,13 @@ const tableColumns: TableColumn[] = [
     dataIndex: 'user_name',
     editable: true,
     title: 'Imię i nazwisko',
-    width: '10%',
+    width: '350px',
   },
   {
     dataIndex: 'email',
     editable: true,
     title: 'Email',
-    width: '10%',
+    width: '350px',
   },
 ];
 
@@ -44,14 +44,14 @@ const extraTableColumns: Record<ExtraColumnTypes, TableColumn> = {
     dataIndex: 'student_index',
     editable: true,
     title: 'Indeks',
-    width: '5%',
+    width: '250px',
   },
   role: {
     dataIndex: 'user_role',
     editable: true,
     options: userRoleOptions,
     title: 'Rola',
-    width: '5%',
+    width: '160px',
   },
 };
 
@@ -82,7 +82,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
       render: (_: any, record: UserDTO) => {
         const editable = this.isEditing(record);
         return editable ? (
-          <>
+          <div style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '100px' }}>
             <EditableConsumer>
               {(form: WrappedFormUtils) => (
                 <ActionLink onClick={() => this.handleUpdate(form, record.id!)}>
@@ -91,12 +91,11 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
               )}
             </EditableConsumer>
             <ActionLink onClick={this.handleCancelEdit}>{LABELS.cancel}</ActionLink>
-          </>
+          </div>
         ) : (
           <ActionLink onClick={() => this.handleEdit(record.email)}>{LABELS.edit}</ActionLink>
         );
       },
-      width: '5%',
     },
     {
       dataIndex: 'delete',
@@ -114,7 +113,6 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
           </Popconfirm>
         );
       },
-      width: '5%',
     },
   ];
 
