@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 
+import { WrappedNewGroupForm } from './NewGroupForm';
+
 const Container = styled('div')`
   align-items: center;
   display: flex;
@@ -8,4 +10,8 @@ const Container = styled('div')`
   justify-content: center;
 `;
 
-export const CreateGroupContainer = () => <Container>new</Container>;
+export const CreateGroupContainer = () => (
+  <Container>
+    <WrappedNewGroupForm onSubmit={() => null} onCancel={() => null} />
+  </Container>
+);
