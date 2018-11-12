@@ -60,13 +60,16 @@ export const SelectSemester = React.forwardRef(
 );
 
 const SelectDay = React.forwardRef(
-  ({ onChange }: { onChange?: (value: SelectValue) => void }, ref: React.Ref<Select>) => (
+  (
+    { onChange, placeholder }: { onChange?: (value: SelectValue) => void; placeholder: string },
+    ref: React.Ref<Select>
+  ) => (
     <Select
       showArrow
       placeholder={
         <>
           <Icon type="calendar" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
-          {LABELS.classDay}
+          {placeholder}
         </>
       }
       ref={ref}
@@ -149,12 +152,47 @@ class NewGroupForm extends React.Component<Props, State> {
             rules: [{ required: true, message: LABELS.semesterRequired }],
           })(<SelectSemester />)}
         </FormItem>
+        <span>Pracownia</span>
+        <Row gutter={8}>
+          <Col span={12}>
+            <FormItem>
+              {getFieldDecorator('lab_day', {
+                rules: [{ required: true, message: LABELS.labDayRequired }],
+              })(<SelectDay placeholder={LABELS.labDay} />)}
+            </FormItem>
+          </Col>
+          <Col span={12}>
+            <FormItem>
+              {getFieldDecorator('lab_time', {
+                rules: [{ required: true, message: LABELS.labTimeRequired }],
+              })(
+                <TimePicker
+                  className={timePickerStyles}
+                  format="HH:mm"
+                  minuteStep={15}
+                  placeholder={LABELS.labTime}
+                />
+              )}
+            </FormItem>
+          </Col>
+        </Row>
+        <FormItem>
+          {getFieldDecorator('lab_room', {
+            rules: [{ required: true, message: LABELS.labRoomNumberRequired }],
+          })(
+            <Input
+              prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder={LABELS.labRoomNumber}
+            />
+          )}
+        </FormItem>
+        <span>Ćwiczenia</span>
         <Row gutter={8}>
           <Col span={12}>
             <FormItem>
               {getFieldDecorator('class_day', {
                 rules: [{ required: true, message: LABELS.classDayRequired }],
-              })(<SelectDay />)}
+              })(<SelectDay placeholder={LABELS.labDay} />)}
             </FormItem>
           </Col>
           <Col span={12}>
