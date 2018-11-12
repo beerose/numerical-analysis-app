@@ -1,4 +1,4 @@
-import { Layout } from 'antd';
+import { Icon, Layout } from 'antd';
 import * as React from 'react';
 import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
@@ -31,11 +31,12 @@ const StyledLayout = styled(Layout)`
 const Title = styled('p')`
   cursor: pointer;
   color: white;
-  font-weight: bold;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
 
-  transition: all 0.1s ease-in;
+  transition: color 0.3s ease;
   &:hover {
-    transform: scale(1.02);
+    color: white;
   }
 `;
 
