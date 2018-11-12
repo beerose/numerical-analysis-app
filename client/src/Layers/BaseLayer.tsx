@@ -29,8 +29,14 @@ const StyledLayout = styled(Layout)`
 `;
 
 const Title = styled('p')`
+  cursor: pointer;
   color: white;
   font-weight: bold;
+
+  transition: all 0.1s ease-in;
+  &:hover {
+    transform: scale(1.02);
+  }
 `;
 
 type Props = RouteComponentProps<any>;
@@ -62,7 +68,7 @@ export class BaseLayer extends React.Component<Props> {
           userAuth && (
             <StyledLayout>
               <StyledHeader>
-                <Title>Analiza Numeryczna M</Title>
+                <Title onClick={this.routerActions.goToMainPage}>Analiza Numeryczna M</Title>
                 <MainMenu userRole={userRole} location={this.props.location} />
               </StyledHeader>
               <StyledContent>
