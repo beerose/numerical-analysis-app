@@ -1,5 +1,6 @@
 import { Button, Col, Form, Icon, Input, Row, Select, TimePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import { SelectValue } from 'antd/lib/select';
 import { css } from 'emotion';
 import * as React from 'react';
 
@@ -11,7 +12,10 @@ import { LABELS } from '../../utils/labels';
 const FormItem = Form.Item;
 
 const SelectSuperUser = React.forwardRef(
-  ({ superUsers }: { superUsers: UserDTO[] }, ref: React.Ref<Select>) => (
+  (
+    { superUsers, onChange }: { superUsers: UserDTO[]; onChange?: (value: SelectValue) => void },
+    ref: React.Ref<Select>
+  ) => (
     <Select
       showArrow
       placeholder={
@@ -20,6 +24,7 @@ const SelectSuperUser = React.forwardRef(
           {LABELS.superUser}
         </>
       }
+      onChange={onChange}
       ref={ref}
     >
       {superUsers.map(superUser => (
@@ -31,44 +36,50 @@ const SelectSuperUser = React.forwardRef(
   )
 );
 
-const SelectSemester = React.forwardRef(({}, ref: React.Ref<Select>) => (
-  <Select
-    showArrow
-    placeholder={
-      <>
-        <Icon type="table" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
-        {LABELS.semester}
-      </>
-    }
-    ref={ref}
-  >
-    <Select.Option key={'letni'} value={'letni'}>
-      Letni 2018
-    </Select.Option>
-    <Select.Option key={'zimowy'} value={'zimowy'}>
-      Zimowy 2017/2018
-    </Select.Option>
-  </Select>
-));
+export const SelectSemester = React.forwardRef(
+  ({ onChange }: { onChange?: (value: SelectValue) => void }, ref: React.Ref<Select>) => (
+    <Select
+      showArrow
+      mode="single"
+      placeholder={
+        <>
+          <Icon type="table" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
+          {LABELS.semester}
+        </>
+      }
+      onChange={onChange}
+      ref={ref}
+    >
+      {['letni', 'zimowy'].map(o => (
+        <Select.Option value={o} key={o}>
+          {o}
+        </Select.Option>
+      ))}
+    </Select>
+  )
+);
 
-const SelectDay = React.forwardRef(({}, ref: React.Ref<Select>) => (
-  <Select
-    showArrow
-    placeholder={
-      <>
-        <Icon type="calendar" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
-        {LABELS.classDay}
-      </>
-    }
-    ref={ref}
-  >
-    {LABELS.weekdays.map(day => (
-      <Select.Option key={day} value={day}>
-        {day}
-      </Select.Option>
-    ))}
-  </Select>
-));
+const SelectDay = React.forwardRef(
+  ({ onChange }: { onChange?: (value: SelectValue) => void }, ref: React.Ref<Select>) => (
+    <Select
+      showArrow
+      placeholder={
+        <>
+          <Icon type="calendar" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
+          {LABELS.classDay}
+        </>
+      }
+      ref={ref}
+      onChange={onChange}
+    >
+      {LABELS.weekdays.map(day => (
+        <Select.Option key={day} value={day}>
+          {day}
+        </Select.Option>
+      ))}
+    </Select>
+  )
+);
 
 const formStyles = css`
   width: 30vw;
@@ -98,23 +109,22 @@ class NewGroupForm extends React.Component<Props, State> {
   state = {
     superUsers: [] as UserDTO[],
   };
+
   componentWillMount() {
     usersService.listUsers({ roles: ROLES.superUser }).then(res => {
       this.setState({ superUsers: res.users });
     });
   }
+
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    this.props.onSubmit();
-    // this.context.router.history.push('/some/Path');
-    this.props.form.validateFields((err, values: UserDTO) => {
+    this.props.form.validateFields(err => {
       if (err) {
         return;
       }
-
+      this.props.onSubmit();
       setTimeout(() => {
         this.props.form.resetFields();
-
         // workaround for ant bug
         const selected = document.getElementsByClassName('ant-select-selection-selected-value');
         if (selected && selected[0]) {
@@ -172,9 +182,14 @@ class NewGroupForm extends React.Component<Props, State> {
             />
           )}
         </FormItem>
-        <Button type="primary" htmlType="submit">
-          Dodaj
-        </Button>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <Button type="primary" htmlType="submit" style={{ marginRight: '5px' }}>
+            Dodaj
+          </Button>
+          <Button type="default" style={{ marginLeft: '5px' }} onClick={this.props.onCancel}>
+            Anuluj
+          </Button>
+        </div>
       </Form>
     );
   }

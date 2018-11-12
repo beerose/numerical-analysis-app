@@ -1,6 +1,6 @@
 import { Layout } from 'antd';
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
+import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 
 import { AuthConsumer } from '../AuthContext';

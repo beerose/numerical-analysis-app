@@ -16,7 +16,10 @@ export const CreateGroupContainer = () => (
   <RouterConsumer>
     {({ routerActions }) => (
       <Container>
-        <WrappedNewGroupForm onSubmit={() => routerActions.goToGroup} onCancel={() => null} />
+        <WrappedNewGroupForm
+          onSubmit={() => routerActions.goToGroup}
+          onCancel={routerActions.goToGroupsPage}
+        />
       </Container>
     )}
   </RouterConsumer>
