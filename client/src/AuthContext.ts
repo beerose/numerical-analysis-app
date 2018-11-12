@@ -1,10 +1,13 @@
 import * as React from 'react';
 
-export const { Consumer: AuthConsumer, Provider: AuthProvider } = React.createContext({
-  dispatch: ({  }: any) => undefined as void,
-  error: false,
-  errorMessage: '',
-  userAuth: false,
-  userName: '',
-  userRole: '',
-});
+type AuthContext = {
+  error: boolean;
+  errorMessage: string;
+  userAuth: boolean;
+  userName: string;
+  userRole: string;
+};
+
+export const { Consumer: AuthConsumer, Provider: AuthProvider } = React.createContext<AuthContext>(
+  {} as AuthContext
+);

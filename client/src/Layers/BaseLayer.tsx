@@ -35,7 +35,6 @@ const Title = styled('p')`
 
 type Props = RouteComponentProps<any>;
 export class BaseLayer extends React.Component<Props> {
-  authUser = true; // hardcoded for now
   routerActions = {
     goBack: () => {
       this.props.history.goBack();
@@ -57,29 +56,27 @@ export class BaseLayer extends React.Component<Props> {
     },
   };
   render() {
-    if (!this.authUser) {
-      return false; // there will be loading page
-    }
-
     return (
       <AuthConsumer>
-        {({ userRole, error, errorMessage }) => (
-          <StyledLayout>
-            <StyledHeader>
-              <Title>Analiza Numeryczna M</Title>
-              <MainMenu userRole={userRole} location={this.props.location} />
-            </StyledHeader>
-            <StyledContent>
-              {error ? (
-                <ErrorMessage message={errorMessage} />
-              ) : (
-                <RouterProvider value={{ routerActions: this.routerActions }}>
-                  {this.props.children}
-                </RouterProvider>
-              )}
-            </StyledContent>
-          </StyledLayout>
-        )}
+        {({ userRole, error, errorMessage, userAuth }) =>
+          userAuth && (
+            <StyledLayout>
+              <StyledHeader>
+                <Title>Analiza Numeryczna M</Title>
+                <MainMenu userRole={userRole} location={this.props.location} />
+              </StyledHeader>
+              <StyledContent>
+                {error ? (
+                  <ErrorMessage message={errorMessage} />
+                ) : (
+                  <RouterProvider value={{ routerActions: this.routerActions }}>
+                    {this.props.children}
+                  </RouterProvider>
+                )}
+              </StyledContent>
+            </StyledLayout>
+          )
+        }
       </AuthConsumer>
     );
   }
