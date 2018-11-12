@@ -1,4 +1,4 @@
-import { Select } from 'antd';
+import { Icon, Select } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import * as React from 'react';
 
@@ -19,7 +19,12 @@ export const SelectRole = React.forwardRef(
     <Select
       showSearch={true}
       mode={mode}
-      placeholder={placeholder}
+      placeholder={
+        <>
+          <Icon type="tag" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
+          {placeholder}
+        </>
+      }
       onChange={onChange}
       className={className}
       style={{ minWidth: '120px' }}

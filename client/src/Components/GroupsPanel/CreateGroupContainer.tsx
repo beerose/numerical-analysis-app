@@ -1,6 +1,8 @@
 import * as React from 'react';
 import styled from 'react-emotion';
 
+import { RouterConsumer } from '../../RouterContext';
+
 import { WrappedNewGroupForm } from './NewGroupForm';
 
 const Container = styled('div')`
@@ -11,7 +13,11 @@ const Container = styled('div')`
 `;
 
 export const CreateGroupContainer = () => (
-  <Container>
-    <WrappedNewGroupForm onSubmit={() => null} onCancel={() => null} />
-  </Container>
+  <RouterConsumer>
+    {({ routerActions }) => (
+      <Container>
+        <WrappedNewGroupForm onSubmit={() => routerActions.goToGroup} onCancel={() => null} />
+      </Container>
+    )}
+  </RouterConsumer>
 );

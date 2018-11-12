@@ -11,3 +11,11 @@
 .ant-table-small>.ant-table-content>.ant-table-body {
     margin: 0;
 }
+
+.ant-time-picker-panel-narrow .ant-time-picker-panel-input-wrap {
+    max-width: 150px !important;
+}
+
+.ant-time-picker-panel-input {
+    width: 120px !important;
+}

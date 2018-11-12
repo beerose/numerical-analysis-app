@@ -64,7 +64,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
     const { searchValue, searchRoles } = this.state;
     this.setState({ currentPage, isLoading: true });
     usersService
-      .listUsers(searchValue, searchRoles, currentPage)
+      .listUsers({ currentPage, searchParam: searchValue, roles: searchRoles })
       .then(({ users, total }) =>
         this.setState({ users, total: parseInt(total, 10), isLoading: false })
       );

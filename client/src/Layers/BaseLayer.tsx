@@ -3,13 +3,19 @@ import * as React from 'react';
 import styled, { css } from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 
+import { AuthConsumer } from '../AuthContext';
 import { MainMenu } from '../Components/';
 import { ErrorMessage } from '../Components/Error';
-import { Consumer } from '../Context';
+import { RouterProvider } from '../RouterContext';
 
 const { Content, Header } = Layout;
 
-const headerStyles = css`
+const StyledContent = styled(Content)`
+  background: inherit;
+  padding: 0 50px;
+`;
+
+const StyledHeader = styled(Header)`
   display: flex;
 
   @media (max-device-width: 580px) {
@@ -18,7 +24,7 @@ const headerStyles = css`
   }
 `;
 
-const layoutStyles = css`
+const StyledLayout = styled(Layout)`
   min-height: 100%;
 `;
 
@@ -30,30 +36,51 @@ const Title = styled('p')`
 type Props = RouteComponentProps<any>;
 export class BaseLayer extends React.Component<Props> {
   authUser = true; // hardcoded for now
+  routerActions = {
+    goBack: () => {
+      this.props.history.goBack();
+    },
+    goToGroup: (id: string) => {
+      this.props.history.push(`/groups/${id}`);
+    },
+    goToGroupsPage: () => {
+      this.props.history.push(`/groups/`);
+    },
+    goToMainPage: () => {
+      this.props.history.push('/');
+    },
+    goToNewGroup: () => {
+      this.props.history.push('/groups/new');
+    },
+    goToUsersList: () => {
+      this.props.history.push('/users');
+    },
+  };
   render() {
     if (!this.authUser) {
       return false; // there will be loading page
     }
 
     return (
-      <Consumer>
+      <AuthConsumer>
         {({ userRole, error, errorMessage }) => (
-          <Layout className={layoutStyles}>
-            <Header className={headerStyles}>
+          <StyledLayout>
+            <StyledHeader>
               <Title>Analiza Numeryczna M</Title>
               <MainMenu userRole={userRole} location={this.props.location} />
-            </Header>
-            <Content
-              style={{
-                background: 'inherit',
-                padding: '0 50px',
-              }}
-            >
-              {error ? <ErrorMessage message={errorMessage} /> : this.props.children}
-            </Content>
-          </Layout>
+            </StyledHeader>
+            <StyledContent>
+              {error ? (
+                <ErrorMessage message={errorMessage} />
+              ) : (
+                <RouterProvider value={{ routerActions: this.routerActions }}>
+                  {this.props.children}
+                </RouterProvider>
+              )}
+            </StyledContent>
+          </StyledLayout>
         )}
-      </Consumer>
+      </AuthConsumer>
     );
   }
 }
