@@ -1,7 +1,5 @@
-import atob from 'atob';
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
-import { Base64 } from 'js-base64';
 
 import { apiMessages } from '../../../common/apiMessages';
 import { connection } from '../store/connection';
@@ -12,9 +10,7 @@ import { readCSV } from './uploadUtils';
 interface UploadRequest extends Request {
   body: { data: string; group: string };
 }
-export const upload = (req: UploadRequest, res: Response) => {
-  // const decodesdData = Base64.atob(req.body.data);
-  console.log(req.body.data);
+export const upload = (req: UploadRequest, res: Response, next: NextFunction) => {
   const { users, isValid } = readCSV(req.body.data);
   if (!isValid) {
     return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
@@ -41,22 +37,20 @@ export const upload = (req: UploadRequest, res: Response) => {
       },
       upsertErr => {
         if (upsertErr) {
-          return connection.rollback(() => {
-            return res
-              .status(codes.INTERNAL_SERVER_ERROR)
-              .send({ error: apiMessages.internalError });
+          connection.rollback(() =>
+            res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+          );
+        } else {
+          connection.commit(commitErr => {
+            if (commitErr) {
+              connection.rollback(() =>
+                res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+              );
+            }
+            res.status(codes.OK).send({ message: users });
+            return next();
           });
         }
-        connection.commit(commitErr => {
-          if (commitErr) {
-            return connection.rollback(() => {
-              return res
-                .status(codes.INTERNAL_SERVER_ERROR)
-                .send({ error: apiMessages.internalError });
-            });
-          }
-          return res.status(codes.OK).send({ message: users });
-        });
       }
     );
   });

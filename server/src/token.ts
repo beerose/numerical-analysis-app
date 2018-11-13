@@ -28,5 +28,5 @@ export const send = (_req: any, res: Response) => {
     }
     console.log('Message %s sent: %s', info.messageId, info.response);
   });
-  return res.status(200).send('send');
+  // return res.status(200).send('send');
 };
