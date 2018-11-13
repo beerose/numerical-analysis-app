@@ -1,6 +1,6 @@
 import 'antd/dist/antd.css';
 import React from 'react';
-import { BrowserRouter as Router, Route, withRouter } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import './styles.css';
 import { AppProvider } from './AppProvider';
