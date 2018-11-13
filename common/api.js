@@ -1,6 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ROUTES = {
+    ACCOUNTS: {
+        login: '/accounts/login',
+        me: '/accounts/me',
+    },
     GROUPS: {
         upload: '/groups/upload',
     },

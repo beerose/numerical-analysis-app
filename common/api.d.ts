@@ -3,6 +3,10 @@ export interface ApiResponse {
     error?: string;
 }
 export declare const ROUTES: {
+    ACCOUNTS: {
+        login: string;
+        me: string;
+    };
     GROUPS: {
         upload: string;
     };

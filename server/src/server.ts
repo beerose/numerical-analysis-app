@@ -27,13 +27,16 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(isAuthenticated);
 
+const { USERS, GROUPS, ACCOUNTS } = ROUTES;
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+app.post(ACCOUNTS.login, () => null);
+app.get(ACCOUNTS.me, () => null);
 
 app.get('/', isAuthenticated, (_req: Request, res: Response, _next: NextFunction) =>
   res.status(200).send('Hello ;)')
 );
-
-const { USERS, GROUPS } = ROUTES;
 
 app.get(USERS.list, users.list);
 app.post(USERS.add, validateAddRequest, users.add);

@@ -4,6 +4,10 @@ export interface ApiResponse {
 }
 
 export const ROUTES = {
+  ACCOUNTS: {
+    login: '/accounts/login',
+    me: '/accounts/me',
+  },
   GROUPS: {
     upload: '/groups/upload',
   },
