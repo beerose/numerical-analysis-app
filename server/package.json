@@ -5,10 +5,10 @@
   "scripts": {
     "watch-compile": "PORT=3003 parcel watch ./src/index.ts --target=node",
     "watch-run": "PORT=3000 nodemon dist/index.js",
-    "build": "parcel build ./src/index.ts --target=node",
+    "build": "PORT=3003 parcel build ./src/index.ts --target=node",
     "launch": "node dist/index.js",
     "start": "yarn build && node dist/index.js",
-    "dev": "concurrently -c red,yellow -n p,n 'yarn watch-compile' 'yarn watch-run'"
+    "dev": "concurrently -c red,yellow -n n,p 'yarn watch-run' 'yarn watch-compile'"
   },
   "dependencies": {
     "@types/atob": "^2.1.1",

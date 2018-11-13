@@ -18,13 +18,14 @@ import {
   validateUpdateRequest,
 } from './users/validation';
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
 morganBody(app);
 app.use(cors());
 app.use(bodyParser.json());
+app.use(isAuthenticated);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
@@ -34,10 +35,10 @@ app.get('/', isAuthenticated, (_req: Request, res: Response, _next: NextFunction
 
 const { USERS, GROUPS } = ROUTES;
 
-app.get(USERS.list, isAuthenticated, users.list);
-app.post(USERS.add, isAuthenticated, validateAddRequest, users.add);
-app.post(USERS.update, isAuthenticated, validateUpdateRequest, users.update);
-app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUser);
+app.get(USERS.list, users.list);
+app.post(USERS.add, validateAddRequest, users.add);
+app.post(USERS.update, validateUpdateRequest, users.update);
+app.delete(USERS.delete, validateDeleteRequest, users.deleteUser);
 
 app.post(GROUPS.upload, isAuthenticated, validateUploadRequest, groups.upload);
 
