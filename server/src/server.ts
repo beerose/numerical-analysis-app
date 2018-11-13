@@ -11,6 +11,7 @@ import { isAuthenticated } from './auth';
 import * as groups from './groups';
 import { validateUploadRequest } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
+import { send } from './token';
 import * as users from './users';
 import {
   validateAddRequest,
@@ -31,7 +32,7 @@ const { USERS, GROUPS, ACCOUNTS } = ROUTES;
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.post(ACCOUNTS.login, () => null);
+app.post(ACCOUNTS.login, send);
 app.get(ACCOUNTS.me, () => null);
 
 app.get('/', isAuthenticated, (_req: Request, res: Response, _next: NextFunction) =>

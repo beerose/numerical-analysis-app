@@ -6,3 +6,7 @@ declare module '*.json' {
 }
 
 declare module 'morgan-body';
+
+declare module 'mail-service';
+declare module 'campaign';
+declare module 'campaign-terminal';
