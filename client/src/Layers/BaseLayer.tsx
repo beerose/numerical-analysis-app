@@ -1,4 +1,4 @@
-import { Icon, Layout } from 'antd';
+import { Layout } from 'antd';
 import * as React from 'react';
 import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
@@ -6,7 +6,6 @@ import { RouteComponentProps } from 'react-router';
 import { AuthConsumer } from '../AuthContext';
 import { MainMenu } from '../Components/';
 import { ErrorMessage } from '../Components/Error';
-import { RouterProvider } from '../RouterContext';
 
 const { Content, Header } = Layout;
 
@@ -40,28 +39,8 @@ const Title = styled('p')`
   }
 `;
 
-type Props = RouteComponentProps<any>;
+type Props = RouteComponentProps;
 export class BaseLayer extends React.Component<Props> {
-  routerActions = {
-    goBack: () => {
-      this.props.history.goBack();
-    },
-    goToGroup: (id: string) => {
-      this.props.history.push(`/groups/${id}`);
-    },
-    goToGroupsPage: () => {
-      this.props.history.push(`/groups/`);
-    },
-    goToMainPage: () => {
-      this.props.history.push('/');
-    },
-    goToNewGroup: () => {
-      this.props.history.push('/groups/new');
-    },
-    goToUsersList: () => {
-      this.props.history.push('/users');
-    },
-  };
   render() {
     return (
       <AuthConsumer>
@@ -69,17 +48,11 @@ export class BaseLayer extends React.Component<Props> {
           userAuth && (
             <StyledLayout>
               <StyledHeader>
-                <Title onClick={this.routerActions.goToMainPage}>Analiza Numeryczna M</Title>
+                <Title onClick={() => this.props.history.push('/')}>Analiza Numeryczna M</Title>
                 <MainMenu userRole={userRole} location={this.props.location} />
               </StyledHeader>
               <StyledContent>
-                {error ? (
-                  <ErrorMessage message={errorMessage} />
-                ) : (
-                  <RouterProvider value={{ routerActions: this.routerActions }}>
-                    {this.props.children}
-                  </RouterProvider>
-                )}
+                {error ? <ErrorMessage message={errorMessage} /> : this.props.children}
               </StyledContent>
             </StyledLayout>
           )

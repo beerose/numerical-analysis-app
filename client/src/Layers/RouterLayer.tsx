@@ -9,8 +9,16 @@ export const RouterLayer = () => {
     <Switch>
       <Route exact={true} path="/" component={() => <div>Hello</div>} />
       <Route exact={true} path="/users" component={() => <ListUsersContainer />} />
-      <Route exact={true} path="/groups" component={() => <ListGroupsContainer />} />
-      <Route exact={true} path="/groups/new" component={() => <CreateGroupContainer />} />
+      <Route
+        exact={true}
+        path="/groups"
+        render={routeContext => <ListGroupsContainer {...routeContext} />}
+      />
+      <Route
+        exact={true}
+        path="/groups/new"
+        render={routeContext => <CreateGroupContainer {...routeContext} />}
+      />
     </Switch>
   );
 };
