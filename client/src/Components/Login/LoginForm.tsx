@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, Icon, Input, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { LABELS } from '../../utils/labels';
 
@@ -44,22 +45,22 @@ const LoginForm = (props: Props) => {
         <Form onSubmit={handleSubmit} style={{ padding: '20px 20px 0', width: '350px' }}>
           <FormItem>
             {getFieldDecorator('userName', {
-              rules: [{ required: true, message: 'Podaj swój adres email' }],
+              rules: [{ required: true, message: LABELS.emailRequired }],
             })(
               <Input
                 prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                placeholder="adres email"
+                placeholder={LABELS.email}
               />
             )}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
-              rules: [{ required: true, message: 'Podaj swoje hasło' }],
+              rules: [{ required: true, message: LABELS.passwordRequired }],
             })(
               <Input
                 prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 type="password"
-                placeholder="hasło"
+                placeholder={LABELS.password}
               />
             )}
           </FormItem>
@@ -67,12 +68,12 @@ const LoginForm = (props: Props) => {
             {getFieldDecorator('remember', {
               initialValue: true,
               valuePropName: 'checked',
-            })(<Checkbox>Pamiętaj mnie</Checkbox>)}
-            <a className="login-form-forgot" href="" style={{ float: 'right' }}>
-              Nie pamiętasz hasła?
-            </a>
+            })(<Checkbox>{LABELS.rememberMe}</Checkbox>)}
+            <Link to="/" style={{ float: 'right' }}>
+              {LABELS.forgotPassword}
+            </Link>
             <Button type="primary" htmlType="submit" style={{ width: '100%', marginTop: '20px' }}>
-              Zaloguj się
+              {LABELS.logIn}
             </Button>
           </FormItem>
         </Form>
