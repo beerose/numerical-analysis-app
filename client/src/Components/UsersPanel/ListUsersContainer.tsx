@@ -56,10 +56,6 @@ export class ListUsersContainer extends React.Component<{}, State> {
     this.updateUsersList(1);
   }
 
-  clearFilters() {
-    this.setState({ searchRoles: undefined, searchValue: undefined });
-  }
-
   updateUsersList = (currentPage: number) => {
     const { searchValue, searchRoles } = this.state;
     this.setState({ currentPage, isLoading: true });
