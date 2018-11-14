@@ -11,7 +11,7 @@ import { isAuthenticated } from './auth';
 import * as groups from './groups';
 import { validateUploadRequest } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
-import { send } from './token';
+import { createWithToken, sendMagicLinks } from './token';
 import * as users from './users';
 import {
   validateAddRequest,
@@ -32,19 +32,14 @@ const { USERS, GROUPS, ACCOUNTS } = ROUTES;
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.post(ACCOUNTS.login, send);
-app.get(ACCOUNTS.me, () => null);
-
-app.get('/', isAuthenticated, (_req: Request, res: Response, _next: NextFunction) =>
-  res.status(200).send('Hello ;)')
-);
+app.get(ACCOUNTS.new, createWithToken);
 
 app.get(USERS.list, users.list);
 app.post(USERS.add, validateAddRequest, users.add);
 app.post(USERS.update, validateUpdateRequest, users.update);
 app.delete(USERS.delete, validateDeleteRequest, users.deleteUser);
 
-app.post(GROUPS.upload, validateUploadRequest, groups.upload, send);
+app.post(GROUPS.upload, validateUploadRequest, groups.upload, sendMagicLinks);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

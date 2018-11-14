@@ -4,8 +4,7 @@ export interface ApiResponse {
 }
 export declare const ROUTES: {
     ACCOUNTS: {
-        login: string;
-        me: string;
+        new: string;
     };
     GROUPS: {
         upload: string;
