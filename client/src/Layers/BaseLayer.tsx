@@ -6,8 +6,9 @@ import { RouteComponentProps } from 'react-router';
 import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
 import { MainMenu } from '../Components/';
-import { ErrorMessage } from '../Components/Error';
-import { LoginPage } from '../Components/Login/Login';
+import { WrappedLoginForm } from '../Components/Login';
+
+import { ErrorBoundary } from './ErrorLayer';
 
 const { Content, Header } = Layout;
 
@@ -52,10 +53,9 @@ export class BaseLayer extends React.Component<Props> {
               <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
               <MainMenu userRole={'userRole'} location={this.props.location} />
             </StyledHeader>
-            <StyledContent>
-              <LoginPage visible={true} />
-              {userAuth && (error ? <ErrorMessage message={errorMessage} /> : this.props.children)}
-            </StyledContent>
+            <ErrorBoundary>
+              <StyledContent>{userAuth ? this.props.children : <WrappedLoginForm />}</StyledContent>
+            </ErrorBoundary>
           </StyledLayout>
         )}
       </AuthConsumer>

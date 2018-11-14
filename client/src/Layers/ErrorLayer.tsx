@@ -1,18 +1,21 @@
 import * as React from 'react';
 
+import { ErrorMessage } from '../Components/Error';
+
 type State = {
   hasError: boolean;
+  errorMessage: string;
 };
 export class ErrorBoundary extends React.Component<{}, State> {
-  state = { hasError: false };
+  state = { hasError: true, errorMessage: '' };
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
-    this.setState({ hasError: true });
+  componentDidCatch(error: Error) {
+    this.setState({ hasError: false, errorMessage: error.message });
   }
 
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return <ErrorMessage message={this.state.errorMessage} />;
     }
     return this.props.children;
   }

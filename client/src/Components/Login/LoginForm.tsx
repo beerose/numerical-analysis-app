@@ -18,9 +18,7 @@ const LoginTitle = () => (
   </div>
 );
 
-type Props = {
-  visible: boolean;
-} & FormComponentProps;
+type Props = {} & FormComponentProps;
 const LoginForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,14 +32,7 @@ const LoginForm = (props: Props) => {
   {
     const { getFieldDecorator } = props.form;
     return (
-      <Modal
-        title={<LoginTitle />}
-        visible={props.visible}
-        footer={null}
-        width={400}
-        closable={false}
-        centered
-      >
+      <Modal visible centered title={<LoginTitle />} footer={null} width={400} closable={false}>
         <Form onSubmit={handleSubmit} style={{ padding: '20px 20px 0', width: '350px' }}>
           <FormItem>
             {getFieldDecorator('userName', {
