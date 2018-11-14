@@ -14,7 +14,7 @@ export class AppProvider extends React.Component<{}, State> {
   state = {
     error: false,
     errorMessage: 'Fetch failed.',
-    userAuth: true,
+    userAuth: false,
     userName: '',
     userRole: 'admin',
   };

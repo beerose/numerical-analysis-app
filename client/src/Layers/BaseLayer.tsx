@@ -3,9 +3,11 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 
+import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
 import { MainMenu } from '../Components/';
 import { ErrorMessage } from '../Components/Error';
+import { LoginPage } from '../Components/Login/Login';
 
 const { Content, Header } = Layout;
 
@@ -44,19 +46,18 @@ export class BaseLayer extends React.Component<Props> {
   render() {
     return (
       <AuthConsumer>
-        {({ userRole, error, errorMessage, userAuth }) =>
-          userAuth && (
-            <StyledLayout>
-              <StyledHeader>
-                <Title onClick={() => this.props.history.push('/')}>Analiza Numeryczna M</Title>
-                <MainMenu userRole={userRole} location={this.props.location} />
-              </StyledHeader>
-              <StyledContent>
-                {error ? <ErrorMessage message={errorMessage} /> : this.props.children}
-              </StyledContent>
-            </StyledLayout>
-          )
-        }
+        {({ userRole, error, errorMessage, userAuth }) => (
+          <StyledLayout>
+            <StyledHeader>
+              <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
+              <MainMenu userRole={'userRole'} location={this.props.location} />
+            </StyledHeader>
+            <StyledContent>
+              <LoginPage visible={true} />
+              {userAuth && (error ? <ErrorMessage message={errorMessage} /> : this.props.children)}
+            </StyledContent>
+          </StyledLayout>
+        )}
       </AuthConsumer>
     );
   }

@@ -1,5 +1,6 @@
 export const LABELS = {
   addNewUser: 'Nowy użytkownik',
+  appName: 'Analiza Numeryczna M',
   areYouSure: 'Jesteś pewien?',
   cancel: 'cofnij',
   classDay: 'Dzień ćwiczeń',
