@@ -7,7 +7,7 @@ type State = {
   errorMessage: string;
 };
 export class ErrorBoundary extends React.Component<{}, State> {
-  state = { hasError: true, errorMessage: '' };
+  state = { hasError: false, errorMessage: '' };
 
   componentDidCatch(error: Error) {
     this.setState({ hasError: false, errorMessage: error.message });

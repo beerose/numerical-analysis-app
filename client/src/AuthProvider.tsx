@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { AuthProvider } from './AuthContext';
+import { AuthContextProvider } from './AuthContext';
 
 type State = {
   userAuth: boolean;
@@ -10,7 +10,7 @@ type State = {
   errorMessage?: string;
 };
 
-export class AppProvider extends React.Component<{}, State> {
+export class AuthProvider extends React.Component<{}, State> {
   state = {
     error: false,
     errorMessage: 'Fetch failed.',
@@ -19,6 +19,6 @@ export class AppProvider extends React.Component<{}, State> {
     userRole: 'admin',
   };
   render() {
-    return <AuthProvider value={this.state}>{this.props.children}</AuthProvider>;
+    return <AuthContextProvider value={this.state}>{this.props.children}</AuthContextProvider>;
   }
 }

@@ -8,6 +8,6 @@ type AuthContext = {
   userRole: string;
 };
 
-export const { Consumer: AuthConsumer, Provider: AuthProvider } = React.createContext<AuthContext>(
-  {} as AuthContext
-);
+export const { Consumer: AuthConsumer, Provider: AuthContextProvider } = React.createContext<
+  AuthContext
+>({} as AuthContext);
