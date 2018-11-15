@@ -4,6 +4,7 @@ export interface ApiResponse {
 }
 export declare const ROUTES: {
     ACCOUNTS: {
+        login: string;
         new: string;
     };
     GROUPS: {

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ROUTES = {
     ACCOUNTS: {
+        login: '/accounts/login',
         new: '/accounts/new',
     },
     GROUPS: {

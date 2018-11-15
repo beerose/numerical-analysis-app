@@ -47,14 +47,16 @@ export class BaseLayer extends React.Component<Props> {
   render() {
     return (
       <AuthConsumer>
-        {({ userRole, error, errorMessage, userAuth }) => (
+        {({ userRole, userAuth, login }) => (
           <StyledLayout>
             <StyledHeader>
               <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
-              <MainMenu userRole={'userRole'} location={this.props.location} />
+              <MainMenu userRole={userRole} location={this.props.location} />
             </StyledHeader>
             <ErrorBoundary>
-              <StyledContent>{userAuth ? this.props.children : <WrappedLoginForm />}</StyledContent>
+              <StyledContent>
+                {userAuth ? this.props.children : <WrappedLoginForm onSubmit={login} />}
+              </StyledContent>
             </ErrorBoundary>
           </StyledLayout>
         )}

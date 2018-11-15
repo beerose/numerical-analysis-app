@@ -5,6 +5,7 @@ export interface ApiResponse {
 
 export const ROUTES = {
   ACCOUNTS: {
+    login: '/accounts/login',
     new: '/accounts/new',
   },
   GROUPS: {

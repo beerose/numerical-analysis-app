@@ -10,6 +10,7 @@ import { ROUTES } from '../../common/api';
 import { isAuthenticated } from './auth';
 import * as groups from './groups';
 import { validateUploadRequest } from './groups/validation';
+import { loginUser } from './login';
 import * as swaggerDocument from './swagger.json';
 import { createWithToken, sendMagicLinks } from './token';
 import * as users from './users';
@@ -26,6 +27,8 @@ const app = express();
 morganBody(app);
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(isAuthenticated);
 
 const { USERS, GROUPS, ACCOUNTS } = ROUTES;
@@ -33,6 +36,7 @@ const { USERS, GROUPS, ACCOUNTS } = ROUTES;
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get(ACCOUNTS.new, createWithToken);
+app.post('/accounts/login', loginUser);
 
 app.get(USERS.list, users.list);
 app.post(USERS.add, validateAddRequest, users.add);

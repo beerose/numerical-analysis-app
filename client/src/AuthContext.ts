@@ -6,6 +6,7 @@ type AuthContext = {
   userAuth: boolean;
   userName: string;
   userRole: string;
+  login: (username: string, password: string) => void;
 };
 
 export const { Consumer: AuthConsumer, Provider: AuthContextProvider } = React.createContext<
