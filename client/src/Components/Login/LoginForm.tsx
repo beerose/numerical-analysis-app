@@ -4,19 +4,11 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import { LABELS } from '../../utils/labels';
+import { ModalHeader } from '../ModalHeader';
 
 const FormItem = Form.Item;
 
-const LoginTitle = () => (
-  <div
-    style={{
-      color: 'rgba(0,0,0,.4)',
-      textAlign: 'center',
-    }}
-  >
-    {LABELS.appName}
-  </div>
-);
+const LoginModalHeader = <ModalHeader title={LABELS.appName} />;
 
 type FormValues = {
   username: string;
@@ -40,7 +32,7 @@ const LoginForm = (props: Props) => {
 
   const { getFieldDecorator } = props.form;
   return (
-    <Modal visible centered title={<LoginTitle />} footer={null} width={400} closable={false}>
+    <Modal visible centered title={LoginModalHeader} footer={null} width={400} closable={false}>
       <Form onSubmit={handleSubmit} style={{ padding: '20px 20px 0', width: '350px' }}>
         <FormItem>
           {getFieldDecorator('userName', {

@@ -3,8 +3,8 @@ import * as codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 import nodeMailer from 'nodemailer';
 
-export const generate = (email: string) => {
-  return jwt.sign({ email }, process.env.JWT_SECRET!);
+export const generate = (email: string, userName: string) => {
+  return jwt.sign({ email, user_name: userName }, process.env.JWT_SECRET!);
 };
 
 const transporter = nodeMailer.createTransport({
@@ -26,20 +26,20 @@ const prepareEmailTemplate = ({ username, link }: { username: string; link: stri
 `;
 
 export const sendMagicLinks = (req: Request, res: Response) => {
-  const token = generate(process.env.EMAIL || '');
+  const token = generate(process.env.EMAIL || '', 'Ola');
   console.log(token);
   const mailOptions = {
     from: 'Analiza numeryczna',
     html: prepareEmailTemplate({
-      link: `http://localhost:1234/accounts/new?token=${token}`,
+      link: `http://localhost:1234/accounts/new#token=${token}`,
       username: 'XYZ',
     }),
     subject: 'Zaproszenie do aplikacji',
     to: process.env.EMAIL,
   };
-  // TO DO catch
+
   transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
+    if (error || !info.messageId) {
       console.log(error);
     }
     console.log('Message sent.');

@@ -1,19 +1,9 @@
 {
-  "extends": [
-    "tslint:latest",
-    "tslint-config-airbnb",
-    "tslint-config-prettier"
-  ],
+  "extends": ["tslint:latest", "tslint-config-airbnb", "tslint-config-prettier"],
   "rules": {
     "no-console": false,
     "prefer-template": true,
-    "align": [
-      true,
-      "parameters",
-      "statements",
-      "members",
-      "elements"
-    ],
+    "align": [true, "parameters", "statements", "members", "elements"],
     "variable-name": [
       true,
       "ban-keywords",
@@ -36,6 +26,7 @@
       "check-type",
       "check-typecast"
     ],
+    "no-string-literal": false,
     "object-literal-sort-keys": [true, "shorthand-first"],
     "no-unused-expression": [true, "allow-tagged-template"],
     "no-submodule-imports": false,

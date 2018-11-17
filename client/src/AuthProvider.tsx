@@ -15,16 +15,17 @@ export class AuthProvider extends React.Component<{}, State> {
   state = {
     error: false,
     errorMessage: 'Fetch failed.',
-    userAuth: false,
+    userAuth: true,
     userName: '',
-    userRole: '',
+    userRole: 'admin',
   };
 
   componentWillMount() {
-    this.loginUser('name', 'pass');
+    // this.loginUser('name', 'pass');
   }
 
   loginUser = (username: string, password: string) => {
+    console.log('LOGIN');
     login(username, password).then(res => {
       console.log(res);
       if (res.error) {
