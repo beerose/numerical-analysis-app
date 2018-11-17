@@ -13,8 +13,8 @@ const transporter = nodeMailer.createTransport({
     user: process.env.EMAIL,
   },
   host: process.env.EMAIL_HOST,
-  port: 465,
-  secure: true,
+  port: 587,
+  secure: false,
 });
 
 const prepareEmailTemplate = ({ username, link }: { username: string; link: string }) => `
@@ -22,26 +22,27 @@ const prepareEmailTemplate = ({ username, link }: { username: string; link: stri
   <br /><br />
   Poniżej znajduje się link, dzięki któremu możesz założyć konto w portalu Analiza Numeryczna M.
   <br />
-  <a href=${link}>Dołącz do aplikacji</a>
+  <a href="${link}">Dołącz do aplikacji</a>
 `;
 
 export const sendMagicLinks = (req: Request, res: Response) => {
   const token = generate(process.env.EMAIL || '');
+  console.log(token);
   const mailOptions = {
     from: 'Analiza numeryczna',
     html: prepareEmailTemplate({
-      link: `localhost:3000/account?token=${token}`,
+      link: `http://localhost:1234/accounts/new?token=${token}`,
       username: 'XYZ',
     }),
     subject: 'Zaproszenie do aplikacji',
     to: process.env.EMAIL,
   };
-
+  // TO DO catch
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.log(error);
     }
-    console.log('Message %s sent: %s', info.messageId, info.response);
+    console.log('Message sent.');
   });
 };
 
