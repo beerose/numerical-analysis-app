@@ -30,30 +30,23 @@ export class NewAccount extends React.Component<Props, State> {
   componentWillMount() {
     const parsedHash = qs.parse(this.props.location.hash);
     if (!parsedHash.token) {
-      this.setState({ errorMessage: 'Brak uprawnień', error: true });
+      this.setState({ errorMessage: LABELS.noPrivilegesToUseApp, error: true });
     }
 
     let decoded;
     try {
       decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET!);
     } catch {
-      this.setState({ errorMessage: 'Brak uprawnień, nieprawidłowy token', error: true });
-      return;
-    }
-
-    if (typeof decoded !== 'object') {
-      this.setState({ errorMessage: 'Brak uprawnień, nieprawidłowy token', error: true });
+      this.setState({ errorMessage: LABELS.noPrivilegesToUseApp, error: true });
       return;
     }
 
     if (!(decoded as { user_name?: string }).user_name) {
-      this.setState({ errorMessage: 'Brak uprawnień, nieprawidłowy token', error: true });
+      this.setState({ errorMessage: LABELS.noPrivilegesToUseApp, error: true });
       return;
     }
 
     this.setState({
-      // error: true,
-      // errorMessage: 'Brak uprawnień, nieprawidłowy token',
       userName: (decoded as { user_name: string }).user_name,
     });
   }
