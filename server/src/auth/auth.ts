@@ -91,7 +91,7 @@ export const storeUserPassword = (req: CreateWithTokenRequest, res: CreateWithTo
       if (!results.affectedRows) {
         return res.status(codes.NOT_FOUND).send({ error: apiMessages.userNotFound });
       }
-      return res.status(codes.OK).send(res.locals.user);
+      return res.status(codes.OK).send({ token: req.body.token, ...res.locals.user });
     }
   );
 };
