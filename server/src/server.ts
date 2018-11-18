@@ -1,18 +1,23 @@
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 import swaggerUi from 'swagger-ui-express';
 
 import { ROUTES } from '../../common/api';
 
-import { isAuthenticated } from './auth';
+import {
+  isAuthenticated,
+  sendMagicLinks,
+  storeUserPassword,
+  validateNewAccountRequest,
+  validateNewAccountToken,
+} from './auth';
 import * as groups from './groups';
 import { validateUploadRequest } from './groups/validation';
 import { loginUser } from './login';
 import * as swaggerDocument from './swagger.json';
-import { sendMagicLinks, storeUserPassword, validateNewAccountToken } from './token';
 import * as users from './users';
 import {
   validateAddRequest,
@@ -35,7 +40,7 @@ const { USERS, GROUPS, ACCOUNTS } = ROUTES;
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.post(ACCOUNTS.new, validateNewAccountToken, storeUserPassword);
+app.post(ACCOUNTS.new, validateNewAccountRequest, validateNewAccountToken, storeUserPassword);
 app.post('/accounts/login', loginUser);
 
 app.get(USERS.list, users.list);
