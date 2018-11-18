@@ -12,7 +12,7 @@ import * as groups from './groups';
 import { validateUploadRequest } from './groups/validation';
 import { loginUser } from './login';
 import * as swaggerDocument from './swagger.json';
-import { createWithToken, sendMagicLinks } from './token';
+import { sendMagicLinks, storeUserPassword, validateNewAccountToken } from './token';
 import * as users from './users';
 import {
   validateAddRequest,
@@ -20,7 +20,7 @@ import {
   validateUpdateRequest,
 } from './users/validation';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT;
 
 const app = express();
 
@@ -35,7 +35,7 @@ const { USERS, GROUPS, ACCOUNTS } = ROUTES;
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.get(ACCOUNTS.new, createWithToken);
+app.post(ACCOUNTS.new, validateNewAccountToken, storeUserPassword);
 app.post('/accounts/login', loginUser);
 
 app.get(USERS.list, users.list);

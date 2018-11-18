@@ -1,7 +1,14 @@
+import { NextFunction } from 'connect';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
+import { MysqlError } from 'mysql';
 import nodeMailer from 'nodemailer';
+
+import { apiMessages } from '../../common/apiMessages';
+
+import { connection } from './store/connection';
+import { getUserByEmial, setUserPassword } from './store/queries';
 
 export const generate = (email: string, userName: string) => {
   return jwt.sign({ email, user_name: userName }, process.env.JWT_SECRET!);
@@ -27,7 +34,6 @@ const prepareEmailTemplate = ({ username, link }: { username: string; link: stri
 
 export const sendMagicLinks = (req: Request, res: Response) => {
   const token = generate(process.env.EMAIL || '', 'Ola');
-  console.log(token);
   const mailOptions = {
     from: 'Analiza numeryczna',
     html: prepareEmailTemplate({
@@ -46,17 +52,43 @@ export const sendMagicLinks = (req: Request, res: Response) => {
   });
 };
 
-const findUserByEmail = (email: string) => {
-  return {};
+type FindUserResult = { user?: { user_name: string; user_role: string } | null; error?: boolean };
+const findUserByEmail = (email: string, callback: (result: FindUserResult) => void) => {
+  connection.query(
+    {
+      sql: getUserByEmial,
+      values: [email],
+    },
+    (error, results) => {
+      if (error) {
+        return callback({ error: true });
+      }
+      if (!results.length) {
+        return callback({ user: null });
+      }
+      return callback({ user: JSON.parse(JSON.stringify(results[0])) });
+    }
+  );
 };
 
 interface CreateWithTokenRequest extends Request {
-  query: {
+  body: {
     token?: string;
+    password?: string;
   };
 }
-export const createWithToken = (req: CreateWithTokenRequest, res: Response) => {
-  const { token } = req.query;
+interface CreateWithTokenResponse extends Response {
+  locals: {
+    email?: string;
+    user?: { user_name: string; user_role: string };
+  };
+}
+export const validateNewAccountToken = (
+  req: CreateWithTokenRequest,
+  res: CreateWithTokenResponse,
+  next: NextFunction
+) => {
+  const { token } = req.body;
   if (!token) {
     return res.status(codes.BAD_REQUEST).send({ error: 'token is required' });
   }
@@ -71,14 +103,34 @@ export const createWithToken = (req: CreateWithTokenRequest, res: Response) => {
     return res.status(codes.FORBIDDEN).send({ error: 'invalid jwt format' });
   }
 
-  const user = findUserByEmail((decoded as { email: string }).email);
-  if (!user) {
-    return res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
-  }
+  const email = (decoded as { email: string }).email;
+  return findUserByEmail(email, ({ user, error }) => {
+    if (error) {
+      return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+    }
+    if (!user) {
+      return res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
+    }
+    res.locals.email = email;
+    res.locals.user = user;
+    return next();
+  });
+};
 
-  // if ((decoded as { expiration: Date }).expiration < new Date()) {
-  //   return res.status(codes.FORBIDDEN).send({ error: 'token has expired' });
-  // }
-
-  return res.status(codes.OK).send({ token });
+export const storeUserPassword = (req: CreateWithTokenRequest, res: CreateWithTokenResponse) => {
+  connection.query(
+    {
+      sql: setUserPassword,
+      values: [req.body.password, res.locals.email],
+    },
+    (error, results) => {
+      if (error) {
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      }
+      if (!results.affectedRows) {
+        return res.status(codes.NOT_FOUND).send({ error: apiMessages.userNotFound });
+      }
+      return res.status(codes.OK).send(res.locals.user);
+    }
+  );
 };

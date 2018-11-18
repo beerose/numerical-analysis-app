@@ -41,6 +41,14 @@ export const getUserRoleQuery = `
   SELECT user_role FROM users WHERE email = ?;
 `;
 
+export const getUserByEmial = `
+  SELECT user_name, user_role FROM users WHERE email = ?;
+`;
+
+export const setUserPassword = `
+  UPDATE users SET password = ? WHERE email = ?;
+`;
+
 const searchSubQuery = (searchParam: string) => `
   (MATCH(user_name) AGAINST ("${searchParam}")
   OR MATCH(email) AGAINST ("${searchParam}")
