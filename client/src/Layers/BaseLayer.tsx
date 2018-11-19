@@ -31,9 +31,8 @@ const StyledLayout = styled(Layout)`
   min-height: 100%;
 `;
 
-const Title = styled('p')`
+const Title = styled.p`
   cursor: pointer;
-  color: white;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.65);
 
@@ -53,7 +52,7 @@ export class BaseLayer extends React.Component<Props> {
           <StyledLayout>
             <StyledHeader>
               <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
-              <MainMenu userRole={userRole} location={this.props.location} />
+              <MainMenu userRole={userRole || ''} location={this.props.location} />
             </StyledHeader>
             <ErrorBoundary>
               <StyledContent>

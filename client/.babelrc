@@ -1,0 +1,15 @@
+{
+  "plugins": ["emotion"],
+  "env": {
+    "production": {
+      "plugins": [["emotion", { "hoist": true }]]
+    },
+    "development": {
+      "plugins": [["emotion", { "sourceMap": true, "autoLabel": true, "labelFormat": "⚡[local]" }]]
+    },
+    "test": {
+      "presets": ["env"],
+      "plugins": [["emotion", { "sourceMap": true, "autoLabel": true, "labelFormat": "⚡[local]" }]]
+    }
+  }
+}

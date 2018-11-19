@@ -34,7 +34,7 @@ const LoginForm = (props: Props) => {
   return (
     <Modal visible centered title={LoginModalHeader} footer={null} width={400} closable={false}>
       <Form onSubmit={handleSubmit} style={{ padding: '20px 20px 0 20px' }}>
-        <FormItem>
+        <FormItem validateStatus="error" help="There's no user with provided email">
           {getFieldDecorator('email', {
             rules: [{ required: true, message: LABELS.emailRequired }],
           })(

@@ -5,11 +5,11 @@ import { SERVER_URL } from '.';
 const { ACCOUNTS } = ROUTES;
 
 export const login = async (
-  username: string,
+  email: string,
   password: string
 ): Promise<{ token?: string; user_name?: string; user_role?: string } & ApiResponse> => {
   const data = new URLSearchParams();
-  data.append('username', username);
+  data.append('email', email);
   data.append('password', password);
   const response = await fetch(SERVER_URL + ACCOUNTS.login, {
     body: data.toString(),

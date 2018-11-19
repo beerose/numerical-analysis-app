@@ -29,7 +29,7 @@ export const LABELS = {
   no: 'nie',
   noPrivilegesToUseApp: 'Brak uprawnień do korzystania z plikacji',
   optionalIndex: 'Indeks studenta (opcjonalnie)',
-  password: 'hasło',
+  password: 'Hasło',
   passwordRequired: 'Należy podać hasło',
   rememberMe: 'Pamiętaj mnie',
   requiredField: 'Pole jest wymagane',
