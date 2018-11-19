@@ -20,3 +20,20 @@ export const login = async (
   });
   return response.json();
 };
+
+export const newAccount = async (
+  token: string,
+  password: string
+): Promise<{ token?: string; user_name?: string; user_role?: string } & ApiResponse> => {
+  const data = new URLSearchParams();
+  data.append('token', token);
+  data.append('password', password);
+  const response = await fetch(SERVER_URL + ACCOUNTS.new, {
+    body: data.toString(),
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    method: 'POST',
+  });
+  return response.json();
+};

@@ -4,7 +4,7 @@ if (process.env.NODE_ENV !== 'production') {
   const host = process.env.IP || 'localhost';
   urls = {
     // tslint:disable:no-http-string
-    SERVER_URL: `http://${host}:3000`,
+    SERVER_URL: `http://${host}:3005`,
     // tslint:enable:no-http-string
   };
 } else {

@@ -6,16 +6,20 @@ import { LABELS } from '../../utils/labels';
 
 const FormItem = Form.Item;
 
-type Props = FormComponentProps;
+type Props = {
+  goToMainPage: () => void;
+  onSubmit: (password: string) => void;
+} & FormComponentProps;
 
 export const NewAccountWithToken = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
-      // if (err) {
-      //  return;
-      // }
-      // props.onSubmit(values.username, values.password);
+      if (err) {
+        return;
+      }
+      props.onSubmit(values.password_);
+      props.goToMainPage();
     });
   };
 

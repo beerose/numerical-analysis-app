@@ -1,14 +1,18 @@
 import * as React from 'react';
 
-type AuthContext = {
+export type AuthContextState = {
+  actions: {
+    createNewAccount: (token: string, password: string) => void;
+    login: (userName: string, password: string) => void;
+  };
   error: boolean;
-  errorMessage: string;
+  errorMessage?: string;
+  token: string;
   userAuth: boolean;
   userName: string;
   userRole: string;
-  login: (username: string, password: string) => void;
 };
 
 export const { Consumer: AuthConsumer, Provider: AuthContextProvider } = React.createContext<
-  AuthContext
->({} as AuthContext);
+  AuthContextState
+>({} as AuthContextState);

@@ -3,6 +3,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 
+import { ROUTES } from '../../../common/api';
 import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
 import { MainMenu } from '../Components/';
@@ -45,9 +46,10 @@ const Title = styled('p')`
 type Props = RouteComponentProps;
 export class BaseLayer extends React.Component<Props> {
   render() {
+    const pathname = this.props.location.pathname;
     return (
       <AuthConsumer>
-        {({ userRole, userAuth, login }) => (
+        {({ userRole, userAuth, actions }) => (
           <StyledLayout>
             <StyledHeader>
               <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
@@ -55,7 +57,11 @@ export class BaseLayer extends React.Component<Props> {
             </StyledHeader>
             <ErrorBoundary>
               <StyledContent>
-                {userAuth ? this.props.children : <WrappedLoginForm onSubmit={login} />}
+                {userAuth || pathname === ROUTES.ACCOUNTS.new ? (
+                  this.props.children
+                ) : (
+                  <WrappedLoginForm onSubmit={actions.login} />
+                )}
               </StyledContent>
             </ErrorBoundary>
           </StyledLayout>
