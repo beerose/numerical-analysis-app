@@ -40,6 +40,7 @@ export const LABELS = {
   searchUserPlaceholder: 'Szukaj według imienia, nazwiska lub indeksu',
   semester: 'Semestr',
   semesterRequired: 'Należy podać semestr',
+  serverUnavaliable: 'Serwer jest niedostępny, spróbuj ponownie później',
   setNewPassword: 'ustaw hasło do swojego konta',
   superUser: 'Prowadzący',
   upload: 'CSV upload',

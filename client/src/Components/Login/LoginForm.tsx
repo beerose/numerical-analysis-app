@@ -1,6 +1,7 @@
 import { Button, Checkbox, Form, Icon, Input, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
+import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 
 import { LABELS } from '../../utils/labels';
@@ -10,6 +11,12 @@ const FormItem = Form.Item;
 
 const LoginModalHeader = <ModalHeader title={LABELS.appName} />;
 
+const FormError = styled.div`
+  text-align: center;
+  margin-bottom: 10px;
+  color: red;
+`;
+
 type FormValues = {
   email: string;
   password: string;
@@ -17,6 +24,7 @@ type FormValues = {
 };
 
 type Props = {
+  errorMessage?: string;
   onSubmit: (username: string, password: string) => void;
 } & FormComponentProps;
 const LoginForm = (props: Props) => {
@@ -30,11 +38,15 @@ const LoginForm = (props: Props) => {
     });
   };
 
-  const { getFieldDecorator } = props.form;
+  const {
+    form: { getFieldDecorator },
+    errorMessage,
+  } = props;
   return (
     <Modal visible centered title={LoginModalHeader} footer={null} width={400} closable={false}>
-      <Form onSubmit={handleSubmit} style={{ padding: '20px 20px 0 20px' }}>
-        <FormItem validateStatus="error" help="There's no user with provided email">
+      <Form onSubmit={handleSubmit} style={{ padding: '0px 20px 0 20px', alignItems: 'center' }}>
+        {errorMessage && <FormError>{errorMessage}</FormError>}
+        <FormItem validateStatus={errorMessage ? 'error' : 'validating'}>
           {getFieldDecorator('email', {
             rules: [{ required: true, message: LABELS.emailRequired }],
           })(
@@ -44,7 +56,7 @@ const LoginForm = (props: Props) => {
             />
           )}
         </FormItem>
-        <FormItem>
+        <FormItem validateStatus={errorMessage ? 'error' : 'validating'}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: LABELS.passwordRequired }],
           })(

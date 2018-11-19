@@ -8,6 +8,7 @@ export declare const apiMessages: {
     invalidLoginRequest: string;
     invalidNewAccountRequest: string;
     invalidUserData: string;
+    serverUnavaliable: string;
     userAlreadyExists: string;
     userCreated: string;
     userDeleted: string;

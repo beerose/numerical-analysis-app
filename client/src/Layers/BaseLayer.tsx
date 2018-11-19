@@ -48,7 +48,7 @@ export class BaseLayer extends React.Component<Props> {
     const pathname = this.props.location.pathname;
     return (
       <AuthConsumer>
-        {({ userRole, userAuth, actions }) => (
+        {({ userRole, userAuth, actions, errorMessage }) => (
           <StyledLayout>
             <StyledHeader>
               <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
@@ -59,7 +59,7 @@ export class BaseLayer extends React.Component<Props> {
                 {userAuth || pathname === ROUTES.ACCOUNTS.new ? (
                   this.props.children
                 ) : (
-                  <WrappedLoginForm onSubmit={actions.login} />
+                  <WrappedLoginForm onSubmit={actions.login} errorMessage={errorMessage} />
                 )}
               </StyledContent>
             </ErrorBoundary>

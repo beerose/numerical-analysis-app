@@ -1,4 +1,3 @@
-import { message } from 'antd';
 import React from 'react';
 
 import { login, newAccount } from './api/authApi';
@@ -19,15 +18,11 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
 
   loginUser = (email: string, password: string) => {
     login(email, password).then(res => {
-      console.log(res);
       if (res.error) {
         this.setState({ error: true, errorMessage: res.error });
         return;
       }
-      if (res.token && res.user_name && res.user_role) {
-        this.setState({ userAuth: true, userName: res.user_name, userRole: res.user_role });
-      }
-      // this.setState({ error: true, errorMessage: res.error });
+      this.setState({ userAuth: true, userName: res.user_name, userRole: res.user_role });
     });
   };
 
@@ -38,12 +33,8 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
         this.setState({ error: true, errorMessage: res.error });
         return;
       }
-      if (res.token && res.user_name && res.user_role) {
-        this.setState({ userAuth: true, userName: res.user_name, userRole: res.user_role });
-      }
-      // this.setState({ error: true, errorMessage: res.error });
+      this.setState({ userAuth: true, userName: res.user_name, userRole: res.user_role });
     });
-    // catch
   };
 
   render() {

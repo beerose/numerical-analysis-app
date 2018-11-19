@@ -1,39 +1,53 @@
+import { LABELS } from 'src/utils/labels';
+
 import { ApiResponse, ROUTES } from '../../../common/api';
 
 import { SERVER_URL } from '.';
 
 const { ACCOUNTS } = ROUTES;
 
-export const login = async (
+export const login = (
   email: string,
   password: string
 ): Promise<{ token?: string; user_name?: string; user_role?: string } & ApiResponse> => {
   const data = new URLSearchParams();
   data.append('email', email);
   data.append('password', password);
-  const response = await fetch(SERVER_URL + ACCOUNTS.login, {
+  return fetch(SERVER_URL + ACCOUNTS.login, {
     body: data.toString(),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
-  });
-  return response.json();
+  })
+    .then(response => response.json())
+    .catch(err => {
+      if (!err.response) {
+        return { error: LABELS.serverUnavaliable };
+      }
+      return { error: err.response.data.message };
+    });
 };
 
-export const newAccount = async (
+export const newAccount = (
   token: string,
   password: string
 ): Promise<{ token?: string; user_name?: string; user_role?: string } & ApiResponse> => {
   const data = new URLSearchParams();
   data.append('token', token);
   data.append('password', password);
-  const response = await fetch(SERVER_URL + ACCOUNTS.new, {
+  return fetch(SERVER_URL + ACCOUNTS.new, {
     body: data.toString(),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
-  });
-  return response.json();
+  })
+    .then(response => response.json())
+    .catch(err => {
+      if (!err.response) {
+        return { error: LABELS.serverUnavaliable };
+      }
+      return { error: err.response.data.message };
+    });
 };
