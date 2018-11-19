@@ -4,6 +4,8 @@ export declare const apiMessages: {
     idRequired: string;
     internalError: string;
     invalidCSV: string;
+    invalidEmailOrPassword: string;
+    invalidLoginRequest: string;
     invalidNewAccountRequest: string;
     invalidUserData: string;
     userAlreadyExists: string;

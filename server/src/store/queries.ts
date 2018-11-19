@@ -41,12 +41,16 @@ export const getUserRoleQuery = `
   SELECT user_role FROM users WHERE email = ?;
 `;
 
-export const getUserByEmial = `
+export const getUserByEmialQuery = `
   SELECT user_name, user_role FROM users WHERE email = ?;
 `;
 
-export const setUserPassword = `
+export const setUserPasswordQuery = `
   UPDATE users SET password = ? WHERE email = ?;
+`;
+
+export const findUserWithPasswordQuery = `
+  SELECT user_name, user_role FROM users WHERE email = ? AND password = ?;
 `;
 
 const searchSubQuery = (searchParam: string) => `

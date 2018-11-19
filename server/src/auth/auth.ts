@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 
 import { apiMessages } from '../../../common/apiMessages';
 import { connection } from '../store/connection';
-import { getUserByEmial, setUserPassword } from '../store/queries';
+import { getUserByEmialQuery, setUserPasswordQuery } from '../store/queries';
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   const auth = req.headers.authorization;
@@ -17,7 +17,7 @@ type FindUserResult = { user?: { user_name: string; user_role: string } | null; 
 const findUserByEmail = (email: string, callback: (result: FindUserResult) => void) => {
   connection.query(
     {
-      sql: getUserByEmial,
+      sql: getUserByEmialQuery,
       values: [email],
     },
     (error, results) => {
@@ -27,7 +27,7 @@ const findUserByEmail = (email: string, callback: (result: FindUserResult) => vo
       if (!results.length) {
         return callback({ user: null });
       }
-      return callback({ user: JSON.parse(JSON.stringify(results[0])) });
+      return callback({ user: results[0] });
     }
   );
 };
@@ -81,7 +81,7 @@ export const validateNewAccountToken = (
 export const storeUserPassword = (req: CreateWithTokenRequest, res: CreateWithTokenResponse) => {
   connection.query(
     {
-      sql: setUserPassword,
+      sql: setUserPasswordQuery,
       values: [req.body.password, res.locals.email],
     },
     (error, results) => {

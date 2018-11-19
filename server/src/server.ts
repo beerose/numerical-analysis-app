@@ -9,14 +9,15 @@ import { ROUTES } from '../../common/api';
 
 import {
   isAuthenticated,
+  loginUser,
   sendMagicLinks,
   storeUserPassword,
+  validateLoginUserRequest,
   validateNewAccountRequest,
   validateNewAccountToken,
 } from './auth';
 import * as groups from './groups';
 import { validateUploadRequest } from './groups/validation';
-import { loginUser } from './login';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
 import {
@@ -41,7 +42,7 @@ const { USERS, GROUPS, ACCOUNTS } = ROUTES;
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.post(ACCOUNTS.new, validateNewAccountRequest, validateNewAccountToken, storeUserPassword);
-app.post('/accounts/login', loginUser);
+app.post(ACCOUNTS.login, validateLoginUserRequest, loginUser);
 
 app.get(USERS.list, users.list);
 app.post(USERS.add, validateAddRequest, users.add);

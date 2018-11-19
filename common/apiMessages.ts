@@ -4,6 +4,8 @@ export const apiMessages = {
   idRequired: 'Id jest wymagane',
   internalError: 'Wystąpił błąd, spróbuj ponownie',
   invalidCSV: 'Nieprawidłowy plik CSV. Wymagany format to: imię, nazwisko, indeks, email.',
+  invalidEmailOrPassword: 'Nieprawidłowy email lub hasło',
+  invalidLoginRequest: 'Pola password i email są wymagane',
   invalidNewAccountRequest: 'Pola password i token są wymagane',
   invalidUserData: 'Pola Imię i nazwisko, Rola i Email są wymagane',
   userAlreadyExists: 'Użytkownik o tym adresie email już istnieje',

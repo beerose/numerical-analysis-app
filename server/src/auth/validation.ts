@@ -9,3 +9,10 @@ export const validateNewAccountRequest = (req: Request, res: Response, next: Nex
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidNewAccountRequest });
 };
+
+export const validateLoginUserRequest = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body && req.body.password && req.body.email) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidLoginRequest });
+};
