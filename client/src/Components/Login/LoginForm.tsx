@@ -11,7 +11,7 @@ const FormItem = Form.Item;
 const LoginModalHeader = <ModalHeader title={LABELS.appName} />;
 
 type FormValues = {
-  username: string;
+  email: string;
   password: string;
   remember: boolean;
 };
@@ -26,16 +26,16 @@ const LoginForm = (props: Props) => {
       if (err) {
         return;
       }
-      props.onSubmit(values.username, values.password);
+      props.onSubmit(values.email, values.password);
     });
   };
 
   const { getFieldDecorator } = props.form;
   return (
     <Modal visible centered title={LoginModalHeader} footer={null} width={400} closable={false}>
-      <Form onSubmit={handleSubmit} style={{ padding: '20px 20px 0', width: '350px' }}>
+      <Form onSubmit={handleSubmit} style={{ padding: '20px 20px 0 20px' }}>
         <FormItem>
-          {getFieldDecorator('userName', {
+          {getFieldDecorator('email', {
             rules: [{ required: true, message: LABELS.emailRequired }],
           })(
             <Input

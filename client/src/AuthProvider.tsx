@@ -12,10 +12,7 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
         login: this.loginUser,
       },
       error: false,
-      token: '',
-      userAuth: true,
-      userName: '',
-      userRole: 'admin',
+      userAuth: false,
     };
   }
 
@@ -24,7 +21,6 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
   }
 
   loginUser = (username: string, password: string) => {
-    console.log('LOGIN');
     login(username, password).then(res => {
       console.log(res);
       if (res.error) {

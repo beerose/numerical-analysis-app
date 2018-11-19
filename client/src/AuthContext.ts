@@ -7,10 +7,10 @@ export type AuthContextState = {
   };
   error: boolean;
   errorMessage?: string;
-  token: string;
+  token?: string;
   userAuth: boolean;
-  userName: string;
-  userRole: string;
+  userName?: string;
+  userRole?: string;
 };
 
 export const { Consumer: AuthConsumer, Provider: AuthContextProvider } = React.createContext<
