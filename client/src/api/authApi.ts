@@ -1,4 +1,4 @@
-import { LABELS } from 'src/utils/labels';
+import { LABELS } from '../utils/labels';
 
 import { ApiResponse, ROUTES } from '../../../common/api';
 
