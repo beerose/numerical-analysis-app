@@ -3,7 +3,7 @@ import * as React from 'react';
 export type AuthContextState = {
   actions: {
     createNewAccount: (token: string, password: string) => void;
-    login: (userName: string, password: string) => void;
+    login: (userName: string, password: string, remember: boolean) => void;
   };
   error: boolean;
   errorMessage?: string;

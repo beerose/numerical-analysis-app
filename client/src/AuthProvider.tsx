@@ -20,8 +20,16 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
     this.setState({ userAuth: false, userRole: undefined, userName: undefined });
   };
 
-  checkLocalStorage = () => {
-    console.log('check');
+  saveLocalStorageState = (longExpired?: boolean) => {
+    const { userName, userRole, token } = this.state;
+    const now = new Date();
+    const expirationHours = longExpired ? 7 * 24 : 24;
+    const expires = now.setHours(now.getHours() + expirationHours);
+    localStorage.setItem('token', JSON.stringify({ token, token_expires: expires.toString() }));
+    localStorage.setItem('user', JSON.stringify({ user_role: userRole, user_name: userName }));
+  };
+
+  checkLocalStorageState = () => {
     const storageToken = localStorage.getItem('token');
     const storageUser = localStorage.getItem('user');
     if (!storageToken || !storageUser) {
@@ -41,33 +49,27 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
   };
 
   componentWillMount() {
-    this.checkLocalStorage();
-    return setInterval(this.checkLocalStorage, 5000); // 10 minutes
+    this.checkLocalStorageState();
+    // return setInterval(this.checkLocalStorageState, 3000); // 10 minutes
   }
 
-  loginUser = (email: string, password: string) => {
+  loginUser = (email: string, password: string, remember: boolean) => {
     login(email, password).then(res => {
       if (res.error) {
         this.setState({ error: true, errorMessage: res.error });
         return;
       }
-      if (!(res.token && res.user_name && res.user_role)) {
+      if (!res.token || !res.user_name || !res.user_role) {
         this.setState({ error: true, errorMessage: 'Nieprawidłowa odpowiedź z serwera' });
-      } else {
-        this.setState({ userAuth: true, userName: res.user_name, userRole: res.user_role });
-        const now = new Date();
-        localStorage.setItem(
-          'token',
-          JSON.stringify({
-            token: res.token,
-            token_expires: now.setHours(now.getHours() + 7 * 24).toString(),
-          })
-        );
-        localStorage.setItem(
-          'user',
-          JSON.stringify({ user_role: res.user_role, user_name: res.user_name })
-        );
+        return;
       }
+      this.setState({
+        token: res.token,
+        userAuth: true,
+        userName: res.user_name,
+        userRole: res.user_role,
+      });
+      this.saveLocalStorageState(remember);
     });
   };
 
@@ -77,7 +79,17 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
         this.setState({ error: true, errorMessage: res.error });
         return;
       }
-      this.setState({ userAuth: true, userName: res.user_name, userRole: res.user_role });
+      if (!res.token || !res.user_name || !res.user_role) {
+        this.setState({ error: true, errorMessage: 'Nieprawidłowa odpowiedź z serwera' });
+        return;
+      }
+      this.setState({
+        token: res.token,
+        userAuth: true,
+        userName: res.user_name,
+        userRole: res.user_role,
+      });
+      this.saveLocalStorageState();
     });
   };
 

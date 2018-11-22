@@ -25,7 +25,7 @@ type FormValues = {
 
 type Props = {
   errorMessage?: string;
-  onSubmit: (username: string, password: string) => void;
+  onSubmit: (username: string, password: string, remember: boolean) => void;
 } & FormComponentProps;
 const LoginForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
@@ -34,7 +34,7 @@ const LoginForm = (props: Props) => {
       if (err) {
         return;
       }
-      props.onSubmit(values.email, values.password);
+      props.onSubmit(values.email, values.password, values.remember);
     });
   };
 

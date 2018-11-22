@@ -4,9 +4,9 @@
   "main": "dist/index.js",
   "scripts": {
     "watch-compile": "PORT=3003 parcel watch ./src/index.ts --target=node",
-    "watch-run": "PORT=3005 nodemon dist/index.js",
+    "watch-run": "PORT=8080 nodemon dist/index.js",
     "build": "PORT=3003 parcel build ./src/index.ts --target=node",
-    "launch": "PORT=3005 node dist/index.js",
+    "launch": "PORT=8080 node dist/index.js",
     "start": "yarn build && node dist/index.js",
     "dev": "concurrently -c red,yellow -n n,p 'yarn watch-run' 'yarn watch-compile'"
   },
