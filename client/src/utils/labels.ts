@@ -23,6 +23,7 @@ export const LABELS = {
   labTime: 'Godzina pracowni',
   labTimeRequired: 'Należy podać godzinę pracowni',
   logIn: 'Zaloguj się',
+  magicLinkInvalid: 'Link wygasł lub jest niepoprawny',
   name: 'Imię i nazwisko',
   nameRequired: 'Należy podać imię i nazwisko',
   newUser: 'Nowy użytkownik',
