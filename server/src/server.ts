@@ -8,9 +8,11 @@ import swaggerUi from 'swagger-ui-express';
 import { ROUTES } from '../../common/api';
 
 import {
+  checkIfTokenExpired,
   isAuthenticated,
   loginUser,
   sendMagicLinks,
+  storeToken,
   storeUserPassword,
   validateLoginUserRequest,
   validateNewAccountRequest,
@@ -41,7 +43,14 @@ const { USERS, GROUPS, ACCOUNTS } = ROUTES;
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.post(ACCOUNTS.new, validateNewAccountRequest, validateNewAccountToken, storeUserPassword);
+app.post(
+  ACCOUNTS.new,
+  validateNewAccountRequest,
+  checkIfTokenExpired,
+  validateNewAccountToken,
+  storeUserPassword,
+  storeToken
+);
 app.post(ACCOUNTS.login, validateLoginUserRequest, loginUser);
 
 app.get(USERS.list, users.list);

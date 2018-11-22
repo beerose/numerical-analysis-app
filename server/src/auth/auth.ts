@@ -5,7 +5,12 @@ import jwt from 'jsonwebtoken';
 
 import { apiMessages } from '../../../common/apiMessages';
 import { connection } from '../store/connection';
-import { getUserByEmialQuery, setUserPasswordQuery } from '../store/queries';
+import {
+  findTokenQuery,
+  getUserByEmialQuery,
+  setUserPasswordQuery,
+  storeTokenQuery,
+} from '../store/queries';
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   const auth = req.headers.authorization;
@@ -34,8 +39,8 @@ const findUserByEmail = (email: string, callback: (result: FindUserResult) => vo
 
 interface CreateWithTokenRequest extends Request {
   body: {
-    token?: string;
-    password?: string;
+    token: string;
+    password: string;
   };
 }
 interface CreateWithTokenResponse extends Response {
@@ -44,15 +49,36 @@ interface CreateWithTokenResponse extends Response {
     user?: { user_name: string; user_role: string };
   };
 }
+
+export const checkIfTokenExpired = (
+  req: CreateWithTokenRequest,
+  res: CreateWithTokenResponse,
+  next: NextFunction
+) => {
+  const { token } = req.body;
+  connection.query(
+    {
+      sql: findTokenQuery,
+      values: [token],
+    },
+    (error, results) => {
+      if (error) {
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      }
+      if (results.length) {
+        return res.status(codes.BAD_REQUEST).send({ error: apiMessages.tokenExpired });
+      }
+      return next();
+    }
+  );
+};
+
 export const validateNewAccountToken = (
   req: CreateWithTokenRequest,
   res: CreateWithTokenResponse,
   next: NextFunction
 ) => {
   const { token } = req.body;
-  if (!token) {
-    return res.status(codes.BAD_REQUEST).send({ error: 'token is required' });
-  }
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET!);
@@ -78,7 +104,11 @@ export const validateNewAccountToken = (
   });
 };
 
-export const storeUserPassword = (req: CreateWithTokenRequest, res: CreateWithTokenResponse) => {
+export const storeUserPassword = (
+  req: CreateWithTokenRequest,
+  res: CreateWithTokenResponse,
+  next: NextFunction
+) => {
   connection.query(
     {
       sql: setUserPasswordQuery,
@@ -90,6 +120,21 @@ export const storeUserPassword = (req: CreateWithTokenRequest, res: CreateWithTo
       }
       if (!results.affectedRows) {
         return res.status(codes.NOT_FOUND).send({ error: apiMessages.userNotFound });
+      }
+      return next();
+    }
+  );
+};
+
+export const storeToken = (req: CreateWithTokenRequest, res: CreateWithTokenResponse) => {
+  connection.query(
+    {
+      sql: storeTokenQuery,
+      values: [req.body.token],
+    },
+    error => {
+      if (error) {
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
       return res.status(codes.OK).send({ token: req.body.token, ...res.locals.user });
     }

@@ -89,3 +89,11 @@ export const prepareCountUsersQuery = (searchParam?: string, roles?: string | st
   ${searchParam && roles ? 'AND' : ''}
   ${roles ? roleSubQuery(roles) : ''};
 `;
+
+export const findTokenQuery = `
+  SELECT * FROM token WHERE token = ?;
+`;
+
+export const storeTokenQuery = `
+  INSERT INTO token(token) VALUES (?);
+`;
