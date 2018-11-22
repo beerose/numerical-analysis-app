@@ -61,12 +61,12 @@ export class NewAccount extends React.Component<Props, State> {
     const { localErrorMessage, localError, userName, token } = this.state;
     return (
       <AuthConsumer>
-        {({ actions, error: authError, errorMessage: authErrorMessage }) => {
+        {({ actions, error: authError, errorMessage: authErrorMessage, userAuth }) => {
           const error = authError || localError;
           const errorMessage = error && localError ? localErrorMessage : authErrorMessage;
           return (
             <Modal
-              visible
+              visible={!userAuth}
               centered
               title={error ? errorModalHeader : <NewAccountModalHeader userName={userName} />}
               footer={null}
