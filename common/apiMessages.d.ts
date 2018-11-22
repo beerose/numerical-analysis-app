@@ -8,7 +8,7 @@ export declare const apiMessages: {
     invalidLoginRequest: string;
     invalidNewAccountRequest: string;
     invalidUserData: string;
-    tokenExpired: string;
+    tokenUsed: string;
     userAlreadyExists: string;
     userCreated: string;
     userDeleted: string;

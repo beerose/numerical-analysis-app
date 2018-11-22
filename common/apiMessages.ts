@@ -8,7 +8,7 @@ export const apiMessages = {
   invalidLoginRequest: 'Pola password i email są wymagane',
   invalidNewAccountRequest: 'Pola password i token są wymagane',
   invalidUserData: 'Pola Imię i nazwisko, Rola i Email są wymagane',
-  tokenExpired: 'Dany link został już użyty',
+  tokenUsed: 'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',
   userAlreadyExists: 'Użytkownik o tym adresie email już istnieje',
   userCreated: 'Użytkownik został dodany',
   userDeleted: 'Użytkonik został usunięty',

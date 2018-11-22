@@ -66,7 +66,7 @@ export const checkIfTokenExpired = (
         return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
       if (results.length) {
-        return res.status(codes.BAD_REQUEST).send({ error: apiMessages.tokenExpired });
+        return res.status(codes.BAD_REQUEST).send({ error: apiMessages.tokenUsed });
       }
       return next();
     }
