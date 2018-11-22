@@ -29,7 +29,7 @@ const ErrorContainer = ({
   onClick: () => void;
 }) => (
   <section className={errorContainerStyles}>
-    {errorMessage}{' '}
+    {errorMessage}
     <Button onClick={onClick} className={buttonStyles}>
       {LABELS.goToLoginPage}
     </Button>
