@@ -7,7 +7,6 @@ import { LABELS } from '../../utils/labels';
 const FormItem = Form.Item;
 
 type Props = {
-  goToMainPage: () => void;
   onSubmit: (password: string) => void;
 } & FormComponentProps;
 
@@ -19,7 +18,6 @@ export const NewAccountWithToken = (props: Props) => {
         return;
       }
       props.onSubmit(values.password_);
-      props.goToMainPage();
     });
   };
 
