@@ -16,6 +16,7 @@ export const LABELS = {
   emailRequired: 'Należy podać email',
   fillActiveWarning: 'Uzupełnij lub usuń aktualnie dodawanego użytkownika',
   forgotPassword: 'Nie pamiętasz hasła?',
+  goToLoginPage: 'Przejdź do logowania',
   labDay: 'Dzień pracowni',
   labDayRequired: 'Należy podać dzien pracowni',
   labRoomNumber: 'Numer sali',

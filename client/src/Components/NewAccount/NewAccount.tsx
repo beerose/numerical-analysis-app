@@ -21,9 +21,18 @@ const buttonStyles = css`
   margin: 20px 0 0 0;
   align-self: center;
 `;
-const ErrorContainer = ({ errorMessage }: { errorMessage?: string }) => (
+const ErrorContainer = ({
+  errorMessage,
+  onClick,
+}: {
+  errorMessage?: string;
+  onClick: () => void;
+}) => (
   <section className={errorContainerStyles}>
-    {errorMessage} <Button className={buttonStyles}>Przejdź do logowania</Button>
+    {errorMessage}{' '}
+    <Button onClick={onClick} className={buttonStyles}>
+      {LABELS.goToLoginPage}
+    </Button>
   </section>
 );
 
@@ -91,7 +100,7 @@ export class NewAccount extends React.Component<Props, State> {
               closable={false}
             >
               {error ? (
-                <ErrorContainer errorMessage={errorMessage} />
+                <ErrorContainer errorMessage={errorMessage} onClick={this.goToMainPage} />
               ) : (
                 <NewAccountWithTokenForm
                   onSubmit={(password: string) => actions.createNewAccount(token, password)}
