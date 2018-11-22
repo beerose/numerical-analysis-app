@@ -37,7 +37,6 @@ export class NewAccount extends React.Component<Props, State> {
   componentWillMount() {
     const parsedHash = qs.parse(this.props.location.hash);
     if (!parsedHash.token) {
-      console.log('parse', this.props.location);
       this.setState({ errorMessage: LABELS.noPrivilegesToUseApp, error: true });
     }
     this.setState({ token: parsedHash.token });

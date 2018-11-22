@@ -27,7 +27,7 @@ export const LABELS = {
   nameRequired: 'Należy podać imię i nazwisko',
   newUser: 'Nowy użytkownik',
   no: 'nie',
-  noPrivilegesToUseApp: 'Brak uprawnień do korzystania z plikacji',
+  noPrivilegesToUseApp: 'Brak uprawnień do korzystania z aplikacji',
   optionalIndex: 'Indeks studenta (opcjonalnie)',
   password: 'Hasło',
   passwordRequired: 'Należy podać hasło',
