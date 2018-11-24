@@ -9,7 +9,7 @@ const { ACCOUNTS } = ROUTES;
 export const login = (
   email: string,
   password: string
-): Promise<{ token?: string; user_name?: string; user_role?: string } & ApiResponse> => {
+): Promise<{ token: string; user_name: string; user_role: string } & ApiResponse> => {
   const data = new URLSearchParams();
   data.append('email', email);
   data.append('password', password);
@@ -21,6 +21,12 @@ export const login = (
     method: 'POST',
   })
     .then(response => response.json())
+    .then(response => {
+      if (!response.token || !response.user_name || !response.user_role) {
+        return { error: 'Zła odpowiedź z serwera' };
+      }
+      return response;
+    })
     .catch(err => {
       if (!err.response) {
         return { error: LABELS.serverUnavaliable };
@@ -32,7 +38,7 @@ export const login = (
 export const newAccount = (
   token: string,
   password: string
-): Promise<{ token?: string; user_name?: string; user_role?: string } & ApiResponse> => {
+): Promise<{ token: string; user_name: string; user_role: string } & ApiResponse> => {
   const data = new URLSearchParams();
   data.append('token', token);
   data.append('password', password);
@@ -44,6 +50,12 @@ export const newAccount = (
     method: 'POST',
   })
     .then(response => response.json())
+    .then(response => {
+      if (!response.token || !response.user_name || !response.user_role) {
+        return { error: 'Zła odpowiedź z serwera' };
+      }
+      return response;
+    })
     .catch(err => {
       if (!err.response) {
         return { error: LABELS.serverUnavaliable };

@@ -59,13 +59,10 @@ export class AuthProvider extends React.Component<RouteComponentProps, AuthConte
         if (res.error) {
           throw new Error(res.error);
         }
-        if (!res.token || !res.user_name || !res.user_role) {
-          throw new Error('Nieprawidłowa odpowiedź z serwera');
-        }
         return res;
       })
       .then(res => {
-        this.saveCookiesState(res!.user_name!, res!.user_role!, res!.token!, remember);
+        this.saveCookiesState(res.user_name, res.user_role, res.token, remember);
         return res;
       })
       .then(res => {
