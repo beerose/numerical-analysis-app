@@ -14,9 +14,33 @@ import {
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   const auth = req.headers.authorization;
-  console.log('auth', auth);
-  if (auth || !auth) return next(); // TO DO
-  return res.status(401).send('You shall not pass!');
+  if (!auth || !auth.startsWith('Bearer ')) {
+    return res.status(codes.FORBIDDEN).send({ error: 'cannot verify jwt' });
+  }
+
+  const token = auth.substring(7, auth.length);
+  let decoded;
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET!);
+  } catch {
+    return res.status(codes.FORBIDDEN).send({ error: 'cannot verify jwt' });
+  }
+
+  if (!decoded.hasOwnProperty('email')) {
+    return res.status(codes.FORBIDDEN).send({ error: 'invalid jwt format' });
+  }
+
+  const email = (decoded as { email: string }).email;
+  return findUserByEmail(email, ({ user, error }) => {
+    if (error) {
+      return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+    }
+    if (!user) {
+      return res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
+    }
+
+    return next();
+  });
 };
 
 type FindUserResult = { user?: { user_name: string; user_role: string } | null; error?: boolean };
