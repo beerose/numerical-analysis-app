@@ -67,10 +67,10 @@ export class AuthProvider extends React.Component<RouteComponentProps, AuthConte
       })
       .then(res => {
         this.setState({
-          token: res!.token!,
+          token: res.token,
           userAuth: true,
-          userName: res!.user_name,
-          userRole: res!.user_role,
+          userName: res.user_name,
+          userRole: res.user_role,
         });
       })
       .catch(err => this.setState({ error: true, errorMessage: err }));
@@ -82,13 +82,10 @@ export class AuthProvider extends React.Component<RouteComponentProps, AuthConte
         if (res.error) {
           throw new Error(res.error);
         }
-        if (!res.token || !res.user_name || !res.user_role) {
-          throw new Error('Nieprawidłowa odpowiedź z serwera');
-        }
         return res;
       })
       .then(res => {
-        this.saveCookiesState(res!.user_name!, res!.user_role!, res!.token!);
+        this.saveCookiesState(res.user_name, res.user_role, res.token);
         return res;
       })
       .then(res =>
