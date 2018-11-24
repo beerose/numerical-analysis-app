@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import React from 'react';
 
 import { login, newAccount } from './api/authApi';
@@ -20,37 +21,31 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
     this.setState({ userAuth: false, userRole: undefined, userName: undefined });
   };
 
-  saveLocalStorageState = (longExpired?: boolean) => {
+  saveCookiesState = (longExpiration?: boolean) => {
     const { userName, userRole, token } = this.state;
     const now = new Date();
-    const expirationHours = longExpired ? 7 * 24 : 24;
+    const expirationHours = longExpiration ? 7 * 24 : 1;
     const expires = now.setHours(now.getHours() + expirationHours);
-    localStorage.setItem('token', JSON.stringify({ token, token_expires: expires.toString() }));
-    localStorage.setItem('user', JSON.stringify({ user_role: userRole, user_name: userName }));
+
+    Cookies.set('token', token || '', { expires });
+    Cookies.set('user_role', userRole || '', { expires });
+    Cookies.set('user_name', userName || '', { expires });
   };
 
   checkLocalStorageState = () => {
-    const storageToken = localStorage.getItem('token');
-    const storageUser = localStorage.getItem('user');
-    if (!storageToken || !storageUser) {
+    const token = Cookies.get('token');
+    const userName = Cookies.get('user_name');
+    const userRole = Cookies.get('user_role');
+
+    if (!token || !userName || !userRole) {
       return this.resetState();
     }
-    const { token, token_expires } = JSON.parse(storageToken);
-    const { user_name, user_role } = JSON.parse(storageUser);
-    if (token && user_role && user_name && token_expires) {
-      const now = new Date();
-      if (token_expires <= now) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        return this.resetState();
-      }
-      this.setState({ userAuth: true, userRole: user_role, userName: user_name });
-    }
+
+    this.setState({ userRole, userName, userAuth: true });
   };
 
   componentWillMount() {
     this.checkLocalStorageState();
-    // return setInterval(this.checkLocalStorageState, 3000); // 10 minutes
   }
 
   loginUser = (email: string, password: string, remember: boolean) => {
@@ -69,7 +64,7 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
         userName: res.user_name,
         userRole: res.user_role,
       });
-      this.saveLocalStorageState(remember);
+      this.saveCookiesState(remember);
     });
   };
 
@@ -89,7 +84,7 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
         userName: res.user_name,
         userRole: res.user_role,
       });
-      this.saveLocalStorageState();
+      this.saveCookiesState();
     });
   };
 
