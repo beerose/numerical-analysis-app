@@ -14,6 +14,7 @@ import {
 
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   const auth = req.headers.authorization;
+  console.log('auth', auth);
   if (auth || !auth) return next(); // TO DO
   return res.status(401).send('You shall not pass!');
 };

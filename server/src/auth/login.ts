@@ -1,9 +1,12 @@
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
+import { UserDTO } from '../../../common/api';
 import { apiMessages } from '../../../common/apiMessages';
 import { connection } from '../store/connection';
 import { findUserWithPasswordQuery } from '../store/queries';
+
+import { generateToken } from './utils';
 
 interface LoginUserRequest extends Request {
   body: {
@@ -18,7 +21,7 @@ export const loginUser = (req: LoginUserRequest, res: Response) => {
       sql: findUserWithPasswordQuery,
       values: [email, password],
     },
-    (err, result) => {
+    (err, result: UserDTO[]) => {
       if (err) {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
@@ -26,9 +29,10 @@ export const loginUser = (req: LoginUserRequest, res: Response) => {
         return res.status(codes.UNAUTHORIZED).send({ error: apiMessages.invalidEmailOrPassword });
       }
 
-      return res
-        .status(200)
-        .send({ token: 'token', user_name: result[0].user_name, user_role: result[0].user_role });
+      const { user_name, user_role } = result[0];
+      const token = generateToken(email, user_name);
+
+      return res.status(200).send({ token, user_name, user_role });
     }
   );
 };
