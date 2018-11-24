@@ -4,6 +4,7 @@ import { ROUTES, UserDTO } from '../../../common/api';
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from './';
+import { authFetch } from './utils';
 
 const { USERS } = ROUTES;
 
@@ -18,52 +19,54 @@ export const listUsers = async ({
   roles?: string[] | string;
   currentPage?: number;
 }): Promise<{ users: UserDTO[]; total: string }> => {
-  const response = await fetch(
-    `${SERVER_URL}${ROUTES.USERS.list}?${qs.stringify({
-      roles,
-      limit: LIMIT,
-      offset: (currentPage - 1) * LIMIT,
-      search_param: searchParam,
-    })}`,
-    {
-      method: 'GET',
-    }
+  const options: RequestInit = {
+    method: 'GET',
+  };
+
+  const queryParams = qs.stringify({
+    roles,
+    limit: LIMIT,
+    offset: (currentPage - 1) * LIMIT,
+    search_param: searchParam,
+  });
+
+  return authFetch<{ users: UserDTO[]; total: string }>(
+    `${SERVER_URL}${ROUTES.USERS.list}?${queryParams}`,
+    options
   );
-  return response.json();
 };
 
 export const addUser = async (user: UserDTO) => {
-  const response = await fetch(SERVER_URL + USERS.add, {
+  const options = {
     body: JSON.stringify(user),
     headers: {
       Accept: 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
     },
     method: 'POST',
-  });
-  response.json().then(res => showMessage(res));
+  };
+  await authFetch(SERVER_URL + USERS.add, options).then(res => showMessage(res));
 };
 
 export const deleteUser = async (id: string) => {
-  const response = await fetch(SERVER_URL + USERS.delete, {
+  const options = {
     body: JSON.stringify({ id }),
     headers: {
       Accept: 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
     },
     method: 'DELETE',
-  });
-  response.json().then(res => showMessage(res));
+  };
+
+  await authFetch(SERVER_URL + USERS.delete, options).then(res => showMessage(res));
 };
 
 export const updateUser = async (user: UserDTO) => {
-  const response = await fetch(SERVER_URL + USERS.update, {
+  const options = {
     body: JSON.stringify(user),
     headers: {
       Accept: 'application/json, text/plain, */*',
-      'Content-Type': 'application/json',
     },
     method: 'POST',
-  });
-  response.json().then(res => showMessage(res));
+  };
+
+  await authFetch(SERVER_URL + USERS.update, options).then(res => showMessage(res));
 };

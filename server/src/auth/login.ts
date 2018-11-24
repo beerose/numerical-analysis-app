@@ -25,6 +25,7 @@ export const loginUser = (req: LoginUserRequest, res: Response) => {
       if (!result.length) {
         return res.status(codes.UNAUTHORIZED).send({ error: apiMessages.invalidEmailOrPassword });
       }
+
       return res
         .status(200)
         .send({ token: 'token', user_name: result[0].user_name, user_role: result[0].user_role });
