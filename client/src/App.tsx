@@ -10,15 +10,15 @@ export class App extends React.Component {
   render() {
     return (
       <Router basename={process.env.PUBLIC_URL}>
-        <AuthProvider>
-          <Route>
-            {routeContext => (
+        <Route>
+          {routeContext => (
+            <AuthProvider {...routeContext}>
               <BaseLayer {...routeContext}>
                 <RouterLayer />
               </BaseLayer>
-            )}
-          </Route>
-        </AuthProvider>
+            </AuthProvider>
+          )}
+        </Route>
       </Router>
     );
   }

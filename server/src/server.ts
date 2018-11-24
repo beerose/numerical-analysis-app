@@ -37,8 +37,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(isAuthenticated);
-
 const { USERS, GROUPS, ACCOUNTS } = ROUTES;
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -53,12 +51,12 @@ app.post(
 );
 app.post(ACCOUNTS.login, validateLoginUserRequest, loginUser);
 
-app.get(USERS.list, users.list);
-app.post(USERS.add, validateAddRequest, users.add);
-app.post(USERS.update, validateUpdateRequest, users.update);
-app.delete(USERS.delete, validateDeleteRequest, users.deleteUser);
+app.get(USERS.list, isAuthenticated, users.list);
+app.post(USERS.add, isAuthenticated, validateAddRequest, users.add);
+app.post(USERS.update, isAuthenticated, validateUpdateRequest, users.update);
+app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUser);
 
-app.post(GROUPS.upload, validateUploadRequest, groups.upload, sendMagicLinks);
+app.post(GROUPS.upload, isAuthenticated, validateUploadRequest, groups.upload, sendMagicLinks);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

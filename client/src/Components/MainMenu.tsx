@@ -58,6 +58,7 @@ export class MainMenu extends React.Component<Props> {
 
   render() {
     const menuItems = this.getMenuItemsForUserRole(this.props.userRole);
+    console.log(this.props);
 
     return (
       <Menu

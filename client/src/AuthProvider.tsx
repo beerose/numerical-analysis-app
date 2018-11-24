@@ -1,11 +1,12 @@
 import Cookies from 'js-cookie';
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
 
 import { login, newAccount } from './api/authApi';
 import { AuthContextProvider, AuthContextState } from './AuthContext';
 
-export class AuthProvider extends React.Component<{}, AuthContextState> {
-  constructor(props: {}) {
+export class AuthProvider extends React.Component<RouteComponentProps, AuthContextState> {
+  constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
       actions: {
@@ -21,8 +22,12 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
     this.setState({ userAuth: false, userRole: undefined, userName: undefined });
   };
 
-  saveCookiesState = (longExpiration?: boolean) => {
-    const { userName, userRole, token } = this.state;
+  saveCookiesState = (
+    userName: string,
+    userRole: string,
+    token: string,
+    longExpiration?: boolean
+  ) => {
     const now = new Date();
     const expirationHours = longExpiration ? 7 * 24 : 1;
     const expires = now.setHours(now.getHours() + expirationHours);
@@ -49,43 +54,55 @@ export class AuthProvider extends React.Component<{}, AuthContextState> {
   }
 
   loginUser = (email: string, password: string, remember: boolean) => {
-    login(email, password).then(res => {
-      if (res.error) {
-        this.setState({ error: true, errorMessage: res.error });
-        return;
-      }
-      if (!res.token || !res.user_name || !res.user_role) {
-        this.setState({ error: true, errorMessage: 'Nieprawidłowa odpowiedź z serwera' });
-        return;
-      }
-      this.setState({
-        token: res.token,
-        userAuth: true,
-        userName: res.user_name,
-        userRole: res.user_role,
-      });
-      this.saveCookiesState(remember);
-    });
+    login(email, password)
+      .then(res => {
+        if (res.error) {
+          throw new Error(res.error);
+        }
+        if (!res.token || !res.user_name || !res.user_role) {
+          throw new Error('Nieprawidłowa odpowiedź z serwera');
+        }
+        return res;
+      })
+      .then(res => {
+        this.saveCookiesState(res!.user_name!, res!.user_role!, res!.token!, remember);
+        return res;
+      })
+      .then(res => {
+        this.setState({
+          token: res!.token!,
+          userAuth: true,
+          userName: res!.user_name,
+          userRole: res!.user_role,
+        });
+      })
+      .catch(err => this.setState({ error: true, errorMessage: err }));
   };
 
   createNewAccount = (token: string, password: string) => {
-    newAccount(token, password).then(res => {
-      if (res.error) {
-        this.setState({ error: true, errorMessage: res.error });
-        return;
-      }
-      if (!res.token || !res.user_name || !res.user_role) {
-        this.setState({ error: true, errorMessage: 'Nieprawidłowa odpowiedź z serwera' });
-        return;
-      }
-      this.setState({
-        token: res.token,
-        userAuth: true,
-        userName: res.user_name,
-        userRole: res.user_role,
-      });
-      this.saveCookiesState();
-    });
+    newAccount(token, password)
+      .then(res => {
+        if (res.error) {
+          throw new Error(res.error);
+        }
+        if (!res.token || !res.user_name || !res.user_role) {
+          throw new Error('Nieprawidłowa odpowiedź z serwera');
+        }
+        return res;
+      })
+      .then(res => {
+        this.saveCookiesState(res!.user_name!, res!.user_role!, res!.token!);
+        return res;
+      })
+      .then(res =>
+        this.setState({
+          token: res.token,
+          userAuth: true,
+          userName: res.user_name,
+          userRole: res.user_role,
+        })
+      )
+      .catch(err => this.setState({ error: true, errorMessage: err }));
   };
 
   render() {
