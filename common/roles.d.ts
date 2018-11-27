@@ -3,4 +3,4 @@ export declare enum ROLES {
     superUser = "superUser",
     student = "student"
 }
-export declare const userRoleOptions: ROLES[];
+export declare const userRoleOptions: string[];

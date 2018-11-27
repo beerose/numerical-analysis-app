@@ -6,4 +6,4 @@ var ROLES;
     ROLES["superUser"] = "superUser";
     ROLES["student"] = "student";
 })(ROLES = exports.ROLES || (exports.ROLES = {}));
-exports.userRoleOptions = [ROLES.admin, ROLES.student, ROLES.superUser];
+exports.userRoleOptions = Object.keys(ROLES);

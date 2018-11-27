@@ -4,4 +4,4 @@ export enum ROLES {
   student = 'student',
 }
 
-export const userRoleOptions = [ROLES.admin, ROLES.student, ROLES.superUser];
+export const userRoleOptions = Object.keys(ROLES);
