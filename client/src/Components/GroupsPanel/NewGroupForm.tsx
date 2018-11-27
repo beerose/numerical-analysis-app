@@ -1,4 +1,4 @@
-import { Button, Col, Form, Icon, Input, Radio, Row, Select, TimePicker } from 'antd';
+import { Button, Form, Icon, Input, Radio, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { SelectValue } from 'antd/lib/select';
 import { css } from 'emotion';
@@ -150,9 +150,7 @@ class NewGroupForm extends React.Component<Props, State> {
           })(<SelectSemester />)}
         </FormItem>
         <FormItem label={LABELS.classRoomNumber} {...formItemLayout}>
-          {getFieldDecorator('class_room', {
-            rules: [{ required: true, message: LABELS.classRoomNumberRequired }],
-          })(
+          {getFieldDecorator('class_room')(
             <Input
               prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
               placeholder={LABELS.classRoomNumber}
