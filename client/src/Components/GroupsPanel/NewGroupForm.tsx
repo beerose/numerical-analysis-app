@@ -71,8 +71,8 @@ const formStyles = css`
 type FormValues = {
   academic_year: string;
   class_room: number | string;
-  group: 'lab' | 'exercise' | 'lecture';
-  group_name: GROUPS;
+  group: GROUPS;
+  group_name: string;
   super_user_id: string;
 };
 
