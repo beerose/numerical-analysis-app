@@ -101,7 +101,6 @@ interface ListUsersResponse extends Response {
   send: (body: { users: UserDTO[]; total: number }) => Response;
 }
 export const list = (req: ListUsersRequest, res: ListUsersResponse) => {
-  console.log(req.cookies);
   const { search_param, roles, offset, limit } = req.query;
   const listUsersQuery = prepareListUsersQuery(search_param, roles);
   const countUsersQuery = prepareCountUsersQuery(search_param, roles);

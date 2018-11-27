@@ -1,4 +1,4 @@
-import { Button, Col, Form, Icon, Input, Row, Select, TimePicker } from 'antd';
+import { Button, Col, Form, Icon, Input, Radio, Row, Select, TimePicker } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { SelectValue } from 'antd/lib/select';
 import { css } from 'emotion';
@@ -44,13 +44,13 @@ export const SelectSemester = React.forwardRef(
       placeholder={
         <>
           <Icon type="table" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
-          {LABELS.semester}
+          Rok akademicki
         </>
       }
       onChange={onChange}
       ref={ref}
     >
-      {['letni', 'zimowy'].map(o => (
+      {['2018/2019', '2019'].map(o => (
         <Select.Option value={o} key={o}>
           {o}
         </Select.Option>
@@ -59,45 +59,11 @@ export const SelectSemester = React.forwardRef(
   )
 );
 
-const SelectDay = React.forwardRef(
-  (
-    { onChange, placeholder }: { onChange?: (value: SelectValue) => void; placeholder: string },
-    ref: React.Ref<Select>
-  ) => (
-    <Select
-      showArrow
-      placeholder={
-        <>
-          <Icon type="calendar" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
-          {placeholder}
-        </>
-      }
-      ref={ref}
-      onChange={onChange}
-    >
-      {LABELS.weekdays.map(day => (
-        <Select.Option key={day} value={day}>
-          {day}
-        </Select.Option>
-      ))}
-    </Select>
-  )
-);
-
 const formStyles = css`
-  width: 30vw;
+  min-width: 28.5vw;
 
   @media (max-device-width: 680px) {
-    width: 60vw;
-  }
-
-  .ant-time-picker {
-    width: 100% !important;
-  }
-`;
-
-const timePickerStyles = css`
-  @media (max-device-width: 680px) {
+    min-width: 42vw;
   }
 `;
 
@@ -139,78 +105,51 @@ class NewGroupForm extends React.Component<Props, State> {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        sm: { span: 8 },
+        xs: { span: 24 },
+      },
+      wrapperCol: {
+        sm: { span: 16 },
+        xs: { span: 24 },
+      },
+    };
 
     return (
       <Form onSubmit={this.handleSubmit} className={formStyles}>
-        <FormItem>
+        <FormItem label={LABELS.group} {...formItemLayout}>
+          {getFieldDecorator('group', {
+            rules: [{ required: true, message: LABELS.groupRequired }],
+          })(
+            <Radio.Group buttonStyle="solid">
+              <Radio.Button value="lecture">{LABELS.lecture}</Radio.Button>
+              <Radio.Button value="exercise">{LABELS.exercise}</Radio.Button>
+              <Radio.Button value="lab">{LABELS.lab}</Radio.Button>
+            </Radio.Group>
+          )}
+        </FormItem>
+        <FormItem label={LABELS.superUser} {...formItemLayout}>
           {getFieldDecorator('super_user', {
             rules: [{ required: true, message: LABELS.nameRequired }],
           })(<SelectSuperUser superUsers={this.state.superUsers} />)}
         </FormItem>
-        <FormItem>
-          {getFieldDecorator('semester', {
-            rules: [{ required: true, message: LABELS.semesterRequired }],
-          })(<SelectSemester />)}
-        </FormItem>
-        <span>Pracownia</span>
-        <Row gutter={8}>
-          <Col span={12}>
-            <FormItem>
-              {getFieldDecorator('lab_day', {
-                rules: [{ required: true, message: LABELS.labDayRequired }],
-              })(<SelectDay placeholder={LABELS.labDay} />)}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem>
-              {getFieldDecorator('lab_time', {
-                rules: [{ required: true, message: LABELS.labTimeRequired }],
-              })(
-                <TimePicker
-                  className={timePickerStyles}
-                  format="HH:mm"
-                  minuteStep={15}
-                  placeholder={LABELS.labTime}
-                />
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <FormItem>
-          {getFieldDecorator('lab_room', {
-            rules: [{ required: true, message: LABELS.labRoomNumberRequired }],
+        <FormItem label={LABELS.groupName} {...formItemLayout}>
+          {getFieldDecorator('group_name', {
+            rules: [{ required: true, message: LABELS.groupNameRequired }],
           })(
             <Input
-              prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder={LABELS.labRoomNumber}
+              prefix={<Icon type="tags" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder={LABELS.groupName}
             />
           )}
         </FormItem>
-        <span>Ćwiczenia</span>
-        <Row gutter={8}>
-          <Col span={12}>
-            <FormItem>
-              {getFieldDecorator('class_day', {
-                rules: [{ required: true, message: LABELS.classDayRequired }],
-              })(<SelectDay placeholder={LABELS.labDay} />)}
-            </FormItem>
-          </Col>
-          <Col span={12}>
-            <FormItem>
-              {getFieldDecorator('class_time', {
-                rules: [{ required: true, message: LABELS.classTimeRequired }],
-              })(
-                <TimePicker
-                  className={timePickerStyles}
-                  format="HH:mm"
-                  minuteStep={15}
-                  placeholder={LABELS.classTime}
-                />
-              )}
-            </FormItem>
-          </Col>
-        </Row>
-        <FormItem>
+        <FormItem label={LABELS.academicYear} {...formItemLayout}>
+          {getFieldDecorator('academic_year', {
+            rules: [{ required: true, message: LABELS.academicYearRequired }],
+          })(<SelectSemester />)}
+        </FormItem>
+        <FormItem label={LABELS.classRoomNumber} {...formItemLayout}>
           {getFieldDecorator('class_room', {
             rules: [{ required: true, message: LABELS.classRoomNumberRequired }],
           })(
@@ -220,14 +159,19 @@ class NewGroupForm extends React.Component<Props, State> {
             />
           )}
         </FormItem>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <FormItem
+          wrapperCol={{
+            sm: { span: 16, offset: 8 },
+            xs: { span: 24, offset: 0 },
+          }}
+        >
           <Button type="primary" htmlType="submit" style={{ marginRight: '5px' }}>
             Dodaj
           </Button>
           <Button type="default" style={{ marginLeft: '5px' }} onClick={this.props.onCancel}>
             Anuluj
           </Button>
-        </div>
+        </FormItem>
       </Form>
     );
   }
