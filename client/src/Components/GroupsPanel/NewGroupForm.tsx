@@ -5,6 +5,7 @@ import { css } from 'emotion';
 import * as React from 'react';
 
 import { UserDTO } from '../../../../common/api';
+import { GROUPS } from '../../../../common/groups';
 import { ROLES } from '../../../../common/roles';
 import { usersService } from '../../api';
 import { LABELS } from '../../utils/labels';
@@ -67,6 +68,14 @@ const formStyles = css`
   }
 `;
 
+type FormValues = {
+  academic_year: string;
+  class_room: number | string;
+  group: 'lab' | 'exercise' | 'lecture';
+  group_name: GROUPS;
+  super_user_id: string;
+};
+
 type State = {
   superUsers: UserDTO[];
 };
@@ -87,22 +96,15 @@ class NewGroupForm extends React.Component<Props, State> {
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    this.props.form.validateFields(err => {
+    this.props.form.validateFields((err, values: FormValues) => {
+      console.log('values', values);
       if (err) {
         return;
       }
       this.props.onSubmit();
-      setTimeout(() => {
-        this.props.form.resetFields();
-        // workaround for ant bug
-        const selected = document.getElementsByClassName('ant-select-selection-selected-value');
-        if (selected && selected[0]) {
-          selected[0].innerHTML =
-            '<div unselectable="on" class="ant-select-selection__placeholder" style="display: block; user-select: none;">Rola użytkownika</div>';
-        }
-      }, 1000);
     });
   };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
