@@ -6,6 +6,7 @@ exports.ROUTES = {
         new: '/accounts/new',
     },
     GROUPS: {
+        list: '/groups',
         upload: '/groups/upload',
     },
     USERS: {
@@ -15,3 +16,9 @@ exports.ROUTES = {
         update: '/users/update',
     },
 };
+var GroupEnum;
+(function (GroupEnum) {
+    GroupEnum["Exercise"] = "\u0106wiczenia";
+    GroupEnum["Lab"] = "Pracownia";
+    GroupEnum["Lecture"] = "Wyk\u0142ad";
+})(GroupEnum = exports.GroupEnum || (exports.GroupEnum = {}));

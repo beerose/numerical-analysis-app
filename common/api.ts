@@ -9,6 +9,7 @@ export const ROUTES = {
     new: '/accounts/new',
   },
   GROUPS: {
+    list: '/groups',
     upload: '/groups/upload',
   },
   USERS: {
@@ -31,3 +32,19 @@ export type Pagination = {
   offset: number;
   limit: number;
 };
+
+export type GroupDTO = {
+  id: string;
+  group_name: string;
+  group_type: GroupEnum;
+  lecturer: string;
+  academic_year: string;
+  class: number;
+  data: Record<string, any>;
+};
+
+export enum GroupEnum {
+  Exercise = 'Ćwiczenia',
+  Lab = 'Pracownia',
+  Lecture = 'Wykład',
+}

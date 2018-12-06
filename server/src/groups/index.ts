@@ -3,7 +3,7 @@ import * as codes from 'http-status-codes';
 
 import { apiMessages } from '../../../common/apiMessages';
 import { connection } from '../store/connection';
-import { upsertUserQuery } from '../store/queries';
+import { listGroupsQuery, upsertUserQuery } from '../store/queries';
 
 import { readCSV } from './uploadUtils';
 
@@ -54,4 +54,18 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
       }
     );
   });
+};
+
+export const list = (_req: Request, res: Response) => {
+  return connection.query(
+    {
+      sql: listGroupsQuery,
+    },
+    (err, groups) => {
+      if (err) {
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      }
+      return res.status(codes.OK).send({ groups });
+    }
+  );
 };

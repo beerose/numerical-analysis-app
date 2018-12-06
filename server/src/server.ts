@@ -57,6 +57,7 @@ app.post(USERS.update, isAuthenticated, validateUpdateRequest, users.update);
 app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUser);
 
 app.post(GROUPS.upload, isAuthenticated, validateUploadRequest, groups.upload, sendMagicLinks);
+app.get(GROUPS.list, isAuthenticated, groups.list);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

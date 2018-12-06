@@ -97,3 +97,16 @@ export const findTokenQuery = `
 export const storeTokenQuery = `
   INSERT INTO token(token) VALUES (?);
 `;
+
+export const listGroupsQuery = `
+  SELECT
+    g.id,
+    group_name,
+    group_type,
+    u.name,
+    academic_year,
+    class,
+    g.data
+  FROM
+    groups g JOIN users u ON (g.lecturer = u.id);
+`;
