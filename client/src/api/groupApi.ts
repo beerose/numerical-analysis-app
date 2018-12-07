@@ -1,4 +1,4 @@
-import { ROUTES, UserDTO } from '../../../common/api';
+import { GroupDTO, ROUTES, UserDTO } from '../../../common/api';
 
 import { SERVER_URL } from '.';
 import { authFetch } from './utils';
@@ -15,4 +15,15 @@ export const uploadUsers = async (fileContent: string): Promise<{ message: UserD
   };
 
   return authFetch<{ message: UserDTO[] }>(SERVER_URL + GROUPS.upload, options);
+};
+
+export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
+  const options = {
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+    },
+    method: 'GET',
+  };
+
+  return authFetch<{ groups: GroupDTO[] }>(SERVER_URL + GROUPS.list, options);
 };

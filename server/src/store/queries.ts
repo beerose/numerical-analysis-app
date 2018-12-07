@@ -103,7 +103,7 @@ export const listGroupsQuery = `
     g.id,
     group_name,
     group_type,
-    u.name,
+    u.user_name as lecturer,
     academic_year,
     class,
     g.data
