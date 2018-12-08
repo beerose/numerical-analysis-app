@@ -1,58 +1,104 @@
-import { Button, Icon, Input, List, Menu, Spin } from 'antd';
-import Sider from 'antd/lib/layout/Sider';
+import { Icon, Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
-import SubMenu from 'antd/lib/menu/SubMenu';
 import { css } from 'emotion';
 import * as React from 'react';
 import styled from 'react-emotion';
-import { RouteComponentProps } from 'react-router';
+import { Route, RouteComponentProps, Switch } from 'react-router';
 
-import { GroupDTO } from '../../../../common/api';
-import { groupsService } from '../../api';
+import { ROUTES } from '../../../../common/api';
 
 const menuStyles = css`
   width: 200px;
-  height: 100vh;
+  height: calc(100vh - 64px);
   margin-left: -50px;
 `;
 
-type State = {};
+const Container = styled.section`
+  display: flex;
+  flex-direction: row;
+`;
+
+type State = {
+  groupId: string;
+};
 export class EditGroupContainer extends React.Component<RouteComponentProps, State> {
-  state = {};
+  state = {
+    groupId: this.props.location.pathname.split('/')[2],
+  };
+
+  goToStudents = () => {
+    const { groupId } = this.state;
+    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/students`);
+  };
+
+  goToLists = () => {
+    const { groupId } = this.state;
+    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/lists`);
+  };
+
+  goToMeetings = () => {
+    const { groupId } = this.state;
+    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/meetings`);
+  };
+
+  goToPresence = () => {
+    const { groupId } = this.state;
+    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/presence`);
+  };
+
+  goToAcitivity = () => {
+    const { groupId } = this.state;
+    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/acitivity`);
+  };
+
+  goToGrades = () => {
+    const { groupId } = this.state;
+    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/grades`);
+  };
 
   render() {
     return (
-      <Menu
-        mode="inline"
-        defaultSelectedKeys={['1']}
-        defaultOpenKeys={['students']}
-        className={menuStyles}
-      >
-        <MenuItem key="students">
-          <Icon type="team" />
-          Studenci
-        </MenuItem>
-        <Menu.Item key="lists">
-          <Icon type="calculator" />
-          Listy zadań
-        </Menu.Item>
-        <Menu.Item key="meetings">
-          <Icon type="schedule" />
-          Spotkania
-        </Menu.Item>
-        <Menu.Item key="presence">
-          <Icon type="calendar" />
-          Obecności
-        </Menu.Item>
-        <Menu.Item key="activity">
-          <Icon type="plus" />
-          Aktywności
-        </Menu.Item>
-        <Menu.Item key="grades">
-          <Icon type="line-chart" />
-          Oceny
-        </Menu.Item>
-      </Menu>
+      <Container>
+        <Menu mode="inline" defaultSelectedKeys={['settings']} className={menuStyles}>
+          <MenuItem key="settings">
+            <Icon type="setting" />
+            Ustawienia grupy
+          </MenuItem>
+          <MenuItem key="students" onClick={this.goToStudents}>
+            <Icon type="team" />
+            Studenci
+          </MenuItem>
+          <Menu.Item key="lists" onClick={this.goToLists}>
+            <Icon type="calculator" />
+            Listy zadań
+          </Menu.Item>
+          <Menu.Item key="meetings" onClick={this.goToMeetings}>
+            <Icon type="schedule" />
+            Spotkania
+          </Menu.Item>
+          <Menu.Item key="presence" onClick={this.goToPresence}>
+            <Icon type="calendar" />
+            Obecności
+          </Menu.Item>
+          <Menu.Item key="activity" onClick={this.goToAcitivity}>
+            <Icon type="plus" />
+            Aktywności
+          </Menu.Item>
+          <Menu.Item key="grades" onClick={this.goToGrades}>
+            <Icon type="line-chart" />
+            Oceny
+          </Menu.Item>
+        </Menu>
+        <Switch>
+          <Route
+            exact={true}
+            path={'/groups/:id/students'}
+            component={() => {
+              return <div>Students</div>;
+            }}
+          />
+        </Switch>
+      </Container>
     );
   }
 }

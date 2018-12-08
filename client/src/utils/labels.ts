@@ -36,6 +36,7 @@ export const LABELS = {
   magicLinkInvalid: 'Link wygasł lub jest niepoprawny',
   name: 'Imię i nazwisko',
   nameRequired: 'Należy podać imię i nazwisko',
+  newGroup: 'Nowa grupa',
   newUser: 'Nowy użytkownik',
   no: 'nie',
   noPrivilegesToUseApp: 'Brak uprawnień do korzystania z aplikacji',

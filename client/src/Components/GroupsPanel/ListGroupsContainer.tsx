@@ -3,9 +3,11 @@ import { css } from 'emotion';
 import * as React from 'react';
 import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
+import { Link } from 'react-router-dom';
 
-import { GroupDTO } from '../../../../common/api';
+import { GroupDTO, ROUTES } from '../../../../common/api';
 import { groupsService } from '../../api';
+import { LABELS } from '../../utils/labels';
 
 const Container = styled.div`
   width: 100%;
@@ -14,9 +16,10 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const ActionsPanel = styled.div`
-  display: flex;
-  padding: 15px 38px;
+const newGroupButtonStyles = css`
+  width: 140px;
+  margin: 25px 0 7px 38px;
+  align-self: start;
 `;
 
 type State = {
@@ -40,27 +43,13 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
     console.log(this.state);
     return (
       <Container>
-        <ActionsPanel>
-          <Input
-            placeholder="Szukaj według prowadzącego"
-            className={css`
-              width: 300px;
-              margin-right: 15px;
-            `}
-          />
-          <Button shape="circle" icon="search" />
-        </ActionsPanel>
         <Button
           icon="usergroup-add"
           type="primary"
           onClick={() => this.props.history.push('/groups/new')}
-          className={css`
-            width: 140px;
-            margin: 0 0 7px 38px;
-            align-self: start;
-          `}
+          className={newGroupButtonStyles}
         >
-          Nowa grupa
+          {LABELS.newGroup}
         </Button>
         <Spin spinning={this.state.isLoading}>
           <List
@@ -70,17 +59,13 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
               padding: 0 40px;
             `}
             renderItem={(item: GroupDTO) => (
-              <List.Item
-                className={css`
-                  /* background: white; */
-                  border-radius: 4px;
-                  cursor: pointer;
-                  /* border: 1px solid #e8e8e8; */
-                `}
-                actions={[<a>usuń</a>]}
-              >
+              <List.Item actions={[<a>usuń</a>]}>
                 <List.Item.Meta
-                  title={<a>{item.group_name}</a>}
+                  title={
+                    <Link to={`${ROUTES.GROUPS.details.replace(':id', item.id)}`}>
+                      {item.group_name}
+                    </Link>
+                  }
                   description={`Prowadzący: ${item.lecturer}`}
                 />
               </List.Item>

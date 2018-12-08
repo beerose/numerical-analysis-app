@@ -53,12 +53,11 @@ export class MainMenu extends React.Component<Props> {
   }
 
   getSelectedItem() {
-    return this.props.location.pathname.replace('/', '');
+    return this.props.location.pathname.split('/')[1];
   }
 
   render() {
     const menuItems = this.getMenuItemsForUserRole(this.props.userRole);
-    console.log(this.props);
 
     return (
       <Menu

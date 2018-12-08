@@ -6,6 +6,7 @@ exports.ROUTES = {
         new: '/accounts/new',
     },
     GROUPS: {
+        details: '/groups/:id',
         list: '/groups',
         upload: '/groups/upload',
     },

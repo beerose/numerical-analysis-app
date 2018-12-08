@@ -8,6 +8,7 @@ export declare const ROUTES: {
         new: string;
     };
     GROUPS: {
+        details: string;
         list: string;
         upload: string;
     };

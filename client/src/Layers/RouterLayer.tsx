@@ -21,6 +21,10 @@ export const RouterLayer = () => {
         path="/groups/new"
         render={routeContext => <CreateGroupContainer {...routeContext} />}
       />
+      <Route
+        path="/groups/:id/:section"
+        render={routeContext => <EditGroupContainer {...routeContext} />}
+      />
       <Route path="/groups/:id" render={routeContext => <EditGroupContainer {...routeContext} />} />
       <Route path="/accounts/new" render={routeContext => <NewAccount {...routeContext} />} />
     </Switch>
