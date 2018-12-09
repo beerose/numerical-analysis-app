@@ -20,3 +20,14 @@ export const validateListStudentsForGroupRequest = (
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidListStudentsForGroupReq });
 };
+
+export const validateDeleteStudentFromGroupRequest = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.query && req.query.user_id) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidListStudentsForGroupReq });
+};

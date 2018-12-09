@@ -6,6 +6,7 @@ exports.apiMessages = {
     idRequired: 'Id jest wymagane',
     internalError: 'Wystąpił błąd, spróbuj ponownie',
     invalidCSV: 'Nieprawidłowy plik CSV. Wymagany format to: imię, nazwisko, indeks, email.',
+    invalidDeleteStudentFromGroupReq: 'user_id jest wymagane',
     invalidEmailOrPassword: 'Nieprawidłowy email lub hasło',
     invalidListStudentsForGroupReq: 'group_id jest wymagane',
     invalidLoginRequest: 'Pola password i email są wymagane',

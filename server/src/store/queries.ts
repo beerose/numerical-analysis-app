@@ -125,3 +125,7 @@ export const listStudentsForGroupQuery = `
       group_id = ?
   );
 `;
+
+export const deleteStudentFromGroup = `
+  DELETE FROM user_belongs_to_group WHERE user_id = ?;
+`;
