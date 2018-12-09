@@ -1,10 +1,13 @@
-import { Button, Icon, Menu, Spin, Upload } from 'antd';
+import { Button, Spin, Upload } from 'antd';
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
 
-import { UserDTO } from '../../../../common/api';
-import { groupsService } from '../../api';
-import { UsersTable } from '../EditableUserTable';
+import { UserDTO } from '../../../../../common/api';
+import { groupsService } from '../../../api';
+import { LABELS } from '../../../utils/labels';
+import { UsersTable } from '../../EditableUserTable';
+
+import { WrappedNewStudentModalForm } from './AddStudentForm';
 
 const Container = styled.section`
   display: flex;
@@ -25,9 +28,11 @@ type Props = {
 type State = {
   students: UserDTO[];
   isFetching: boolean;
+  addStudentModalVisible: boolean;
 };
 export class StudentsSection extends React.Component<Props, State> {
   state = {
+    addStudentModalVisible: false,
     isFetching: false,
     students: [],
   };
@@ -69,21 +74,51 @@ export class StudentsSection extends React.Component<Props, State> {
     });
   }
 
+  addNewStudent = (user: UserDTO) => {
+    groupsService.addStudentToGroup(user, this.props.groupId).then(() => {
+      this.setState({ addStudentModalVisible: false });
+      this.updateStudentsList();
+    });
+  };
+
+  cancelAddNewStudent = () => {
+    this.setState({ addStudentModalVisible: false });
+  };
+
+  showAddStudentModal = () => {
+    this.setState({ addStudentModalVisible: true });
+  };
+
   render() {
+    const { students, isFetching, addStudentModalVisible } = this.state;
     return (
       <Container>
-        <Upload accept="text/csv" showUploadList={false} customRequest={this.onUpload}>
-          <Button type="default" icon="upload" className={buttonStyles}>
-            CSV Upload
+        <WrappedNewStudentModalForm
+          onSubmit={this.addNewStudent}
+          visible={addStudentModalVisible}
+          onCancel={this.cancelAddNewStudent}
+        />
+        <section>
+          <Button
+            icon="user-add"
+            type="primary"
+            onClick={this.showAddStudentModal}
+            className={buttonStyles}
+          >
+            {LABELS.addNewUser}
           </Button>
-        </Upload>
-        <Spin spinning={this.state.isFetching}>
+          <Upload accept="text/csv" showUploadList={false} customRequest={this.onUpload}>
+            <Button type="default" icon="upload">
+              CSV Upload
+            </Button>
+          </Upload>
+        </section>
+        <Spin spinning={isFetching}>
           <UsersTable
-            pageSize={5}
             showPagination={false}
             onDelete={this.deleteStudent}
             onUpdate={this.updateStudent}
-            users={this.state.students}
+            users={students}
             extraColumns={['index']}
             style={{
               paddingLeft: '50px',

@@ -20,6 +20,7 @@ import {
 } from './auth';
 import * as groups from './groups';
 import {
+  validateAddStudentToGroupRequest,
   validateDeleteStudentFromGroupRequest,
   validateListStudentsForGroupRequest,
   validateUpdateStudentRequest,
@@ -80,6 +81,12 @@ app.post(
   isAuthenticated,
   validateUpdateStudentRequest,
   groups.updateStudent
+);
+app.post(
+  GROUPS.add_student,
+  isAuthenticated,
+  validateAddStudentToGroupRequest,
+  groups.addStudentToGroup
 );
 
 const listener = app.listen(PORT, () => {

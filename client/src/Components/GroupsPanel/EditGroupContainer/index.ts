@@ -1,0 +1,1 @@
+export { EditGroupContainer } from './EditGroupContainer';

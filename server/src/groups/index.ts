@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
+import { UserDTO } from '../../../common/api';
 import { apiMessages } from '../../../common/apiMessages';
 import { ROLES } from '../../../common/roles';
 import { connection } from '../store/connection';
@@ -158,6 +159,43 @@ export const updateStudent = (req: UpdateStudentRequest, res: Response) => {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
       return res.status(codes.OK).send({ message: apiMessages.userUpdated });
+    }
+  );
+};
+
+interface AddStudentToGroupRequest extends Request {
+  body: {
+    user: UserDTO;
+    group_id: string;
+  };
+}
+export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) => {
+  const { user, group_id } = req.body;
+  connection.query(
+    {
+      sql: upsertUserQuery,
+      values: [[[user.user_name, user.email, ROLES.student, user.student_index]]],
+    },
+    upsertErr => {
+      if (upsertErr) {
+        console.error({ upsertErr });
+        res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+        return;
+      }
+      connection.query(
+        {
+          sql: attachStudentToGroupQuery,
+          values: [[[user.email, group_id]]],
+        },
+        attachErr => {
+          if (attachErr) {
+            console.error({ attachErr });
+            res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+            return;
+          }
+          return res.status(codes.OK).send({ message: apiMessages.userCreated });
+        }
+      );
     }
   );
 };

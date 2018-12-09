@@ -36,8 +36,19 @@ export const validateDeleteStudentFromGroupRequest = (
 
 export const validateUpdateStudentRequest = (req: Request, res: Response, next: NextFunction) => {
   const user = req.body;
-  console.log(user);
   if (user && user.user_name && user.email && user.id) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidUserData });
+};
+
+export const validateAddStudentToGroupRequest = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user } = req.body;
+  if (user && user.user_name && user.email && user.student_index && req.body.group_id) {
     return next();
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidUserData });

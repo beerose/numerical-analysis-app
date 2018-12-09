@@ -64,7 +64,7 @@ type UsersTableState = {
   editingKey: string;
 };
 type UsersTableProps = {
-  pageSize: number;
+  pageSize?: number;
   showPagination: boolean;
   currentPage?: number;
   users: UserDTO[];

@@ -6,6 +6,7 @@ exports.ROUTES = {
         new: '/accounts/new',
     },
     GROUPS: {
+        add_student: '/groups/students.add',
         delete_student: '/groups/students.delete',
         details: '/groups/:id',
         list: '/groups',

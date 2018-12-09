@@ -70,3 +70,15 @@ export const updateUserFromGroup = async (user: UserDTO) => {
 
   await authFetch(SERVER_URL + GROUPS.update_student, options).then(res => showMessage(res));
 };
+
+export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
+  const options = {
+    body: JSON.stringify({ user, group_id: groupId }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+    },
+    method: 'POST',
+  };
+
+  await authFetch(SERVER_URL + GROUPS.add_student, options).then(res => showMessage(res));
+};
