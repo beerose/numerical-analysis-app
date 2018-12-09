@@ -5,6 +5,7 @@ export declare const apiMessages: {
     internalError: string;
     invalidCSV: string;
     invalidEmailOrPassword: string;
+    invalidListStudentsForGroupReq: string;
     invalidLoginRequest: string;
     invalidNewAccountRequest: string;
     invalidUserData: string;

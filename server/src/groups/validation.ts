@@ -9,3 +9,14 @@ export const validateUploadRequest = (req: Request, res: Response, next: NextFun
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidUserData });
 };
+
+export const validateListStudentsForGroupRequest = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.query && req.query.group_id) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidListStudentsForGroupReq });
+};

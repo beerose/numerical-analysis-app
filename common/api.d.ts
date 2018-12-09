@@ -8,8 +8,11 @@ export declare const ROUTES: {
         new: string;
     };
     GROUPS: {
+        delete_student: string;
         details: string;
         list: string;
+        students: string;
+        update_student: string;
         upload: string;
     };
     USERS: {

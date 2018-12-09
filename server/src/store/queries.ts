@@ -110,3 +110,18 @@ export const listGroupsQuery = `
   FROM
     groups g JOIN users u ON (g.lecturer = u.id);
 `;
+
+export const listStudentsForGroupQuery = `
+  SELECT
+    u.id, user_name, email, student_index
+  FROM
+    users as u
+  WHERE u.id IN (
+    SELECT
+      user_id
+    FROM
+      user_belongs_to_group
+    WHERE
+      group_id = ?
+  );
+`;

@@ -6,8 +6,11 @@ exports.ROUTES = {
         new: '/accounts/new',
     },
     GROUPS: {
+        delete_student: '/groups/students.delete',
         details: '/groups/:id',
         list: '/groups',
+        students: '/groups/students.get',
+        update_student: '/groups/students.update',
         upload: '/groups/upload',
     },
     USERS: {

@@ -19,7 +19,7 @@ import {
   validateNewAccountToken,
 } from './auth';
 import * as groups from './groups';
-import { validateUploadRequest } from './groups/validation';
+import { validateListStudentsForGroupRequest, validateUploadRequest } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
 import {
@@ -58,6 +58,12 @@ app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUse
 
 app.post(GROUPS.upload, isAuthenticated, validateUploadRequest, groups.upload, sendMagicLinks);
 app.get(GROUPS.list, isAuthenticated, groups.list);
+app.get(
+  GROUPS.students,
+  isAuthenticated,
+  validateListStudentsForGroupRequest,
+  groups.listStudentsForGroup
+);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

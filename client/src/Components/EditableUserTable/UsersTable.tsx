@@ -68,7 +68,7 @@ type UsersTableProps = {
   showPagination: boolean;
   currentPage?: number;
   users: UserDTO[];
-  total: number;
+  total?: number;
   extraColumns?: ExtraColumnTypes[];
   onUpdate: (user: UserDTO) => void;
   onDelete: (id: string) => void;
@@ -120,7 +120,6 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
   ];
 
   componentWillReceiveProps(nextProps: UsersTableProps) {
-    console.log(nextProps);
     this.setState({ data: nextProps.users, currentPage: nextProps.currentPage || 1 });
   }
 

@@ -1,3 +1,5 @@
+import * as qs from 'query-string';
+
 import { GroupDTO, ROUTES, UserDTO } from '../../../common/api';
 
 import { SERVER_URL } from '.';
@@ -26,4 +28,18 @@ export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
   };
 
   return authFetch<{ groups: GroupDTO[] }>(SERVER_URL + GROUPS.list, options);
+};
+
+export const listStudentsForGroup = async (groupId: string): Promise<{ students: UserDTO[] }> => {
+  const options = {
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+    },
+    method: 'GET',
+  };
+
+  return authFetch<{ students: UserDTO[] }>(
+    `${SERVER_URL + GROUPS.students}?${qs.stringify({ group_id: groupId })}`,
+    options
+  );
 };

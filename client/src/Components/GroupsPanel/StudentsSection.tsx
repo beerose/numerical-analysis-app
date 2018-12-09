@@ -1,8 +1,9 @@
 import { Icon, Menu, Spin } from 'antd';
-import { css } from 'emotion';
 import * as React from 'react';
 import styled from 'react-emotion';
 
+import { UserDTO } from '../../../../common/api';
+import { groupsService } from '../../api';
 import { UsersTable } from '../EditableUserTable';
 
 const Container = styled.section`
@@ -13,7 +14,20 @@ const Container = styled.section`
 type Props = {
   groupId: string;
 };
-export class StudentsSection extends React.Component<Props> {
+type State = {
+  students: UserDTO[];
+};
+export class StudentsSection extends React.Component<Props, State> {
+  state = {
+    students: [],
+  };
+
+  componentWillMount() {
+    groupsService.listStudentsForGroup(this.props.groupId).then(res => {
+      this.setState({ students: res.students });
+    });
+  }
+
   render() {
     return (
       <Container>
@@ -23,16 +37,7 @@ export class StudentsSection extends React.Component<Props> {
             showPagination={false}
             onDelete={() => console.log('action')}
             onUpdate={() => console.log('action')}
-            users={[
-              {
-                email: 'aaa',
-                id: '1',
-                student_index: '123456',
-                user_name: 'ola',
-                user_role: 'student',
-              },
-            ]}
-            total={1}
+            users={this.state.students}
             extraColumns={['index']}
             style={{
               padding: '50px',
