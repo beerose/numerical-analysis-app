@@ -1,6 +1,6 @@
-import { Icon, Menu, Spin } from 'antd';
+import { Button, Icon, Menu, Spin, Upload } from 'antd';
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled, { css } from 'react-emotion';
 
 import { UserDTO } from '../../../../common/api';
 import { groupsService } from '../../api';
@@ -8,8 +8,16 @@ import { UsersTable } from '../EditableUserTable';
 
 const Container = styled.section`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
+
+const buttonStyles = css`
+  margin: 20px 20px 20px 50px;
+`;
+
+type UploadObject = {
+  file: File;
+};
 
 type Props = {
   groupId: string;
@@ -31,13 +39,26 @@ export class StudentsSection extends React.Component<Props, State> {
   }
 
   deleteStudent = (userId: string) => {
-    groupsService.deleteUserFromGroup(userId);
-    this.updateStudentsList();
+    groupsService.deleteUserFromGroup(userId).then(() => {
+      this.updateStudentsList();
+    });
   };
 
   updateStudent = (user: UserDTO) => {
-    groupsService.updateUserFromGroup(user);
-    this.updateStudentsList();
+    groupsService.updateUserFromGroup(user).then(() => {
+      this.updateStudentsList();
+    });
+  };
+
+  onUpload = (uploadObject: UploadObject) => {
+    const { file } = uploadObject;
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => {
+      groupsService.uploadUsers(reader.result as string).then(() => {
+        this.updateStudentsList();
+      });
+    };
   };
 
   updateStudentsList() {
@@ -50,6 +71,11 @@ export class StudentsSection extends React.Component<Props, State> {
   render() {
     return (
       <Container>
+        <Upload accept="text/csv" showUploadList={false} customRequest={this.onUpload}>
+          <Button type="default" icon="upload" className={buttonStyles}>
+            CSV Upload
+          </Button>
+        </Upload>
         <Spin spinning={this.state.isFetching}>
           <UsersTable
             pageSize={5}
@@ -59,7 +85,7 @@ export class StudentsSection extends React.Component<Props, State> {
             users={this.state.students}
             extraColumns={['index']}
             style={{
-              padding: '50px',
+              paddingLeft: '50px',
               width: '600px',
             }}
           />
