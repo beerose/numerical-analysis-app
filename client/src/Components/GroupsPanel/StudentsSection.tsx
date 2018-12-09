@@ -51,11 +51,12 @@ export class StudentsSection extends React.Component<Props, State> {
   };
 
   onUpload = (uploadObject: UploadObject) => {
+    const { groupId } = this.props;
     const { file } = uploadObject;
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = () => {
-      groupsService.uploadUsers(reader.result as string).then(() => {
+      groupsService.uploadUsers(reader.result as string, groupId).then(() => {
         this.updateStudentsList();
       });
     };

@@ -5,6 +5,7 @@ import { apiMessages } from '../../../common/apiMessages';
 import { ROLES } from '../../../common/roles';
 import { connection } from '../store/connection';
 import {
+  attachStudentToGroupQuery,
   deleteStudentFromGroupQuery,
   listGroupsQuery,
   listStudentsForGroupQuery,
@@ -15,15 +16,17 @@ import {
 import { readCSV } from './uploadUtils';
 
 interface UploadRequest extends Request {
-  body: { data: string; group: string };
+  body: { data: string; group_id: string };
 }
 export const upload = (req: UploadRequest, res: Response, next: NextFunction) => {
   const { users, isValid } = readCSV(req.body.data);
   if (!isValid) {
-    return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
+    res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
+    return;
   }
   if (!users || !users.length) {
-    return res.status(codes.PRECONDITION_FAILED).send({ error: apiMessages.emptyCSV });
+    res.status(codes.PRECONDITION_FAILED).send({ error: apiMessages.emptyCSV });
+    return;
   }
 
   const userRows = users.map(user => [
@@ -31,33 +34,50 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
     user.email,
     user.user_role,
     user.student_index,
-    req.body.group,
   ]);
-  return connection.beginTransaction(beginError => {
+  connection.beginTransaction(beginError => {
     if (beginError) {
-      return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      return;
     }
-    return connection.query(
+    connection.query(
       {
         sql: upsertUserQuery,
         values: [userRows],
       },
       upsertErr => {
         if (upsertErr) {
+          console.error(upsertErr);
           connection.rollback(() =>
             res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
           );
-        } else {
-          connection.commit(commitErr => {
-            if (commitErr) {
+          return;
+        }
+        connection.query(
+          {
+            sql: attachStudentToGroupQuery,
+            values: [users.map(u => [u.email, req.body.group_id])],
+          },
+          attachErr => {
+            if (attachErr) {
+              console.error(attachErr);
               connection.rollback(() =>
                 res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
               );
+              return;
             }
-            res.status(codes.OK).send({ message: users });
-            return next();
-          });
-        }
+            connection.commit(commitErr => {
+              if (commitErr) {
+                console.error(commitErr);
+                connection.rollback(() =>
+                  res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+                );
+              }
+              res.status(codes.OK).send({ message: apiMessages.usersUploaded });
+              return next();
+            });
+          }
+        );
       }
     );
   });

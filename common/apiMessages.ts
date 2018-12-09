@@ -16,4 +16,5 @@ export const apiMessages = {
   userDeleted: 'Użytkonik został usunięty',
   userNotFound: 'Użytkownik o podanym adresie email nie istnieje',
   userUpdated: 'Użytkownik został poprawnie zedytowany',
+  usersUploaded: 'Użytkownicy zostali dodani',
 };

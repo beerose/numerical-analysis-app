@@ -16,4 +16,5 @@ export declare const apiMessages: {
     userDeleted: string;
     userNotFound: string;
     userUpdated: string;
+    usersUploaded: string;
 };

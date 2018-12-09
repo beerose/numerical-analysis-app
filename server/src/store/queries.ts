@@ -21,7 +21,7 @@ WHERE id = ?;
 `;
 
 export const upsertUserQuery = `
-INSERT INTO
+INSERT IGNORE INTO
   users (
     user_name,
     email,
@@ -29,7 +29,6 @@ INSERT INTO
     student_index
   )
 VALUES ?
-ON DUPLICATE KEY UPDATE course_group = VALUES(course_group);
 `;
 
 export const deleteUserQuery = `
@@ -112,12 +111,12 @@ export const listGroupsQuery = `
 
 export const listStudentsForGroupQuery = `
   SELECT
-    u.id, user_name, email, student_index
+    id, user_name, email, student_index
   FROM
     users as u
-  WHERE u.id IN (
+  WHERE email IN (
     SELECT
-      user_id
+      user_email
     FROM
       user_belongs_to_group
     WHERE
@@ -127,4 +126,8 @@ export const listStudentsForGroupQuery = `
 
 export const deleteStudentFromGroupQuery = `
   DELETE FROM user_belongs_to_group WHERE user_id = ?;
+`;
+
+export const attachStudentToGroupQuery = `
+  INSERT IGNORE INTO user_belongs_to_group(user_email, group_id) VALUES ?;
 `;

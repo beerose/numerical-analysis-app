@@ -8,16 +8,18 @@ import { authFetch } from './utils';
 
 const { GROUPS } = ROUTES;
 
-export const uploadUsers = async (fileContent: string): Promise<{ message: UserDTO[] }> => {
+export const uploadUsers = async (fileContent: string, groupId: string) => {
   const options = {
-    body: JSON.stringify({ data: fileContent, group: 'test' }),
+    body: JSON.stringify({ data: fileContent, group_id: groupId }),
     headers: {
       Accept: 'application/json, text/plain, */*',
     },
     method: 'POST',
   };
 
-  return authFetch<{ message: UserDTO[] }>(SERVER_URL + GROUPS.upload, options);
+  await authFetch<{ message: string }>(SERVER_URL + GROUPS.upload, options).then(res =>
+    showMessage(res)
+  );
 };
 
 export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {

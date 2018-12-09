@@ -23,6 +23,7 @@
     "@types/mysql": "^2.15.5",
     "@types/nodemailer": "^4.6.5",
     "@types/swagger-ui-express": "^3.0.0",
+    "@types/uniqid": "^4.1.2",
     "atob": "^2.1.2",
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
@@ -33,7 +34,8 @@
     "mysql": "^2.16.0",
     "nodemailer": "^4.6.8",
     "parcel-bundler": "^1.8.3",
-    "swagger-ui-express": "^4.0.1"
+    "swagger-ui-express": "^4.0.1",
+    "uniqid": "^5.0.3"
   },
   "repository": {},
   "license": "MIT",
