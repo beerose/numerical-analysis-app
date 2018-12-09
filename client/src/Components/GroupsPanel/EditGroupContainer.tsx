@@ -58,10 +58,14 @@ export class EditGroupContainer extends React.Component<RouteComponentProps, Sta
     this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/grades`);
   };
 
+  getSelectedItem() {
+    return this.props.location.pathname.split('/')[3] || 'settings';
+  }
+
   render() {
     return (
       <Container>
-        <Menu mode="inline" defaultSelectedKeys={['settings']} className={menuStyles}>
+        <Menu mode="inline" defaultSelectedKeys={[this.getSelectedItem()]} className={menuStyles}>
           <MenuItem key="settings">
             <Icon type="setting" />
             Ustawienia grupy
