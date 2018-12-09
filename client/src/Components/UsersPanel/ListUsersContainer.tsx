@@ -145,6 +145,8 @@ export class ListUsersContainer extends React.Component<{}, State> {
         />
         <Spin spinning={isLoading}>
           <UsersTable
+            showPagination
+            pageSize={10}
             currentPage={currentPage}
             onDelete={this.handleDeleteUser}
             onUpdate={this.handleUpdateUser}

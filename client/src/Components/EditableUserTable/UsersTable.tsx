@@ -64,16 +64,19 @@ type UsersTableState = {
   editingKey: string;
 };
 type UsersTableProps = {
-  currentPage: number;
+  pageSize: number;
+  showPagination: boolean;
+  currentPage?: number;
   users: UserDTO[];
   total: number;
   extraColumns?: ExtraColumnTypes[];
   onUpdate: (user: UserDTO) => void;
   onDelete: (id: string) => void;
-  onTableChange: (cfg: PaginationConfig) => void;
+  onTableChange?: (cfg: PaginationConfig) => void;
+  style?: React.CSSProperties;
 };
 export class UsersTable extends React.Component<UsersTableProps, UsersTableState> {
-  state = { data: [] as UserDTO[], editingKey: '', currentPage: 1 };
+  state = { data: this.props.users, editingKey: '', currentPage: 1 };
   columns: TableColumn[] = [
     ...tableColumns,
     ...getExtraColumnsForRender(this.props.extraColumns),
@@ -117,7 +120,8 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
   ];
 
   componentWillReceiveProps(nextProps: UsersTableProps) {
-    this.setState({ data: nextProps.users, currentPage: nextProps.currentPage });
+    console.log(nextProps);
+    this.setState({ data: nextProps.users, currentPage: nextProps.currentPage || 1 });
   }
 
   isEditing = ({ email }: UserDTO) => {
@@ -169,7 +173,7 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
 
     const paginationConfig = {
       current: this.state.currentPage,
-      pageSize: 10,
+      pageSize: this.props.pageSize,
       superSimple: true,
       total: this.props.total,
     };
@@ -181,8 +185,9 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
         components={components}
         dataSource={this.state.data}
         columns={columns}
-        pagination={paginationConfig}
+        pagination={this.props.showPagination ? paginationConfig : false}
         onChange={this.props.onTableChange}
+        style={this.props.style}
       />
     );
   }

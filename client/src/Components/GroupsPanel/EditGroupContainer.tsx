@@ -7,6 +7,8 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { ROUTES } from '../../../../common/api';
 
+import { StudentsSection } from './StudentsSection';
+
 const menuStyles = css`
   width: 200px;
   height: calc(100vh - 64px);
@@ -93,9 +95,7 @@ export class EditGroupContainer extends React.Component<RouteComponentProps, Sta
           <Route
             exact={true}
             path={'/groups/:id/students'}
-            component={() => {
-              return <div>Students</div>;
-            }}
+            component={() => <StudentsSection groupId={this.state.groupId} />}
           />
         </Switch>
       </Container>
