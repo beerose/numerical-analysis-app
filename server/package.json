@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@types/atob": "^2.1.1",
+    "@types/bcrypt": "^3.0.0",
     "@types/body-parser": "^1.17.0",
     "@types/cors": "^2.8.4",
     "@types/dotenv": "^4.0.3",
@@ -25,6 +26,7 @@
     "@types/swagger-ui-express": "^3.0.0",
     "@types/uniqid": "^4.1.2",
     "atob": "^2.1.2",
+    "bcrypt": "^3.0.2",
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
     "express": "^4.16.3",

@@ -48,23 +48,25 @@ export class BaseLayer extends React.Component<Props> {
     const pathname = this.props.location.pathname;
     return (
       <AuthConsumer>
-        {({ userRole, userAuth, actions, errorMessage }) => (
-          <StyledLayout>
-            <StyledHeader>
-              <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
-              <MainMenu userRole={userRole || ''} location={this.props.location} />
-            </StyledHeader>
-            <ErrorBoundary>
-              <StyledContent>
-                {userAuth || pathname === ROUTES.ACCOUNTS.new ? (
-                  this.props.children
-                ) : (
-                  <WrappedLoginForm onSubmit={actions.login} errorMessage={errorMessage} />
-                )}
-              </StyledContent>
-            </ErrorBoundary>
-          </StyledLayout>
-        )}
+        {({ userRole, userAuth, actions, errorMessage }) => {
+          return (
+            <StyledLayout>
+              <StyledHeader>
+                <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
+                <MainMenu userRole={userRole || ''} location={this.props.location} />
+              </StyledHeader>
+              <ErrorBoundary>
+                <StyledContent>
+                  {userAuth || pathname === ROUTES.ACCOUNTS.new ? (
+                    this.props.children
+                  ) : (
+                    <WrappedLoginForm onSubmit={actions.login} errorMessage={errorMessage} />
+                  )}
+                </StyledContent>
+              </ErrorBoundary>
+            </StyledLayout>
+          );
+        }}
       </AuthConsumer>
     );
   }

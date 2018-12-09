@@ -1,3 +1,4 @@
+import { hash } from 'bcrypt';
 import { NextFunction } from 'connect';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
@@ -7,7 +8,7 @@ import { apiMessages } from '../../../common/apiMessages';
 import { connection } from '../store/connection';
 import {
   findTokenQuery,
-  getUserByEmialQuery,
+  getUserByEmailQuery,
   setUserPasswordQuery,
   storeTokenQuery,
 } from '../store/queries';
@@ -47,7 +48,7 @@ type FindUserResult = { user?: { user_name: string; user_role: string } | null; 
 const findUserByEmail = (email: string, callback: (result: FindUserResult) => void) => {
   connection.query(
     {
-      sql: getUserByEmialQuery,
+      sql: getUserByEmailQuery,
       values: [email],
     },
     (error, results) => {
@@ -129,26 +130,39 @@ export const validateNewAccountToken = (
   });
 };
 
+const SALT_ROUNDS = 10;
+
 export const storeUserPassword = (
   req: CreateWithTokenRequest,
   res: CreateWithTokenResponse,
   next: NextFunction
 ) => {
-  connection.query(
-    {
-      sql: setUserPasswordQuery,
-      values: [req.body.password, res.locals.email],
-    },
-    (error, results) => {
-      if (error) {
-        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
-      }
-      if (!results.affectedRows) {
-        return res.status(codes.NOT_FOUND).send({ error: apiMessages.userNotFound });
-      }
-      return next();
+  hash(req.body.password, SALT_ROUNDS, (hashingError, passwordHash) => {
+    if (hashingError) {
+      console.error({ hashingError });
+      res.status(codes.INTERNAL_SERVER_ERROR).send({
+        error: apiMessages.internalError,
+      });
+      return;
     }
-  );
+
+    connection.query(
+      {
+        sql: setUserPasswordQuery,
+        values: [passwordHash, res.locals.email],
+      },
+      (error, results) => {
+        if (error) {
+          console.error({ error });
+          return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+        }
+        if (!results.affectedRows) {
+          return res.status(codes.NOT_FOUND).send({ error: apiMessages.userNotFound });
+        }
+        return next();
+      }
+    );
+  });
 };
 
 export const storeToken = (req: CreateWithTokenRequest, res: CreateWithTokenResponse) => {

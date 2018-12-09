@@ -22,6 +22,9 @@ export const login = (
   })
     .then(response => response.json())
     .then(response => {
+      if (response.error) {
+        return response;
+      }
       if (!response.token || !response.user_name || !response.user_role) {
         return { error: 'Zła odpowiedź z serwera' };
       }
@@ -51,6 +54,9 @@ export const newAccount = (
   })
     .then(response => response.json())
     .then(response => {
+      if (response.error) {
+        return response;
+      }
       if (!response.token || !response.user_name || !response.user_role) {
         return { error: 'Zła odpowiedź z serwera' };
       }

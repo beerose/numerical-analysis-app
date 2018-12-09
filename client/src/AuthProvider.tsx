@@ -73,7 +73,9 @@ export class AuthProvider extends React.Component<RouteComponentProps, AuthConte
           userRole: res.user_role,
         });
       })
-      .catch(err => this.setState({ error: true, errorMessage: err }));
+      .catch((err: Error) => {
+        this.setState({ error: true, errorMessage: err.message });
+      });
   };
 
   createNewAccount = (token: string, password: string) => {
@@ -96,7 +98,9 @@ export class AuthProvider extends React.Component<RouteComponentProps, AuthConte
           userRole: res.user_role,
         })
       )
-      .catch(err => this.setState({ error: true, errorMessage: err }));
+      .catch(err => {
+        this.setState({ error: true, errorMessage: err });
+      });
   };
 
   render() {
