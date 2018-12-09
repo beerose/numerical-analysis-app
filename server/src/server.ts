@@ -22,6 +22,7 @@ import * as groups from './groups';
 import {
   validateDeleteStudentFromGroupRequest,
   validateListStudentsForGroupRequest,
+  validateUpdateStudentRequest,
   validateUploadRequest,
 } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
@@ -73,6 +74,12 @@ app.delete(
   isAuthenticated,
   validateDeleteStudentFromGroupRequest,
   groups.deleteUserFromGroup
+);
+app.post(
+  GROUPS.update_student,
+  isAuthenticated,
+  validateUpdateStudentRequest,
+  groups.updateStudent
 );
 
 const listener = app.listen(PORT, () => {

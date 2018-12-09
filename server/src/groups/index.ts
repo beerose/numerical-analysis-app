@@ -2,11 +2,13 @@ import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
 import { apiMessages } from '../../../common/apiMessages';
+import { ROLES } from '../../../common/roles';
 import { connection } from '../store/connection';
 import {
   deleteStudentFromGroupQuery,
   listGroupsQuery,
   listStudentsForGroupQuery,
+  updateUserQuery,
   upsertUserQuery,
 } from '../store/queries';
 
@@ -114,6 +116,28 @@ export const deleteUserFromGroup = (req: DeleteUserFromGroupRequest, res: Respon
         return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
       return res.status(codes.OK).send({ message: apiMessages.userDeleted });
+    }
+  );
+};
+
+interface UpdateStudentRequest extends Request {
+  query: {
+    user_id: string;
+  };
+}
+export const updateStudent = (req: UpdateStudentRequest, res: Response) => {
+  const user = req.body;
+  return connection.query(
+    {
+      sql: updateUserQuery,
+      values: [user.email, user.user_name, ROLES.student, user.student_index, user.id],
+    },
+    err => {
+      if (err) {
+        console.log(err);
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      }
+      return res.status(codes.OK).send({ message: apiMessages.userUpdated });
     }
   );
 };

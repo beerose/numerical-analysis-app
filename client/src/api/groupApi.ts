@@ -56,3 +56,15 @@ export const deleteUserFromGroup = async (userId: string) => {
 
   await authFetch(SERVER_URL + GROUPS.delete_student, options).then(res => showMessage(res));
 };
+
+export const updateUserFromGroup = async (user: UserDTO) => {
+  const options = {
+    body: JSON.stringify({ ...user }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+    },
+    method: 'POST',
+  };
+
+  await authFetch(SERVER_URL + GROUPS.update_student, options).then(res => showMessage(res));
+};

@@ -16,9 +16,11 @@ type Props = {
 };
 type State = {
   students: UserDTO[];
+  isFetching: boolean;
 };
 export class StudentsSection extends React.Component<Props, State> {
   state = {
+    isFetching: false,
     students: [],
   };
 
@@ -30,17 +32,30 @@ export class StudentsSection extends React.Component<Props, State> {
 
   deleteStudent = (userId: string) => {
     groupsService.deleteUserFromGroup(userId);
+    this.updateStudentsList();
   };
+
+  updateStudent = (user: UserDTO) => {
+    groupsService.updateUserFromGroup(user);
+    this.updateStudentsList();
+  };
+
+  updateStudentsList() {
+    this.setState({ isFetching: true });
+    groupsService.listStudentsForGroup(this.props.groupId).then(res => {
+      this.setState({ students: res.students, isFetching: false });
+    });
+  }
 
   render() {
     return (
       <Container>
-        <Spin spinning={false}>
+        <Spin spinning={this.state.isFetching}>
           <UsersTable
             pageSize={5}
             showPagination={false}
             onDelete={this.deleteStudent}
-            onUpdate={() => console.log('action')}
+            onUpdate={this.updateStudent}
             users={this.state.students}
             extraColumns={['index']}
             style={{

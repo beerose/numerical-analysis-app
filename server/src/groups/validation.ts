@@ -33,3 +33,12 @@ export const validateDeleteStudentFromGroupRequest = (
     .status(codes.BAD_REQUEST)
     .send({ error: apiMessages.invalidDeleteStudentFromGroupReq });
 };
+
+export const validateUpdateStudentRequest = (req: Request, res: Response, next: NextFunction) => {
+  const user = req.body;
+  console.log(user);
+  if (user && user.user_name && user.email && user.id) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidUserData });
+};
