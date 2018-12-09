@@ -7,7 +7,6 @@ CREATE TABLE users (
   user_role       VARCHAR(50) NOT NULL,
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  course_group    VARCHAR(10),
   PRIMARY KEY (id),
   UNIQUE KEY email (email),
   INDEX(user_role),

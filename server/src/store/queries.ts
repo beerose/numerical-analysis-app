@@ -26,8 +26,7 @@ INSERT INTO
     user_name,
     email,
     user_role,
-    student_index,
-    course_group
+    student_index
   )
 VALUES ?
 ON DUPLICATE KEY UPDATE course_group = VALUES(course_group);
