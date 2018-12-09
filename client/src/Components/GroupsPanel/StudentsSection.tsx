@@ -28,6 +28,10 @@ export class StudentsSection extends React.Component<Props, State> {
     });
   }
 
+  deleteStudent = (userId: string) => {
+    groupsService.deleteUserFromGroup(userId);
+  };
+
   render() {
     return (
       <Container>
@@ -35,7 +39,7 @@ export class StudentsSection extends React.Component<Props, State> {
           <UsersTable
             pageSize={5}
             showPagination={false}
-            onDelete={() => console.log('action')}
+            onDelete={this.deleteStudent}
             onUpdate={() => console.log('action')}
             users={this.state.students}
             extraColumns={['index']}

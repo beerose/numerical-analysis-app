@@ -19,7 +19,11 @@ import {
   validateNewAccountToken,
 } from './auth';
 import * as groups from './groups';
-import { validateListStudentsForGroupRequest, validateUploadRequest } from './groups/validation';
+import {
+  validateDeleteStudentFromGroupRequest,
+  validateListStudentsForGroupRequest,
+  validateUploadRequest,
+} from './groups/validation';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
 import {
@@ -63,6 +67,12 @@ app.get(
   isAuthenticated,
   validateListStudentsForGroupRequest,
   groups.listStudentsForGroup
+);
+app.delete(
+  GROUPS.delete_student,
+  isAuthenticated,
+  validateDeleteStudentFromGroupRequest,
+  groups.deleteUserFromGroup
 );
 
 const listener = app.listen(PORT, () => {

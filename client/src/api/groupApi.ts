@@ -1,6 +1,7 @@
 import * as qs from 'query-string';
 
 import { GroupDTO, ROUTES, UserDTO } from '../../../common/api';
+import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from '.';
 import { authFetch } from './utils';
@@ -42,4 +43,16 @@ export const listStudentsForGroup = async (groupId: string): Promise<{ students:
     `${SERVER_URL + GROUPS.students}?${qs.stringify({ group_id: groupId })}`,
     options
   );
+};
+
+export const deleteUserFromGroup = async (userId: string) => {
+  const options = {
+    body: JSON.stringify({ user_id: userId }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+    },
+    method: 'DELETE',
+  };
+
+  await authFetch(SERVER_URL + GROUPS.delete_student, options).then(res => showMessage(res));
 };

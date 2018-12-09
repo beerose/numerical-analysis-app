@@ -126,6 +126,6 @@ export const listStudentsForGroupQuery = `
   );
 `;
 
-export const deleteStudentFromGroup = `
+export const deleteStudentFromGroupQuery = `
   DELETE FROM user_belongs_to_group WHERE user_id = ?;
 `;
