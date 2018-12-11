@@ -80,4 +80,4 @@ Documentation was created with [Swagger UI](https://swagger.io/) and is hosted w
 yarn workspaces server start
 ```
 
-Documentation will be server on `localhost:3000/api-docs`
+Documentation will be server on `localhost:8082/api-docs`
