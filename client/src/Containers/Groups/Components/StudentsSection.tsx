@@ -6,7 +6,7 @@ import { UserDTO } from '../../../../../common/api';
 import { ROLES } from '../../../../../common/roles';
 import { groupsService, usersService } from '../../../api';
 import { LABELS } from '../../../utils/labels';
-import { UsersTable } from '../../../Components';
+import { UsersTable } from '../../../components';
 
 import { WrappedNewStudentModalForm } from './AddStudentForm';
 

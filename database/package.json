@@ -1,0 +1,9 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "docker run --name mysql-numerical --rm -d mysql"
+  }
+}

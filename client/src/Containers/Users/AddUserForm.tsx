@@ -4,7 +4,7 @@ import * as React from 'react';
 
 import { UserDTO } from '../../../../common/api';
 import { LABELS } from '../../utils/labels';
-import { SelectRole } from '../../Components/';
+import { SelectRole } from '../../components/';
 
 const FormItem = Form.Item;
 

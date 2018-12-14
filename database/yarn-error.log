@@ -1,0 +1,31 @@
+Arguments: 
+  D:\universal-tools\Node\node.exe D:\universal-tools\bin\yarn.js init
+
+PATH: 
+  C:\Python27\;C:\Python27\Scripts;C:\Python37\Scripts\;C:\Python37\;C:\Program Files\Docker\Docker\Resources\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;D:\universal-tools\Git\cmd;D:\universal-tools\Git\mingw64\bin;D:\universal-tools\Git\usr\bin;D:\universal-tools\Node\;D:\universal-tools\CMake\bin;D:\universal-tools\LLVM\bin;C:\ProgramData\chocolatey\bin;;C:\Program Files (x86)\gnupg\bin;D:\universal-tools\Go\bin;D:\universal-tools\bin\;C:\Users\hasparus\.cargo\bin;D:\universal-tools\Elm\0.19\bin;C:\Users\hasparus\AppData\Local\Microsoft\WindowsApps;D:\universal-tools\Microsoft VS Code\bin;C:\Users\hasparus\AppData\Local\hyper\app-2.0.0\resources\bin;C:\Users\hasparus\AppData\Roaming\npm;C:\Users\hasparus\go\bin;C:\Users\hasparus\AppData\Local\Yarn\bin
+
+Yarn version: 
+  1.12.3
+
+Node version: 
+  10.10.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: D:\workspace\numerical-analysis-app\package.json: Unexpected token . in JSON at position 264
+      at JSON.parse (<anonymous>)
+      at D:\universal-tools\lib\cli.js:1631:59
+      at Generator.next (<anonymous>)
+      at step (D:\universal-tools\lib\cli.js:304:30)
+      at D:\universal-tools\lib\cli.js:315:13
+
+npm manifest: 
+  No manifest
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

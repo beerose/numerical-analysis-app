@@ -1,2 +1,2 @@
-export { ListUsersContainer } from './UsersContainer';
-export { ListGroupsContainer, CreateGroupContainer, EditGroupContainer } from './GroupsContainer';
+export * from './Users';
+export * from './Groups';

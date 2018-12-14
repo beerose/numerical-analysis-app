@@ -6,7 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import { ROUTES } from '../../../common/api';
 import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
-import { LoginForm, MainMenu } from '../Components/';
+import { LoginForm, MainMenu } from '../components/';
 
 import { ErrorBoundary } from './ErrorLayer';
 

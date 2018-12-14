@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { NewAccount } from '../Components/';
+import { NewAccount } from '../components/';
 import {
   CreateGroupContainer,
   EditGroupContainer,
