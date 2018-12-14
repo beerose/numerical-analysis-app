@@ -5,5 +5,5 @@ ADD `active_user` int(1) GENERATED ALWAYS AS(IF(`password` IS NULL,  0, 1)) VIRT
 
 -- migrate:down
 ALTER TABLE `users`
-DROP COLUMN `password` varchar,
+DROP COLUMN `password`,
 DROP COLUMN `active_user`;

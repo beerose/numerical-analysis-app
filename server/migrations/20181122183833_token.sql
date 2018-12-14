@@ -11,5 +11,5 @@ CREATE TABLE token
   (token)
 );
 
-  -- migrate:down
-  DROP TABLE IF EXISTS token;
+-- migrate:down
+DROP TABLE IF EXISTS token;
