@@ -17,7 +17,7 @@ const RemoveSelectedStudent = styled(Icon)`
 `;
 
 type State = {
-  selectedStudent?: UserDTO;
+  selectedStudent: UserDTO | null;
 };
 type Props = {
   onSubmit: (user: UserDTO) => void;
@@ -26,8 +26,8 @@ type Props = {
   allStudents: UserDTO[];
 } & FormComponentProps;
 export class NewStudentModalForm extends React.Component<Props, State> {
-  state = {
-    selectedStudent: undefined,
+  state: State = {
+    selectedStudent: null,
   };
   getFieldDecorator = this.props.form.getFieldDecorator;
 
@@ -52,11 +52,11 @@ export class NewStudentModalForm extends React.Component<Props, State> {
 
   handleSelectChange = (value: string) => {
     const { allStudents } = this.props;
-    this.setState({ selectedStudent: allStudents.find(s => s.id === value) });
+    this.setState({ selectedStudent: allStudents.find(s => s.id === value) || null });
   };
 
   clearSelectedStudent = () => {
-    this.setState({ selectedStudent: undefined });
+    this.setState({ selectedStudent: null });
   };
 
   render() {
@@ -71,6 +71,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
         <p>{LABELS.selectFromListOrCreate}</p>
         <Select
           showSearch
+          value={selectedStudent ? selectedStudent.user_name : undefined}
           style={{ width: 300 }}
           placeholder={LABELS.selectFromList}
           optionFilterProp="children"
