@@ -6,10 +6,10 @@ import { apiMessages } from '../../../common/apiMessages';
 import { ROLES } from '../../../common/roles';
 import { connection } from '../store/connection';
 import {
-  attachStudentToGroupQuery,
   deleteStudentFromGroupQuery,
   listGroupsQuery,
   listStudentsForGroupQuery,
+  prepareAttachStudentToGroupQuery,
   updateUserQuery,
   upsertUserQuery,
 } from '../store/queries';
@@ -48,16 +48,16 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
       },
       upsertErr => {
         if (upsertErr) {
-          console.error(upsertErr);
           connection.rollback(() =>
             res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
           );
           return;
         }
+        const groupId = req.body.group_id;
+        const attachQuery = prepareAttachStudentToGroupQuery(users.map(u => u.email), groupId);
         connection.query(
           {
-            sql: attachStudentToGroupQuery,
-            values: [users.map(u => [u.email, req.body.group_id])],
+            sql: attachQuery,
           },
           attachErr => {
             if (attachErr) {
@@ -182,10 +182,10 @@ export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) 
         res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
         return;
       }
+      const attachQuery = prepareAttachStudentToGroupQuery([user.email], group_id);
       connection.query(
         {
-          sql: attachStudentToGroupQuery,
-          values: [[[user.email, group_id]]],
+          sql: attachQuery,
         },
         attachErr => {
           if (attachErr) {
