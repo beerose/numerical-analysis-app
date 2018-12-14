@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 
-import { WrappedNewGroupForm } from './NewGroupForm';
+import { WrappedNewGroupForm } from './Components/NewGroupForm';
 
 const Container = styled('div')`
   align-items: center;

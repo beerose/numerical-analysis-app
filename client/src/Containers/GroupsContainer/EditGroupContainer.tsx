@@ -5,9 +5,9 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-import { ROUTES } from '../../../../../common/api';
+import { ROUTES } from '../../../../common/api';
 
-import { StudentsSection } from './StudentsSection';
+import { StudentsSection } from './Components/';
 
 const menuStyles = css`
   width: 200px;

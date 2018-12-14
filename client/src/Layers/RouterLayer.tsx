@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { CreateGroupContainer, ListGroupsContainer } from '../Components/GroupsPanel';
-import { EditGroupContainer } from '../Components/GroupsPanel/EditGroupContainer/';
-import { NewAccount } from '../Components/NewAccount/NewAccount';
-import { ListUsersContainer } from '../Components/UsersPanel/';
+import { NewAccount } from '../Components/';
+import {
+  CreateGroupContainer,
+  EditGroupContainer,
+  ListGroupsContainer,
+  ListUsersContainer,
+} from '../Containers';
 
 export const RouterLayer = () => {
   return (

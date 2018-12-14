@@ -2,8 +2,9 @@ import { Button, Form, Icon, Input, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
 
-import { UserDTO } from '../../../../../common/api';
-import { LABELS } from '../../../utils/labels';
+import { UserDTO } from '../../../../common/api';
+import { LABELS } from '../../utils/labels';
+import { SelectRole } from '../../Components/';
 
 const FormItem = Form.Item;
 
@@ -12,7 +13,7 @@ type Props = {
   onCancel: () => void;
   visible: boolean;
 } & FormComponentProps;
-export const NewStudentModalForm = (props: Props) => {
+export const NewUserModalForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     props.form.validateFields((err, values: UserDTO) => {
@@ -58,6 +59,11 @@ export const NewStudentModalForm = (props: Props) => {
           )}
         </FormItem>
         <FormItem>
+          {getFieldDecorator('user_role', {
+            rules: [{ required: true, message: LABELS.roleRequired }],
+          })(<SelectRole placeholder={LABELS.role} mode="single" />)}
+        </FormItem>
+        <FormItem>
           {getFieldDecorator('student_index', {
             rules: [{ required: false }],
           })(
@@ -75,4 +81,4 @@ export const NewStudentModalForm = (props: Props) => {
   );
 };
 
-export const WrappedNewStudentModalForm = Form.create()(NewStudentModalForm);
+export const WrappedNewUserModalForm = Form.create()(NewUserModalForm);

@@ -4,11 +4,11 @@ import { SelectValue } from 'antd/lib/select';
 import { css } from 'emotion';
 import * as React from 'react';
 
-import { UserDTO } from '../../../../common/api';
-import { GROUPS } from '../../../../common/groups';
-import { ROLES } from '../../../../common/roles';
-import { usersService } from '../../api';
-import { LABELS } from '../../utils/labels';
+import { UserDTO } from '../../../../../common/api';
+import { GROUPS } from '../../../../../common/groups';
+import { ROLES } from '../../../../../common/roles';
+import { usersService } from '../../../api';
+import { LABELS } from '../../../utils/labels';
 
 const FormItem = Form.Item;
 

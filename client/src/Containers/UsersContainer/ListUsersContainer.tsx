@@ -7,8 +7,7 @@ import styled, { css } from 'react-emotion';
 import { UserDTO } from '../../../../common/api';
 import { usersService } from '../../api';
 import { LABELS } from '../../utils/labels';
-import { UsersTable } from '../EditableUserTable';
-import { SelectRole } from '../SelectRole';
+import { SelectRole, UsersTable } from '../../Components';
 
 import { WrappedNewUserModalForm } from './AddUserForm';
 

@@ -1,1 +1,0 @@
-export { WrappedLoginForm } from './LoginForm';

@@ -3,9 +3,10 @@ import * as React from 'react';
 import styled, { css } from 'react-emotion';
 
 import { UserDTO } from '../../../../../common/api';
-import { groupsService } from '../../../api';
+import { ROLES } from '../../../../../common/roles';
+import { groupsService, usersService } from '../../../api';
 import { LABELS } from '../../../utils/labels';
-import { UsersTable } from '../../EditableUserTable';
+import { UsersTable } from '../../../Components';
 
 import { WrappedNewStudentModalForm } from './AddStudentForm';
 
@@ -29,29 +30,39 @@ type State = {
   students: UserDTO[];
   isFetching: boolean;
   addStudentModalVisible: boolean;
+  allStudents: UserDTO[];
 };
 export class StudentsSection extends React.Component<Props, State> {
   state = {
     addStudentModalVisible: false,
+    allStudents: [],
     isFetching: false,
     students: [],
   };
 
-  componentWillMount() {
+  updateStudentsLists() {
+    this.setState({ isFetching: true });
     groupsService.listStudentsForGroup(this.props.groupId).then(res => {
-      this.setState({ students: res.students });
+      this.setState({ students: res.students, isFetching: false });
     });
+    usersService.listUsers({ roles: ROLES.student }).then(res => {
+      this.setState({ allStudents: res.users });
+    });
+  }
+
+  componentWillMount() {
+    this.updateStudentsLists();
   }
 
   deleteStudent = (userId: string) => {
     groupsService.deleteUserFromGroup(userId).then(() => {
-      this.updateStudentsList();
+      this.updateStudentsLists();
     });
   };
 
   updateStudent = (user: UserDTO) => {
     groupsService.updateUserFromGroup(user).then(() => {
-      this.updateStudentsList();
+      this.updateStudentsLists();
     });
   };
 
@@ -62,22 +73,15 @@ export class StudentsSection extends React.Component<Props, State> {
     reader.readAsText(file);
     reader.onload = () => {
       groupsService.uploadUsers(reader.result as string, groupId).then(() => {
-        this.updateStudentsList();
+        this.updateStudentsLists();
       });
     };
   };
 
-  updateStudentsList() {
-    this.setState({ isFetching: true });
-    groupsService.listStudentsForGroup(this.props.groupId).then(res => {
-      this.setState({ students: res.students, isFetching: false });
-    });
-  }
-
   addNewStudent = (user: UserDTO) => {
     groupsService.addStudentToGroup(user, this.props.groupId).then(() => {
       this.setState({ addStudentModalVisible: false });
-      this.updateStudentsList();
+      this.updateStudentsLists();
     });
   };
 
@@ -90,10 +94,11 @@ export class StudentsSection extends React.Component<Props, State> {
   };
 
   render() {
-    const { students, isFetching, addStudentModalVisible } = this.state;
+    const { students, isFetching, addStudentModalVisible, allStudents } = this.state;
     return (
       <Container>
         <WrappedNewStudentModalForm
+          allStudents={allStudents}
           onSubmit={this.addNewStudent}
           visible={addStudentModalVisible}
           onCancel={this.cancelAddNewStudent}

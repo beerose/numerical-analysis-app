@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router';
 
 import { LABELS } from '../../utils/labels';
 import { AuthConsumer } from '../../AuthContext';
-import { ModalHeader } from '../ModalHeader';
+import { ModalHeader } from '../../Components/ModalHeader';
 
 import { NewAccountWithTokenForm } from './NewAccountForm';
 

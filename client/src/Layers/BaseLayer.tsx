@@ -6,8 +6,7 @@ import { RouteComponentProps } from 'react-router';
 import { ROUTES } from '../../../common/api';
 import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
-import { MainMenu } from '../Components/';
-import { WrappedLoginForm } from '../Components/Login';
+import { LoginForm, MainMenu } from '../Components/';
 
 import { ErrorBoundary } from './ErrorLayer';
 
@@ -60,7 +59,7 @@ export class BaseLayer extends React.Component<Props> {
                   {userAuth || pathname === ROUTES.ACCOUNTS.new ? (
                     this.props.children
                   ) : (
-                    <WrappedLoginForm onSubmit={actions.login} errorMessage={errorMessage} />
+                    <LoginForm onSubmit={actions.login} errorMessage={errorMessage} />
                   )}
                 </StyledContent>
               </ErrorBoundary>
