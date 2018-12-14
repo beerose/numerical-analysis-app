@@ -114,9 +114,9 @@ export const listStudentsForGroupQuery = `
     id, user_name, email, student_index
   FROM
     users as u
-  WHERE email IN (
+  WHERE id IN (
     SELECT
-      user_email
+      user_id
     FROM
       user_belongs_to_group
     WHERE
@@ -128,6 +128,9 @@ export const deleteStudentFromGroupQuery = `
   DELETE FROM user_belongs_to_group WHERE user_id = ?;
 `;
 
-export const attachStudentToGroupQuery = `
-  INSERT IGNORE INTO user_belongs_to_group(user_email, group_id) VALUES ?;
+export const prepareAttachStudentToGroupQuery = (userEmails: string[], groupId: string) => `
+  INSERT IGNORE INTO user_belongs_to_group(user_id, group_id)
+  VALUES ${userEmails
+    .map(email => `((SELECT id FROM users WHERE email = "${email}"), ${groupId})`)
+    .join(',')};
 `;
