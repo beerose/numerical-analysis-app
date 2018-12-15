@@ -12,9 +12,6 @@ const { GROUPS } = ROUTES;
 export const uploadUsers = async (fileContent: string, groupId: string) => {
   const options = {
     body: JSON.stringify({ data: fileContent, group_id: groupId }),
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'POST',
   };
 
@@ -23,9 +20,6 @@ export const uploadUsers = async (fileContent: string, groupId: string) => {
 
 export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
   const options = {
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'GET',
   };
 
@@ -34,9 +28,6 @@ export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
 
 export const listStudentsForGroup = async (groupId: string): Promise<{ students: UserDTO[] }> => {
   const options = {
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'GET',
   };
 
@@ -49,9 +40,6 @@ export const listStudentsForGroup = async (groupId: string): Promise<{ students:
 export const deleteUserFromGroup = async (userId: string) => {
   const options = {
     body: JSON.stringify({ user_id: userId }),
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'DELETE',
   };
 
@@ -61,9 +49,6 @@ export const deleteUserFromGroup = async (userId: string) => {
 export const updateUserFromGroup = async (user: UserDTO) => {
   const options = {
     body: JSON.stringify({ ...user }),
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'POST',
   };
 
@@ -73,9 +58,6 @@ export const updateUserFromGroup = async (user: UserDTO) => {
 export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
   const options = {
     body: JSON.stringify({ user, group_id: groupId }),
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'POST',
   };
 
@@ -85,9 +67,6 @@ export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
 export const addGroup = (group: Omit<GroupDTO, 'id'>) => {
   return authFetch(SERVER_URL + GROUPS.add, {
     body: JSON.stringify(group),
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'POST',
   });
 };

@@ -3,5 +3,3 @@ export enum GROUPS {
   EXERCISE = 'exercise',
   LECTURE = 'lecture',
 }
-
-export const groupOptions = Object.keys(GROUPS);

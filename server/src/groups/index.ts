@@ -6,6 +6,7 @@ import { apiMessages } from '../../../common/apiMessages';
 import { ROLES } from '../../../common/roles';
 import { connection } from '../store/connection';
 import {
+  addGroupQuery,
   deleteStudentFromGroupQuery,
   listGroupsQuery,
   listStudentsForGroupQuery,
@@ -209,5 +210,26 @@ export const add = (req: AddGroupRequest, res: Response) => {
 
   console.log({ group });
 
-  return res.status(codes.OK).send({ message: 'OK!' });
+  connection.query(
+    {
+      sql: addGroupQuery,
+      values: [
+        group.group_name,
+        group.group_type,
+        group.class,
+        undefined /* group.parent_group */,
+        group.academic_year,
+      ],
+    },
+    (err, res) => {
+      if (err) {
+        console.error({ err });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      }
+
+      console.log('inserted group:', { res });
+
+      return res.status(codes.OK).send({ message: 'OK!' });
+    }
+  );
 };

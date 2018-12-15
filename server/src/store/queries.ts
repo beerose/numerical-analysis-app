@@ -1,34 +1,34 @@
 export const addUserQuery = `
-INSERT INTO
-  users (
-    user_name,
-    email,
-    user_role,
-    student_index
-  )
-VALUES (?, ?, ?, ?);
+  INSERT INTO
+    users (
+      user_name,
+      email,
+      user_role,
+      student_index
+    )
+  VALUES (?, ?, ?, ?);
 `;
 
 export const updateUserQuery = `
-UPDATE
-  users
-SET
-  email = ?,
-  user_name = ?,
-  user_role = ?,
-  student_index = ?
-WHERE id = ?;
+  UPDATE
+    users
+  SET
+    email = ?,
+    user_name = ?,
+    user_role = ?,
+    student_index = ?
+  WHERE id = ?;
 `;
 
 export const upsertUserQuery = `
-INSERT IGNORE INTO
-  users (
-    user_name,
-    email,
-    user_role,
-    student_index
-  )
-VALUES ?
+  INSERT IGNORE INTO
+    users (
+      user_name,
+      email,
+      user_role,
+      student_index
+    )
+  VALUES ?
 `;
 
 export const deleteUserQuery = `
@@ -135,9 +135,9 @@ export const prepareAttachStudentToGroupQuery = (userEmails: string[], groupId: 
 `;
 
 export const addGroupQuery = `
-  insert into \`groups\` (
-    group_name, group_type, class, parent_group, academic_year, data
-  ) values (
-    ?, ?, ?, ?, ?, ?
+  INSERT INTO \`groups\` (
+    group_name, group_type, class, parent_group, academic_year
+  ) VALUES (
+    ?, ?, ?, ?, ?
   )
 `;
