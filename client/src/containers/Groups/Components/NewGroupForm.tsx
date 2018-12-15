@@ -6,11 +6,20 @@ import * as React from 'react';
 
 import { UserDTO } from '../../../../../common/api';
 import { GROUPS } from '../../../../../common/groups';
-import { ROLES } from '../../../../../common/roles';
-import { usersService } from '../../../api';
 import { LABELS } from '../../../utils/labels';
 
 const FormItem = Form.Item;
+
+const FORM_ITEM_LAYOUT = {
+  labelCol: {
+    sm: { span: 8 },
+    xs: { span: 24 },
+  },
+  wrapperCol: {
+    sm: { span: 16 },
+    xs: { span: 24 },
+  },
+};
 
 const SelectSuperUser = React.forwardRef(
   (
@@ -68,7 +77,7 @@ const formStyles = css`
   }
 `;
 
-type FormValues = {
+export type NewGroupFormValues = {
   academic_year: string;
   class_room: number | string;
   group: GROUPS;
@@ -76,51 +85,33 @@ type FormValues = {
   super_user_id: string;
 };
 
-type State = {
-  superUsers: UserDTO[];
-};
 type Props = {
-  onSubmit: () => void;
+  superUsers: UserDTO[];
+  onSubmit: (group: NewGroupFormValues) => void;
   onCancel: () => void;
 } & FormComponentProps;
-class NewGroupForm extends React.Component<Props, State> {
-  state = {
-    superUsers: [] as UserDTO[],
-  };
-
-  componentWillMount() {
-    usersService.listUsers({ roles: ROLES.superUser }).then(res => {
-      this.setState({ superUsers: res.users });
-    });
-  }
-
+class NewGroupForm extends React.Component<Props> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    this.props.form.validateFields((err, values: FormValues) => {
-      console.log('values', values);
+    this.props.form.validateFields((err, values: NewGroupFormValues) => {
       if (err) {
-        return;
+        console.error(err); // TODO
+      } else {
+        this.props.onSubmit(values);
       }
-      this.props.onSubmit();
     });
   };
 
   render() {
-    const { getFieldDecorator } = this.props.form;
-    const formItemLayout = {
-      labelCol: {
-        sm: { span: 8 },
-        xs: { span: 24 },
-      },
-      wrapperCol: {
-        sm: { span: 16 },
-        xs: { span: 24 },
-      },
-    };
+    const {
+      form: { getFieldDecorator },
+      onCancel,
+      superUsers,
+    } = this.props;
 
     return (
       <Form onSubmit={this.handleSubmit} className={formStyles}>
-        <FormItem label={LABELS.group} {...formItemLayout}>
+        <FormItem label={LABELS.group} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('group', {
             rules: [{ required: true, message: LABELS.groupRequired }],
           })(
@@ -131,12 +122,12 @@ class NewGroupForm extends React.Component<Props, State> {
             </Radio.Group>
           )}
         </FormItem>
-        <FormItem label={LABELS.superUser} {...formItemLayout}>
+        <FormItem label={LABELS.superUser} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('super_user', {
             rules: [{ required: true, message: LABELS.nameRequired }],
-          })(<SelectSuperUser superUsers={this.state.superUsers} />)}
+          })(<SelectSuperUser superUsers={superUsers} />)}
         </FormItem>
-        <FormItem label={LABELS.groupName} {...formItemLayout}>
+        <FormItem label={LABELS.groupName} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('group_name', {
             rules: [{ required: true, message: LABELS.groupNameRequired }],
           })(
@@ -146,12 +137,12 @@ class NewGroupForm extends React.Component<Props, State> {
             />
           )}
         </FormItem>
-        <FormItem label={LABELS.academicYear} {...formItemLayout}>
+        <FormItem label={LABELS.academicYear} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('academic_year', {
             rules: [{ required: true, message: LABELS.academicYearRequired }],
           })(<SelectSemester />)}
         </FormItem>
-        <FormItem label={LABELS.classRoomNumber} {...formItemLayout}>
+        <FormItem label={LABELS.classRoomNumber} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('class_room')(
             <Input
               prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
@@ -168,7 +159,7 @@ class NewGroupForm extends React.Component<Props, State> {
           <Button type="primary" htmlType="submit" style={{ marginRight: '5px' }}>
             Dodaj
           </Button>
-          <Button type="default" style={{ marginLeft: '5px' }} onClick={this.props.onCancel}>
+          <Button type="default" style={{ marginLeft: '5px' }} onClick={onCancel}>
             Anuluj
           </Button>
         </FormItem>

@@ -44,7 +44,7 @@ export const addUser = async (user: UserDTO) => {
     },
     method: 'POST',
   };
-  await authFetch(SERVER_URL + USERS.add, options).then(res => showMessage(res));
+  await authFetch(SERVER_URL + USERS.add, options).then(showMessage);
 };
 
 export const deleteUser = async (id: string) => {
@@ -56,7 +56,7 @@ export const deleteUser = async (id: string) => {
     method: 'DELETE',
   };
 
-  await authFetch(SERVER_URL + USERS.delete, options).then(res => showMessage(res));
+  await authFetch(SERVER_URL + USERS.delete, options).then(showMessage);
 };
 
 export const updateUser = async (user: UserDTO) => {
@@ -68,5 +68,5 @@ export const updateUser = async (user: UserDTO) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + USERS.update, options).then(res => showMessage(res));
+  await authFetch(SERVER_URL + USERS.update, options).then(showMessage);
 };

@@ -7,6 +7,8 @@
     "tslint-config-prettier"
   ],
   "rules": {
+    "no-backbone-get-set-outside-model": false, // We're note using Backbone
+    "use-simple-attributes": false,
     "prefer-method-signature": false,
     "newline-before-return": false,
     "missing-jsdoc": false,

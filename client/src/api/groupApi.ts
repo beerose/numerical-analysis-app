@@ -1,4 +1,5 @@
 import * as qs from 'query-string';
+import { Omit } from 'react-router';
 
 import { GroupDTO, ROUTES, UserDTO } from '../../../common/api';
 import { showMessage } from '../utils/message';
@@ -81,12 +82,12 @@ export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
   await authFetch(SERVER_URL + GROUPS.add_student, options).then(showMessage);
 };
 
-export const addGroup = (group: GroupDTO) => {
+export const addGroup = (group: Omit<GroupDTO, 'id'>) => {
   return authFetch(SERVER_URL + GROUPS.add, {
     body: JSON.stringify(group),
     headers: {
       Accept: 'application/json, text/plain, */*',
     },
     method: 'POST',
-  }).then(showMessage);
+  });
 };

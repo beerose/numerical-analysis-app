@@ -44,8 +44,9 @@ export type GroupDTO = {
   group_name: string;
   group_type: GroupEnum;
   academic_year?: string;
-  class?: number;
-  data?: Record<string, any>;
+  // tslint:disable-next-line:no-reserved-keywords
+  class?: string;
+  data?: Record<string, unknown>;
 };
 
 export enum GroupEnum {
