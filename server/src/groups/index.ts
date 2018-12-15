@@ -221,13 +221,13 @@ export const add = (req: AddGroupRequest, res: Response) => {
         group.academic_year,
       ],
     },
-    (err, res) => {
+    (err, queryResult) => {
       if (err) {
         console.error({ err });
         return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
 
-      console.log('inserted group:', { res });
+      console.log('inserted group:', { queryResult });
 
       return res.status(codes.OK).send({ message: 'OK!' });
     }
