@@ -1,5 +1,5 @@
 -- migrate:up
-CREATE TABLE groups (
+CREATE TABLE `groups` (
   id              INT NOT NULL AUTO_INCREMENT,
   group_name      VARCHAR(200) NOT NULL,
   group_type      VARCHAR(50) NOT NULL,
@@ -10,10 +10,9 @@ CREATE TABLE groups (
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  FOREIGN KEY (parent_group) REFERENCES groups(id),
-  INDEX(lecturer),
+  FOREIGN KEY (parent_group) REFERENCES `groups`(id),
   FULLTEXT INDEX(group_name)
 );
 
 -- migrate:down
-DROP TABLE IF EXISTS groups;
+DROP TABLE IF EXISTS `groups`;
