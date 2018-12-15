@@ -1,4 +1,4 @@
-import { Button, Input, List, Spin } from 'antd';
+import { Button, List, Spin } from 'antd';
 import { css } from 'emotion';
 import * as React from 'react';
 import styled from 'react-emotion';
@@ -66,7 +66,7 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
                       {item.group_name}
                     </Link>
                   }
-                  description={`Prowadzący: ${item.lecturer}`}
+                  // TO DO description={`Prowadzący: ${item.lecturer}`}
                 />
               </List.Item>
             )}

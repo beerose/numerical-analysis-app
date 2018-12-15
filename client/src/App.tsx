@@ -2,9 +2,9 @@ import 'antd/dist/antd.css';
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
+import { BaseLayer, RouterLayer } from './layers/';
 import './styles.css';
 import { AuthProvider } from './AuthProvider';
-import { BaseLayer, RouterLayer } from './Layers/';
 
 export class App extends React.Component {
   render() {

@@ -4,8 +4,8 @@ import FormItem from 'antd/lib/form/FormItem';
 import * as React from 'react';
 
 import { UserDTO } from '../../../../common/api';
+import { SelectRole } from '../../components/SelectRole';
 import { LABELS } from '../../utils/labels';
-import { SelectRole } from '../SelectRole';
 
 import { EditableConsumer, EditableProvider } from './Context';
 
@@ -50,9 +50,7 @@ export class EditableCell extends React.Component<EditableCellProps> {
                     rules: [
                       {
                         message: LABELS.requiredField,
-                        required: requiredFields.find(f => f === dataIndex)
-                          ? true
-                          : false,
+                        required: requiredFields.find(f => f === dataIndex) ? true : false,
                       },
                     ],
                   })(this.getInput())}
