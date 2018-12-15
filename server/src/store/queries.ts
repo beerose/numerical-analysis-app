@@ -105,7 +105,7 @@ export const listGroupsQuery = `
     class,
     g.data
   FROM
-    \`groups\`;
+    \`groups\` g;
 `;
 
 export const listStudentsForGroupQuery = `
