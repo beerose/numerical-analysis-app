@@ -2,7 +2,8 @@
   "name": "common",
   "version": "1.0.0-alpha.0",
   "scripts": {
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "watch": "tsc --watch"
   },
   "devDependencies": {
     "typescript": "^3.1.6"

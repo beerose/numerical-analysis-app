@@ -133,3 +133,11 @@ export const prepareAttachStudentToGroupQuery = (userEmails: string[], groupId: 
     .map(email => `((SELECT id FROM users WHERE email = "${email}"), ${groupId})`)
     .join(',')};
 `;
+
+export const addMeetingQuery = `
+  INSERT INTO meetings(meeting_name, date, group_id) VALUES (?, ?, ?);
+`;
+
+export const listMeetingsQuery = `
+  SELECT (meeting_name, date) FROM meetings WHERE group_id = ?;
+`;

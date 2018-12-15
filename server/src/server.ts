@@ -20,6 +20,7 @@ import {
 } from './auth';
 import * as groups from './groups';
 import {
+  validateAddMeetingRequest,
   validateAddStudentToGroupRequest,
   validateDeleteStudentFromGroupRequest,
   validateListStudentsForGroupRequest,
@@ -88,6 +89,8 @@ app.post(
   validateAddStudentToGroupRequest,
   groups.addStudentToGroup
 );
+app.post(GROUPS.add_meetings, isAuthenticated, validateAddMeetingRequest, groups.addMeeting);
+app.post(GROUPS.add, isAuthenticated, groups.add);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

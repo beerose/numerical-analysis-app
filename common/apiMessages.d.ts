@@ -3,13 +3,16 @@ export declare const apiMessages: {
     emptyCSV: string;
     idRequired: string;
     internalError: string;
+    invalidAddMeetingRequest: string;
     invalidCSV: string;
     invalidDeleteStudentFromGroupReq: string;
     invalidEmailOrPassword: string;
     invalidListStudentsForGroupReq: string;
     invalidLoginRequest: string;
     invalidNewAccountRequest: string;
+    invalidRequest: string;
     invalidUserData: string;
+    meetingCreated: string;
     tokenUsed: string;
     userAlreadyExists: string;
     userCreated: string;
