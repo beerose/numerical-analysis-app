@@ -7,7 +7,7 @@ CREATE TABLE meetings (
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
-  FOREIGN KEY (group_id) REFERENCES groups(id)
+  FOREIGN KEY (group_id) REFERENCES `groups`(id)
 );
 
 CREATE TABLE user_attended_in_meeting (
