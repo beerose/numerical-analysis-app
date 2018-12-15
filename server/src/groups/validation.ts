@@ -51,5 +51,6 @@ export const validateAddStudentToGroupRequest = (
   if (user && user.user_name && user.email && user.student_index && req.body.group_id) {
     return next();
   }
+
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidUserData });
 };

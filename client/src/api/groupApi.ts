@@ -17,9 +17,7 @@ export const uploadUsers = async (fileContent: string, groupId: string) => {
     method: 'POST',
   };
 
-  await authFetch<{ message: string }>(SERVER_URL + GROUPS.upload, options).then(res =>
-    showMessage(res)
-  );
+  await authFetch<{ message: string }>(SERVER_URL + GROUPS.upload, options).then(showMessage);
 };
 
 export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
@@ -56,7 +54,7 @@ export const deleteUserFromGroup = async (userId: string) => {
     method: 'DELETE',
   };
 
-  await authFetch(SERVER_URL + GROUPS.delete_student, options).then(res => showMessage(res));
+  return authFetch(SERVER_URL + GROUPS.delete_student, options).then(showMessage);
 };
 
 export const updateUserFromGroup = async (user: UserDTO) => {
@@ -68,7 +66,7 @@ export const updateUserFromGroup = async (user: UserDTO) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + GROUPS.update_student, options).then(res => showMessage(res));
+  await authFetch(SERVER_URL + GROUPS.update_student, options).then(showMessage);
 };
 
 export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
@@ -80,5 +78,15 @@ export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + GROUPS.add_student, options).then(res => showMessage(res));
+  await authFetch(SERVER_URL + GROUPS.add_student, options).then(showMessage);
+};
+
+export const addGroup = (group: GroupDTO) => {
+  return authFetch(SERVER_URL + GROUPS.add, {
+    body: JSON.stringify(group),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+    },
+    method: 'POST',
+  }).then(showMessage);
 };

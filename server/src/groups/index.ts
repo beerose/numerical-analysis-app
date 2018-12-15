@@ -209,5 +209,5 @@ export const add = (req: AddGroupRequest, res: Response) => {
 
   console.log({ group });
 
-  res.status(codes.OK).send({ message: 'OK!' });
+  return res.status(codes.OK).send({ message: 'OK!' });
 };

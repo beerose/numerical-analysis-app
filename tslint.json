@@ -1,6 +1,24 @@
 {
-  "extends": ["tslint:latest", "tslint-config-airbnb", "tslint-config-prettier"],
+  "extends": [
+    "tslint:latest",
+    "tslint-config-airbnb",
+    "tslint-sonarts",
+    "tslint-microsoft-contrib",
+    "tslint-config-prettier"
+  ],
   "rules": {
+    "newline-before-return": false,
+    "missing-jsdoc": false,
+    "no-require-imports": false, // no-var-requires enabled
+    "prefer-type-cast": false,
+    "no-angle-bracket-type-assertion": true,
+    "react-this-binding-issue": false,
+    "export-name": false,
+    "no-namespace": [true, "allow-declarations"],
+    "max-union-size": false,
+    "no-suspicious-comment": false, // "We recommend that you run this rule before each release as a quality checkpoint."
+    "no-relative-imports": false,
+    "typedef": false,
     "no-console": false,
     "prefer-template": true,
     "align": [true, "parameters", "statements", "members", "elements"],
