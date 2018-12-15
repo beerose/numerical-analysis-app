@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 
 import { CreateGroupContainer } from './CreateGroupContainer';
-import { EditGroupContainer } from './EditGroupContainer';
+import { GroupDetailsContainer } from './GroupDetailsContainer';
 import { ListGroupsContainer } from './ListGroupsContainer';
 
 export const Groups = () => (
@@ -17,6 +17,9 @@ export const Groups = () => (
       path="/groups/new"
       render={routeContext => <CreateGroupContainer {...routeContext} />}
     />
-    <Route path="/groups/:id" render={routeContext => <EditGroupContainer {...routeContext} />} />
+    <Route
+      path="/groups/:id"
+      render={routeContext => <GroupDetailsContainer {...routeContext} />}
+    />
   </Switch>
 );

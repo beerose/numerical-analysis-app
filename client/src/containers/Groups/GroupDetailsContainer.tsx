@@ -23,7 +23,7 @@ const Container = styled.section`
 type State = {
   groupId: string;
 };
-export class EditGroupContainer extends React.Component<RouteComponentProps, State> {
+export class GroupDetailsContainer extends React.Component<RouteComponentProps, State> {
   state = {
     groupId: this.props.location.pathname.split('/')[2],
   };
