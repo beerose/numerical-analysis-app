@@ -9,6 +9,7 @@ export const ROUTES = {
     new: '/accounts/new',
   },
   GROUPS: {
+    add: '/groups/add',
     add_student: '/groups/students.add',
     delete_student: '/groups/students.delete',
     details: '/groups/:id',
@@ -42,10 +43,9 @@ export type GroupDTO = {
   id: string;
   group_name: string;
   group_type: GroupEnum;
-  lecturer: string;
-  academic_year: string;
-  class: number;
-  data: Record<string, any>;
+  academic_year?: string;
+  class?: number;
+  data?: Record<string, any>;
 };
 
 export enum GroupEnum {
@@ -53,3 +53,12 @@ export enum GroupEnum {
   Lab = 'Pracownia',
   Lecture = 'Wykład',
 }
+
+export type MeetingDTO = {
+  id: number;
+  meeting_name: string;
+  date: string; // TODO: ?
+  group_id?: number;
+  created_at?: number; // TODO: timestamp?
+  updated_at?: number; // TODO: timestamp?
+};

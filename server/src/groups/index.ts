@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { UserDTO } from '../../../common/api';
+import { GroupDTO, UserDTO } from '../../../common/api';
 import { apiMessages } from '../../../common/apiMessages';
 import { ROLES } from '../../../common/roles';
 import { connection } from '../store/connection';
@@ -198,4 +198,16 @@ export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) 
       );
     }
   );
+};
+
+interface AddGroupRequest extends Request {
+  body: GroupDTO;
+}
+
+export const add = (req: AddGroupRequest, res: Response) => {
+  const group = req.body;
+
+  console.log({ group });
+
+  res.status(codes.OK).send({ message: 'OK!' });
 };

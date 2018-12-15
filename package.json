@@ -7,6 +7,6 @@
   ],
   "scripts": {
     "start": "concurrently \"cd server/ && yarn start\" \"cd client/ && yarn dev\"",
-    "dev": "concurrently \"cd server/ && yarn dev\" \"cd client/ && yarn dev\""
+    "dev": "concurrently -c blue,green,yellow -n c,s,f \"cd common && yarn watch\" \"cd server/ && yarn dev\" \"cd client/ && yarn dev\""
   }
 }
