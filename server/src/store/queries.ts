@@ -101,12 +101,11 @@ export const listGroupsQuery = `
     g.id,
     group_name,
     group_type,
-    u.user_name as lecturer,
     academic_year,
     class,
     g.data
   FROM
-    groups g JOIN users u ON (g.lecturer = u.id);
+    \`groups\`;
 `;
 
 export const listStudentsForGroupQuery = `

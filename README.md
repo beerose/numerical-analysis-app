@@ -1,5 +1,21 @@
 ## Numerical Analysis App
 
+## Setup
+
+### Set up your MySQL database
+
+Run all sql queries in `server/migrations/` to set up the database.
+
+### Create the first admin
+
+Insert the first admin into the users table. He can add more admins, superusers and users.
+
+### Environment variables
+
+Set `DB_NAME, DB_HOST, DB_PASSWORD, DB_USER` in your ENV
+
+-- TBD --
+
 ## Development
 
 ### Prerequirements
@@ -37,6 +53,21 @@ yarn workspaces server start
 ```
 
 App will be served on `locaholst:3000`.
+
+The server requires following environment variables to connect to the database:
+
+```
+    DB_NAME, DB_HOST, DB_PASSWORD, DB_USER
+```
+
+You can create `server/.env` file for development.
+
+```
+    DB_NAME=numerical_analysis_app
+    DB_HOST=localhost
+    DB_PASSWORD=password
+    DB_USER=root
+```
 
 ---
 
