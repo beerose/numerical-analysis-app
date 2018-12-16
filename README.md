@@ -1,5 +1,9 @@
 ## Numerical Analysis App
 
+## More README
+
+- [How to setup database docker container?](./database/DOCKER_README)
+
 ## Setup
 
 ### Set up your MySQL database
@@ -63,10 +67,11 @@ The server requires following environment variables to connect to the database:
 You can create `server/.env` file for development.
 
 ```
-    DB_NAME=numerical_analysis_app
+    DB_NAME=numerical
     DB_HOST=localhost
-    DB_PASSWORD=password
+    DB_PASSWORD=haslo
     DB_USER=root
+    JWT_SECRET=tajemnica
 ```
 
 ---
