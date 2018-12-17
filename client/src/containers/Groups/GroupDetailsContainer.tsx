@@ -12,7 +12,6 @@ import { PresenceTable, StudentsSection } from './components';
 const menuStyles = css`
   width: 200px;
   height: calc(100vh - 64px);
-  margin-left: -50px;
 `;
 
 const Container = styled.section`
@@ -102,12 +101,7 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
             component={() => <StudentsSection groupId={this.state.groupId} />}
           />
           <Route exact={true} path={'/groups/:id/presence'}>
-            <article>
-              <header>
-                <h1>Obecności</h1>
-              </header>
-              <PresenceTable />
-            </article>
+            <PresenceTable />
           </Route>
         </Switch>
       </Container>
