@@ -1,30 +1,14 @@
 import { Checkbox, Table } from 'antd';
 import React from 'react';
+import { css } from 'react-emotion';
 
 import { MeetingDTO, UserDTO } from '../../../../../common/api';
 
-const fakeMeetings: MeetingDTO[] = [
-  {
-    date: '',
-    id: 1,
-    meeting_name: 'Ćwiczenia 1',
-  },
-  {
-    date: '',
-    id: 2,
-    meeting_name: 'Ćwieczenia 2',
-  },
-  {
-    date: '',
-    id: 3,
-    meeting_name: 'Ćwiczenia 3',
-  },
-  {
-    date: '',
-    id: 4,
-    meeting_name: 'Ćwiczenia 4',
-  },
-];
+const fakeMeetings: MeetingDTO[] = Array.from({ length: 13 }).map((_, i) => ({
+  date: '',
+  id: i,
+  meeting_name: `Spotkanie ${i}`,
+}));
 
 type StudentWithPresence = {
   student: Pick<UserDTO, 'id' | 'user_name'>;
@@ -85,6 +69,22 @@ const data: (StudentWithPresence & { key: string })[] = [
 
 export class PresenceTable extends React.Component {
   render() {
-    return <Table<StudentWithPresence> columns={columns} dataSource={data} />;
+    return (
+      <article
+        className={css`
+          width: 100%;
+          overflow: auto;
+        `}
+      >
+        <Table<StudentWithPresence>
+          columns={columns}
+          dataSource={data}
+          pagination={false}
+          style={{
+            minWidth: '100%',
+          }}
+        />
+      </article>
+    );
   }
 }

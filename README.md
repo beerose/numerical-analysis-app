@@ -14,6 +14,22 @@ Run all sql queries in `server/migrations/` to set up the database.
 
 Insert the first admin into the users table. He can add more admins, superusers and users.
 
+```sql
+
+insert into users (
+    user_name,
+    email,
+    user_role,
+    password
+) values (
+    'user_name',
+    'your_email',
+    'admin',
+    '$2b$10$e17/rZAeRLlLfSRV4fMPE.ROjHGL0.qgEuWq9PpCJ6YtfU2rul/HW' -- this is "haslo" hashed
+)
+
+```
+
 ### Environment variables
 
 Set `DB_NAME, DB_HOST, DB_PASSWORD, DB_USER` in your ENV
