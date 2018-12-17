@@ -1,4 +1,4 @@
-import { MysqlError, queryCallback } from 'mysql';
+import { queryCallback } from 'mysql';
 
 import { UserDTO } from '../../../common/api';
 
@@ -38,6 +38,15 @@ export const updateUser = (user: UserDTO, callback: Callback) =>
     WHERE id = ?;
       `,
       values: [user.email, user.user_name, user.user_role, user.student_index, user.id],
+    },
+    callback
+  );
+
+export const deleteUser = ({ id }: { id: string }, callback: Callback) =>
+  connection.query(
+    {
+      sql: 'DELETE FROM users WHERE id = ?;',
+      values: [id],
     },
     callback
   );

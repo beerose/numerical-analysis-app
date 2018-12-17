@@ -3,8 +3,8 @@ import * as codes from 'http-status-codes';
 
 import { UserDTO } from '../../../common/api';
 import { apiMessages } from '../../../common/apiMessages';
+import { db } from '../store';
 import { DUPLICATE_ENTRY_ERROR } from '../store/connection';
-import * as db from '../store/mysql';
 
 interface UpdateUserRequest extends Request {
   body: UserDTO;
