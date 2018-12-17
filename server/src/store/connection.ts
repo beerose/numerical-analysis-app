@@ -28,4 +28,6 @@ const handleDisconnect = () => {
 
 handleDisconnect();
 
-export { connection };
+const DUPLICATE_ENTRY_ERROR = 'ER_DUP_ENTRY';
+
+export { connection, DUPLICATE_ENTRY_ERROR };

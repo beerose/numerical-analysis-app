@@ -4,8 +4,8 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 
+import { ModalHeader } from '../../components/ModalHeader';
 import { LABELS } from '../../utils/labels';
-import { ModalHeader } from '../ModalHeader';
 
 const FormItem = Form.Item;
 

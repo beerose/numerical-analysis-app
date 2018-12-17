@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 import * as React from 'react';
 import styled from 'react-emotion';
-import { RouteComponentProps } from 'react-router';
+import { RouteChildrenProps } from 'react-router';
 
 import { ROUTES } from '../../../common/api';
 import { LoginForm, MainMenu } from '../components/';
@@ -40,7 +40,7 @@ const Title = styled.p`
   }
 `;
 
-type Props = RouteComponentProps;
+type Props = RouteChildrenProps;
 export class BaseLayer extends React.Component<Props> {
   render() {
     const pathname = this.props.location.pathname;

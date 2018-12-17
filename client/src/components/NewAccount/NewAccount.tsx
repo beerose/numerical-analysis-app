@@ -5,9 +5,9 @@ import * as React from 'react';
 import { css } from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 
+import { ModalHeader } from '../../components/ModalHeader';
 import { LABELS } from '../../utils/labels';
 import { AuthConsumer } from '../../AuthContext';
-import { ModalHeader } from '../../components/ModalHeader';
 
 import { NewAccountWithTokenForm } from './NewAccountForm';
 
@@ -56,10 +56,6 @@ export class NewAccount extends React.Component<Props, State> {
     userName: '',
   };
 
-  goToMainPage = () => {
-    this.props.history.push('/');
-  };
-
   componentWillMount() {
     const parsedHash = qs.parse(this.props.location.hash);
     if (!parsedHash.token) {
@@ -100,7 +96,7 @@ export class NewAccount extends React.Component<Props, State> {
               closable={false}
             >
               {error ? (
-                <ErrorContainer errorMessage={errorMessage} onClick={this.goToMainPage} />
+                <ErrorContainer errorMessage={errorMessage} onClick={actions.goToMainPage} />
               ) : (
                 <NewAccountWithTokenForm
                   onSubmit={(password: string) => actions.createNewAccount(token, password)}

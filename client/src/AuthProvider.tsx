@@ -1,22 +1,28 @@
 import Cookies from 'js-cookie';
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { RouteChildrenProps } from 'react-router';
 
 import { login, newAccount } from './api/authApi';
 import { AuthContextProvider, AuthContextState } from './AuthContext';
 
-export class AuthProvider extends React.Component<RouteComponentProps, AuthContextState> {
-  constructor(props: RouteComponentProps) {
+export class AuthProvider extends React.Component<RouteChildrenProps, AuthContextState> {
+  constructor(props: RouteChildrenProps) {
     super(props);
     this.state = {
       actions: {
         createNewAccount: this.createNewAccount,
+        goToMainPage: this.goToMainPage,
         login: this.loginUser,
       },
       error: false,
       userAuth: false,
     };
   }
+
+  goToMainPage = () => {
+    this.setState({ error: false, errorMessage: '' });
+    this.props.history.push('/');
+  };
 
   resetState = () => {
     this.setState({ userAuth: false, userRole: undefined, userName: undefined });
@@ -99,7 +105,7 @@ export class AuthProvider extends React.Component<RouteComponentProps, AuthConte
         })
       )
       .catch(err => {
-        this.setState({ error: true, errorMessage: err });
+        this.setState({ error: true, errorMessage: err.message });
       });
   };
 

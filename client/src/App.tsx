@@ -3,10 +3,9 @@ import 'antd/dist/antd.css';
 import React, { StrictMode } from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-// tslint:disable-next-line:no-import-side-effect
+import { BaseLayer, RouterLayer } from './layers/';
 import './styles.css';
 import { AuthProvider } from './AuthProvider';
-import { BaseLayer, RouterLayer } from './Layers/';
 
 export class App extends React.Component {
   render() {

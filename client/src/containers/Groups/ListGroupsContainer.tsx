@@ -67,7 +67,7 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
                       {item.group_name}
                     </Link>
                   }
-                  description={`Prowadzący: ${item.lecturer}`}
+                  // TO DO description={`Prowadzący: ${item.lecturer}`}
                 />
               </List.Item>
             )}

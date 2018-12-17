@@ -7,19 +7,11 @@ import swaggerUi from 'swagger-ui-express';
 
 import { ROUTES } from '../../common/api';
 
-import {
-  checkIfTokenExpired,
-  isAuthenticated,
-  loginUser,
-  sendMagicLinks,
-  storeToken,
-  storeUserPassword,
-  validateLoginUserRequest,
-  validateNewAccountRequest,
-  validateNewAccountToken,
-} from './auth';
+import * as auth from './auth';
+import { validateLoginUserRequest, validateNewAccountRequest } from './auth/validation';
 import * as groups from './groups';
 import {
+  validateAddMeetingRequest,
   validateAddStudentToGroupRequest,
   validateDeleteStudentFromGroupRequest,
   validateListStudentsForGroupRequest,
@@ -50,45 +42,39 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.post(
   ACCOUNTS.new,
   validateNewAccountRequest,
-  checkIfTokenExpired,
-  validateNewAccountToken,
-  storeUserPassword,
-  storeToken
+  auth.checkNewAccountToken,
+  auth.storeUserPassword
 );
-app.post(ACCOUNTS.login, validateLoginUserRequest, loginUser);
+app.post(ACCOUNTS.login, validateLoginUserRequest, auth.loginUser);
 
-app.get(USERS.list, isAuthenticated, users.list);
-app.post(USERS.add, isAuthenticated, validateAddRequest, users.add);
-app.post(USERS.update, isAuthenticated, validateUpdateRequest, users.update);
-app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUser);
+app.get(USERS.list, auth.authorize, users.list);
+app.post(USERS.create, auth.authorize, validateAddRequest, users.create);
+app.post(USERS.update, auth.authorize, validateUpdateRequest, users.update);
+app.delete(USERS.delete, auth.authorize, validateDeleteRequest, users.deleteUser);
 
-app.post(GROUPS.upload, isAuthenticated, validateUploadRequest, groups.upload, sendMagicLinks);
-app.get(GROUPS.list, isAuthenticated, groups.list);
+app.post(GROUPS.upload, auth.authorize, validateUploadRequest, groups.upload, auth.sendMagicLinks);
+app.get(GROUPS.list, auth.authorize, groups.list);
 app.get(
   GROUPS.students,
-  isAuthenticated,
+  auth.authorize,
   validateListStudentsForGroupRequest,
   groups.listStudentsForGroup
 );
 app.delete(
   GROUPS.delete_student,
-  isAuthenticated,
+  auth.authorize,
   validateDeleteStudentFromGroupRequest,
   groups.deleteUserFromGroup
 );
-app.post(
-  GROUPS.update_student,
-  isAuthenticated,
-  validateUpdateStudentRequest,
-  groups.updateStudent
-);
+app.post(GROUPS.update_student, auth.authorize, validateUpdateStudentRequest, groups.updateStudent);
 app.post(
   GROUPS.add_student,
-  isAuthenticated,
+  auth.authorize,
   validateAddStudentToGroupRequest,
   groups.addStudentToGroup
 );
-app.post(GROUPS.add, isAuthenticated, groups.add);
+app.post(GROUPS.add_meetings, auth.authorize, validateAddMeetingRequest, groups.addMeeting);
+app.post(GROUPS.add, auth.authorize, groups.add);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

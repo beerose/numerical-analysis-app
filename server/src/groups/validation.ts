@@ -54,3 +54,10 @@ export const validateAddStudentToGroupRequest = (
 
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidUserData });
 };
+
+export const validateAddMeetingRequest = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body && req.body.meeting_name && req.body.date && req.body.date) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidAddMeetingRequest });
+};
