@@ -21,7 +21,7 @@ export const ROUTES = {
     upload: '/groups/upload',
   },
   USERS: {
-    add: '/users/add',
+    create: '/users/create',
     delete: '/users/delete',
     list: '/users',
     update: '/users/update',

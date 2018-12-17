@@ -59,7 +59,7 @@ app.post(
 app.post(ACCOUNTS.login, validateLoginUserRequest, loginUser);
 
 app.get(USERS.list, isAuthenticated, users.list);
-app.post(USERS.add, isAuthenticated, validateAddRequest, users.add);
+app.post(USERS.create, isAuthenticated, validateAddRequest, users.create);
 app.post(USERS.update, isAuthenticated, validateUpdateRequest, users.update);
 app.delete(USERS.delete, isAuthenticated, validateDeleteRequest, users.deleteUser);
 

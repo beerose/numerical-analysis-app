@@ -44,7 +44,7 @@ export const addUser = async (user: UserDTO) => {
     },
     method: 'POST',
   };
-  await authFetch(SERVER_URL + USERS.add, options).then(res => showMessage(res));
+  await authFetch(SERVER_URL + USERS.create, options).then(res => showMessage(res));
 };
 
 export const deleteUser = async (id: string) => {

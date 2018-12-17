@@ -20,7 +20,7 @@ export declare const ROUTES: {
         upload: string;
     };
     USERS: {
-        add: string;
+        create: string;
         delete: string;
         list: string;
         update: string;
