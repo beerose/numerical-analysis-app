@@ -3,7 +3,6 @@ import {
   AbstractCheckboxProps,
   CheckboxChangeEvent,
   CheckboxChangeEventTarget,
-  CheckboxProps,
 } from 'antd/lib/checkbox/Checkbox';
 import React from 'react';
 import { css } from 'react-emotion';
