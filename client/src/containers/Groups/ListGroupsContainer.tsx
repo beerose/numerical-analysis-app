@@ -5,7 +5,7 @@ import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { GroupDTO, ROUTES } from '../../../../common/api';
+import { GroupDTO, Routes } from '../../../../common/api';
 import { groupsService } from '../../api';
 import { Theme } from '../../components/theme';
 import { LABELS } from '../../utils/labels';
@@ -63,7 +63,7 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
               <List.Item actions={[<a>usuń</a>]}>
                 <List.Item.Meta
                   title={
-                    <Link to={`${ROUTES.GROUPS.details.replace(':id', item.id)}`}>
+                    <Link to={`${Routes.Groups.Get.replace(':id', item.id)}`}>
                       {item.group_name}
                     </Link>
                   }

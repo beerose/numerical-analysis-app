@@ -10,19 +10,19 @@ import { AuthProvider } from './AuthProvider';
 export class App extends React.Component {
   render() {
     return (
-      <StrictMode>
-        <Router basename={process.env.PUBLIC_URL}>
-          <Route>
-            {routeContext => (
-              <AuthProvider {...routeContext}>
-                <BaseLayer {...routeContext}>
-                  <RouterLayer />
-                </BaseLayer>
-              </AuthProvider>
-            )}
-          </Route>
-        </Router>
-      </StrictMode>
+      // <StrictMode>
+      <Router basename={process.env.PUBLIC_URL}>
+        <Route>
+          {routeContext => (
+            <AuthProvider {...routeContext}>
+              <BaseLayer {...routeContext}>
+                <RouterLayer />
+              </BaseLayer>
+            </AuthProvider>
+          )}
+        </Route>
+      </Router>
+      // </StrictMode>
     );
   }
 }

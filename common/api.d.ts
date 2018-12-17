@@ -33,7 +33,7 @@ export declare const Routes: {
     };
 };
 export declare type UserDTO = {
-    id?: string;
+    id: string;
     user_name: string;
     email: string;
     student_index?: string;

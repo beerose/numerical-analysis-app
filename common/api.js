@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// TODO: function l<T extends string>(s: T): T;
 exports.Routes = {
     Accounts: {
         Login: '/accounts/login',

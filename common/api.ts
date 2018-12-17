@@ -5,6 +5,8 @@ export interface ApiResponse {
   error?: string;
 }
 
+// TODO: function l<T extends string>(s: T): T;
+
 export const Routes = {
   Accounts: {
     Login: '/accounts/login',
@@ -36,7 +38,7 @@ export const Routes = {
 };
 
 export type UserDTO = {
-  id?: string;
+  id: string;
   user_name: string;
   email: string;
   student_index?: string;
