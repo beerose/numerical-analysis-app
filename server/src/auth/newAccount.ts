@@ -19,7 +19,7 @@ interface CreateWithTokenResponse extends Response {
     user?: { user_name: string; user_role: string };
   };
 }
-export const validateNewAccountToken = (
+export const checkNewAccountToken = (
   req: CreateWithTokenRequest,
   res: CreateWithTokenResponse,
   next: NextFunction
