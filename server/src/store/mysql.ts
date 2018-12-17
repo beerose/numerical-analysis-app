@@ -50,3 +50,64 @@ export const deleteUser = ({ id }: { id: string }, callback: Callback) =>
     },
     callback
   );
+
+const searchSubQuery = (searchParam: string) => `
+  (MATCH(user_name) AGAINST ("${searchParam}")
+  OR MATCH(email) AGAINST ("${searchParam}")
+  OR MATCH(student_index) AGAINST ("${searchParam}"))
+`;
+
+const roleSubQuery = (roles: string | string[]) => {
+  if (typeof roles === 'string') {
+    return `user_role = ("${roles}")`;
+  }
+  return `user_role IN (${roles.map(role => `"${role}"`)})`;
+};
+
+export const listUsers = (
+  {
+    searchParam,
+    roles,
+    limit,
+    offset,
+  }: { searchParam?: string; roles?: string | string[]; limit: number; offset: number },
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: `
+      SELECT
+        id, user_name, email, student_index, user_role
+      FROM
+        users
+        ${searchParam || roles ? 'WHERE' : ''}
+        ${searchParam ? searchSubQuery(searchParam) : ''}
+        ${searchParam && roles ? 'AND' : ''}
+        ${roles ? roleSubQuery(roles) : ''}
+      ORDER BY updated_at DESC
+      LIMIT ? OFFSET ?;
+    `,
+      values: [limit, offset],
+    },
+    callback
+  );
+
+export const countUsers = (
+  { searchParam, roles }: { searchParam?: string; roles?: string | string[] },
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: `
+      SELECT
+        count(*) as total
+      FROM
+        users
+        ${searchParam || roles ? 'WHERE' : ''}
+        ${searchParam ? searchSubQuery(searchParam) : ''}
+        ${searchParam && roles ? 'AND' : ''}
+        ${roles ? roleSubQuery(roles) : ''};
+      `,
+    },
+    callback
+  );

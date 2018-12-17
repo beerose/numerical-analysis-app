@@ -25,43 +25,6 @@ export const getWholeUserByEmailQuery = `
   SELECT * FROM users WHERE email = ?;
 `;
 
-const searchSubQuery = (searchParam: string) => `
-  (MATCH(user_name) AGAINST ("${searchParam}")
-  OR MATCH(email) AGAINST ("${searchParam}")
-  OR MATCH(student_index) AGAINST ("${searchParam}"))
-`;
-
-const roleSubQuery = (roles: string | string[]) => {
-  if (typeof roles === 'string') {
-    return `user_role = ("${roles}")`;
-  }
-  return `user_role IN (${roles.map(role => `"${role}"`)})`;
-};
-
-export const prepareListUsersQuery = (searchParam?: string, roles?: string | string[]) => `
-  SELECT
-    id, user_name, email, student_index, user_role
-  FROM
-    users
-  ${searchParam || roles ? 'WHERE' : ''}
-  ${searchParam ? searchSubQuery(searchParam) : ''}
-  ${searchParam && roles ? 'AND' : ''}
-  ${roles ? roleSubQuery(roles) : ''}
-  ORDER BY updated_at DESC
-  LIMIT ? OFFSET ?;
-`;
-
-export const prepareCountUsersQuery = (searchParam?: string, roles?: string | string[]) => `
-  SELECT
-    count(*) as total
-  FROM
-    users
-  ${searchParam || roles ? 'WHERE' : ''}
-  ${searchParam ? searchSubQuery(searchParam) : ''}
-  ${searchParam && roles ? 'AND' : ''}
-  ${roles ? roleSubQuery(roles) : ''};
-`;
-
 export const findTokenQuery = `
   SELECT * FROM token WHERE token = ?;
 `;
