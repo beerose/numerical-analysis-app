@@ -5,7 +5,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-import { ROUTES } from '../../../../common/api';
+import { Routes } from '../../../../common/api';
 
 import { PresenceTable, StudentsSection } from './components';
 
@@ -29,32 +29,32 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
 
   goToStudents = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/students`);
+    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/students`);
   };
 
   goToLists = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/lists`);
+    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/lists`);
   };
 
   goToMeetings = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/meetings`);
+    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/meetings`);
   };
 
   goToPresence = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/presence`);
+    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/presence`);
   };
 
   goToAcitivity = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/acitivity`);
+    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/acitivity`);
   };
 
   goToGrades = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${ROUTES.GROUPS.details.replace(':id', groupId)}/grades`);
+    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/grades`);
   };
 
   getSelectedItem() {
