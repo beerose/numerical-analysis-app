@@ -1,27 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ROUTES = {
-    ACCOUNTS: {
-        login: '/accounts/login',
-        new: '/accounts/new',
+exports.Routes = {
+    Accounts: {
+        Login: '/accounts/login',
+        New: '/accounts/new',
     },
-    GROUPS: {
-        add: '/groups/add',
-        add_meetings: '/groups/meetings.add',
-        add_student: '/groups/students.add',
-        delete_student: '/groups/students.delete',
-        details: '/groups/:id',
-        list: '/groups',
-        list_meetings: 'groups/meetings',
-        students: '/groups/students.get',
-        update_student: '/groups/students.update',
-        upload: '/groups/upload',
+    Groups: {
+        Create: '/groups/create',
+        Get: '/groups/:id',
+        List: '/groups',
+        Meetings: {
+            Create: '/groups/meetings.create',
+            Delete: '/groups/meetings.delete',
+            List: '/groups/meetings',
+        },
+        Students: {
+            AddToGroup: '/groups/students.add',
+            List: '/groups/students',
+            RemoveFromGroup: '/groups/students.delete',
+            UpdateStudent: '/groups/students.update',
+        },
+        Upload: '/groups/upload',
     },
-    USERS: {
-        create: '/users/create',
-        delete: '/users/delete',
-        list: '/users',
-        update: '/users/update',
+    Users: {
+        Create: '/users/create',
+        Delete: '/users/delete',
+        List: '/users',
+        Update: '/users/update',
     },
 };
 var GroupEnumUI;

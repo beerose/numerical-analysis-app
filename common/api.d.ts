@@ -3,28 +3,33 @@ export interface ApiResponse {
     message?: string;
     error?: string;
 }
-export declare const ROUTES: {
-    ACCOUNTS: {
-        login: string;
-        new: string;
+export declare const Routes: {
+    Accounts: {
+        Login: string;
+        New: string;
     };
-    GROUPS: {
-        add: string;
-        add_meetings: string;
-        add_student: string;
-        delete_student: string;
-        details: string;
-        list: string;
-        list_meetings: string;
-        students: string;
-        update_student: string;
-        upload: string;
+    Groups: {
+        Create: string;
+        Get: string;
+        List: string;
+        Meetings: {
+            Create: string;
+            Delete: string;
+            List: string;
+        };
+        Students: {
+            AddToGroup: string;
+            List: string;
+            RemoveFromGroup: string;
+            UpdateStudent: string;
+        };
+        Upload: string;
     };
-    USERS: {
-        create: string;
-        delete: string;
-        list: string;
-        update: string;
+    Users: {
+        Create: string;
+        Delete: string;
+        List: string;
+        Update: string;
     };
 };
 export declare type UserDTO = {

@@ -1,12 +1,12 @@
 import * as qs from 'query-string';
 
-import { ROUTES, UserDTO } from '../../../common/api';
+import { Routes, UserDTO } from '../../../common/api';
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from './';
 import { authFetch } from './utils';
 
-const { USERS } = ROUTES;
+const { Users } = Routes;
 
 const LIMIT = 10;
 
@@ -31,7 +31,7 @@ export const listUsers = async ({
   });
 
   return authFetch<{ users: UserDTO[]; total: string }>(
-    `${SERVER_URL}${ROUTES.USERS.list}?${queryParams}`,
+    `${SERVER_URL}${Users.List}?${queryParams}`,
     options
   );
 };
@@ -44,7 +44,7 @@ export const addUser = async (user: UserDTO) => {
     },
     method: 'POST',
   };
-  await authFetch(SERVER_URL + USERS.create, options).then(res => showMessage(res));
+  await authFetch(SERVER_URL + Users.Create, options).then(res => showMessage(res));
 };
 
 export const deleteUser = async (id: string) => {
@@ -56,7 +56,7 @@ export const deleteUser = async (id: string) => {
     method: 'DELETE',
   };
 
-  await authFetch(SERVER_URL + USERS.delete, options).then(showMessage);
+  await authFetch(SERVER_URL + Users.Delete, options).then(showMessage);
 };
 
 export const updateUser = async (user: UserDTO) => {
@@ -68,5 +68,5 @@ export const updateUser = async (user: UserDTO) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + USERS.update, options).then(showMessage);
+  await authFetch(SERVER_URL + Users.Update, options).then(showMessage);
 };

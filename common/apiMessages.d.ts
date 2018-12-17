@@ -8,6 +8,7 @@ export declare const apiMessages: {
     internalError: string;
     invalidAddMeetingRequest: string;
     invalidCSV: string;
+    invalidCreateGroupRequest: string;
     invalidDeleteStudentFromGroupReq: string;
     invalidEmailOrPassword: string;
     invalidJWT: string;

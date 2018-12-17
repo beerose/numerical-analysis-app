@@ -196,11 +196,11 @@ export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) 
 };
 
 export * from './meetings';
-interface AddGroupRequest extends Request {
+interface CreateGroupRequest extends Request {
   body: GroupDTO;
 }
 
-export const add = (req: AddGroupRequest, res: Response) => {
+export const create = (req: CreateGroupRequest, res: Response) => {
   const group = req.body;
 
   console.log({ group });

@@ -1,13 +1,13 @@
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
 
-import { GroupDTO, ROUTES, UserDTO } from '../../../common/api';
+import { GroupDTO, Routes, UserDTO } from '../../../common/api';
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from '.';
 import { authFetch } from './utils';
 
-const { GROUPS } = ROUTES;
+const { Groups } = Routes;
 
 export const uploadUsers = async (fileContent: string, groupId: string) => {
   const options = {
@@ -15,7 +15,7 @@ export const uploadUsers = async (fileContent: string, groupId: string) => {
     method: 'POST',
   };
 
-  await authFetch<{ message: string }>(SERVER_URL + GROUPS.upload, options).then(showMessage);
+  await authFetch<{ message: string }>(SERVER_URL + Groups.Upload, options).then(showMessage);
 };
 
 export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
@@ -23,7 +23,7 @@ export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
     method: 'GET',
   };
 
-  return authFetch<{ groups: GroupDTO[] }>(SERVER_URL + GROUPS.list, options);
+  return authFetch<{ groups: GroupDTO[] }>(SERVER_URL + Groups.List, options);
 };
 
 export const listStudentsForGroup = async (groupId: string): Promise<{ students: UserDTO[] }> => {
@@ -32,7 +32,7 @@ export const listStudentsForGroup = async (groupId: string): Promise<{ students:
   };
 
   return authFetch<{ students: UserDTO[] }>(
-    `${SERVER_URL + GROUPS.students}?${qs.stringify({ group_id: groupId })}`,
+    `${SERVER_URL + Groups.Students.List}?${qs.stringify({ group_id: groupId })}`,
     options
   );
 };
@@ -43,7 +43,7 @@ export const deleteUserFromGroup = async (userId: string) => {
     method: 'DELETE',
   };
 
-  return authFetch(SERVER_URL + GROUPS.delete_student, options).then(showMessage);
+  return authFetch(SERVER_URL + Groups.Students.RemoveFromGroup, options).then(showMessage);
 };
 
 export const updateUserFromGroup = async (user: UserDTO) => {
@@ -52,7 +52,7 @@ export const updateUserFromGroup = async (user: UserDTO) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + GROUPS.update_student, options).then(showMessage);
+  await authFetch(SERVER_URL + Groups.Students.UpdateStudent, options).then(showMessage);
 };
 
 export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
@@ -61,11 +61,11 @@ export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + GROUPS.add_student, options).then(showMessage);
+  await authFetch(SERVER_URL + Groups.Students.AddToGroup, options).then(showMessage);
 };
 
 export const addGroup = (group: Omit<GroupDTO, 'id'>) => {
-  return authFetch(SERVER_URL + GROUPS.add, {
+  return authFetch(SERVER_URL + Groups.Create, {
     body: JSON.stringify(group),
     method: 'POST',
   });

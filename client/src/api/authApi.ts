@@ -1,10 +1,10 @@
 import { LABELS } from '../utils/labels';
 
-import { ApiResponse, ROUTES } from '../../../common/api';
+import { ApiResponse, Routes } from '../../../common/api';
 
 import { SERVER_URL } from '.';
 
-const { ACCOUNTS } = ROUTES;
+const { Accounts } = Routes;
 
 export const login = (
   email: string,
@@ -13,7 +13,7 @@ export const login = (
   const data = new URLSearchParams();
   data.append('email', email);
   data.append('password', password);
-  return fetch(SERVER_URL + ACCOUNTS.login, {
+  return fetch(SERVER_URL + Accounts.Login, {
     body: data.toString(),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -45,7 +45,7 @@ export const newAccount = (
   const data = new URLSearchParams();
   data.append('token', token);
   data.append('password', password);
-  return fetch(SERVER_URL + ACCOUNTS.new, {
+  return fetch(SERVER_URL + Accounts.New, {
     body: data.toString(),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
