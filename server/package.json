@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "main": "dist/index.js",
   "scripts": {
-    "watch-compile": "cross-env PORT=3003 parcel watch ./src/index.ts --target=node",
+    "watch-compile": "cross-env PORT=3003 parcel ./src/index.ts --target=node",
     "watch-run": "cross-env PORT=8082 nodemon dist/index.js",
     "build": "cross-env PORT=3003 parcel build ./src/index.ts --target=node",
     "launch": "cross-env PORT=8080 node dist/index.js",
@@ -47,6 +47,7 @@
     "morgan-body": "^2.4.5",
     "nodemon": "^1.18.6",
     "prettier": "^1.11.1",
+    "supervisor": "^0.12.0",
     "typescript": "^2.8.3"
   }
 }

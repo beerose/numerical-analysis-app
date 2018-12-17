@@ -98,14 +98,15 @@ export const storeTokenQuery = `
 
 export const listGroupsQuery = `
   SELECT
-    g.id,
+    id,
     group_name,
     group_type,
     academic_year,
     class,
-    g.data
+    data
   FROM
-    \`groups\` g;
+    \`groups\`
+  ORDER BY created_at DESC
 `;
 
 export const listStudentsForGroupQuery = `
@@ -136,8 +137,8 @@ export const prepareAttachStudentToGroupQuery = (userEmails: string[], groupId: 
 
 export const addGroupQuery = `
   INSERT INTO \`groups\` (
-    group_name, group_type, class, parent_group, academic_year
+    group_name, group_type, class, academic_year
   ) VALUES (
-    ?, ?, ?, ?, ?
+    ?, ?, ?, ?
   )
 `;

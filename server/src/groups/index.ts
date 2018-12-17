@@ -213,13 +213,7 @@ export const add = (req: AddGroupRequest, res: Response) => {
   connection.query(
     {
       sql: addGroupQuery,
-      values: [
-        group.group_name,
-        group.group_type,
-        group.class,
-        undefined /* group.parent_group */,
-        group.academic_year,
-      ],
+      values: [group.group_name, group.group_type, group.class, group.academic_year],
     },
     (err, queryResult) => {
       if (err) {
@@ -227,9 +221,9 @@ export const add = (req: AddGroupRequest, res: Response) => {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
       }
 
-      console.log('inserted group:', { queryResult });
+      console.log('inserted group:', { abcd: queryResult });
 
-      return res.status(codes.OK).send({ message: 'OK!' });
+      return res.status(codes.OK).send({ message: apiMessages.groupCreated });
     }
   );
 };
