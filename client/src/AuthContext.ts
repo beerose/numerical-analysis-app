@@ -4,6 +4,7 @@ export type AuthContextState = {
   actions: {
     createNewAccount: (token: string, password: string) => void;
     login: (userName: string, password: string, remember: boolean) => void;
+    goToMainPage: () => void;
   };
   error: boolean;
   errorMessage?: string;

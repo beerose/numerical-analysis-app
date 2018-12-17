@@ -5,15 +5,11 @@ import * as codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
 import { apiMessages } from '../../../common/apiMessages';
+import { db } from '../store';
 import { connection } from '../store/connection';
-import {
-  findTokenQuery,
-  getUserByEmailQuery,
-  setUserPasswordQuery,
-  storeTokenQuery,
-} from '../store/queries';
+import { setUserPasswordQuery, storeTokenQuery } from '../store/queries';
 
-export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
+export const isAuthorized = (req: Request, res: Response, next: NextFunction) => {
   const auth = req.headers.authorization;
   if (!auth || !auth.startsWith('Bearer ')) {
     return res.status(codes.FORBIDDEN).send({ error: 'cannot verify jwt' });
@@ -32,35 +28,18 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
   }
 
   const email = (decoded as { email: string }).email;
-  return findUserByEmail(email, ({ user, error }) => {
-    if (error) {
-      return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+  return db.findUserByEmail({ email }, (err, userRes) => {
+    if (err) {
+      res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      return;
     }
-    if (!user) {
-      return res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
+    if (!userRes) {
+      res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
+      return;
     }
 
     return next();
   });
-};
-
-type FindUserResult = { user?: { user_name: string; user_role: string } | null; error?: boolean };
-const findUserByEmail = (email: string, callback: (result: FindUserResult) => void) => {
-  connection.query(
-    {
-      sql: getUserByEmailQuery,
-      values: [email],
-    },
-    (error, results) => {
-      if (error) {
-        return callback({ error: true });
-      }
-      if (!results.length) {
-        return callback({ user: null });
-      }
-      return callback({ user: results[0] });
-    }
-  );
 };
 
 interface CreateWithTokenRequest extends Request {
@@ -76,29 +55,6 @@ interface CreateWithTokenResponse extends Response {
   };
 }
 
-export const checkIfTokenExpired = (
-  req: CreateWithTokenRequest,
-  res: CreateWithTokenResponse,
-  next: NextFunction
-) => {
-  const { token } = req.body;
-  connection.query(
-    {
-      sql: findTokenQuery,
-      values: [token],
-    },
-    (error, results) => {
-      if (error) {
-        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
-      }
-      if (results.length) {
-        return res.status(codes.BAD_REQUEST).send({ error: apiMessages.tokenUsed });
-      }
-      return next();
-    }
-  );
-};
-
 export const validateNewAccountToken = (
   req: CreateWithTokenRequest,
   res: CreateWithTokenResponse,
@@ -109,23 +65,33 @@ export const validateNewAccountToken = (
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET!);
   } catch {
-    return res.status(codes.FORBIDDEN).send({ error: 'cannot verify jwt' });
+    res.status(codes.FORBIDDEN).send({ error: 'cannot verify jwt' });
+    return;
   }
 
   if (!decoded.hasOwnProperty('email')) {
-    return res.status(codes.FORBIDDEN).send({ error: 'invalid jwt format' });
+    res.status(codes.FORBIDDEN).send({ error: 'invalid jwt format' });
+    return;
   }
 
   const email = (decoded as { email: string }).email;
-  return findUserByEmail(email, ({ user, error }) => {
-    if (error) {
-      return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+
+  db.findUserByEmail({ email }, (findErr, userRes) => {
+    if (findErr) {
+      console.error({ findErr });
+      res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      return;
     }
-    if (!user) {
-      return res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
+    if (!userRes) {
+      res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
+      return;
     }
-    res.locals.email = email;
-    res.locals.user = user;
+    if (userRes.active_user) {
+      res.status(codes.FORBIDDEN).send({ error: 'account already activated' });
+      return;
+    }
+    res.locals.email = userRes.email;
+    res.locals.user = userRes.user;
     return next();
   });
 };

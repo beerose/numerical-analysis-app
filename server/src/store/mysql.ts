@@ -111,3 +111,16 @@ export const countUsers = (
     },
     callback
   );
+
+export const findUserByEmail = ({ email }: { email: string }, callback: Callback) =>
+  connection.query(
+    {
+      sql: 'SELECT user_name, user_role, active_user FROM users WHERE email = ?;',
+      values: [email],
+    },
+    (err, res) => {
+      if (err) return callback(err);
+      if (!res.length) return callback(null, null);
+      return callback(null, res[0]);
+    }
+  );

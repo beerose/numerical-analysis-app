@@ -11,12 +11,18 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
     this.state = {
       actions: {
         createNewAccount: this.createNewAccount,
+        goToMainPage: this.goToMainPage,
         login: this.loginUser,
       },
       error: false,
       userAuth: false,
     };
   }
+
+  goToMainPage = () => {
+    this.setState({ error: false, errorMessage: '' });
+    this.props.history.push('/');
+  };
 
   resetState = () => {
     this.setState({ userAuth: false, userRole: undefined, userName: undefined });
@@ -99,7 +105,7 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
         })
       )
       .catch(err => {
-        this.setState({ error: true, errorMessage: err });
+        this.setState({ error: true, errorMessage: err.message });
       });
   };
 
