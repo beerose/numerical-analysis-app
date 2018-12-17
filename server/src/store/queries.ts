@@ -1,4 +1,5 @@
 export const upsertUserQuery = `
+<<<<<<< HEAD
   INSERT IGNORE INTO
     users (
       user_name,
@@ -7,6 +8,16 @@ export const upsertUserQuery = `
       student_index
     )
   VALUES ?
+=======
+INSERT IGNORE INTO
+  users (
+    user_name,
+    email,
+    user_role,
+    student_index
+  )
+VALUES ?
+>>>>>>> master
 `;
 
 export const getUserRoleQuery = `
@@ -65,5 +76,4 @@ export const addGroupQuery = `
     group_name, group_type, class, academic_year
   ) VALUES (
     ?, ?, ?, ?
-  )
-`;
+  )`;
