@@ -65,12 +65,12 @@ export const validateNewAccountToken = (
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET!);
   } catch {
-    res.status(codes.FORBIDDEN).send({ error: 'cannot verify jwt' });
+    res.status(codes.FORBIDDEN).send({ error: apiMessages.cannotVerifyJWT });
     return;
   }
 
   if (!decoded.hasOwnProperty('email')) {
-    res.status(codes.FORBIDDEN).send({ error: 'invalid jwt format' });
+    res.status(codes.FORBIDDEN).send({ error: apiMessages.invalidJWT });
     return;
   }
 
@@ -83,11 +83,11 @@ export const validateNewAccountToken = (
       return;
     }
     if (!userRes) {
-      res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
+      res.status(codes.FORBIDDEN).send({ error: apiMessages.userNotFound });
       return;
     }
     if (userRes.active_user) {
-      res.status(codes.FORBIDDEN).send({ error: 'account already activated' });
+      res.status(codes.FORBIDDEN).send({ error: apiMessages.accountExists });
       return;
     }
     res.locals.email = userRes.email;

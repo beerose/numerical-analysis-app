@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.apiMessages = {
+    accountExists: 'Twoje konto już istnieje',
+    cannotVerifyJWT: 'Nieprawidłowy token JWT',
     emailRequired: 'Email jest wymagany',
     emptyCSV: 'Plik CSV jest pusty lub nieprawidłowy',
     idRequired: 'Id jest wymagane',
@@ -9,6 +11,7 @@ exports.apiMessages = {
     invalidCSV: 'Nieprawidłowy plik CSV. Wymagany format to: imię, nazwisko, indeks, email.',
     invalidDeleteStudentFromGroupReq: 'user_id jest wymagane',
     invalidEmailOrPassword: 'Nieprawidłowy email lub hasło',
+    invalidJWT: 'Nieprawidłowy format JWT',
     invalidListStudentsForGroupReq: 'group_id jest wymagane',
     invalidLoginRequest: 'Pola password i email są wymagane',
     invalidNewAccountRequest: 'Pola password i token są wymagane',

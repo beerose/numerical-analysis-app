@@ -1,4 +1,6 @@
 export declare const apiMessages: {
+    accountExists: string;
+    cannotVerifyJWT: string;
     emailRequired: string;
     emptyCSV: string;
     idRequired: string;
@@ -7,6 +9,7 @@ export declare const apiMessages: {
     invalidCSV: string;
     invalidDeleteStudentFromGroupReq: string;
     invalidEmailOrPassword: string;
+    invalidJWT: string;
     invalidListStudentsForGroupReq: string;
     invalidLoginRequest: string;
     invalidNewAccountRequest: string;
