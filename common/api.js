@@ -24,9 +24,9 @@ exports.ROUTES = {
         update: '/users/update',
     },
 };
-var GroupEnum;
-(function (GroupEnum) {
-    GroupEnum["Exercise"] = "\u0106wiczenia";
-    GroupEnum["Lab"] = "Pracownia";
-    GroupEnum["Lecture"] = "Wyk\u0142ad";
-})(GroupEnum = exports.GroupEnum || (exports.GroupEnum = {}));
+var GroupEnumUI;
+(function (GroupEnumUI) {
+    GroupEnumUI["Exercise"] = "\u0106wiczenia";
+    GroupEnumUI["Lab"] = "Pracownia";
+    GroupEnumUI["Lecture"] = "Wyk\u0142ad";
+})(GroupEnumUI = exports.GroupEnumUI || (exports.GroupEnumUI = {}));

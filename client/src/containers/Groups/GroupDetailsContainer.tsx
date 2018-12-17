@@ -7,12 +7,11 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { ROUTES } from '../../../../common/api';
 
-import { StudentsSection } from './components';
+import { PresenceTable, StudentsSection } from './components';
 
 const menuStyles = css`
   width: 200px;
   height: calc(100vh - 64px);
-  margin-left: -50px;
 `;
 
 const Container = styled.section`
@@ -23,7 +22,7 @@ const Container = styled.section`
 type State = {
   groupId: string;
 };
-export class EditGroupContainer extends React.Component<RouteComponentProps, State> {
+export class GroupDetailsContainer extends React.Component<RouteComponentProps, State> {
   state = {
     groupId: this.props.location.pathname.split('/')[2],
   };
@@ -101,6 +100,9 @@ export class EditGroupContainer extends React.Component<RouteComponentProps, Sta
             path={'/groups/:id/students'}
             component={() => <StudentsSection groupId={this.state.groupId} />}
           />
+          <Route exact={true} path={'/groups/:id/presence'}>
+            <PresenceTable />
+          </Route>
         </Switch>
       </Container>
     );

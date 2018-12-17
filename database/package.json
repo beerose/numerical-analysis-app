@@ -1,0 +1,16 @@
+{
+  "name": "database",
+  "version": "1.0.0",
+  "main": "none",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "db:setup": "docker run --name=numerical-mysql -p 3306:3306 -p 33060:33060 -d mysql/mysql-server",
+    "db:grepForPassword": "docker logs numerical-mysql 2>&1 | grep GENERATED",
+    "db:ports": "docker port numerical-mysql",
+    "db:interactive": "docker exec -it numerical-mysql mysql -uroot -p",
+    "db:start": "docker start numerical-mysql",
+    "db:stop": "docker stop numerical-mysql",
+    "db:remove": "docker rm numerical-mysql"
+  }
+}

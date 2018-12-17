@@ -6,10 +6,14 @@ import styled, { css } from 'react-emotion';
 
 import { UserDTO } from '../../../../common/api';
 import { usersService } from '../../api';
-import { LABELS } from '../../utils/labels';
 import { SelectRole, UsersTable } from '../../components';
+import { LABELS } from '../../utils/labels';
 
 import { WrappedNewUserModalForm } from './AddUserForm';
+
+const Container = styled.div`
+  padding: 0 50px;
+`;
 
 const SearchPanel = styled('div')`
   margin: 20px 0 20px 0;
@@ -119,7 +123,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
   render() {
     const { addUserModalVisible, users, total, currentPage, isLoading } = this.state;
     return (
-      <>
+      <Container>
         <SearchPanel onKeyPress={this.handleKeyPress}>
           <Input
             placeholder={LABELS.searchUserPlaceholder}
@@ -155,7 +159,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
             onTableChange={this.handlePaginationChange}
           />
         </Spin>
-      </>
+      </Container>
     );
   }
 }

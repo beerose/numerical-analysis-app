@@ -1,12 +1,13 @@
-import { NextFunction, Request, Response } from 'express';
-import * as codes from 'http-status-codes';
+import { NextFunction, Request, Response} from 'express';
+import * as codes from "http-status-codes";
 
-import { GroupDTO, UserDTO } from '../../../common/api';
-import { apiMessages } from '../../../common/apiMessages';
+import {GroupDTO, UserDTO} from '../../../common/api';
+import { apiMessages} from '../../../common/apiMessages';
 import { ROLES } from '../../../common/roles';
-import { db } from '../store';
-import { connection } from '../store/connection';
+import {db} from '../store';
+import {connection} from '../store/connection';
 import {
+  addGroupQuery,
   deleteStudentFromGroupQuery,
   listGroupsQuery,
   listStudentsForGroupQuery,
@@ -14,19 +15,19 @@ import {
   upsertUserQuery,
 } from '../store/queries';
 
-import { readCSV } from './uploadUtils';
+import {readCSV} from './uploadUtils';
 
 interface UploadRequest extends Request {
-  body: { data: string; group_id: string };
+  body: {data: string; group_id: string};
 }
 export const upload = (req: UploadRequest, res: Response, next: NextFunction) => {
-  const { users, isValid } = readCSV(req.body.data);
+  const {users, isValid} = readCSV(req.body.data);
   if (!isValid) {
-    res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
+    res.status(codes.BAD_REQUEST).send({error: apiMessages.invalidCSV});
     return;
   }
   if (!users || !users.length) {
-    res.status(codes.PRECONDITION_FAILED).send({ error: apiMessages.emptyCSV });
+    res.status(codes.PRECONDITION_FAILED).send({error: apiMessages.emptyCSV});
     return;
   }
 
@@ -38,7 +39,7 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
   ]);
   connection.beginTransaction(beginError => {
     if (beginError) {
-      res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError});
       return;
     }
     connection.query(
@@ -49,7 +50,7 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
       upsertErr => {
         if (upsertErr) {
           connection.rollback(() =>
-            res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+            res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError})
           );
           return;
         }
@@ -63,7 +64,7 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
             if (attachErr) {
               console.error(attachErr);
               connection.rollback(() =>
-                res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+                res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError})
               );
               return;
             }
@@ -71,10 +72,10 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
               if (commitErr) {
                 console.error(commitErr);
                 connection.rollback(() =>
-                  res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+                  res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError})
                 );
               }
-              res.status(codes.OK).send({ message: apiMessages.usersUploaded });
+              res.status(codes.OK).send({message: apiMessages.usersUploaded});
               return next();
             });
           }
@@ -92,9 +93,9 @@ export const list = (_req: Request, res: Response) => {
     (err, groups) => {
       if (err) {
         console.log(err);
-        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError});
       }
-      return res.status(codes.OK).send({ groups });
+      return res.status(codes.OK).send({groups});
     }
   );
 };
@@ -113,9 +114,9 @@ export const listStudentsForGroup = (req: ListStudentsForGroupRequest, res: Resp
     (err, students) => {
       if (err) {
         console.log(err);
-        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError});
       }
-      return res.status(codes.OK).send({ students });
+      return res.status(codes.OK).send({students});
     }
   );
 };
@@ -134,9 +135,9 @@ export const deleteUserFromGroup = (req: DeleteUserFromGroupRequest, res: Respon
     err => {
       if (err) {
         console.log(err);
-        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError});
       }
-      return res.status(codes.OK).send({ message: apiMessages.userDeleted });
+      return res.status(codes.OK).send({message: apiMessages.userDeleted});
     }
   );
 };
@@ -151,9 +152,9 @@ export const updateStudent = (req: UpdateStudentRequest, res: Response) => {
   return db.updateUser(user, err => {
     if (err) {
       console.error(err);
-      return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      return res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError});
     }
-    return res.status(codes.OK).send({ message: apiMessages.userUpdated });
+    return res.status(codes.OK).send({message: apiMessages.userUpdated});
   });
 };
 
@@ -164,7 +165,7 @@ interface AddStudentToGroupRequest extends Request {
   };
 }
 export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) => {
-  const { user, group_id } = req.body;
+  const {user, group_id} = req.body;
   connection.query(
     {
       sql: upsertUserQuery,
@@ -172,8 +173,8 @@ export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) 
     },
     upsertErr => {
       if (upsertErr) {
-        console.error({ upsertErr });
-        res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+        console.error({upsertErr});
+        res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError});
         return;
       }
       const attachQuery = prepareAttachStudentToGroupQuery([user.email], group_id);
@@ -183,11 +184,11 @@ export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) 
         },
         attachErr => {
           if (attachErr) {
-            console.error({ attachErr });
-            res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+            console.error({attachErr});
+            res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError});
             return;
           }
-          return res.status(codes.OK).send({ message: apiMessages.userCreated });
+          return res.status(codes.OK).send({message: apiMessages.userCreated});
         }
       );
     }
@@ -202,7 +203,22 @@ interface AddGroupRequest extends Request {
 export const add = (req: AddGroupRequest, res: Response) => {
   const group = req.body;
 
-  console.log({ group });
+  console.log({group});
 
-  res.status(codes.OK).send({ message: 'OK!' });
+  connection.query(
+    {
+      sql: addGroupQuery,
+      values: [group.group_name, group.group_type, group.class, group.academic_year],
+    },
+    (err, queryResult) => {
+      if (err) {
+        console.error({err});
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({error: apiMessages.internalError});
+      }
+
+      console.log('inserted group:', {abcd: queryResult});
+
+      return res.status(codes.OK).send({message: apiMessages.groupCreated});
+    }
+  );
 };

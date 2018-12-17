@@ -3,6 +3,7 @@ export declare const apiMessages: {
     cannotVerifyJWT: string;
     emailRequired: string;
     emptyCSV: string;
+    groupCreated: string;
     idRequired: string;
     internalError: string;
     invalidAddMeetingRequest: string;

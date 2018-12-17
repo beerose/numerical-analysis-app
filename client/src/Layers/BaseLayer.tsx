@@ -14,7 +14,6 @@ const { Content, Header } = Layout;
 
 const StyledContent = styled(Content)`
   background: inherit;
-  padding: 0 50px;
 `;
 
 const StyledHeader = styled(Header)`

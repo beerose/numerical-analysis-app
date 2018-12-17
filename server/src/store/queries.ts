@@ -1,4 +1,14 @@
 export const upsertUserQuery = `
+<<<<<<< HEAD
+  INSERT IGNORE INTO
+    users (
+      user_name,
+      email,
+      user_role,
+      student_index
+    )
+  VALUES ?
+=======
 INSERT IGNORE INTO
   users (
     user_name,
@@ -7,6 +17,7 @@ INSERT IGNORE INTO
     student_index
   )
 VALUES ?
+>>>>>>> master
 `;
 
 export const getUserRoleQuery = `
@@ -23,14 +34,15 @@ export const storeTokenQuery = `
 
 export const listGroupsQuery = `
   SELECT
-    g.id,
+    id,
     group_name,
     group_type,
     academic_year,
     class,
-    g.data
+    data
   FROM
-    \`groups\` g;
+    \`groups\`
+  ORDER BY created_at DESC
 `;
 
 export const listStudentsForGroupQuery = `
@@ -59,10 +71,9 @@ export const prepareAttachStudentToGroupQuery = (userEmails: string[], groupId: 
     .join(',')};
 `;
 
-export const addMeetingQuery = `
-  INSERT INTO meetings(meeting_name, date, group_id) VALUES (?, ?, ?);
-`;
-
-export const listMeetingsQuery = `
-  SELECT (meeting_name, date) FROM meetings WHERE group_id = ?;
-`;
+export const addGroupQuery = `
+  INSERT INTO \`groups\` (
+    group_name, group_type, class, academic_year
+  ) VALUES (
+    ?, ?, ?, ?
+  )`;

@@ -1,3 +1,5 @@
+import { GROUPS } from './groups';
+
 export interface ApiResponse {
   message?: string;
   error?: string;
@@ -44,13 +46,14 @@ export type Pagination = {
 export type GroupDTO = {
   id: string;
   group_name: string;
-  group_type: GroupEnum;
+  group_type: GROUPS;
   academic_year?: string;
-  class?: number;
-  data?: Record<string, any>;
+  // tslint:disable-next-line:no-reserved-keywords
+  class?: string;
+  data?: Record<string, unknown>;
 };
 
-export enum GroupEnum {
+export enum GroupEnumUI { // TODO: Move this to component / presentational helper or sth like that
   Exercise = 'Ćwiczenia',
   Lab = 'Pracownia',
   Lecture = 'Wykład',

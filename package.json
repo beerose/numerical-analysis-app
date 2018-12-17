@@ -8,5 +8,13 @@
   "scripts": {
     "start": "concurrently \"cd server/ && yarn start\" \"cd client/ && yarn dev\"",
     "dev": "concurrently -c blue,green,yellow -n c,s,f \"cd common && yarn watch\" \"cd server/ && yarn dev\" \"cd client/ && yarn dev\""
+  },
+  "devDependencies": {
+    "tslint": "^5.10.0",
+    "tslint-config-airbnb": "^5.8.0",
+    "tslint-config-prettier": "^1.17.0",
+    "tslint-microsoft-contrib": "^6.0.0",
+    "tslint-sonarts": "^1.8.0",
+    "typescript": "^3.2.2"
   }
 }

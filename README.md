@@ -1,5 +1,9 @@
 ## Numerical Analysis App
 
+## More README
+
+- [How to setup database docker container?](./database/DOCKER_README)
+
 ## Setup
 
 ### Set up your MySQL database
@@ -9,6 +13,22 @@ Run all sql queries in `server/migrations/` to set up the database.
 ### Create the first admin
 
 Insert the first admin into the users table. He can add more admins, superusers and users.
+
+```sql
+
+insert into users (
+    user_name,
+    email,
+    user_role,
+    password
+) values (
+    'user_name',
+    'your_email',
+    'admin',
+    '$2b$10$e17/rZAeRLlLfSRV4fMPE.ROjHGL0.qgEuWq9PpCJ6YtfU2rul/HW' -- this is "haslo" hashed
+)
+
+```
 
 ### Environment variables
 
@@ -63,10 +83,11 @@ The server requires following environment variables to connect to the database:
 You can create `server/.env` file for development.
 
 ```
-    DB_NAME=numerical_analysis_app
+    DB_NAME=numerical
     DB_HOST=localhost
-    DB_PASSWORD=password
+    DB_PASSWORD=haslo
     DB_USER=root
+    JWT_SECRET=tajemnica
 ```
 
 ---

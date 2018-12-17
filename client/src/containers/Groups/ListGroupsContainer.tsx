@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 
 import { GroupDTO, ROUTES } from '../../../../common/api';
 import { groupsService } from '../../api';
+import { Theme } from '../../components/theme';
 import { LABELS } from '../../utils/labels';
 
 const Container = styled.div`
@@ -56,7 +57,7 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
             itemLayout="horizontal"
             dataSource={this.state.groups}
             className={css`
-              padding: 0 40px;
+              padding: 0 ${Theme.Padding.Standard};
             `}
             renderItem={(item: GroupDTO) => (
               <List.Item actions={[<a>usuń</a>]}>

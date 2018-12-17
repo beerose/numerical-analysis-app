@@ -3,6 +3,7 @@ export const apiMessages = {
   cannotVerifyJWT: 'Nieprawidłowy token JWT',
   emailRequired: 'Email jest wymagany',
   emptyCSV: 'Plik CSV jest pusty lub nieprawidłowy',
+  groupCreated: 'Grupa została dodana',
   idRequired: 'Id jest wymagane',
   internalError: 'Wystąpił błąd, spróbuj ponownie',
   invalidAddMeetingRequest: 'Pola meeting_name, date, group_id są wymagane',
