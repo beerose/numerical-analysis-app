@@ -6,7 +6,7 @@
     "watch-compile": "cross-env PORT=3003 parcel watch ./src/index.ts --target=node",
     "watch-run": "cross-env PORT=8082 nodemon dist/index.js",
     "build": "cross-env PORT=3003 parcel build ./src/index.ts --target=node",
-    "launch": "cross-env PORT=8080 node dist/index.js",
+    "launch": "cross-env PORT=8082 node dist/index.js",
     "start": "yarn build && node dist/index.js",
     "dev": "concurrently -c red,yellow -n n,p \"yarn watch-run\" \"yarn watch-compile\""
   },
