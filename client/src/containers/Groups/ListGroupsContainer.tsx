@@ -41,7 +41,6 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
   }
 
   render() {
-    console.log(this.state);
     return (
       <Container>
         <Button

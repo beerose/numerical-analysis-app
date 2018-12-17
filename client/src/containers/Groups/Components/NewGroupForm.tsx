@@ -95,10 +95,9 @@ class NewGroupForm extends React.Component<Props> {
     e.preventDefault();
     this.props.form.validateFields((err, values: NewGroupFormValues) => {
       if (err) {
-        console.error(err); // TODO
-      } else {
-        this.props.onSubmit(values);
+        return;
       }
+      this.props.onSubmit(values);
     });
   };
 
