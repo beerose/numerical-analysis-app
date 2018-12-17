@@ -3,8 +3,8 @@ import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
 
 import { UserDTO } from '../../../../common/api';
-import { LABELS } from '../../utils/labels';
 import { SelectRole } from '../../components/';
+import { LABELS } from '../../utils/labels';
 
 const FormItem = Form.Item;
 
