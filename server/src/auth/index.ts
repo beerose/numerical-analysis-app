@@ -1,4 +1,5 @@
 export * from './magicLink';
-export * from './auth';
+export * from './authorize';
 export * from './validation';
 export * from './login';
+export * from './newAccount';

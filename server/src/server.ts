@@ -8,10 +8,9 @@ import swaggerUi from 'swagger-ui-express';
 import { ROUTES } from '../../common/api';
 
 import {
-  isAuthorized,
+  authorize,
   loginUser,
   sendMagicLinks,
-  storeToken,
   storeUserPassword,
   validateLoginUserRequest,
   validateNewAccountRequest,
@@ -50,34 +49,29 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.post(ACCOUNTS.new, validateNewAccountRequest, validateNewAccountToken, storeUserPassword);
 app.post(ACCOUNTS.login, validateLoginUserRequest, loginUser);
 
-app.get(USERS.list, isAuthorized, users.list);
-app.post(USERS.create, isAuthorized, validateAddRequest, users.create);
-app.post(USERS.update, isAuthorized, validateUpdateRequest, users.update);
-app.delete(USERS.delete, isAuthorized, validateDeleteRequest, users.deleteUser);
+app.get(USERS.list, authorize, users.list);
+app.post(USERS.create, authorize, validateAddRequest, users.create);
+app.post(USERS.update, authorize, validateUpdateRequest, users.update);
+app.delete(USERS.delete, authorize, validateDeleteRequest, users.deleteUser);
 
-app.post(GROUPS.upload, isAuthorized, validateUploadRequest, groups.upload, sendMagicLinks);
-app.get(GROUPS.list, isAuthorized, groups.list);
+app.post(GROUPS.upload, authorize, validateUploadRequest, groups.upload, sendMagicLinks);
+app.get(GROUPS.list, authorize, groups.list);
 app.get(
   GROUPS.students,
-  isAuthorized,
+  authorize,
   validateListStudentsForGroupRequest,
   groups.listStudentsForGroup
 );
 app.delete(
   GROUPS.delete_student,
-  isAuthorized,
+  authorize,
   validateDeleteStudentFromGroupRequest,
   groups.deleteUserFromGroup
 );
-app.post(GROUPS.update_student, isAuthorized, validateUpdateStudentRequest, groups.updateStudent);
-app.post(
-  GROUPS.add_student,
-  isAuthorized,
-  validateAddStudentToGroupRequest,
-  groups.addStudentToGroup
-);
-app.post(GROUPS.add_meetings, isAuthorized, validateAddMeetingRequest, groups.addMeeting);
-app.post(GROUPS.add, isAuthorized, groups.add);
+app.post(GROUPS.update_student, authorize, validateUpdateStudentRequest, groups.updateStudent);
+app.post(GROUPS.add_student, authorize, validateAddStudentToGroupRequest, groups.addStudentToGroup);
+app.post(GROUPS.add_meetings, authorize, validateAddMeetingRequest, groups.addMeeting);
+app.post(GROUPS.add, authorize, groups.add);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

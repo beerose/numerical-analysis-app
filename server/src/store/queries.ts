@@ -13,18 +13,6 @@ export const getUserRoleQuery = `
   SELECT user_role FROM users WHERE email = ?;
 `;
 
-export const getUserByEmailQuery = `
-  SELECT user_name, user_role FROM users WHERE email = ?;
-`;
-
-export const setUserPasswordQuery = `
-  UPDATE users SET password = ? WHERE email = ?;
-`;
-
-export const getWholeUserByEmailQuery = `
-  SELECT * FROM users WHERE email = ?;
-`;
-
 export const findTokenQuery = `
   SELECT * FROM token WHERE token = ?;
 `;

@@ -115,7 +115,7 @@ export const countUsers = (
 export const findUserByEmail = ({ email }: { email: string }, callback: Callback) =>
   connection.query(
     {
-      sql: 'SELECT user_name, user_role, active_user FROM users WHERE email = ?;',
+      sql: 'SELECT * FROM users WHERE email = ?;',
       values: [email],
     },
     (err, res) => {
@@ -123,4 +123,16 @@ export const findUserByEmail = ({ email }: { email: string }, callback: Callback
       if (!res.length) return callback(null, null);
       return callback(null, res[0]);
     }
+  );
+
+export const setUserPassword = (
+  { passwordHash, email }: { passwordHash: string; email: string },
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: 'UPDATE users SET password = ? WHERE email = ?',
+      values: [passwordHash, email],
+    },
+    callback
   );
