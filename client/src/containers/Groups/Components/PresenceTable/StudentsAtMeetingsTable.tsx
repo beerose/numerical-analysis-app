@@ -8,10 +8,12 @@ import {
   BoxedKey,
   BoxedMeetingData,
   BoxedStudent,
-  IdentifiedChangeHandler,
+  FieldIdentifier,
   MeetingId,
   Unboxed,
 } from './types';
+
+type IdentifiedChangeHandler = (value: FieldIdentifier) => void;
 
 type Props<TBoxedMeetingData extends BoxedMeetingData> = {
   meetings: MeetingDTO[];
@@ -33,7 +35,8 @@ export class StudentsAtMeetingsTable<
     {
       dataIndex: 'student.user_name',
       key: 'user_name',
-      sorter: (a: BoxedStudent, b: BoxedStudent) => a.student.user_name < b.student.user_name,
+      sorter: (a: BoxedStudent, b: BoxedStudent) =>
+        Number(a.student.user_name < b.student.user_name),
       title: 'Student',
     },
     {
