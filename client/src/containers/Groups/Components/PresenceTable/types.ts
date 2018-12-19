@@ -4,10 +4,20 @@ export type Student = Pick<UserDTO, 'id' | 'user_name' | 'student_index'>;
 export type MeetingId = MeetingDTO['id'];
 
 export type BoxedStudent = { student: Student };
-export type BoxedPresences = { meetingData: Set<MeetingDTO['id']> };
-export type BoxedActivities = { meetingData: Record<MeetingDTO['id'], number> };
 
-export type BoxedPresencesAndActivities = BoxedPresences & BoxedActivities;
+export type StudentPresences = Set<MeetingId>;
+export type StudentActivities = Record<MeetingId, number>;
+export type BoxedPresences = { meetingData: StudentPresences };
+export type BoxedActivities = { meetingData: StudentActivities };
+
+export type PresencesAndActivities = {
+  presences: StudentPresences;
+  activities: StudentActivities;
+};
+
+export type BoxedPresencesAndActivities = {
+  meetingData: PresencesAndActivities;
+};
 
 export type BoxedKey = { key: string };
 
@@ -15,5 +25,4 @@ export type BoxedMeetingData = BoxedPresences | BoxedActivities | BoxedPresences
 
 export type Unboxed<T> = T[keyof T];
 
-export type FieldIdentifier = { identifier: { meetingId: MeetingId; studentId: Student['id'] } };
-export type IdentifiedChangeHandler = (event: { target: FieldIdentifier }) => void;
+export type FieldIdentifier = { meetingId: MeetingId; studentId: Student['id'] };
