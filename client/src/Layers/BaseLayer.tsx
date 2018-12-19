@@ -55,7 +55,7 @@ export class BaseLayer extends React.Component<Props> {
               </StyledHeader>
               <ErrorBoundary>
                 <StyledContent>
-                  {userAuth || pathname === Routes.ACCOUNTS.new ? (
+                  {userAuth || pathname === Routes.Accounts.new ? (
                     this.props.children
                   ) : (
                     <LoginForm onSubmit={actions.login} errorMessage={errorMessage} />
