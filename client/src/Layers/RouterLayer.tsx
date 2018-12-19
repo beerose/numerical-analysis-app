@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { NewAccount } from '../components/';
-import { Groups, ListUsersContainer } from '../Containers';
+import { Groups, ListUsersContainer } from '../containers';
 
 export const RouterLayer = () => {
   return (

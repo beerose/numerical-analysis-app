@@ -1,7 +1,4 @@
-import { Checkbox, Input } from 'antd';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import React from 'react';
-import styled, { css } from 'react-emotion';
 
 import { MeetingDTO } from '../../../../../../common/api';
 
@@ -10,109 +7,29 @@ import {
   BoxedKey,
   BoxedPresencesAndActivities,
   BoxedStudent,
-  FieldIdentifier,
   MeetingId,
   PresencesAndActivities,
 } from './types';
+import {
+  PresenceAndActivityChangeHandler,
+  PresenceAndActivityControls,
+  PresenceAndActivityControlsProps,
+} from './PresenceAndActivityControls';
 import { StudentsAtMeetingsTable } from './StudentsAtMeetingsTable';
 
 type ActivityNumber = number & { __brand: 'ActivityNumber' };
 const boundActivity = (num: number) => Math.max(-99, Math.min(99, num)) as ActivityNumber;
 
-const ControlsContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-const LargeCheckbox = styled(Checkbox)`
-  margin-right: 4px;
-
-  .ant-checkbox-inner {
-    height: 20px;
-    width: 20px;
-    &::after {
-      left: 6px;
-      top: 2px;
-      width: 6px;
-      height: 12px;
-    }
-  }
-`;
-
-type MeetingDataChangeHandler = (
-  value: FieldIdentifier &
-    (
-      | {
-          activity: number;
-        }
-      | {
-          isPresent: boolean;
-        })
-) => void;
-
-type MeetingDataControlsProps = FieldIdentifier & {
-  activity: number;
-  isPresent: boolean;
-  onChange: MeetingDataChangeHandler;
-};
-
-class MeetingDataControls extends React.PureComponent<MeetingDataControlsProps> {
-  // todo: use bind decorator and compare performance
-  handleIsPresentChanged = (event: CheckboxChangeEvent) => {
-    const { meetingId, studentId, onChange } = this.props;
-    const { checked } = event.target;
-
-    onChange({
-      meetingId,
-      studentId,
-      isPresent: checked,
-    });
-  };
-
-  handleActivityChanged: React.ChangeEventHandler<HTMLInputElement> = event => {
-    const { meetingId, studentId, onChange } = this.props;
-    const { value } = event.target;
-
-    onChange({
-      meetingId,
-      studentId,
-      activity: Number(value),
-    });
-  };
-
-  render() {
-    const { isPresent, activity, meetingId } = this.props;
-
-    return (
-      <ControlsContainer>
-        <LargeCheckbox checked={isPresent} onChange={this.handleIsPresentChanged} />
-        <Input
-          disabled={!isPresent}
-          type="number"
-          value={activity}
-          onChange={this.handleActivityChanged}
-          className={css`
-            width: 56px;
-          `}
-          tabIndex={Math.floor(Math.random() * 100)}
-        />
-      </ControlsContainer>
-    );
-  }
-}
-
 const makeRenderCheckboxAndInput = (
   meetingId: MeetingId,
-  handleChange: MeetingDataControlsProps['onChange']
+  handleChange: PresenceAndActivityControlsProps['onChange']
 ) => (
   meetingData: PresencesAndActivities,
   record: BoxedStudent & BoxedPresencesAndActivities,
   _index: number
 ) => {
   return (
-    <MeetingDataControls
+    <PresenceAndActivityControls
       meetingId={meetingId}
       studentId={record.student.id}
       onChange={handleChange}
@@ -135,7 +52,7 @@ export class PresenceTable extends React.Component<PresenceTableProps, State> {
     meetings: fakeMeetings,
   };
 
-  handleChange: MeetingDataChangeHandler = data => {
+  handleChange: PresenceAndActivityChangeHandler = data => {
     const { loadedStudents } = this.state;
     const { meetingId, studentId } = data;
 
