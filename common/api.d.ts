@@ -60,7 +60,5 @@ export declare type MeetingDTO = {
     id: number;
     meeting_name: string;
     date: string;
-    group_id?: number;
-    created_at?: number;
-    updated_at?: number;
+    group_id: number;
 };

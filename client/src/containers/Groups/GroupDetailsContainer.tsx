@@ -104,7 +104,7 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
             <PresenceTable />
           </Route>
           <Route exact={true} path={'/groups/:id/meetings'}>
-            <MeetingsSection />
+            <MeetingsSection groupId={this.state.groupId} />
           </Route>
         </Switch>
       </Container>

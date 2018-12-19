@@ -56,7 +56,7 @@ export const validateAddStudentToGroupRequest = (
 };
 
 export const validateAddMeetingRequest = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body && req.body.meeting_name && req.body.date && req.body.date) {
+  if (req.body && req.body.meeting.meeting_name && req.body.meeting.date && req.body.meeting.date) {
     return next();
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidAddMeetingRequest });
