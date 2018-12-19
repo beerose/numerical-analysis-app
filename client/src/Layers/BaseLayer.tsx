@@ -3,7 +3,7 @@ import * as React from 'react';
 import styled from 'react-emotion';
 import { RouteChildrenProps } from 'react-router';
 
-import { ROUTES } from '../../../common/api';
+import { Routes } from '../../../common/api';
 import { LoginForm, MainMenu } from '../components/';
 import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
@@ -55,7 +55,7 @@ export class BaseLayer extends React.Component<Props> {
               </StyledHeader>
               <ErrorBoundary>
                 <StyledContent>
-                  {userAuth || pathname === ROUTES.ACCOUNTS.new ? (
+                  {userAuth || pathname === Routes.ACCOUNTS.new ? (
                     this.props.children
                   ) : (
                     <LoginForm onSubmit={actions.login} errorMessage={errorMessage} />
