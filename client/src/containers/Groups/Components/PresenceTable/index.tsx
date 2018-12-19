@@ -16,6 +16,9 @@ import {
 } from './types';
 import { StudentsAtMeetingsTable } from './StudentsAtMeetingsTable';
 
+type ActivityNumber = number & { __brand: 'ActivityNumber' };
+const boundActivity = (num: number) => Math.max(-99, Math.min(99, num)) as ActivityNumber;
+
 const ControlsContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -86,12 +89,14 @@ class MeetingDataControls extends React.PureComponent<MeetingDataControlsProps> 
       <ControlsContainer>
         <LargeCheckbox checked={isPresent} onChange={this.handleIsPresentChanged} />
         <Input
+          disabled={!isPresent}
           type="number"
           value={activity}
           onChange={this.handleActivityChanged}
           className={css`
             width: 56px;
           `}
+          tabIndex={Math.floor(Math.random() * 100)}
         />
       </ControlsContainer>
     );
@@ -101,7 +106,11 @@ class MeetingDataControls extends React.PureComponent<MeetingDataControlsProps> 
 const makeRenderCheckboxAndInput = (
   meetingId: MeetingId,
   handleChange: MeetingDataControlsProps['onChange']
-) => (meetingData: PresencesAndActivities, record: BoxedStudent & BoxedPresencesAndActivities) => {
+) => (
+  meetingData: PresencesAndActivities,
+  record: BoxedStudent & BoxedPresencesAndActivities,
+  _index: number
+) => {
   return (
     <MeetingDataControls
       meetingId={meetingId}
@@ -150,10 +159,11 @@ export class PresenceTable extends React.Component<PresenceTableProps, State> {
         console.log('TODO: delete api/presence', data);
       }
     } else {
-      const { activity } = data as { activity: number };
+      const activity = boundActivity((data as { activity: number }).activity);
+
       newMeetingData.activities = { ...newMeetingData.activities, [meetingId]: activity };
 
-      console.log('TODO: post api/activity', data);
+      console.log('TODO: post api/activity', { ...data, activity });
     }
 
     const newStudents = [...loadedStudents];

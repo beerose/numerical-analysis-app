@@ -4,7 +4,9 @@ import { BoxedKey, BoxedPresencesAndActivities, BoxedStudent } from './types';
 
 export const fakeMeetings: MeetingDTO[] = Array.from({ length: 13 })
   .map((_, i) => ({
-    date: '',
+    date: new Date(Date.now() + Math.floor(Math.random() * 3600 * 24 * 10000)).toLocaleDateString(
+      'pl'
+    ),
     id: i,
     meeting_name: `Spotkanie ${i}`,
   }))
