@@ -1,11 +1,11 @@
-import { Button, Form, List, Modal, Spin } from 'antd';
+import { Button, List, Modal, Spin } from 'antd';
 import { css } from 'emotion';
 import * as React from 'react';
 import styled from 'react-emotion';
 
 import { Theme } from '../../../components/theme';
 
-import { WrappedNewMeetingForm } from './NewMeetingForm';
+import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
@@ -15,7 +15,7 @@ type State = {
   isLoading: boolean;
   addMeetingModalVisible: boolean;
 };
-export class MeetingsList extends React.Component<{}, State> {
+export class MeetingsSection extends React.Component<{}, State> {
   state = {
     addMeetingModalVisible: false,
     isLoading: false,

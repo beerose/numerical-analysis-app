@@ -48,11 +48,11 @@ export const validateAddStudentToGroupRequest = (
   next: NextFunction
 ) => {
   const { user } = req.body;
-  if (user && user.user_name && user.email && user.student_index && req.body.group_id) {
+  if (user && user.user_name && user.email && req.body.group_id) {
     return next();
   }
 
-  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidUserData });
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidStudentData });
 };
 
 export const validateAddMeetingRequest = (req: Request, res: Response, next: NextFunction) => {
