@@ -4,6 +4,7 @@ import { Moment } from 'moment';
 import * as React from 'react';
 import styled from 'react-emotion';
 
+import { MeetingDTO } from '../../../../../common/api';
 import * as groupsService from '../../../api/groupApi';
 import { Theme } from '../../../components/theme';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
@@ -17,6 +18,7 @@ type Props = {
 };
 
 type State = {
+  meetings: MeetingDTO[];
   isLoading: boolean;
   addMeetingModalVisible: boolean;
 };
@@ -24,6 +26,7 @@ export class MeetingsSection extends React.Component<Props, State> {
   state = {
     addMeetingModalVisible: false,
     isLoading: false,
+    meetings: [],
   };
 
   meetings = [
@@ -37,6 +40,16 @@ export class MeetingsSection extends React.Component<Props, State> {
     { name: 'Spotkanie 8', date: '24/12/2018' },
   ];
 
+  componentDidMount() {
+    this.updateMeetingsList();
+  }
+
+  updateMeetingsList = () => {
+    groupsService.listMeetings(this.props.groupId).then(res => {
+      this.setState({ meetings: res });
+    });
+  };
+
   openNewMeetingModal = () => {
     this.setState({ addMeetingModalVisible: true });
   };
@@ -48,6 +61,7 @@ export class MeetingsSection extends React.Component<Props, State> {
   handleAddNewMeeting = (values: { name: string; date: Moment }) => {
     groupsService.addMeeting(values, this.props.groupId);
     this.hideNewMeetingModal();
+    this.updateMeetingsList();
   };
 
   render() {

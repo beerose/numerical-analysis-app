@@ -84,3 +84,14 @@ export const addMeeting = async (
 
   await authFetch(SERVER_URL + Groups.Meetings.Create, options).then(showMessage);
 };
+
+export const listMeetings = (groupId: string): Promise<MeetingDTO[]> => {
+  const options = {
+    method: 'GET',
+  };
+
+  return authFetch<MeetingDTO[]>(
+    `${SERVER_URL + Groups.Meetings.List}?${qs.stringify({ group_id: groupId })}`,
+    options
+  );
+};
