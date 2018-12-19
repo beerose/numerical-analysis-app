@@ -34,7 +34,7 @@ const NewMeetingForm = (props: Props) => {
   return (
     <Form onSubmit={handleSubmit} className={formStyles}>
       <FormItem>
-        {getFieldDecorator('name', {
+        {getFieldDecorator('meeting_name', {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
           <Input

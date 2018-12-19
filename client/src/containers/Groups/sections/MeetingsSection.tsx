@@ -1,24 +1,32 @@
-import { Button, Form, List, Modal, Spin } from 'antd';
+import { Button, List, Modal, Spin } from 'antd';
 import { css } from 'emotion';
+import { Moment } from 'moment';
 import * as React from 'react';
 import styled from 'react-emotion';
 
+import { MeetingDTO } from '../../../../../common/api';
+import * as groupsService from '../../../api/groupApi';
 import { Theme } from '../../../components/theme';
-
-import { WrappedNewMeetingForm } from './NewMeetingForm';
+import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
 `;
 
+type Props = {
+  groupId: string;
+};
+
 type State = {
+  meetings: MeetingDTO[];
   isLoading: boolean;
   addMeetingModalVisible: boolean;
 };
-export class MeetingsList extends React.Component<{}, State> {
+export class MeetingsSection extends React.Component<Props, State> {
   state = {
     addMeetingModalVisible: false,
     isLoading: false,
+    meetings: [],
   };
 
   meetings = [
@@ -32,20 +40,41 @@ export class MeetingsList extends React.Component<{}, State> {
     { name: 'Spotkanie 8', date: '24/12/2018' },
   ];
 
-  handleAddMeetingClick = () => {
+  componentDidMount() {
+    this.updateMeetingsList();
+  }
+
+  updateMeetingsList = () => {
+    groupsService.listMeetings(this.props.groupId).then(res => {
+      this.setState({ meetings: res });
+    });
+  };
+
+  openNewMeetingModal = () => {
     this.setState({ addMeetingModalVisible: true });
   };
 
-  handleAddNewMeeting = (values: { name: string; date: any }) => {
-    console.log(values);
+  hideNewMeetingModal = () => {
+    this.setState({ addMeetingModalVisible: false });
   };
+
+  handleAddNewMeeting = (values: { name: string; date: Moment }) => {
+    groupsService.addMeeting(values, this.props.groupId);
+    this.hideNewMeetingModal();
+    this.updateMeetingsList();
+  };
+
   render() {
     return (
       <Container>
-        <Button icon="plus" type="primary" onClick={this.handleAddMeetingClick}>
+        <Button icon="plus" type="primary" onClick={this.openNewMeetingModal}>
           Nowe spotkanie
         </Button>
-        <Modal visible={this.state.addMeetingModalVisible} footer={null}>
+        <Modal
+          visible={this.state.addMeetingModalVisible}
+          footer={null}
+          onCancel={this.hideNewMeetingModal}
+        >
           <WrappedNewMeetingForm onSubmit={this.handleAddNewMeeting} />
         </Modal>
         <Spin spinning={this.state.isLoading}>

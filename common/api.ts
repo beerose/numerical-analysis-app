@@ -70,7 +70,5 @@ export type MeetingDTO = {
   id: number;
   meeting_name: string;
   date: string; // TODO: ?
-  group_id?: number;
-  created_at?: number; // TODO: timestamp?
-  updated_at?: number; // TODO: timestamp?
+  group_id: number;
 };

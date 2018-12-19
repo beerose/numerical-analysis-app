@@ -1,7 +1,7 @@
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
 
-import { GroupDTO, Routes, UserDTO } from '../../../common/api';
+import { GroupDTO, MeetingDTO, Routes, UserDTO } from '../../../common/api';
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from '.';
@@ -65,8 +65,33 @@ export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
 };
 
 export const addGroup = (group: Omit<GroupDTO, 'id'>) => {
-  return authFetch(SERVER_URL + Groups.Create, {
+  const options = {
     body: JSON.stringify(group),
     method: 'POST',
-  });
+  };
+
+  return authFetch(SERVER_URL + Groups.Create, options);
+};
+
+export const addMeeting = async (
+  meeting: Pick<MeetingDTO, 'meeting_name' & 'date'>,
+  groupId: string
+) => {
+  const options = {
+    body: JSON.stringify({ meeting, group_id: groupId }),
+    method: 'POST',
+  };
+
+  await authFetch(SERVER_URL + Groups.Meetings.Create, options).then(showMessage);
+};
+
+export const listMeetings = (groupId: string): Promise<MeetingDTO[]> => {
+  const options = {
+    method: 'GET',
+  };
+
+  return authFetch<MeetingDTO[]>(
+    `${SERVER_URL + Groups.Meetings.List}?${qs.stringify({ group_id: groupId })}`,
+    options
+  );
 };

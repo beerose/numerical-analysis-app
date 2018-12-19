@@ -32,10 +32,10 @@ export class CreateGroupContainer extends React.Component<RouteComponentProps> {
     const { academic_year, class_room, group: group_type, group_name, super_user_id } = formValues;
 
     addGroup({
+      academic_year,
       group_name,
+      group_type, // I think this isn't a bug, GroupDTO probably has wrong enum
       class: String(class_room),
-      classroom: academic_year,
-      group_type: group_type, // I think this isn't a bug, GroupDTO probably has wrong enum
     });
 
     // TODO: add relation table from super_user_id

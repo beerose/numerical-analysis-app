@@ -33,6 +33,14 @@ export class NewStudentModalForm extends React.Component<Props, State> {
 
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const { selectedStudent } = this.state;
+    if (selectedStudent) {
+      this.props.onSubmit(selectedStudent);
+      setTimeout(() => this.setState({ selectedStudent: null }), 1000);
+      return;
+    }
+
     this.props.form.validateFields((err, values: UserDTO) => {
       if (err) {
         return;
@@ -40,12 +48,6 @@ export class NewStudentModalForm extends React.Component<Props, State> {
       this.props.onSubmit(values);
       setTimeout(() => {
         this.props.form.resetFields();
-        // workaround for ant bug
-        const selected = document.getElementsByClassName('ant-select-selection-selected-value');
-        if (selected && selected[0]) {
-          selected[0].innerHTML =
-            '<div unselectable="on" class="ant-select-selection__placeholder" style="display: block; user-select: none;">Rola użytkownika</div>';
-        }
       }, 1000);
     });
   };
@@ -85,7 +87,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
           }
         >
           {this.props.allStudents.map(student => (
-            <Select.Option value={student.id}>{student.user_name}</Select.Option>
+            <Select.Option key={student.id} value={student.id}>
+              {student.user_name}
+            </Select.Option>
           ))}
         </Select>
         {selectedStudent && (

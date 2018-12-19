@@ -18,6 +18,7 @@ exports.apiMessages = {
     invalidLoginRequest: 'Pola password i email są wymagane',
     invalidNewAccountRequest: 'Pola password i token są wymagane',
     invalidRequest: 'Nieprawidłowy request',
+    invalidStudentData: 'Pola imię i nazwisko, email i indeks są wymagane',
     invalidUserData: 'Pola Imię i nazwisko, Rola i Email są wymagane',
     meetingCreated: 'Spotkanie zostało utworzone',
     tokenUsed: 'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',

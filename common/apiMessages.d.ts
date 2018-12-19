@@ -16,6 +16,7 @@ export declare const apiMessages: {
     invalidLoginRequest: string;
     invalidNewAccountRequest: string;
     invalidRequest: string;
+    invalidStudentData: string;
     invalidUserData: string;
     meetingCreated: string;
     tokenUsed: string;

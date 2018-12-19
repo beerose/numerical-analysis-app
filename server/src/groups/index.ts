@@ -195,7 +195,6 @@ export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) 
   );
 };
 
-export * from './meetings';
 interface CreateGroupRequest extends Request {
   body: GroupDTO;
 }
@@ -222,3 +221,5 @@ export const create = (req: CreateGroupRequest, res: Response) => {
     }
   );
 };
+
+export * from './meetings';

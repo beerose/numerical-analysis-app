@@ -7,8 +7,8 @@ import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { Routes } from '../../../../common/api';
 
-import { PresenceTable, StudentsSection } from './components';
-import { MeetingsList } from './components/MeetingsList';
+import { PresenceTable } from './components';
+import { MeetingsSection, StudentsSection } from './sections';
 
 const menuStyles = css`
   width: 200px;
@@ -96,16 +96,14 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
           </Menu.Item>
         </Menu>
         <Switch>
-          <Route
-            exact={true}
-            path={'/groups/:id/students'}
-            component={() => <StudentsSection groupId={this.state.groupId} />}
-          />
+          <Route exact={true} path={'/groups/:id/students'}>
+            <StudentsSection groupId={this.state.groupId} />
+          </Route>
           <Route exact={true} path={'/groups/:id/presence'}>
             <PresenceTable />
           </Route>
           <Route exact={true} path={'/groups/:id/meetings'}>
-            <MeetingsList />
+            <MeetingsSection groupId={this.state.groupId} />
           </Route>
         </Switch>
       </Container>

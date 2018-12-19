@@ -8,7 +8,7 @@ export const RouterLayer = () => {
   return (
     <Switch>
       <Route exact={true} path="/" component={() => <div>Hello</div>} />
-      <Route exact={true} path="/users" component={() => <ListUsersContainer />} />
+      <Route exact={true} path="/users" component={ListUsersContainer} />
       <Route path="/groups" render={Groups} />
       <Route path="/accounts/new" render={routeContext => <NewAccount {...routeContext} />} />
     </Switch>

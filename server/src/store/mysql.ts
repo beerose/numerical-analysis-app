@@ -136,3 +136,23 @@ export const setUserPassword = (
     },
     callback
   );
+
+export const addMeeting = (
+  {
+    name,
+    date,
+    groupId,
+  }: {
+    name: string;
+    date: Date;
+    groupId: string;
+  },
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: 'INSERT INTO meetings (meeting_name, date, group_id) VALUES(?, ?, ?);',
+      values: [name, date, groupId],
+    },
+    callback
+  );

@@ -8,7 +8,7 @@ import { groupsService, usersService } from '../../../api';
 import { UsersTable } from '../../../components';
 import { LABELS } from '../../../utils/labels';
 
-import { WrappedNewStudentModalForm } from './AddStudentForm';
+import { WrappedNewStudentModalForm } from '../components/AddStudentForm';
 
 const Container = styled.section`
   display: flex;
