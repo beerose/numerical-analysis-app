@@ -50,11 +50,12 @@ type MeetingDataChangeHandler = (
 ) => void;
 
 type MeetingDataControlsProps = FieldIdentifier & {
-  meetingData: PresencesAndActivities;
+  activity: number;
+  isPresent: boolean;
   onChange: MeetingDataChangeHandler;
 };
 
-class MeetingDataControls extends React.Component<MeetingDataControlsProps> {
+class MeetingDataControls extends React.PureComponent<MeetingDataControlsProps> {
   // todo: use bind decorator and compare performance
   handleIsPresentChanged = (event: CheckboxChangeEvent) => {
     const { meetingId, studentId, onChange } = this.props;
@@ -79,17 +80,14 @@ class MeetingDataControls extends React.Component<MeetingDataControlsProps> {
   };
 
   render() {
-    const {
-      meetingData: { presences, activities },
-      meetingId,
-    } = this.props;
+    const { isPresent, activity, meetingId } = this.props;
 
     return (
       <ControlsContainer>
-        <LargeCheckbox checked={presences.has(meetingId)} onChange={this.handleIsPresentChanged} />
+        <LargeCheckbox checked={isPresent} onChange={this.handleIsPresentChanged} />
         <Input
           type="number"
-          value={activities}
+          value={activity}
           onChange={this.handleActivityChanged}
           className={css`
             width: 56px;
@@ -109,7 +107,8 @@ const makeRenderCheckboxAndInput = (
       meetingId={meetingId}
       studentId={record.student.id}
       onChange={handleChange}
-      {...meetingData}
+      activity={meetingData.activities[meetingId]}
+      isPresent={meetingData.presences.has(meetingId)}
     />
   );
 };
