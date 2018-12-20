@@ -1,13 +1,13 @@
 import { Button, Spin, Upload } from 'antd';
 import * as React from 'react';
 import styled, { css } from 'react-emotion';
+import { Omit } from 'react-router';
 
 import { UserDTO } from '../../../../../common/api';
 import { ROLES } from '../../../../../common/roles';
 import { groupsService, usersService } from '../../../api';
 import { UsersTable } from '../../../components';
 import { LABELS } from '../../../utils/labels';
-
 import { WrappedNewStudentModalForm } from '../components/AddStudentForm';
 
 const Container = styled.section`
@@ -60,8 +60,8 @@ export class StudentsSection extends React.Component<Props, State> {
     });
   };
 
-  updateStudent = (user: UserDTO) => {
-    groupsService.updateUserFromGroup(user).then(() => {
+  updateStudent = (user: Omit<UserDTO, 'user_role'>) => {
+    usersService.updateUser({ ...user, user_role: ROLES.student }).then(() => {
       this.updateStudentsLists();
     });
   };

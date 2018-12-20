@@ -16,7 +16,6 @@ import {
   validateCreateGroupRequest,
   validateDeleteStudentFromGroupRequest,
   validateListStudentsForGroupRequest,
-  validateUpdateStudentRequest,
   validateUploadRequest,
 } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
@@ -63,16 +62,10 @@ app.get(
   groups.listStudentsForGroup
 );
 app.delete(
-  Groups.Students.RemoveFromGroup,
+  Groups.Students.Attach,
   auth.authorize,
   validateDeleteStudentFromGroupRequest,
   groups.deleteUserFromGroup
-);
-app.post(
-  Groups.Students.UpdateStudent,
-  auth.authorize,
-  validateUpdateStudentRequest,
-  groups.updateStudent
 );
 app.post(
   Groups.Students.AddToGroup,

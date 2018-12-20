@@ -19,7 +19,6 @@ exports.Routes = {
             AddToGroup: '/groups/students.add',
             List: '/groups/students',
             RemoveFromGroup: '/groups/students.delete',
-            UpdateStudent: '/groups/students.update',
         },
         Upload: '/groups/upload',
     },

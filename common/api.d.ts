@@ -21,7 +21,6 @@ export declare const Routes: {
             AddToGroup: string;
             List: string;
             RemoveFromGroup: string;
-            UpdateStudent: string;
         };
         Upload: string;
     };
