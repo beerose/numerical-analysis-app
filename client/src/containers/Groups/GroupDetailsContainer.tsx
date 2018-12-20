@@ -12,7 +12,6 @@ import { MeetingsSection } from './sections';
 
 const menuStyles = css`
   width: 200px;
-  height: calc(110vh);
 `;
 
 const Container = styled.section`

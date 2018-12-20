@@ -1,6 +1,6 @@
 import { Table } from 'antd';
-import { css } from 'emotion';
 import React from 'react';
+import styled, { css } from 'react-emotion';
 
 import { MeetingDTO } from '../../../../../../common/api';
 
@@ -23,10 +23,23 @@ type Props<TBoxedMeetingData extends BoxedMeetingData> = {
     handleChange: IdentifiedChangeHandler
   ) => (
     meetingData: Unboxed<TBoxedMeetingData>,
-    record: BoxedStudent & TBoxedMeetingData
+    record: BoxedStudent & TBoxedMeetingData,
+    index: number
   ) => React.ReactNode;
   handleChange: IdentifiedChangeHandler;
 };
+
+const TABLE_SCROLL_CONFIG = {
+  x: true,
+};
+
+const CenteredText = styled.div`
+  text-align: center;
+`;
+
+const Em = styled.em`
+  display: block;
+`;
 
 export class StudentsAtMeetingsTable<
   TBoxedMeetingData extends BoxedMeetingData
@@ -34,6 +47,7 @@ export class StudentsAtMeetingsTable<
   columns = [
     {
       dataIndex: 'student.user_name',
+      fixed: true,
       key: 'user_name',
       sorter: (a: BoxedStudent, b: BoxedStudent) =>
         Number(a.student.user_name < b.student.user_name),
@@ -41,16 +55,22 @@ export class StudentsAtMeetingsTable<
     },
     {
       dataIndex: 'student.student_index',
+      fixed: true,
       key: 'student_index',
       sorter: (a: BoxedStudent, b: BoxedStudent) =>
         Number(a.student.student_index) - Number(b.student.student_index),
       title: 'Indeks',
     },
-    ...this.props.meetings.map(({ meeting_name: meetingName, id: meetingId }) => ({
+    ...this.props.meetings.map(({ meeting_name: meetingName, date, id: meetingId }) => ({
       dataIndex: 'meetingData',
       key: meetingId,
       render: this.props.makeRenderMeetingData(meetingId, this.props.handleChange),
-      title: meetingName,
+      title: (
+        <CenteredText>
+          {meetingName}
+          <Em>{date}</Em>
+        </CenteredText>
+      ),
     })),
   ];
 
@@ -61,10 +81,11 @@ export class StudentsAtMeetingsTable<
       <article
         className={css`
           width: 100%;
-          overflow: auto;
+          overflow: hidden;
         `}
       >
         <Table<BoxedStudent & TBoxedMeetingData & BoxedKey>
+          scroll={TABLE_SCROLL_CONFIG}
           columns={this.columns}
           dataSource={loadedStudents}
           pagination={false}
