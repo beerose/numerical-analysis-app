@@ -13,14 +13,6 @@ export const getUserRoleQuery = `
   SELECT user_role FROM users WHERE email = ?;
 `;
 
-export const findTokenQuery = `
-  SELECT * FROM token WHERE token = ?;
-`;
-
-export const storeTokenQuery = `
-  INSERT INTO token(token) VALUES (?);
-`;
-
 export const listGroupsQuery = `
   SELECT
     id,
