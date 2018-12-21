@@ -1,7 +1,7 @@
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
 
-import { GroupDTO, MeetingDTO, Routes, UserDTO } from '../../../common/api';
+import { ApiResponse, GroupDTO, MeetingDTO, Routes, UserDTO } from '../../../common/api';
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from '.';
@@ -55,13 +55,18 @@ export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
   await authFetch(SERVER_URL + Groups.Students.AddToGroup, options).then(showMessage);
 };
 
-export const addGroup = (group: Omit<GroupDTO, 'id'>) => {
+export const addGroup = (group: Omit<GroupDTO, 'id'>): Promise<{ group_id: string }> => {
   const options = {
     body: JSON.stringify(group),
     method: 'POST',
   };
 
-  return authFetch(SERVER_URL + Groups.Create, options);
+  return authFetch<ApiResponse & { group_id: string }>(SERVER_URL + Groups.Create, options).then(
+    res => {
+      showMessage(res);
+      return res;
+    }
+  );
 };
 
 export const addMeeting = async (
