@@ -1,6 +1,6 @@
 import { queryCallback } from 'mysql';
 
-import { UserDTO } from '../../../common/api';
+import { GroupDTO, UserDTO } from '../../../common/api';
 
 import { connection } from './connection';
 
@@ -153,6 +153,22 @@ export const addMeeting = (
     {
       sql: 'INSERT INTO meetings (meeting_name, date, group_id) VALUES(?, ?, ?);',
       values: [name, date, groupId],
+    },
+    callback
+  );
+
+export const addGroup = (
+  group: Pick<GroupDTO, 'group_name' | 'group_type' | 'academic_year'>,
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: `INSERT INTO \`groups\` (
+        group_name, group_type, academic_year
+      ) VALUES (
+        ?, ?, ?
+      )`,
+      values: [group.group_name, group.group_type, group.academic_year],
     },
     callback
   );

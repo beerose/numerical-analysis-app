@@ -47,7 +47,6 @@ export declare type GroupDTO = {
     group_name: string;
     group_type: GROUPS;
     academic_year?: string;
-    class?: string;
     data?: Record<string, unknown>;
 };
 export declare enum GroupEnumUI {

@@ -51,10 +51,3 @@ export const prepareAttachStudentToGroupQuery = (userEmails: string[], groupId: 
     .map(email => `((SELECT id FROM users WHERE email = "${email}"), ${groupId})`)
     .join(',')};
 `;
-
-export const addGroupQuery = `
-  INSERT INTO \`groups\` (
-    group_name, group_type, class, academic_year
-  ) VALUES (
-    ?, ?, ?, ?
-  )`;

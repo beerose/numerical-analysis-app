@@ -62,7 +62,7 @@ app.get(
   groups.listStudentsForGroup
 );
 app.delete(
-  Groups.Students.Attach,
+  Groups.Students.AddToGroup,
   auth.authorize,
   validateDeleteStudentFromGroupRequest,
   groups.deleteUserFromGroup

@@ -54,8 +54,6 @@ export type GroupDTO = {
   group_name: string;
   group_type: GROUPS;
   academic_year?: string;
-  // tslint:disable-next-line:no-reserved-keywords
-  class?: string;
   data?: Record<string, unknown>;
 };
 
