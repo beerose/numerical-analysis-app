@@ -5,7 +5,6 @@ CREATE TABLE `groups` (
   group_type      VARCHAR(50) NOT NULL,
   parent_group    INT,
   academic_year   VARCHAR(100),
-  class           VARCHAR(100),
   data            JSON,
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
