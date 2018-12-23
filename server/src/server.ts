@@ -14,6 +14,7 @@ import {
   validateAddMeetingRequest,
   validateAddStudentToGroupRequest,
   validateCreateGroupRequest,
+  validateDeleteMeetingRequest,
   validateDeleteStudentFromGroupRequest,
   validateListStudentsForGroupRequest,
   validateUploadRequest,
@@ -74,6 +75,12 @@ app.post(
   groups.addStudentToGroup
 );
 app.post(Groups.Meetings.Create, auth.authorize, validateAddMeetingRequest, groups.addMeeting);
+app.post(
+  Groups.Meetings.Delete,
+  auth.authorize,
+  validateDeleteMeetingRequest,
+  groups.deleteMeeting
+);
 
 const listener = app.listen(PORT, () => {
   console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);

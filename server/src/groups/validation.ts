@@ -62,6 +62,13 @@ export const validateAddMeetingRequest = (req: Request, res: Response, next: Nex
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidAddMeetingRequest });
 };
 
+export const validateDeleteMeetingRequest = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body && req.body.group_id) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.meetingIdRequired });
+};
+
 export const validateCreateGroupRequest = (req: Request, res: Response, next: NextFunction) => {
   if (req.body && req.body.group_name && req.body.group_type && req.body.academic_year) {
     return next();
