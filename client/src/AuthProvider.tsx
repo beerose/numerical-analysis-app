@@ -5,6 +5,18 @@ import { RouteChildrenProps } from 'react-router';
 import { login, newAccount } from './api/authApi';
 import { AuthContextProvider, AuthContextState } from './AuthContext';
 
+const getUserFromLocalStorage = () => {
+  const token = Cookies.get('token');
+  const userName = Cookies.get('user_name');
+  const userRole = Cookies.get('user_role');
+
+  if (!token || !userName || !userRole) {
+    return;
+  }
+
+  return { userRole, userName, userAuth: true };
+};
+
 export class AuthProvider extends React.Component<RouteChildrenProps, AuthContextState> {
   constructor(props: RouteChildrenProps) {
     super(props);
@@ -15,7 +27,8 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
         login: this.loginUser,
       },
       error: false,
-      userAuth: true,
+      userAuth: false,
+      ...getUserFromLocalStorage(),
     };
   }
 
@@ -42,22 +55,6 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
     Cookies.set('user_role', userRole || '', { expires });
     Cookies.set('user_name', userName || '', { expires });
   };
-
-  checkLocalStorageState = () => {
-    const token = Cookies.get('token');
-    const userName = Cookies.get('user_name');
-    const userRole = Cookies.get('user_role');
-
-    if (!token || !userName || !userRole) {
-      return; // this.resetState();
-    }
-
-    this.setState({ userRole, userName, userAuth: true });
-  };
-
-  componentWillMount() {
-    this.checkLocalStorageState();
-  }
 
   loginUser = (email: string, password: string, remember: boolean) => {
     login(email, password)
