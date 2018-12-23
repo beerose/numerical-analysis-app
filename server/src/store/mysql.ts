@@ -188,3 +188,37 @@ export const listMeetings = (groupId: GroupDTO['id'], callback: Callback) =>
     },
     callback
   );
+
+export const getPresencesInGroup = (groupId: GroupDTO['id'], callback: Callback) =>
+  connection.query(
+    {
+      sql: `
+        SELECT
+          user_id, GROUP_CONCAT(meeting_id)
+        FROM
+          user_attended_in_meeting
+        WHERE user_id IN (
+          SELECT user_id FROM user_belongs_to_group WHERE group_id = ?
+        ) GROUP BY user_id
+      `,
+      values: [groupId],
+    },
+    callback
+  );
+
+export const getActivityInGroup = (groupId: GroupDTO['id'], callback: Callback) =>
+  connection.query(
+    {
+      sql: `
+        SELECT
+          user_id, GROUP_CONCAT(meeting_id)
+        FROM
+          user_was_active_in_meeting
+        WHERE user_id IN (
+          SELECT user_id FROM user_belongs_to_group WHERE group_id = ?
+        ) GROUP BY user_id
+      `,
+      values: [groupId],
+    },
+    callback
+  );
