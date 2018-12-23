@@ -91,3 +91,12 @@ export const listMeetings = (groupId: string): Promise<MeetingDTO[]> => {
     options
   );
 };
+
+export const deleteGroup = (groupId: string) => {
+  const options = {
+    body: JSON.stringify({ group_id: groupId }),
+    method: 'DELETE',
+  };
+
+  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Meetings.List, options);
+};
