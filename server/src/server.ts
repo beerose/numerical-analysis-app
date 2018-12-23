@@ -73,6 +73,8 @@ app.post(
   validateAddStudentToGroupRequest,
   groups.addStudentToGroup
 );
+
+app.get(Groups.Meetings.List, auth.authorize, groups.listMeetings);
 app.post(Groups.Meetings.Create, auth.authorize, validateAddMeetingRequest, groups.addMeeting);
 
 const listener = app.listen(PORT, () => {

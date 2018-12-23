@@ -5,7 +5,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { Routes } from '../../../../common/api';
-import { Row } from '../../components/Row';
+import { Flex } from '../../components/Flex';
 
 import { PresenceTable, StudentsSection } from './components';
 import { MeetingsSection } from './sections';
@@ -58,7 +58,7 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
 
   render() {
     return (
-      <Row flex={1}>
+      <Flex flex={1}>
         <Menu mode="inline" defaultSelectedKeys={[this.getSelectedItem()]} className={menuStyles}>
           <MenuItem key="settings">
             <Icon type="setting" />
@@ -102,7 +102,7 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
             <MeetingsSection groupId={this.state.groupId} />
           </Route>
         </Switch>
-      </Row>
+      </Flex>
     );
   }
 }

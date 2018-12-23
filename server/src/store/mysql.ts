@@ -172,3 +172,19 @@ export const addGroup = (
     },
     callback
   );
+
+export const listMeetings = (groupId: GroupDTO['id'], callback: Callback) =>
+  connection.query(
+    {
+      sql: `
+        SELECT
+          id, meeting_name, group_id
+        FROM
+          meetings
+        WHERE
+          group_id = ?
+      `,
+      values: [groupId],
+    },
+    callback
+  );
