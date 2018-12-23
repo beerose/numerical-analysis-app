@@ -63,7 +63,7 @@ export const validateAddMeetingRequest = (req: Request, res: Response, next: Nex
 };
 
 export const validateDeleteMeetingRequest = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body && req.body.group_id) {
+  if (req.body && req.body.meeting_id) {
     return next();
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.meetingIdRequired });
