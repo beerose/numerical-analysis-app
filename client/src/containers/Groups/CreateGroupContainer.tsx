@@ -9,7 +9,7 @@ import { listUsers } from '../../api/userApi';
 
 import { NewGroupFormValues, WrappedNewGroupForm } from './components/NewGroupForm';
 
-const Container = styled('div')`
+const Container = styled.div`
   align-items: center;
   display: flex;
   height: 80vh;

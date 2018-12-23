@@ -173,10 +173,26 @@ export const addGroup = (
     callback
   );
 
-export const deleteMeeting = ({ groupId }: { groupId: string }, callback: Callback) =>
+export const deleteMeeting = ({ meetingId }: { meetingId: string }, callback: Callback) =>
   connection.query(
     {
       sql: 'DELETE FROM `groups` WHERE id = ?',
+      values: [meetingId],
+    },
+    callback
+  );
+
+export const listMeetings = (groupId: GroupDTO['id'], callback: Callback) =>
+  connection.query(
+    {
+      sql: `
+        SELECT
+          id, meeting_name, group_id
+        FROM
+          meetings
+        WHERE
+          group_id = ?
+      `,
       values: [groupId],
     },
     callback

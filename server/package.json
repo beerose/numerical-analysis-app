@@ -8,7 +8,7 @@
     "build": "cross-env PORT=3003 parcel build ./src/index.ts --target=node",
     "launch": "cross-env PORT=8082 node dist/index.js",
     "start": "yarn build && node dist/index.js",
-    "dev": "concurrently -c red,yellow -n n,p \"yarn watch-run\" \"yarn watch-compile\""
+    "dev": "concurrently -c blue,yellow -n n,p \"yarn watch-run\" \"yarn watch-compile\""
   },
   "dependencies": {
     "@types/atob": "^2.1.1",

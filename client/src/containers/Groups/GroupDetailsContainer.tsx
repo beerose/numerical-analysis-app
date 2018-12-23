@@ -2,22 +2,16 @@ import { Icon, Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
 import { css } from 'emotion';
 import * as React from 'react';
-import styled from 'react-emotion';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { Routes } from '../../../../common/api';
+import { Flex } from '../../components/Flex';
 
 import { PresenceTable, StudentsSection } from './components';
 import { MeetingsSection } from './sections';
 
 const menuStyles = css`
   width: 200px;
-`;
-
-const Container = styled.section`
-  height: 100%;
-  display: flex;
-  flex-direction: row;
 `;
 
 type State = {
@@ -64,7 +58,7 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
 
   render() {
     return (
-      <Container>
+      <Flex flex={1}>
         <Menu mode="inline" defaultSelectedKeys={[this.getSelectedItem()]} className={menuStyles}>
           <MenuItem key="settings">
             <Icon type="setting" />
@@ -108,7 +102,7 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
             <MeetingsSection groupId={this.state.groupId} />
           </Route>
         </Switch>
-      </Container>
+      </Flex>
     );
   }
 }
