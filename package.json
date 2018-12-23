@@ -3,7 +3,8 @@
   "workspaces": [
     "client",
     "server",
-    "common"
+    "common",
+    "database"
   ],
   "scripts": {
     "start": "concurrently \"cd server/ && yarn start\" \"cd client/ && yarn dev\"",

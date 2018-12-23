@@ -14,6 +14,10 @@ const { Content, Header } = Layout;
 
 const StyledContent = styled(Content)`
   background: inherit;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
 `;
 
 const StyledHeader = styled(Header)`

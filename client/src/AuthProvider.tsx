@@ -15,7 +15,7 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
         login: this.loginUser,
       },
       error: false,
-      userAuth: false,
+      userAuth: true,
     };
   }
 
@@ -49,7 +49,7 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
     const userRole = Cookies.get('user_role');
 
     if (!token || !userName || !userRole) {
-      return this.resetState();
+      return; // this.resetState();
     }
 
     this.setState({ userRole, userName, userAuth: true });
