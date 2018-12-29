@@ -23,7 +23,7 @@ type Props<TBoxedMeetingData extends BoxedMeetingData> = {
 };
 
 const TABLE_SCROLL_CONFIG = {
-  x: true,
+  x: 400,
 };
 
 const CenteredText = styled.div`
@@ -39,19 +39,19 @@ export class StudentsAtMeetingsTable<
 > extends React.Component<Props<TBoxedMeetingData>> {
   columns = [
     {
-      dataIndex: 'student_data.user_name',
+      dataIndex: 'studentData.user_name',
       fixed: true,
       key: 'user_name',
       sorter: (a: BoxedStudent, b: BoxedStudent) =>
-        Number(a.student_data.user_name < b.student_data.user_name),
+        Number(a.studentData.user_name < b.studentData.user_name),
       title: 'Student',
     },
     {
-      dataIndex: 'student_data.student_index',
+      dataIndex: 'studentData.student_index',
       fixed: true,
       key: 'student_index',
       sorter: (a: BoxedStudent, b: BoxedStudent) =>
-        Number(a.student_data.student_index) - Number(b.student_data.student_index),
+        Number(a.studentData.student_index) - Number(b.studentData.student_index),
       title: 'Indeks',
     },
     ...this.props.meetings.map(({ meeting_name: meetingName, date, id: meetingId }) => ({
@@ -61,7 +61,7 @@ export class StudentsAtMeetingsTable<
       title: (
         <CenteredText>
           {meetingName}
-          <Em>{date}</Em>
+          <Em>{'date'}</Em>
         </CenteredText>
       ),
     })),
@@ -74,7 +74,7 @@ export class StudentsAtMeetingsTable<
     return (
       <article
         className={css`
-          width: 100%;
+          max-width: 100%;
           overflow: hidden;
         `}
       >
@@ -83,9 +83,6 @@ export class StudentsAtMeetingsTable<
           columns={this.columns}
           dataSource={loadedStudents}
           pagination={false}
-          style={{
-            minWidth: '100%',
-          }}
         />
       </article>
     );
