@@ -1,10 +1,10 @@
+import { Spin } from 'antd';
 import React from 'react';
 
 import { MeetingDTO } from '../../../../../../common/api';
 
-import { fakeLoadedStudents, fakeMeetings } from './fakes';
+import { fakeLoadedStudents } from './fakes';
 import {
-  BoxedKey,
   BoxedPresencesAndActivities,
   BoxedStudent,
   MeetingId,
@@ -31,7 +31,7 @@ const makeRenderCheckboxAndInput = (
   return (
     <PresenceAndActivityControls
       meetingId={meetingId}
-      studentId={record.student.id}
+      studentId={record.student_data.id}
       onChange={handleChange}
       activity={meetingData.activities[meetingId]}
       isPresent={meetingData.presences.has(meetingId)}
@@ -39,17 +39,17 @@ const makeRenderCheckboxAndInput = (
   );
 };
 
-type PresenceTableProps = {};
+type PresenceTableProps = {
+  meetings?: MeetingDTO[];
+};
 
 type State = {
-  loadedStudents: Array<BoxedStudent & BoxedPresencesAndActivities & BoxedKey>;
-  meetings: MeetingDTO[];
+  loadedStudents: Array<BoxedStudent & BoxedPresencesAndActivities>;
 };
 
 export class PresenceTable extends React.Component<PresenceTableProps, State> {
-  state = {
+  state: State = {
     loadedStudents: fakeLoadedStudents,
-    meetings: fakeMeetings,
   };
 
   handleChange: PresenceAndActivityChangeHandler = data => {
@@ -57,7 +57,7 @@ export class PresenceTable extends React.Component<PresenceTableProps, State> {
     const { meetingId, studentId } = data;
 
     const changedStudentIndexInArray = loadedStudents.findIndex(
-      student => student.key === studentId
+      student => student.student_data.id === studentId
     );
     const newStudent = { ...loadedStudents[changedStudentIndexInArray] };
     const newMeetingData = { ...newStudent.meetingData };
@@ -89,7 +89,12 @@ export class PresenceTable extends React.Component<PresenceTableProps, State> {
   };
 
   render() {
-    const { meetings, loadedStudents } = this.state;
+    const { loadedStudents } = this.state;
+    const { meetings } = this.props;
+
+    if (!meetings) {
+      return <Spin />;
+    }
 
     return (
       <StudentsAtMeetingsTable

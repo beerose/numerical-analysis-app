@@ -4,20 +4,13 @@ import styled, { css } from 'react-emotion';
 
 import { MeetingDTO } from '../../../../../../common/api';
 
-import {
-  BoxedKey,
-  BoxedMeetingData,
-  BoxedStudent,
-  FieldIdentifier,
-  MeetingId,
-  Unboxed,
-} from './types';
+import { BoxedMeetingData, BoxedStudent, FieldIdentifier, MeetingId, Unboxed } from './types';
 
 type IdentifiedChangeHandler = (value: FieldIdentifier) => void;
 
 type Props<TBoxedMeetingData extends BoxedMeetingData> = {
   meetings: MeetingDTO[];
-  loadedStudents: Array<BoxedStudent & TBoxedMeetingData & BoxedKey>;
+  loadedStudents: Array<BoxedStudent & TBoxedMeetingData>;
   makeRenderMeetingData: (
     meetingId: MeetingId,
     handleChange: IdentifiedChangeHandler
@@ -46,19 +39,19 @@ export class StudentsAtMeetingsTable<
 > extends React.Component<Props<TBoxedMeetingData>> {
   columns = [
     {
-      dataIndex: 'student.user_name',
+      dataIndex: 'student_data.user_name',
       fixed: true,
       key: 'user_name',
       sorter: (a: BoxedStudent, b: BoxedStudent) =>
-        Number(a.student.user_name < b.student.user_name),
+        Number(a.student_data.user_name < b.student_data.user_name),
       title: 'Student',
     },
     {
-      dataIndex: 'student.student_index',
+      dataIndex: 'student_data.student_index',
       fixed: true,
       key: 'student_index',
       sorter: (a: BoxedStudent, b: BoxedStudent) =>
-        Number(a.student.student_index) - Number(b.student.student_index),
+        Number(a.student_data.student_index) - Number(b.student_data.student_index),
       title: 'Indeks',
     },
     ...this.props.meetings.map(({ meeting_name: meetingName, date, id: meetingId }) => ({
@@ -75,6 +68,7 @@ export class StudentsAtMeetingsTable<
   ];
 
   render() {
+    console.log(this.props.meetings);
     const { loadedStudents } = this.props;
 
     return (
@@ -84,7 +78,7 @@ export class StudentsAtMeetingsTable<
           overflow: hidden;
         `}
       >
-        <Table<BoxedStudent & TBoxedMeetingData & BoxedKey>
+        <Table<BoxedStudent & TBoxedMeetingData>
           scroll={TABLE_SCROLL_CONFIG}
           columns={this.columns}
           dataSource={loadedStudents}
