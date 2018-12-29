@@ -1,6 +1,6 @@
 import { Button, List, Modal, Spin } from 'antd';
 import { css } from 'emotion';
-import { Moment } from 'moment';
+import moment, { Moment } from 'moment';
 import * as React from 'react';
 import styled from 'react-emotion';
 
@@ -56,6 +56,7 @@ export class MeetingsSection extends React.Component<Props, State> {
 
   render() {
     const { meetings } = this.state;
+    console.log(meetings);
 
     return (
       <Container>
@@ -78,11 +79,19 @@ export class MeetingsSection extends React.Component<Props, State> {
               padding: ${Theme.Padding.Standard} 0;
               max-height: '100vh';
             `}
-            renderItem={(meeting: MeetingDTO) => (
-              <List.Item actions={[<a href="#">usuń</a>]}>
-                <List.Item.Meta title={meeting.meeting_name} description={meeting.date} />
-              </List.Item>
-            )}
+            renderItem={(meeting: MeetingDTO) => {
+              console.log();
+              return (
+                <List.Item actions={[<a href="#">usuń</a>]}>
+                  <List.Item.Meta
+                    title={meeting.meeting_name}
+                    description={moment(meeting.date, 'YYYY-MM-DD')
+                      .toDate()
+                      .toLocaleDateString()}
+                  />
+                </List.Item>
+              );
+            }}
           />
         )}
         <div

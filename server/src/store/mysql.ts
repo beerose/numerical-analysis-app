@@ -187,7 +187,7 @@ export const listMeetings = (groupId: GroupDTO['id'], callback: Callback) =>
     {
       sql: `
         SELECT
-          id, meeting_name, group_id
+          id, meeting_name, group_id, date
         FROM
           meetings
         WHERE

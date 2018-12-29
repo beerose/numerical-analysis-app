@@ -66,6 +66,6 @@ export enum GroupEnumUI { // TODO: Move this to component / presentational helpe
 export type MeetingDTO = {
   id: number;
   meeting_name: string;
-  date: string; // TODO: ?
+  date: string;
   group_id: number;
 };
