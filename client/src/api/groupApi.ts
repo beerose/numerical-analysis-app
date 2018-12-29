@@ -81,6 +81,15 @@ export const addMeeting = async (
   await authFetch(SERVER_URL + Groups.Meetings.Create, options).then(showMessage);
 };
 
+export const deleteMeeting = async (id: Pick<MeetingDTO, 'id'>) => {
+  const options = {
+    body: JSON.stringify({ meeting_id: id }),
+    method: 'DELETE',
+  };
+
+  await authFetch(SERVER_URL + Groups.Meetings.Delete, options).then(showMessage);
+};
+
 export const listMeetings = (groupId: string): Promise<MeetingDTO[]> => {
   const options = {
     method: 'GET',

@@ -7,6 +7,7 @@ import styled from 'react-emotion';
 import { MeetingDTO } from '../../../../../common/api';
 import * as groupsService from '../../../api/groupApi';
 import { Theme } from '../../../components/theme';
+import { LABELS } from '../../../utils/labels';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
 
 const Container = styled.section`
@@ -49,14 +50,20 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   handleAddNewMeeting = (values: { name: string; date: Moment }) => {
-    groupsService.addMeeting(values, this.props.groupId);
+    groupsService.addMeeting(values, this.props.groupId).then(() => {
+      this.updateMeetingsList();
+    });
     this.hideNewMeetingModal();
-    this.updateMeetingsList();
+  };
+
+  handleDeleteMeeting = (id: number) => {
+    groupsService.deleteMeeting({ id }).then(() => {
+      this.updateMeetingsList();
+    });
   };
 
   render() {
     const { meetings } = this.state;
-    console.log(meetings);
 
     return (
       <Container>
@@ -77,18 +84,20 @@ export class MeetingsSection extends React.Component<Props, State> {
             dataSource={meetings}
             className={css`
               padding: ${Theme.Padding.Standard} 0;
-              max-height: '100vh';
+              max-height: 100vh;
+              width: 400px;
             `}
             renderItem={(meeting: MeetingDTO) => {
-              console.log();
               return (
-                <List.Item actions={[<a href="#">usuń</a>]}>
-                  <List.Item.Meta
-                    title={meeting.meeting_name}
-                    description={moment(meeting.date, 'YYYY-MM-DD')
-                      .toDate()
-                      .toLocaleDateString()}
-                  />
+                <List.Item
+                  actions={[
+                    <a onClick={() => this.handleDeleteMeeting(meeting.id)}>{LABELS.delete}</a>,
+                  ]}
+                >
+                  <List.Item.Meta title={meeting.meeting_name} />
+                  {moment(meeting.date, 'YYYY-MM-DD')
+                    .toDate()
+                    .toLocaleDateString()}
                 </List.Item>
               );
             }}

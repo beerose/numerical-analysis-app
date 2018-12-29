@@ -59,6 +59,7 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
               padding: 0 ${Theme.Padding.Standard};
             `}
             renderItem={(item: GroupDTO) => (
+              // TO DO
               <List.Item actions={[<a>usuń</a>]}>
                 <List.Item.Meta
                   title={
