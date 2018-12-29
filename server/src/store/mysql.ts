@@ -173,6 +173,15 @@ export const addGroup = (
     callback
   );
 
+export const deleteGroup = ({ groupId }: { groupId: string }, callback: Callback) =>
+  connection.query(
+    {
+      sql: 'DELETE FROM `groups` WHERE id = ?',
+      values: [groupId],
+    },
+    callback
+  );
+
 export const deleteMeeting = ({ meetingId }: { meetingId: string }, callback: Callback) =>
   connection.query(
     {

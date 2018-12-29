@@ -7,6 +7,7 @@ import styled from 'react-emotion';
 import { MeetingDTO } from '../../../../../common/api';
 import * as groupsService from '../../../api/groupApi';
 import { Theme } from '../../../components/theme';
+import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
 import { LABELS } from '../../../utils/labels';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
 
@@ -91,7 +92,9 @@ export class MeetingsSection extends React.Component<Props, State> {
               return (
                 <List.Item
                   actions={[
-                    <a onClick={() => this.handleDeleteMeeting(meeting.id)}>{LABELS.delete}</a>,
+                    <DeleteWithConfirm onConfirm={() => this.handleDeleteMeeting(meeting.id)}>
+                      <a>{LABELS.delete}</a>
+                    </DeleteWithConfirm>,
                   ]}
                 >
                   <List.Item.Meta title={meeting.meeting_name} />

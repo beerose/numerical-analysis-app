@@ -4,6 +4,8 @@ export const apiMessages = {
   emailRequired: 'Email jest wymagany',
   emptyCSV: 'Plik CSV jest pusty lub nieprawidłowy',
   groupCreated: 'Grupa została dodana',
+  groupDeleted: 'Grupa została usunięta',
+  groupIdRequired: 'group_id jest wymagane',
   idRequired: 'Id jest wymagane',
   internalError: 'Wystąpił błąd, spróbuj ponownie',
   invalidAddMeetingRequest: 'Pola meeting_name, date, group_id są wymagane',

@@ -10,6 +10,7 @@ export declare const Routes: {
     };
     Groups: {
         Create: string;
+        Delete: string;
         Get: string;
         List: string;
         Meetings: {

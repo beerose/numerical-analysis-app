@@ -14,6 +14,7 @@ export const Routes = {
   },
   Groups: {
     Create: '/groups/create',
+    Delete: '/groups/delete',
     Get: '/groups/:id',
     List: '/groups',
     Meetings: {

@@ -4,6 +4,8 @@ export declare const apiMessages: {
     emailRequired: string;
     emptyCSV: string;
     groupCreated: string;
+    groupDeleted: string;
+    groupIdRequired: string;
     idRequired: string;
     internalError: string;
     invalidAddMeetingRequest: string;

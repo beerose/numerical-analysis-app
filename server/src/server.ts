@@ -14,6 +14,7 @@ import {
   validateAddMeetingRequest,
   validateAddStudentToGroupRequest,
   validateCreateGroupRequest,
+  validateDeleteGroupRequest,
   validateDeleteMeetingRequest,
   validateDeleteStudentFromGroupRequest,
   validateListStudentsForGroupRequest,
@@ -62,12 +63,8 @@ app.get(
   validateListStudentsForGroupRequest,
   groups.listStudentsForGroup
 );
-app.delete(
-  Groups.Students.AddToGroup,
-  auth.authorize,
-  validateDeleteStudentFromGroupRequest,
-  groups.deleteUserFromGroup
-);
+app.delete(Groups.Delete, auth.authorize, validateDeleteGroupRequest, groups.deleteGroup);
+
 app.post(
   Groups.Students.AddToGroup,
   auth.authorize,

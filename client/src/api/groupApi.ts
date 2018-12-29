@@ -107,5 +107,5 @@ export const deleteGroup = (groupId: string) => {
     method: 'DELETE',
   };
 
-  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Meetings.List, options);
+  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Delete, options);
 };
