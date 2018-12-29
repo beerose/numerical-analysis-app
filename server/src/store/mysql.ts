@@ -176,7 +176,7 @@ export const addGroup = (
 export const deleteMeeting = ({ meetingId }: { meetingId: string }, callback: Callback) =>
   connection.query(
     {
-      sql: 'DELETE FROM `groups` WHERE id = ?',
+      sql: 'DELETE FROM `meetings` WHERE id = ?',
       values: [meetingId],
     },
     callback

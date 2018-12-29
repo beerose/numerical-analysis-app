@@ -77,7 +77,7 @@ app.post(
 
 app.get(Groups.Meetings.List, auth.authorize, groups.listMeetings);
 app.post(Groups.Meetings.Create, auth.authorize, validateAddMeetingRequest, groups.addMeeting);
-app.post(
+app.delete(
   Groups.Meetings.Delete,
   auth.authorize,
   validateDeleteMeetingRequest,

@@ -57,7 +57,7 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   handleDeleteMeeting = (id: number) => {
-    groupsService.deleteMeeting({ id }).then(() => {
+    groupsService.deleteMeeting(id).then(() => {
       this.updateMeetingsList();
     });
   };
