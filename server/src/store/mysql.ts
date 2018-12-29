@@ -192,6 +192,7 @@ export const listMeetings = (groupId: GroupDTO['id'], callback: Callback) =>
           meetings
         WHERE
           group_id = ?
+        ORDER BY date ASC
       `,
       values: [groupId],
     },

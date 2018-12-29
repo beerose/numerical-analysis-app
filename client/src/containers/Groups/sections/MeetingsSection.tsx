@@ -25,7 +25,7 @@ type State = {
 export class MeetingsSection extends React.Component<Props, State> {
   state: State = {
     addMeetingModalVisible: false,
-    isLoading: true,
+    isLoading: false,
     meetings: [],
   };
 
@@ -34,8 +34,9 @@ export class MeetingsSection extends React.Component<Props, State> {
   }
 
   updateMeetingsList = () => {
+    this.setState({ isLoading: true });
     groupsService.listMeetings(this.props.groupId).then(res => {
-      this.setState({ meetings: res });
+      this.setState({ meetings: res, isLoading: false });
     });
   };
 
