@@ -3,14 +3,20 @@ import styled from '@emotion/styled';
 
 type FlexProps = {
   flex?: number;
-  direction?: 'column' | 'row';
+  flexDirection?: 'column' | 'row';
 };
 
 export const Flex = styled.section(
-  (props: FlexProps) => ({
-    flex: props.flex,
-    flexDirection: props.direction,
-  }),
+  (props: FlexProps) => {
+    const res: Record<string, any> = {};
+    if (props.flex) {
+      res.flex = props.flex;
+    }
+    if (props.flexDirection) {
+      res.flexDirection = props.flexDirection;
+    }
+    return res;
+  },
   css`
     display: flex;
     width: 100%;

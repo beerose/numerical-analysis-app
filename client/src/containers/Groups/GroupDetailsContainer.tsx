@@ -93,7 +93,7 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
             Oceny
           </Menu.Item>
         </Menu>
-        <Flex direction="column">
+        <Flex flexDirection="column">
           <Breadcrumbs
             css={css`
               padding: ${Theme.Padding.Half} 0 0 ${Theme.Padding.Standard};

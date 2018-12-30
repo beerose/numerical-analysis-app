@@ -1,8 +1,8 @@
+import styled from '@emotion/styled';
 import { Popconfirm, Table } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { PaginationConfig } from 'antd/lib/table';
 import * as React from 'react';
-import styled from '@emotion/styled';
 
 import { UserDTO } from '../../../../common/api';
 import { userRoleOptions } from '../../../../common/roles';
@@ -73,7 +73,7 @@ type UsersTableProps = {
   onUpdate: (user: UserDTO) => void;
   onDelete: (id: string) => void;
   onTableChange?: (cfg: PaginationConfig) => void;
-  style?: React.CSSProperties;
+  className?: string;
 };
 export class UsersTable extends React.Component<UsersTableProps, UsersTableState> {
   state = { data: this.props.users, editingKey: '', currentPage: 1 };
@@ -147,6 +147,9 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
   }
 
   render() {
+    const { onTableChange, showPagination, pageSize, total, className } = this.props;
+    const { data, currentPage } = this.state;
+
     const components = {
       body: {
         cell: EditableCell,
@@ -171,10 +174,10 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
     });
 
     const paginationConfig = {
-      current: this.state.currentPage,
-      pageSize: this.props.pageSize,
+      pageSize,
+      total,
+      current: currentPage,
       superSimple: true,
-      total: this.props.total,
     };
 
     return (
@@ -182,11 +185,11 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
         size="small"
         rowKey="id"
         components={components}
-        dataSource={this.state.data}
+        dataSource={data}
         columns={columns}
-        pagination={this.props.showPagination ? paginationConfig : false}
-        onChange={this.props.onTableChange}
-        style={this.props.style}
+        pagination={showPagination ? paginationConfig : false}
+        onChange={onTableChange}
+        className={className}
       />
     );
   }

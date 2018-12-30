@@ -2,6 +2,7 @@ import { Spin } from 'antd';
 import React from 'react';
 
 import { MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
+import { PaddingContainer } from '../../../../components/PaddingContainer';
 
 import {
   BoxedPresencesAndActivities,
@@ -106,12 +107,14 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
     }
 
     return (
-      <StudentsAtMeetingsTable
-        meetings={meetings}
-        meetingsDetails={meetingsDetails}
-        makeRenderMeetingData={makeRenderCheckboxAndInput}
-        handleChange={this.handleChange}
-      />
+      <PaddingContainer>
+        <StudentsAtMeetingsTable
+          meetings={meetings}
+          meetingsDetails={meetingsDetails}
+          makeRenderMeetingData={makeRenderCheckboxAndInput}
+          handleChange={this.handleChange}
+        />
+      </PaddingContainer>
     );
   }
 }
