@@ -14,7 +14,7 @@ import { LABELS } from '../../utils/labels';
 
 import { WrappedNewUserModalForm } from './AddUserForm';
 
-const SearchPanel = styled('div')`
+const SearchPanel = styled.div`
   margin: 20px 0 20px 0;
   display: flex;
 `;
