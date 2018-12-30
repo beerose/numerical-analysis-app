@@ -16,7 +16,6 @@
     "@types/react-dom": "^16.0.7",
     "@types/react-router-dom": "^4.3.0",
     "antd": "^3.11.6",
-    "emotion": "^10.0.5",
     "install": "^0.12.1",
     "jsonwebtoken": "^8.4.0",
     "node-sass": "^4.9.3",

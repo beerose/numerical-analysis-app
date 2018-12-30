@@ -8,14 +8,11 @@ import * as React from 'react';
 
 import { UserDTO } from '../../../../common/api';
 import { usersService } from '../../api';
-import { SelectRole, UsersTable } from '../../components';
+import { Breadcrumbs, SelectRole, UsersTable } from '../../components';
+import { PaddingContainer } from '../../components/PaddingContainer';
 import { LABELS } from '../../utils/labels';
 
 import { WrappedNewUserModalForm } from './AddUserForm';
-
-const Container = styled.div`
-  padding: 0 50px;
-`;
 
 const SearchPanel = styled('div')`
   margin: 20px 0 20px 0;
@@ -125,7 +122,8 @@ export class ListUsersContainer extends React.Component<{}, State> {
   render() {
     const { addUserModalVisible, users, total, currentPage, isLoading } = this.state;
     return (
-      <Container>
+      <PaddingContainer>
+        <Breadcrumbs />
         <SearchPanel onKeyPress={this.handleKeyPress}>
           <Input placeholder={LABELS.searchUserPlaceholder} onChange={this.onSearchInputChange} />
           <SelectRole
@@ -157,7 +155,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
             onTableChange={this.handlePaginationChange}
           />
         </Spin>
-      </Container>
+      </PaddingContainer>
     );
   }
 }

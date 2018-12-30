@@ -6,6 +6,7 @@ import { UserDTO } from '../../../../common/api';
 import { ROLES } from '../../../../common/roles';
 import * as groupsService from '../../api/groupApi';
 import { listUsers } from '../../api/userApi';
+import { Breadcrumbs } from '../../components';
 
 import { NewGroupFormValues, WrappedNewGroupForm } from './components/NewGroupForm';
 

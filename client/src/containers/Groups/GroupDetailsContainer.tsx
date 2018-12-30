@@ -1,11 +1,13 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Icon, Menu } from 'antd';
 import MenuItem from 'antd/lib/menu/MenuItem';
-import { css } from 'emotion';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { Routes } from '../../../../common/api';
-import { NotFoundPage } from '../../components';
+import { Breadcrumbs, NotFoundPage } from '../../components';
+import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
 import { MeetingsDetailsSections, MeetingsSection, StudentsSection } from './sections';
@@ -57,9 +59,11 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
   }
 
   render() {
+    const { groupId } = this.state;
+
     return (
       <Flex flex={1}>
-        <Menu mode="inline" defaultSelectedKeys={[this.getSelectedItem()]} className={menuStyles}>
+        <Menu mode="inline" defaultSelectedKeys={[this.getSelectedItem()]} css={menuStyles}>
           <MenuItem key="settings">
             <Icon type="setting" />
             Ustawienia grupy
@@ -89,20 +93,27 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
             Oceny
           </Menu.Item>
         </Menu>
-        <Switch>
-          <Route
-            exact={true}
-            path={'/groups/:id/students'}
-            component={() => <StudentsSection groupId={this.state.groupId} />}
+        <Flex direction="column">
+          <Breadcrumbs
+            css={css`
+              padding: ${Theme.Padding.Half} 0 0 ${Theme.Padding.Standard};
+            `}
           />
-          <Route exact={true} path={'/groups/:id/presence'}>
-            <MeetingsDetailsSections groupId={this.state.groupId} />
-          </Route>
-          <Route exact={true} path={'/groups/:id/meetings'}>
-            <MeetingsSection groupId={this.state.groupId} />
-          </Route>
-          <NotFoundPage />
-        </Switch>
+          <Switch>
+            <Route
+              exact={true}
+              path={'/groups/:id/students'}
+              component={() => <StudentsSection groupId={groupId} />}
+            />
+            <Route exact={true} path={'/groups/:id/presence'}>
+              <MeetingsDetailsSections groupId={groupId} />
+            </Route>
+            <Route exact={true} path={'/groups/:id/meetings'}>
+              <MeetingsSection groupId={groupId} />
+            </Route>
+            <NotFoundPage />
+          </Switch>
+        </Flex>
       </Flex>
     );
   }
