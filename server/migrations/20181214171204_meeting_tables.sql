@@ -19,6 +19,7 @@ CREATE TABLE user_attended_in_meeting (
 CREATE TABLE user_was_active_in_meeting (
   user_id VARCHAR(100) NOT NULL REFERENCES users(id),
   meeting_id VARCHAR(100) NOT NULL REFERENCES meetings(id),
+  points VARCHAR(10) NOT NULL,
   UNIQUE KEY(user_id, meeting_id)
 );
 

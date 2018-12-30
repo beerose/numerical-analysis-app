@@ -16,6 +16,7 @@ export declare const Routes: {
         Meetings: {
             Create: string;
             Delete: string;
+            Details: string;
             List: string;
         };
         Students: {

@@ -96,6 +96,10 @@ export class PresenceTable extends React.Component<PresenceTableProps, State> {
       return <Spin />;
     }
 
+    if (!meetings.length) {
+      return <div>Nie ma spotkań</div>;
+    }
+
     return (
       <StudentsAtMeetingsTable
         meetings={meetings}

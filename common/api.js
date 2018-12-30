@@ -14,6 +14,7 @@ exports.Routes = {
         Meetings: {
             Create: '/groups/meetings.create',
             Delete: '/groups/meetings.delete',
+            Details: '/groups/meetings.details',
             List: '/groups/meetings',
         },
         Students: {

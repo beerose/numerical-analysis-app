@@ -208,17 +208,22 @@ export const listMeetings = (groupId: GroupDTO['id'], callback: Callback) =>
     callback
   );
 
-export const getPresencesInGroup = (groupId: GroupDTO['id'], callback: Callback) =>
+export const getPresencesInGroup = ({ groupId }: { groupId: GroupDTO['id'] }, callback: Callback) =>
   connection.query(
     {
       sql: `
         SELECT
-          user_id, GROUP_CONCAT(meeting_id)
+          user_id,
+          user_name,
+          student_index,
+          GROUP_CONCAT(user_attended_in_meeting.meeting_id) AS presences
         FROM
-          user_attended_in_meeting
-        WHERE user_id IN (
-          SELECT user_id FROM user_belongs_to_group WHERE group_id = ?
-        ) GROUP BY user_id
+          users
+          JOIN user_attended_in_meeting ON (users.id = user_attended_in_meeting.user_id)
+        WHERE
+          user_attended_in_meeting.meeting_id IN (SELECT id from meetings where group_id = ?)
+        GROUP BY
+          user_id;
       `,
       values: [groupId],
     },

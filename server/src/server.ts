@@ -16,7 +16,7 @@ import {
   validateCreateGroupRequest,
   validateDeleteGroupRequest,
   validateDeleteMeetingRequest,
-  validateDeleteStudentFromGroupRequest,
+  validateGetMeetingsDetailsRequest,
   validateListStudentsForGroupRequest,
   validateUploadRequest,
 } from './groups/validation';
@@ -79,6 +79,12 @@ app.delete(
   auth.authorize,
   validateDeleteMeetingRequest,
   groups.deleteMeeting
+);
+app.get(
+  Groups.Meetings.Details,
+  auth.authorize,
+  validateGetMeetingsDetailsRequest,
+  groups.getMeetingsDetails
 );
 
 const listener = app.listen(PORT, () => {

@@ -109,3 +109,14 @@ export const deleteGroup = (groupId: string) => {
 
   return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Delete, options);
 };
+
+export const getMeetingsDetails = (groupId: string) => {
+  const options = {
+    method: 'GET',
+  };
+
+  return authFetch(
+    `${SERVER_URL + Groups.Meetings.Details}?${qs.stringify({ group_id: groupId })}`,
+    options
+  );
+};

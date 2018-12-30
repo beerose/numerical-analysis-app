@@ -1,4 +1,5 @@
 import { Table } from 'antd';
+import Item from 'antd/lib/list/Item';
 import React from 'react';
 import styled, { css } from 'react-emotion';
 
@@ -68,7 +69,6 @@ export class StudentsAtMeetingsTable<
   ];
 
   render() {
-    console.log(this.props.meetings);
     const { loadedStudents } = this.props;
 
     return (
@@ -79,6 +79,7 @@ export class StudentsAtMeetingsTable<
         `}
       >
         <Table<BoxedStudent & TBoxedMeetingData>
+          rowKey={record => record.studentData.id}
           scroll={TABLE_SCROLL_CONFIG}
           columns={this.columns}
           dataSource={loadedStudents}

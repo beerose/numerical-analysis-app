@@ -34,6 +34,9 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
         meetings: res,
       });
     });
+    groupService.getMeetingsDetails(this.props.groupId).then(res => {
+      console.log(res);
+    });
   }
 
   render() {

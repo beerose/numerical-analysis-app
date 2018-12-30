@@ -82,3 +82,14 @@ export const validateCreateGroupRequest = (req: Request, res: Response, next: Ne
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCreateGroupRequest });
 };
+
+export const validateGetMeetingsDetailsRequest = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.body && req.query.group_id) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidRequest });
+};
