@@ -1,5 +1,4 @@
 import { Table } from 'antd';
-import Item from 'antd/lib/list/Item';
 import React from 'react';
 import styled, { css } from 'react-emotion';
 
@@ -40,23 +39,23 @@ export class StudentsAtMeetingsTable<
 > extends React.Component<Props<TBoxedMeetingData>> {
   columns = [
     {
-      dataIndex: 'studentData.user_name',
+      dataIndex: 'student.user_name',
       fixed: true,
       key: 'user_name',
       sorter: (a: BoxedStudent, b: BoxedStudent) =>
-        Number(a.studentData.user_name < b.studentData.user_name),
+        Number(a.student.user_name < b.student.user_name),
       title: 'Student',
     },
     {
-      dataIndex: 'studentData.student_index',
+      dataIndex: 'student.student_index',
       fixed: true,
       key: 'student_index',
       sorter: (a: BoxedStudent, b: BoxedStudent) =>
-        Number(a.studentData.student_index) - Number(b.studentData.student_index),
+        Number(a.student.student_index) - Number(b.student.student_index),
       title: 'Indeks',
     },
     ...this.props.meetings.map(({ meeting_name: meetingName, date, id: meetingId }) => ({
-      dataIndex: 'meetingData',
+      dataIndex: 'data',
       key: meetingId,
       render: this.props.makeRenderMeetingData(meetingId, this.props.handleChange),
       title: (
@@ -79,7 +78,7 @@ export class StudentsAtMeetingsTable<
         `}
       >
         <Table<BoxedStudent & TBoxedMeetingData>
-          rowKey={record => record.studentData.id}
+          rowKey={record => record.student.id}
           scroll={TABLE_SCROLL_CONFIG}
           columns={this.columns}
           dataSource={loadedStudents}

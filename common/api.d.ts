@@ -62,3 +62,14 @@ export declare type MeetingDTO = {
     date: string;
     group_id: number;
 };
+export declare type Student = Pick<UserDTO, 'id' | 'user_name' | 'student_index'>;
+export declare type MeetingId = MeetingDTO['id'];
+export declare type StudentPresences = Set<MeetingId>;
+export declare type StudentActivities = Record<MeetingId, number>;
+export declare type MeetingDetailsDTO = {
+    data: {
+        presences: StudentPresences;
+        activities: StudentActivities;
+    };
+    student: Student;
+};

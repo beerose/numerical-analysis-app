@@ -31,7 +31,7 @@ const makeRenderCheckboxAndInput = (
   return (
     <PresenceAndActivityControls
       meetingId={meetingId}
-      studentId={record.studentData.id}
+      studentId={record.student.id}
       onChange={handleChange}
       activity={meetingData.activities[meetingId]}
       isPresent={meetingData.presences.has(meetingId)}
@@ -57,11 +57,11 @@ export class PresenceTable extends React.Component<PresenceTableProps, State> {
     const { meetingId, studentId } = data;
 
     const changedStudentIndexInArray = loadedStudents.findIndex(
-      student => student.studentData.id === studentId
+      student => student.student.id === studentId
     );
     const newStudent = { ...loadedStudents[changedStudentIndexInArray] };
-    const newMeetingData = { ...newStudent.meetingData };
-    newStudent.meetingData = newMeetingData;
+    const newMeetingData = { ...newStudent.data };
+    newStudent.data = newMeetingData;
 
     const { isPresent } = data as { isPresent?: boolean };
     if (isPresent != null) {

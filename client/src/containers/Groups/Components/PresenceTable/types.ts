@@ -3,12 +3,12 @@ import { MeetingDTO, UserDTO } from '../../../../../../common/api';
 export type Student = Pick<UserDTO, 'id' | 'user_name' | 'student_index'>;
 export type MeetingId = MeetingDTO['id'];
 
-export type BoxedStudent = { studentData: Student };
+export type BoxedStudent = { student: Student };
 
 export type StudentPresences = Set<MeetingId>;
 export type StudentActivities = Record<MeetingId, number>;
-export type BoxedPresences = { meetingData: StudentPresences };
-export type BoxedActivities = { meetingData: StudentActivities };
+export type BoxedPresences = { data: StudentPresences };
+export type BoxedActivities = { data: StudentActivities };
 
 export type PresencesAndActivities = {
   presences: StudentPresences;
@@ -16,7 +16,7 @@ export type PresencesAndActivities = {
 };
 
 export type BoxedPresencesAndActivities = {
-  meetingData: PresencesAndActivities;
+  data: PresencesAndActivities;
 };
 
 export type BoxedMeetingData = BoxedPresences | BoxedActivities | BoxedPresencesAndActivities;

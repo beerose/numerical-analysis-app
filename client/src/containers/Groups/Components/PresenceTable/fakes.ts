@@ -2,8 +2,8 @@ import { BoxedPresencesAndActivities, BoxedStudent } from './types';
 
 export const fakeLoadedStudents: Array<BoxedStudent & BoxedPresencesAndActivities> = [
   {
-    meetingData: { activities: { 4: 2, 12: 3, 11: 1 }, presences: new Set([13, 14, 15]) },
-    studentData: {
+    data: { activities: { 4: 2, 12: 3, 11: 1 }, presences: new Set([13, 14, 15]) },
+    student: {
       id: 'Borys121',
       student_index: '277501',
       user_name: 'Borys',

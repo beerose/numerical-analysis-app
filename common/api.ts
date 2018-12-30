@@ -71,3 +71,17 @@ export type MeetingDTO = {
   date: string;
   group_id: number;
 };
+
+export type Student = Pick<UserDTO, 'id' | 'user_name' | 'student_index'>;
+export type MeetingId = MeetingDTO['id'];
+
+export type StudentPresences = Set<MeetingId>;
+export type StudentActivities = Record<MeetingId, number>;
+
+export type MeetingDetailsDTO = {
+  data: {
+    presences: StudentPresences;
+    activities: StudentActivities;
+  };
+  student: Student;
+};
