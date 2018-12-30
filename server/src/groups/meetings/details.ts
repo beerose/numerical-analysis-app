@@ -26,7 +26,7 @@ export const getMeetingsDetails = (req: GetMeetingsDetailsRequest, res: Response
       const details = presences.map(item => ({
         data: {
           activities: activities
-            .filter(a => a.user_id === item.user_id)
+            .filter(a => a.id === item.id)
             .reduce(
               (result, a) => {
                 result[parseInt(a.meeting_id, 10)] = parseInt(a.points, 10);
@@ -34,10 +34,10 @@ export const getMeetingsDetails = (req: GetMeetingsDetailsRequest, res: Response
               },
               {} as StudentActivities
             ),
-          presences: item.presences.split(',').map(i => parseInt(i, 10)),
+          presences: item.presences && item.presences.split(',').map(i => parseInt(i, 10)),
         } as MeetingDetailsDTO['data'],
         student: {
-          id: item.user_id,
+          id: item.id,
           student_index: item.student_index,
           user_name: item.user_name,
         } as Student,
