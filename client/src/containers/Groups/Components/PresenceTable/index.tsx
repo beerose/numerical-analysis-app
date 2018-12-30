@@ -41,11 +41,14 @@ const makeRenderCheckboxAndInput = (
 type PresenceTableProps = {
   meetings?: MeetingDTO[];
   meetingsDetails?: MeetingDetailsModel[];
+  addPresence: (userId: string, meetingId: number) => void;
+  deletePresence: (userId: string, meetingId: number) => void;
+  setActivity: (userId: string, meetingId: number, activity: number) => void;
 };
 
 export class PresenceTable extends React.Component<PresenceTableProps> {
   handleChange: PresenceAndActivityChangeHandler = data => {
-    const { meetingsDetails } = this.props;
+    const { meetingsDetails, addPresence, deletePresence, setActivity } = this.props;
     if (!meetingsDetails) {
       return;
     }
@@ -64,18 +67,18 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
       if (isPresent) {
         newMeetingData.presences.add(meetingId);
 
-        console.log('TODO: post api/presence', data);
+        addPresence(studentId, meetingId);
       } else {
         newMeetingData.presences.delete(meetingId);
 
-        console.log('TODO: delete api/presence', data);
+        deletePresence(studentId, meetingId);
       }
     } else {
       const activity = boundActivity((data as { activity: number }).activity);
 
       newMeetingData.activities = { ...newMeetingData.activities, [meetingId]: activity };
 
-      console.log('TODO: post api/activity', { ...data, activity });
+      setActivity(studentId, meetingId, activity);
     }
 
     const newStudents = [...meetingsDetails];

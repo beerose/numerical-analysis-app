@@ -30,8 +30,28 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
     });
   }
 
+  handleAddPresence = (userId: string, meetingId: number) => {
+    console.log('add presence', userId, meetingId);
+  };
+
+  handleDeletePresence = (userId: string, meetingId: number) => {
+    console.log('delete presence', userId, meetingId);
+  };
+
+  handleSetActivity = (userId: string, meetingId: number, activity: number) => {
+    console.log('add activity', userId, meetingId, activity);
+  };
+
   render() {
     const { meetings, meetingsDetails } = this.state;
-    return <PresenceTable meetings={meetings} meetingsDetails={meetingsDetails} />;
+    return (
+      <PresenceTable
+        meetings={meetings}
+        meetingsDetails={meetingsDetails}
+        setActivity={this.handleSetActivity}
+        addPresence={this.handleAddPresence}
+        deletePresence={this.handleDeletePresence}
+      />
+    );
   }
 }
