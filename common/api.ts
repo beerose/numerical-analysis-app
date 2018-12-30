@@ -18,10 +18,13 @@ export const Routes = {
     Get: '/groups/:id',
     List: '/groups',
     Meetings: {
+      AddPresence: '/groups/meetings.addPresence',
       Create: '/groups/meetings.create',
       Delete: '/groups/meetings.delete',
+      DeletePresence: '/groups/meetings.deletePresence',
       Details: '/groups/meetings.details',
       List: '/groups/meetings',
+      SetActivity: '/groups/meetings.setActivity',
     },
     Students: {
       AddToGroup: '/groups/students.add',

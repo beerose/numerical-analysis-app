@@ -35,15 +35,15 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
   };
 
   handleAddPresence = (userId: string, meetingId: number) => {
-    console.log('add presence', userId, meetingId);
+    groupService.addPresence(userId, meetingId);
   };
 
   handleDeletePresence = (userId: string, meetingId: number) => {
-    console.log('delete presence', userId, meetingId);
+    groupService.deletePresence(userId, meetingId);
   };
 
   handleSetActivity = (userId: string, meetingId: number, activity: number) => {
-    console.log('add activity', userId, meetingId, activity);
+    groupService.setActivity(userId, meetingId, activity);
   };
 
   render() {
