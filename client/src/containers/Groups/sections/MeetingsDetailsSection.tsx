@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { GroupDTO, MeetingDTO, UserDTO } from '../../../../../common/api';
+import { GroupDTO, MeetingDetailsModel, MeetingDTO } from '../../../../../common/api';
 import * as groupService from '../../../api/groupApi';
 import { PresenceTable } from '../components';
 
@@ -10,37 +10,28 @@ type Props = {
 
 type State = {
   meetings?: MeetingDTO[];
-  studentsWithDetails: Array<
-    UserDTO & {
-      meetingData: {
-        activities: Record<MeetingDTO['id'], number>;
-        presences: Set<MeetingDTO['id']>;
-      };
-    }
-  >;
-  isLoading: boolean;
+  meetingsDetails: MeetingDetailsModel[];
 };
 export class MeetingsDetailsSections extends React.Component<Props, State> {
   state: State = {
-    isLoading: false,
-    studentsWithDetails: [],
+    meetingsDetails: [],
   };
 
   componentDidMount() {
-    this.setState({ isLoading: true });
     groupService.listMeetings(this.props.groupId).then(res => {
       this.setState({
-        isLoading: false,
         meetings: res,
       });
     });
     groupService.getMeetingsDetails(this.props.groupId).then(res => {
-      console.log(res);
+      this.setState({
+        meetingsDetails: res,
+      });
     });
   }
 
   render() {
-    const { meetings } = this.state;
-    return <PresenceTable meetings={meetings} />;
+    const { meetings, meetingsDetails } = this.state;
+    return <PresenceTable meetings={meetings} meetingsDetails={meetingsDetails} />;
   }
 }

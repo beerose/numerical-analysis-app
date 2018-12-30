@@ -1,7 +1,7 @@
 import { Spin } from 'antd';
 import React from 'react';
 
-import { MeetingDTO } from '../../../../../../common/api';
+import { MeetingDetailsDTO, MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
 
 import { fakeLoadedStudents } from './fakes';
 import {
@@ -41,25 +41,21 @@ const makeRenderCheckboxAndInput = (
 
 type PresenceTableProps = {
   meetings?: MeetingDTO[];
+  meetingsDetails?: MeetingDetailsModel[];
 };
 
-type State = {
-  loadedStudents: Array<BoxedStudent & BoxedPresencesAndActivities>;
-};
-
-export class PresenceTable extends React.Component<PresenceTableProps, State> {
-  state: State = {
-    loadedStudents: fakeLoadedStudents,
-  };
-
+export class PresenceTable extends React.Component<PresenceTableProps> {
   handleChange: PresenceAndActivityChangeHandler = data => {
-    const { loadedStudents } = this.state;
+    const { meetingsDetails } = this.props;
+    if (!meetingsDetails) {
+      return;
+    }
     const { meetingId, studentId } = data;
 
-    const changedStudentIndexInArray = loadedStudents.findIndex(
-      student => student.student.id === studentId
+    const changedStudentIndexInArray = meetingsDetails.findIndex(
+      item => item.student.id === studentId
     );
-    const newStudent = { ...loadedStudents[changedStudentIndexInArray] };
+    const newStudent = { ...meetingsDetails[changedStudentIndexInArray] };
     const newMeetingData = { ...newStudent.data };
     newStudent.data = newMeetingData;
 
@@ -83,16 +79,15 @@ export class PresenceTable extends React.Component<PresenceTableProps, State> {
       console.log('TODO: post api/activity', { ...data, activity });
     }
 
-    const newStudents = [...loadedStudents];
+    const newStudents = [...meetingsDetails];
     newStudents[changedStudentIndexInArray] = newStudent;
     this.setState({ loadedStudents: newStudents });
   };
 
   render() {
-    const { loadedStudents } = this.state;
-    const { meetings } = this.props;
+    const { meetings, meetingsDetails } = this.props;
 
-    if (!meetings) {
+    if (!meetings || !meetingsDetails) {
       return <Spin />;
     }
 
@@ -103,7 +98,7 @@ export class PresenceTable extends React.Component<PresenceTableProps, State> {
     return (
       <StudentsAtMeetingsTable
         meetings={meetings}
-        loadedStudents={loadedStudents}
+        meetingsDetails={meetingsDetails}
         makeRenderMeetingData={makeRenderCheckboxAndInput}
         handleChange={this.handleChange}
       />

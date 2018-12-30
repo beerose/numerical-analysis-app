@@ -73,3 +73,10 @@ export declare type MeetingDetailsDTO = {
     };
     student: Student;
 };
+export declare type MeetingDetailsModel = {
+    data: {
+        presences: StudentPresences;
+        activities: StudentActivities;
+    };
+    student: Student;
+};

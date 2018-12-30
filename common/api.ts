@@ -85,3 +85,11 @@ export type MeetingDetailsDTO = {
   };
   student: Student;
 };
+
+export type MeetingDetailsModel = {
+  data: {
+    presences: StudentPresences;
+    activities: StudentActivities;
+  };
+  student: Student;
+};

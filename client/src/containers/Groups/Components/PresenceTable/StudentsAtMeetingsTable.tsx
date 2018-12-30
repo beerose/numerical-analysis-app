@@ -2,7 +2,7 @@ import { Table } from 'antd';
 import React from 'react';
 import styled, { css } from 'react-emotion';
 
-import { MeetingDTO } from '../../../../../../common/api';
+import { MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
 
 import { BoxedMeetingData, BoxedStudent, FieldIdentifier, MeetingId, Unboxed } from './types';
 
@@ -10,7 +10,7 @@ type IdentifiedChangeHandler = (value: FieldIdentifier) => void;
 
 type Props<TBoxedMeetingData extends BoxedMeetingData> = {
   meetings: MeetingDTO[];
-  loadedStudents: Array<BoxedStudent & TBoxedMeetingData>;
+  meetingsDetails: MeetingDetailsModel[];
   makeRenderMeetingData: (
     meetingId: MeetingId,
     handleChange: IdentifiedChangeHandler
@@ -68,7 +68,7 @@ export class StudentsAtMeetingsTable<
   ];
 
   render() {
-    const { loadedStudents } = this.props;
+    const { meetingsDetails } = this.props;
 
     return (
       <article
@@ -77,11 +77,11 @@ export class StudentsAtMeetingsTable<
           overflow: hidden;
         `}
       >
-        <Table<BoxedStudent & TBoxedMeetingData>
+        <Table
           rowKey={record => record.student.id}
           scroll={TABLE_SCROLL_CONFIG}
           columns={this.columns}
-          dataSource={loadedStudents}
+          dataSource={meetingsDetails}
           pagination={false}
         />
       </article>

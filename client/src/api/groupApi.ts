@@ -5,6 +5,7 @@ import {
   ApiResponse,
   GroupDTO,
   MeetingDetailsDTO,
+  MeetingDetailsModel,
   MeetingDTO,
   Routes,
   UserDTO,
@@ -117,13 +118,21 @@ export const deleteGroup = (groupId: string) => {
   return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Delete, options);
 };
 
-export const getMeetingsDetails = (groupId: string) => {
+export const getMeetingsDetails = (groupId: string): Promise<MeetingDetailsModel[]> => {
   const options = {
     method: 'GET',
   };
 
-  return authFetch<{ details: MeetingDetailsDTO }>(
+  return authFetch<{ details: MeetingDetailsModel[] }>(
     `${SERVER_URL + Groups.Meetings.Details}?${qs.stringify({ group_id: groupId })}`,
     options
+  ).then(res =>
+    res.details.map(item => ({
+      data: {
+        activities: item.data.activities,
+        presences: new Set(item.data.presences),
+      },
+      student: item.student,
+    }))
   );
 };
