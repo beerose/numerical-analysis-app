@@ -80,7 +80,7 @@ export type StudentActivities = Record<MeetingId, number>;
 
 export type MeetingDetailsDTO = {
   data: {
-    presences: StudentPresences;
+    presences: Array<MeetingDTO['id']>;
     activities: StudentActivities;
   };
   student: Student;

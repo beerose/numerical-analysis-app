@@ -68,7 +68,7 @@ export declare type StudentPresences = Set<MeetingId>;
 export declare type StudentActivities = Record<MeetingId, number>;
 export declare type MeetingDetailsDTO = {
     data: {
-        presences: StudentPresences;
+        presences: Array<MeetingDTO['id']>;
         activities: StudentActivities;
     };
     student: Student;

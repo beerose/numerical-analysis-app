@@ -1,4 +1,4 @@
-import { queryCallback } from 'mysql';
+import { MysqlError, queryCallback } from 'mysql';
 
 import { GroupDTO, UserDTO } from '../../../common/api';
 
@@ -208,7 +208,19 @@ export const listMeetings = (groupId: GroupDTO['id'], callback: Callback) =>
     callback
   );
 
-export const getPresencesInGroup = ({ groupId }: { groupId: GroupDTO['id'] }, callback: Callback) =>
+type GetPresencesCallback = (
+  err: MysqlError | null,
+  results: Array<{
+    user_id: string;
+    user_name: string;
+    student_index: string;
+    presences: string;
+  }>
+) => void;
+export const getPresencesInGroup = (
+  { groupId }: { groupId: GroupDTO['id'] },
+  callback: GetPresencesCallback
+) =>
   connection.query(
     {
       sql: `
@@ -230,17 +242,26 @@ export const getPresencesInGroup = ({ groupId }: { groupId: GroupDTO['id'] }, ca
     callback
   );
 
-export const getActivityInGroup = (groupId: GroupDTO['id'], callback: Callback) =>
+type GetActivitiesCallback = (
+  err: MysqlError | null,
+  results: Array<{ user_id: string; meeting_id: string; points: string }>
+) => void;
+export const getActivitiesInGroup = (
+  { groupId }: { groupId: GroupDTO['id'] },
+  callback: GetActivitiesCallback
+) =>
   connection.query(
     {
       sql: `
         SELECT
-          user_id, GROUP_CONCAT(meeting_id)
+          user_id,
+          meeting_id,
+          points
         FROM
-          user_was_active_in_meeting
-        WHERE user_id IN (
-          SELECT user_id FROM user_belongs_to_group WHERE group_id = ?
-        ) GROUP BY user_id
+          users
+          JOIN user_was_active_in_meeting ON (users.id = user_was_active_in_meeting.user_id)
+        WHERE
+          user_was_active_in_meeting.meeting_id IN (SELECT id from meetings where group_id = ?);
       `,
       values: [groupId],
     },

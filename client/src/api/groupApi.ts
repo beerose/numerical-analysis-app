@@ -1,7 +1,14 @@
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
 
-import { ApiResponse, GroupDTO, MeetingDTO, Routes, UserDTO } from '../../../common/api';
+import {
+  ApiResponse,
+  GroupDTO,
+  MeetingDetailsDTO,
+  MeetingDTO,
+  Routes,
+  UserDTO,
+} from '../../../common/api';
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from '.';
@@ -115,7 +122,7 @@ export const getMeetingsDetails = (groupId: string) => {
     method: 'GET',
   };
 
-  return authFetch(
+  return authFetch<{ details: MeetingDetailsDTO }>(
     `${SERVER_URL + Groups.Meetings.Details}?${qs.stringify({ group_id: groupId })}`,
     options
   );
