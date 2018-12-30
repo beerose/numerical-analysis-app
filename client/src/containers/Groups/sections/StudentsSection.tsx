@@ -9,6 +9,7 @@ import { UserDTO } from '../../../../../common/api';
 import { ROLES } from '../../../../../common/roles';
 import { groupsService, usersService } from '../../../api';
 import { UsersTable } from '../../../components';
+import { Theme } from '../../../components/theme';
 import { LABELS } from '../../../utils/labels';
 import { WrappedNewStudentModalForm } from '../components/AddStudentForm';
 
@@ -18,7 +19,8 @@ const Container = styled.section`
 `;
 
 const addUserButtonStyles = css`
-  margin: 20px 20px 20px 50px;
+  margin: ${Theme.Padding.Half};
+  margin-left: ${Theme.Padding.Standard};
 `;
 
 type UploadObject = {
@@ -127,8 +129,8 @@ export class StudentsSection extends React.Component<Props, State> {
             onUpdate={this.updateStudent}
             users={students}
             extraColumns={['index']}
-            style={{
-              paddingLeft: '50px',
+            css={{
+              paddingLeft: Theme.Padding.Standard,
               width: '600px',
             }}
           />

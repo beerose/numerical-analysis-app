@@ -25,7 +25,7 @@ type Props<TBoxedMeetingData extends BoxedMeetingData> = {
 };
 
 const TABLE_SCROLL_CONFIG = {
-  x: 400,
+  x: true,
 };
 
 const CenteredText = styled.div`
