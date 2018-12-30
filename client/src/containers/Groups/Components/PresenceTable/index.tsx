@@ -1,9 +1,8 @@
 import { Spin } from 'antd';
 import React from 'react';
 
-import { MeetingDetailsDTO, MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
+import { MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
 
-import { fakeLoadedStudents } from './fakes';
 import {
   BoxedPresencesAndActivities,
   BoxedStudent,
