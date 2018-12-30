@@ -19,6 +19,8 @@ const Container = styled(Flex)`
   }
 `;
 
+const Spacer = (props: React.CSSProperties) => <div style={props} />; // 🙊🌌🛰
+
 type NotFoundPageProps = {
   children?: React.ReactNode;
 };
@@ -27,6 +29,7 @@ export const NotFoundPage = ({ children }: NotFoundPageProps) => (
   <Container flex={1}>
     <h1>404</h1>
     {children}
+    <Spacer height={100} />
   </Container>
 );
 

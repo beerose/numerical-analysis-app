@@ -1,24 +1,17 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
+import { CSSProperties, ReactNode } from 'react';
 
-type FlexProps = {
-  flex?: number;
-  flexDirection?: 'column' | 'row';
+type FlexProps = CSSProperties & {
+  children?: ReactNode;
+  theme?: object;
 };
 
 export const Flex = styled.section(
-  (props: FlexProps) => {
-    const res: Record<string, any> = {};
-    if (props.flex) {
-      res.flex = props.flex;
-    }
-    if (props.flexDirection) {
-      res.flexDirection = props.flexDirection;
-    }
-    return res;
+  ({ children, theme, ...styles }: FlexProps) => {
+    return css((styles || {}) as any);
   },
   css`
     display: flex;
-    width: 100%;
   `
 );

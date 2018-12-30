@@ -75,7 +75,6 @@ export class StudentsAtMeetingsTable<
     return (
       <article
         css={css`
-          max-width: 100%;
           overflow: hidden;
         `}
       >
