@@ -25,7 +25,7 @@ type Props<TBoxedMeetingData extends BoxedMeetingData> = {
 };
 
 const TABLE_SCROLL_CONFIG = {
-  x: true,
+  x: '100%',
 };
 
 const CenteredText = styled.div`
@@ -75,7 +75,20 @@ export class StudentsAtMeetingsTable<
     return (
       <article
         css={css`
-          overflow: hidden;
+          th.ant-table-fixed-columns-in-body.ant-table-column-sort {
+            background-color: rgb(250, 250, 250);
+          }
+          td.ant-table-fixed-columns-in-body.ant-table-column-sort {
+            background-color: none;
+          }
+          .ant-table-fixed-columns-in-body {
+            > div {
+              width: 80px;
+              visibility: hidden;
+            }
+            color: transparent;
+            user-select: none;
+          }
         `}
       >
         <Table
