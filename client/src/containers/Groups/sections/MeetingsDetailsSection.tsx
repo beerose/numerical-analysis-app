@@ -30,6 +30,10 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
     });
   }
 
+  setMeetingsDetails = (newDetails: MeetingDetailsModel[]) => {
+    this.setState({ meetingsDetails: newDetails });
+  };
+
   handleAddPresence = (userId: string, meetingId: number) => {
     console.log('add presence', userId, meetingId);
   };
@@ -48,6 +52,7 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
       <PresenceTable
         meetings={meetings}
         meetingsDetails={meetingsDetails}
+        setMeetingsDetails={this.setMeetingsDetails}
         setActivity={this.handleSetActivity}
         addPresence={this.handleAddPresence}
         deletePresence={this.handleDeletePresence}

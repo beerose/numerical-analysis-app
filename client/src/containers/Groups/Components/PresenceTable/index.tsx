@@ -41,6 +41,7 @@ const makeRenderCheckboxAndInput = (
 type PresenceTableProps = {
   meetings?: MeetingDTO[];
   meetingsDetails?: MeetingDetailsModel[];
+  setMeetingsDetails: (details: MeetingDetailsModel[]) => void;
   addPresence: (userId: string, meetingId: number) => void;
   deletePresence: (userId: string, meetingId: number) => void;
   setActivity: (userId: string, meetingId: number, activity: number) => void;
@@ -48,7 +49,13 @@ type PresenceTableProps = {
 
 export class PresenceTable extends React.Component<PresenceTableProps> {
   handleChange: PresenceAndActivityChangeHandler = data => {
-    const { meetingsDetails, addPresence, deletePresence, setActivity } = this.props;
+    const {
+      meetingsDetails,
+      addPresence,
+      deletePresence,
+      setActivity,
+      setMeetingsDetails,
+    } = this.props;
     if (!meetingsDetails) {
       return;
     }
@@ -83,7 +90,8 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
 
     const newStudents = [...meetingsDetails];
     newStudents[changedStudentIndexInArray] = newStudent;
-    this.setState({ loadedStudents: newStudents });
+
+    setMeetingsDetails(newStudents);
   };
 
   render() {
