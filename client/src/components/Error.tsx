@@ -1,6 +1,6 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Alert } from 'antd';
-import * as React from 'react';
-import { css } from 'react-emotion';
 
 const alertStyles = css`
   margin: 25px;

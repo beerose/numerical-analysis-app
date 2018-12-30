@@ -1,6 +1,8 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Button, Spin, Upload } from 'antd';
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
 import { Omit } from 'react-router';
 
 import { UserDTO } from '../../../../../common/api';
@@ -15,7 +17,7 @@ const Container = styled.section`
   flex-direction: column;
 `;
 
-const buttonStyles = css`
+const addUserButtonStyles = css`
   margin: 20px 20px 20px 50px;
 `;
 
@@ -108,7 +110,7 @@ export class StudentsSection extends React.Component<Props, State> {
             icon="user-add"
             type="primary"
             onClick={this.showAddStudentModal}
-            className={buttonStyles}
+            css={addUserButtonStyles}
           >
             {LABELS.addNewUser}
           </Button>

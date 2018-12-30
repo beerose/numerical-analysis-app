@@ -1,6 +1,6 @@
+import { css } from '@emotion/core';
 import { Icon, Menu } from 'antd';
 import * as React from 'react';
-import { css } from 'react-emotion';
 import { Link } from 'react-router-dom';
 
 const mainMenuStyles = css`

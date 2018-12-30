@@ -1,7 +1,7 @@
+import styled from '@emotion/styled';
 import { Button, List, Spin } from 'antd';
 import { css } from 'emotion';
 import * as React from 'react';
-import styled from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
