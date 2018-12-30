@@ -2,7 +2,7 @@ import { Popconfirm, Table } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { PaginationConfig } from 'antd/lib/table';
 import * as React from 'react';
-import styled from 'react-emotion';
+import styled from '@emotion/styled';
 
 import { UserDTO } from '../../../../common/api';
 import { userRoleOptions } from '../../../../common/roles';

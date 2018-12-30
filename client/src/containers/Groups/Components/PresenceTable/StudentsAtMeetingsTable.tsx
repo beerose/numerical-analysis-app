@@ -1,6 +1,8 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Table } from 'antd';
 import React from 'react';
-import styled, { css } from 'react-emotion';
 
 import { MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
 
@@ -72,7 +74,7 @@ export class StudentsAtMeetingsTable<
 
     return (
       <article
-        className={css`
+        css={css`
           max-width: 100%;
           overflow: hidden;
         `}

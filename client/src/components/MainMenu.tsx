@@ -1,6 +1,7 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Icon, Menu } from 'antd';
 import * as React from 'react';
-import { css } from 'react-emotion';
 import { Link } from 'react-router-dom';
 
 const mainMenuStyles = css`
@@ -63,7 +64,7 @@ export class MainMenu extends React.Component<Props> {
       <Menu
         theme="dark"
         mode="horizontal"
-        className={mainMenuStyles}
+        css={mainMenuStyles}
         defaultSelectedKeys={[this.getSelectedItem()]}
       >
         {menuItems.map(item => (

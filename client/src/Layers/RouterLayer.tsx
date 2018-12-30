@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { NewAccount } from '../components/';
+import { NewAccount, NotFoundPage } from '../components/';
 import { Groups, ListUsersContainer } from '../containers';
 
 export const RouterLayer = () => {
@@ -11,6 +11,7 @@ export const RouterLayer = () => {
       <Route exact={true} path="/users" component={ListUsersContainer} />
       <Route path="/groups" render={Groups} />
       <Route path="/accounts/new" render={routeContext => <NewAccount {...routeContext} />} />
+      <NotFoundPage />
     </Switch>
   );
 };

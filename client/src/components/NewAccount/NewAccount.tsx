@@ -1,8 +1,9 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Button, Modal } from 'antd';
 import jwt from 'jsonwebtoken';
 import * as qs from 'query-string';
 import * as React from 'react';
-import { css } from 'react-emotion';
 import { RouteComponentProps } from 'react-router';
 
 import { ModalHeader } from '../../components/ModalHeader';
@@ -28,9 +29,9 @@ const ErrorContainer = ({
   errorMessage?: string;
   onClick: () => void;
 }) => (
-  <section className={errorContainerStyles}>
+  <section css={errorContainerStyles}>
     {errorMessage}
-    <Button onClick={onClick} className={buttonStyles}>
+    <Button onClick={onClick} css={buttonStyles}>
       {LABELS.goToLoginPage}
     </Button>
   </section>

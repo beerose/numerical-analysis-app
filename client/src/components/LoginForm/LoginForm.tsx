@@ -1,7 +1,7 @@
+import styled from '@emotion/styled';
 import { Button, Checkbox, Form, Icon, Input, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
-import styled from 'react-emotion';
 import { Link } from 'react-router-dom';
 
 import { ModalHeader } from '../../components/ModalHeader';

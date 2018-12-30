@@ -1,5 +1,5 @@
+import styled from '@emotion/styled';
 import * as React from 'react';
-import styled from 'react-emotion';
 
 const Header = styled('header')`
   color: rgba(0, 0, 0, 0.4);

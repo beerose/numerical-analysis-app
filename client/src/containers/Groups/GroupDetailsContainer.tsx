@@ -5,6 +5,7 @@ import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { Routes } from '../../../../common/api';
+import { NotFoundPage } from '../../components';
 import { Flex } from '../../components/Flex';
 
 import { MeetingsDetailsSections, MeetingsSection, StudentsSection } from './sections';
@@ -100,6 +101,7 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
           <Route exact={true} path={'/groups/:id/meetings'}>
             <MeetingsSection groupId={this.state.groupId} />
           </Route>
+          <NotFoundPage />
         </Switch>
       </Flex>
     );

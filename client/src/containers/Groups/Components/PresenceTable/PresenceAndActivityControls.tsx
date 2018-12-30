@@ -1,7 +1,8 @@
-import { Checkbox, Input } from 'antd';
+import { css } from '@emotion/core';
+import styled from '@emotion/styled';
+import { Checkbox as AntCheckbox, Input as AntInput } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import React from 'react';
-import styled, { css } from 'react-emotion';
 
 import { FieldIdentifier } from './types';
 
@@ -12,7 +13,7 @@ const ControlsContainer = styled.div`
   align-items: center;
 `;
 
-const LargeCheckbox = styled(Checkbox)`
+const Checkbox = styled(AntCheckbox)`
   margin-right: 4px;
 
   .ant-checkbox-inner {
@@ -25,6 +26,10 @@ const LargeCheckbox = styled(Checkbox)`
       height: 12px;
     }
   }
+`;
+
+const Input = styled(AntInput)`
+  width: 56px;
 `;
 
 export type PresenceAndActivityChangeHandler = (
@@ -75,15 +80,12 @@ export class PresenceAndActivityControls extends React.PureComponent<
 
     return (
       <ControlsContainer>
-        <LargeCheckbox checked={isPresent} onChange={this.handleIsPresentChanged} />
+        <Checkbox checked={isPresent} onChange={this.handleIsPresentChanged} />
         <Input
           disabled={!isPresent}
           type="number"
           value={activity}
           onChange={this.handleActivityChanged}
-          className={css`
-            width: 56px;
-          `}
           tabIndex={Math.floor(Math.random() * 100)}
         />
       </ControlsContainer>

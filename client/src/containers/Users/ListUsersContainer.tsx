@@ -1,8 +1,10 @@
-import { Button, Input, Spin } from 'antd';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import styled from '@emotion/styled';
+import { Button, Input as AntInput, Spin } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import { PaginationConfig } from 'antd/lib/table';
 import * as React from 'react';
-import styled, { css } from 'react-emotion';
 
 import { UserDTO } from '../../../../common/api';
 import { usersService } from '../../api';
@@ -20,7 +22,7 @@ const SearchPanel = styled('div')`
   display: flex;
 `;
 
-const inputStyles = css`
+const Input = styled(AntInput)`
   width: 400px;
   margin-right: 10px;
 `;
@@ -125,20 +127,16 @@ export class ListUsersContainer extends React.Component<{}, State> {
     return (
       <Container>
         <SearchPanel onKeyPress={this.handleKeyPress}>
-          <Input
-            placeholder={LABELS.searchUserPlaceholder}
-            className={inputStyles}
-            onChange={this.onSearchInputChange}
-          />
+          <Input placeholder={LABELS.searchUserPlaceholder} onChange={this.onSearchInputChange} />
           <SelectRole
             onChange={this.onSearchRoleChange}
-            className={selectStyles}
+            css={selectStyles}
             placeholder={LABELS.searchByRolePlaceholder}
             mode="multiple"
           />
           <Button shape="circle" icon="search" onClick={() => this.updateUsersList(1)} />
         </SearchPanel>
-        <Button icon="user-add" onClick={this.showAddUserModal} className={buttonStyles}>
+        <Button icon="user-add" onClick={this.showAddUserModal} css={buttonStyles}>
           {LABELS.addNewUser}
         </Button>
         <WrappedNewUserModalForm
