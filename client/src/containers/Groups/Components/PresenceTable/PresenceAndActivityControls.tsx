@@ -1,4 +1,3 @@
-import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Checkbox as AntCheckbox, Input as AntInput } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
@@ -55,6 +54,7 @@ export class PresenceAndActivityControls extends React.PureComponent<
   // todo: use bind decorator and compare performance
   handleIsPresentChanged = (event: CheckboxChangeEvent) => {
     const { meetingId, studentId, onChange } = this.props;
+    console.log(this.props);
     const { checked } = event.target;
 
     onChange({

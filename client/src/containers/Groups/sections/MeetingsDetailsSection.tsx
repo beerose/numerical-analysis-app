@@ -30,8 +30,33 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
     });
   }
 
+  setMeetingsDetails = (newDetails: MeetingDetailsModel[]) => {
+    this.setState({ meetingsDetails: newDetails });
+  };
+
+  handleAddPresence = (userId: string, meetingId: number) => {
+    groupService.addPresence(userId, meetingId);
+  };
+
+  handleDeletePresence = (userId: string, meetingId: number) => {
+    groupService.deletePresence(userId, meetingId);
+  };
+
+  handleSetActivity = (userId: string, meetingId: number, activity: number) => {
+    groupService.setActivity(userId, meetingId, activity);
+  };
+
   render() {
     const { meetings, meetingsDetails } = this.state;
-    return <PresenceTable meetings={meetings} meetingsDetails={meetingsDetails} />;
+    return (
+      <PresenceTable
+        meetings={meetings}
+        meetingsDetails={meetingsDetails}
+        setMeetingsDetails={this.setMeetingsDetails}
+        setActivity={this.handleSetActivity}
+        addPresence={this.handleAddPresence}
+        deletePresence={this.handleDeletePresence}
+      />
+    );
   }
 }

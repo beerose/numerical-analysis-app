@@ -14,10 +14,13 @@ export declare const Routes: {
         Get: string;
         List: string;
         Meetings: {
+            AddPresence: string;
             Create: string;
             Delete: string;
+            DeletePresence: string;
             Details: string;
             List: string;
+            SetActivity: string;
         };
         Students: {
             AddToGroup: string;

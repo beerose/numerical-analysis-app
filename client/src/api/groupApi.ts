@@ -136,3 +136,34 @@ export const getMeetingsDetails = (groupId: string): Promise<MeetingDetailsModel
     }))
   );
 };
+
+export const addPresence = (studentId: UserDTO['id'], meetingId: MeetingDTO['id']) => {
+  const options = {
+    body: JSON.stringify({ student_id: studentId, meeting_id: meetingId }),
+    method: 'POST',
+  };
+
+  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Meetings.AddPresence, options);
+};
+
+export const deletePresence = (studentId: UserDTO['id'], meetingId: MeetingDTO['id']) => {
+  const options = {
+    body: JSON.stringify({ student_id: studentId, meeting_id: meetingId }),
+    method: 'DELETE',
+  };
+
+  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Meetings.DeletePresence, options);
+};
+
+export const setActivity = (
+  studentId: UserDTO['id'],
+  meetingId: MeetingDTO['id'],
+  activity: number
+) => {
+  const options = {
+    body: JSON.stringify({ activity, student_id: studentId, meeting_id: meetingId }),
+    method: 'POST',
+  };
+
+  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Meetings.SetActivity, options);
+};
