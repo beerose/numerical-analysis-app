@@ -211,7 +211,7 @@ export const listMeetings = (groupId: GroupDTO['id'], callback: Callback) =>
 type GetPresencesCallback = (
   err: MysqlError | null,
   results: Array<{
-    user_id: string;
+    id: string;
     user_name: string;
     student_index: string;
     presences: string;
@@ -225,17 +225,17 @@ export const getPresencesInGroup = (
     {
       sql: `
         SELECT
-          user_id,
+          id,
           user_name,
           student_index,
           GROUP_CONCAT(user_attended_in_meeting.meeting_id) AS presences
         FROM
           users
-          JOIN user_attended_in_meeting ON (users.id = user_attended_in_meeting.user_id)
+          LEFT JOIN user_attended_in_meeting ON (users.id = user_attended_in_meeting.user_id)
         WHERE
-          user_attended_in_meeting.meeting_id IN (SELECT id from meetings where group_id = ?)
+          id IN (SELECT user_id from user_belongs_to_group where group_id = ?)
         GROUP BY
-          user_id;
+          id;
       `,
       values: [groupId],
     },
@@ -244,7 +244,7 @@ export const getPresencesInGroup = (
 
 type GetActivitiesCallback = (
   err: MysqlError | null,
-  results: Array<{ user_id: string; meeting_id: string; points: string }>
+  results: Array<{ id: string; meeting_id: string; points: string }>
 ) => void;
 export const getActivitiesInGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
@@ -254,14 +254,14 @@ export const getActivitiesInGroup = (
     {
       sql: `
         SELECT
-          user_id,
+          id,
           meeting_id,
           points
         FROM
           users
-          JOIN user_was_active_in_meeting ON (users.id = user_was_active_in_meeting.user_id)
+          LEFT JOIN user_was_active_in_meeting ON (users.id = user_was_active_in_meeting.user_id)
         WHERE
-          user_was_active_in_meeting.meeting_id IN (SELECT id from meetings where group_id = ?);
+          id IN (SELECT user_id FROM user_belongs_to_group where group_id = ?);
       `,
       values: [groupId],
     },
