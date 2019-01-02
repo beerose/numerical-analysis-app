@@ -6,6 +6,7 @@ import moment from 'moment';
 import * as React from 'react';
 
 import { MeetingDTO } from '../../../../../common/api';
+import { DateIncrementors } from '../../../components/DateIncrementors';
 
 const formStyles = css`
   padding: 25px;
@@ -51,8 +52,17 @@ class EditMeetingForm extends React.Component<Props> {
     });
   };
 
+  addDays = (value: number) => {
+    const selectedDate = this.props.form.getFieldValue('date');
+    if (!selectedDate) {
+      this.props.form.setFieldsValue({ date: moment(new Date()).add(value, 'days') });
+      return;
+    }
+    this.props.form.setFieldsValue({ date: moment(selectedDate).add(value, 'days') });
+  };
+
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator, setFieldsValue, getFieldValue } = this.props.form;
 
     return (
       <Form onSubmit={this.handleSubmit} className={formStyles}>
@@ -67,11 +77,18 @@ class EditMeetingForm extends React.Component<Props> {
             />
           )}
         </FormItem>
-        <FormItem>
-          {getFieldDecorator('date', {
-            rules: [{ required: true, message: 'data jest wymagana' }],
-          })(<DatePicker className={formItems} />)}
-        </FormItem>
+        <div style={{ display: 'flex' }}>
+          <FormItem>
+            {getFieldDecorator('date', {
+              rules: [{ required: true, message: 'data jest wymagana' }],
+            })(<DatePicker />)}
+          </FormItem>
+          <DateIncrementors
+            setFieldsValue={setFieldsValue}
+            getFieldValue={getFieldValue}
+            config={[{ value: 1 }, { value: 7 }]}
+          />
+        </div>
         <Button type="primary" htmlType="submit">
           Dodaj
         </Button>
