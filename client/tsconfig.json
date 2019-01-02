@@ -26,7 +26,10 @@
     "pretty": true,
     "removeComments": true,
     "sourceMap": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "strictBindCallApply": true
   },
   "include": ["src"],
   "exclude": ["../node_modules"],

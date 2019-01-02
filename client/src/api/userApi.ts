@@ -4,7 +4,7 @@ import { Routes, UserDTO } from '../../../common/api';
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from './';
-import { authFetch } from './utils';
+import { authFetch } from './authFetch';
 
 const { Users } = Routes;
 

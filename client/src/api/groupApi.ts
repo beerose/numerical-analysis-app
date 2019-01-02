@@ -12,7 +12,7 @@ import {
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from '.';
-import { authFetch } from './utils';
+import { authFetch } from './authFetch';
 
 const { Groups } = Routes;
 

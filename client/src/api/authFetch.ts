@@ -1,6 +1,9 @@
 import Cookies from 'js-cookie';
 
-export function authFetch<T>(url: string, options: RequestInit = {}): Promise<T> {
+export function authFetch<T>(
+  url: string,
+  options: RequestInit = {}
+): Promise<T> {
   const token = Cookies.get('token');
   if (!token) {
     throw new Error('missing auth token');
