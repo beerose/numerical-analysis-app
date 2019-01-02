@@ -4,7 +4,6 @@ import { Omit } from 'react-router';
 import {
   ApiResponse,
   GroupDTO,
-  MeetingDetailsDTO,
   MeetingDetailsModel,
   MeetingDTO,
   Routes,

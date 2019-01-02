@@ -9,6 +9,7 @@ import * as groupsService from '../../../api/groupApi';
 import { Theme } from '../../../components/theme';
 import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
 import { LABELS } from '../../../utils/labels';
+import { WrappedEditMeetingForm } from '../components/EditMeetingForm';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
 
 const Container = styled.section`
@@ -22,12 +23,14 @@ type Props = {
 type State = {
   meetings: MeetingDTO[];
   isLoading: boolean;
-  addMeetingModalVisible: boolean;
+  meetingModalVisible: boolean;
+  modalMode?: 'edit' | 'create';
+  editingItem?: MeetingDTO;
 };
 export class MeetingsSection extends React.Component<Props, State> {
   state: State = {
-    addMeetingModalVisible: false,
     isLoading: false,
+    meetingModalVisible: false,
     meetings: [],
   };
 
@@ -43,11 +46,11 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   openNewMeetingModal = () => {
-    this.setState({ addMeetingModalVisible: true });
+    this.setState({ meetingModalVisible: true, modalMode: 'create' });
   };
 
   hideNewMeetingModal = () => {
-    this.setState({ addMeetingModalVisible: false });
+    this.setState({ meetingModalVisible: false });
   };
 
   handleAddNewMeeting = (values: { name: string; date: Moment }) => {
@@ -63,8 +66,16 @@ export class MeetingsSection extends React.Component<Props, State> {
     });
   };
 
+  handleEditClick = (meeting: MeetingDTO) => {
+    this.setState({ modalMode: 'edit', editingItem: meeting, meetingModalVisible: true });
+  };
+
+  handleEditMeeting = (meeting: MeetingDTO) => {
+    console.log(meeting);
+  };
+
   render() {
-    const { meetings } = this.state;
+    const { meetings, modalMode, editingItem } = this.state;
 
     return (
       <Container>
@@ -73,11 +84,15 @@ export class MeetingsSection extends React.Component<Props, State> {
         </Button>
         <Modal
           centered
-          visible={this.state.addMeetingModalVisible}
+          visible={this.state.meetingModalVisible}
           footer={null}
           onCancel={this.hideNewMeetingModal}
         >
-          <WrappedNewMeetingForm onSubmit={this.handleAddNewMeeting} />
+          {modalMode === 'edit' && editingItem ? (
+            <WrappedEditMeetingForm onSubmit={this.handleEditMeeting} model={editingItem} />
+          ) : (
+            <WrappedNewMeetingForm onSubmit={this.handleAddNewMeeting} />
+          )}
         </Modal>
         {meetings && (
           <List
@@ -92,6 +107,7 @@ export class MeetingsSection extends React.Component<Props, State> {
               return (
                 <List.Item
                   actions={[
+                    <a onClick={() => this.handleEditClick(meeting)}>{LABELS.edit}</a>,
                     <DeleteWithConfirm onConfirm={() => this.handleDeleteMeeting(meeting.id)}>
                       <a>{LABELS.delete}</a>
                     </DeleteWithConfirm>,
