@@ -21,6 +21,7 @@ export declare const Routes: {
             Details: string;
             List: string;
             SetActivity: string;
+            Update: string;
         };
         Students: {
             AddToGroup: string;

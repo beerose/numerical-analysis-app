@@ -12,12 +12,16 @@ import { validateLoginUserRequest, validateNewAccountRequest } from './auth/vali
 import * as groups from './groups';
 import {
   validateAddMeetingRequest,
+  validateAddPresenceRequest,
   validateAddStudentToGroupRequest,
   validateCreateGroupRequest,
   validateDeleteGroupRequest,
   validateDeleteMeetingRequest,
+  validateDeletePresenceRequest,
   validateGetMeetingsDetailsRequest,
   validateListStudentsForGroupRequest,
+  validateSetActivityRequest,
+  validateUpdateMeetingRequest,
   validateUploadRequest,
 } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
@@ -74,6 +78,12 @@ app.post(
 
 app.get(Groups.Meetings.List, auth.authorize, groups.listMeetings);
 app.post(Groups.Meetings.Create, auth.authorize, validateAddMeetingRequest, groups.addMeeting);
+app.post(
+  Groups.Meetings.Update,
+  auth.authorize,
+  validateUpdateMeetingRequest,
+  groups.updateMeeting
+);
 app.delete(
   Groups.Meetings.Delete,
   auth.authorize,
@@ -86,7 +96,25 @@ app.get(
   validateGetMeetingsDetailsRequest,
   groups.getMeetingsDetails
 );
+app.post(
+  Groups.Meetings.AddPresence,
+  auth.authorize,
+  validateAddPresenceRequest,
+  groups.addPresence
+);
+app.delete(
+  Groups.Meetings.DeletePresence,
+  auth.authorize,
+  validateDeletePresenceRequest,
+  groups.deletePresence
+);
+app.post(
+  Groups.Meetings.SetActivity,
+  auth.authorize,
+  validateSetActivityRequest,
+  groups.setActivity
+);
 
 const listener = app.listen(PORT, () => {
-  console.log(`Your app is listening on ${(listener.address() as AddressInfo).port}`);
+  console.log(`Your app is listening on port: ${(listener.address() as AddressInfo).port}`);
 });

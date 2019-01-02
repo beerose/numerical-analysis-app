@@ -25,6 +25,7 @@ export const Routes = {
       Details: '/groups/meetings.details',
       List: '/groups/meetings',
       SetActivity: '/groups/meetings.setActivity',
+      Update: '/groups/meetings.update',
     },
     Students: {
       AddToGroup: '/groups/students.add',

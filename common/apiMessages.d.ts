@@ -1,5 +1,6 @@
 export declare const apiMessages: {
     accountExists: string;
+    activitySet: string;
     cannotVerifyJWT: string;
     emailRequired: string;
     emptyCSV: string;
@@ -23,6 +24,9 @@ export declare const apiMessages: {
     meetingCreated: string;
     meetingDeleted: string;
     meetingIdRequired: string;
+    meetingUpdated: string;
+    presenceAdded: string;
+    presenceDeleted: string;
     tokenUsed: string;
     userAlreadyExists: string;
     userCreated: string;

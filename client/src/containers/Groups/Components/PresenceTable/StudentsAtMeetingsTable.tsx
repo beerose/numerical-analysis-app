@@ -82,7 +82,7 @@ export class StudentsAtMeetingsTable<
       title: (
         <CenteredText>
           {meetingName}
-          <Em>{date}</Em>
+          <Em>{new Date(date).toLocaleDateString('pl')}</Em>
         </CenteredText>
       ),
     })),
