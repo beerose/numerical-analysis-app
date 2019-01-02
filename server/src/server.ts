@@ -12,12 +12,15 @@ import { validateLoginUserRequest, validateNewAccountRequest } from './auth/vali
 import * as groups from './groups';
 import {
   validateAddMeetingRequest,
+  validateAddPresenceRequest,
   validateAddStudentToGroupRequest,
   validateCreateGroupRequest,
   validateDeleteGroupRequest,
   validateDeleteMeetingRequest,
+  validateDeletePresenceRequest,
   validateGetMeetingsDetailsRequest,
   validateListStudentsForGroupRequest,
+  validateSetActivityRequest,
   validateUploadRequest,
 } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
@@ -85,6 +88,24 @@ app.get(
   auth.authorize,
   validateGetMeetingsDetailsRequest,
   groups.getMeetingsDetails
+);
+app.post(
+  Groups.Meetings.AddPresence,
+  auth.authorize,
+  validateAddPresenceRequest,
+  groups.addPresence
+);
+app.delete(
+  Groups.Meetings.DeletePresence,
+  auth.authorize,
+  validateDeletePresenceRequest,
+  groups.deletePresence
+);
+app.post(
+  Groups.Meetings.SetActivity,
+  auth.authorize,
+  validateSetActivityRequest,
+  groups.setActivity
 );
 
 const listener = app.listen(PORT, () => {
