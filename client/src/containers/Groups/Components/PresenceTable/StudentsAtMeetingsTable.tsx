@@ -1,12 +1,16 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Table } from 'antd';
 import React from 'react';
 
 import { MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
+import { Table } from '../../../../components/Table';
 
-import { BoxedMeetingData, BoxedStudent, FieldIdentifier, MeetingId, Unboxed } from './types';
+import {
+  BoxedMeetingData,
+  BoxedStudent,
+  FieldIdentifier,
+  MeetingId,
+  Unboxed,
+} from './types';
 
 type IdentifiedChangeHandler = (value: FieldIdentifier) => void;
 
@@ -36,25 +40,6 @@ const Em = styled.em`
   display: block;
 `;
 
-const tableStylesFixes = css`
-  th.ant-table-fixed-columns-in-body.ant-table-column-sort {
-    background-color: rgb(250, 250, 250);
-  }
-  td.ant-table-fixed-columns-in-body.ant-table-column-sort {
-    background-color: transparent;
-  }
-
-  .ant-table-fixed-columns-in-body {
-    > div {
-      width: 80px;
-      visibility: hidden;
-    }
-    pointer-events: none;
-    color: transparent;
-    user-select: none;
-  }
-`;
-
 export class StudentsAtMeetingsTable<
   TBoxedMeetingData extends BoxedMeetingData
 > extends React.Component<Props<TBoxedMeetingData>> {
@@ -75,17 +60,22 @@ export class StudentsAtMeetingsTable<
         Number(a.student.student_index) - Number(b.student.student_index),
       title: 'Indeks',
     },
-    ...this.props.meetings.map(({ meeting_name: meetingName, date, id: meetingId }) => ({
-      dataIndex: 'data',
-      key: meetingId,
-      render: this.props.makeRenderMeetingData(meetingId, this.props.handleChange),
-      title: (
-        <CenteredText>
-          {meetingName}
-          <Em>{new Date(date).toLocaleDateString('pl')}</Em>
-        </CenteredText>
-      ),
-    })),
+    ...this.props.meetings.map(
+      ({ meeting_name: meetingName, date, id: meetingId }) => ({
+        dataIndex: 'data',
+        key: meetingId,
+        render: this.props.makeRenderMeetingData(
+          meetingId,
+          this.props.handleChange
+        ),
+        title: (
+          <CenteredText>
+            {meetingName}
+            <Em>{new Date(date).toLocaleDateString('pl')}</Em>
+          </CenteredText>
+        ),
+      })
+    ),
   ];
 
   render() {
@@ -94,11 +84,9 @@ export class StudentsAtMeetingsTable<
     return (
       <Table
         rowKey={record => record.student.id}
-        scroll={TABLE_SCROLL_CONFIG}
         columns={this.columns}
         dataSource={meetingsDetails}
         pagination={false}
-        css={tableStylesFixes}
       />
     );
   }
