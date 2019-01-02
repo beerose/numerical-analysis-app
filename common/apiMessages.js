@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.apiMessages = {
     accountExists: 'Twoje konto już istnieje',
+    activitySet: 'Aktywność ustawiona',
     cannotVerifyJWT: 'Nieprawidłowy token JWT',
     emailRequired: 'Email jest wymagany',
     emptyCSV: 'Plik CSV jest pusty lub nieprawidłowy',
@@ -25,6 +26,8 @@ exports.apiMessages = {
     meetingCreated: 'Spotkanie zostało utworzone',
     meetingDeleted: 'Spotkanie zostało usunięte',
     meetingIdRequired: 'meeting_id jest wymagane',
+    presenceAdded: 'Obecność dodana',
+    presenceDeleted: 'Obecność usunięta',
     tokenUsed: 'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',
     userAlreadyExists: 'Użytkownik o tym adresie email już istnieje',
     userCreated: 'Użytkownik został dodany',
