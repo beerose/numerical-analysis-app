@@ -1,6 +1,6 @@
 import { MysqlError, queryCallback } from 'mysql';
 
-import { GroupDTO, UserDTO } from '../../../common/api';
+import { GroupDTO, MeetingDTO, UserDTO } from '../../../common/api';
 
 import { connection } from './connection';
 
@@ -264,6 +264,52 @@ export const getActivitiesInGroup = (
           id IN (SELECT user_id FROM user_belongs_to_group where group_id = ?);
       `,
       values: [groupId],
+    },
+    callback
+  );
+
+export const addPresence = (
+  { userId, meetingId }: { userId: UserDTO['id']; meetingId: MeetingDTO['id'] },
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: 'INSERT IGNORE INTO user_attended_in_meeting (user_id, meeting_id) VALUES (?, ?);',
+      values: [userId, meetingId],
+    },
+    callback
+  );
+
+export const deletePresence = (
+  { userId, meetingId }: { userId: UserDTO['id']; meetingId: MeetingDTO['id'] },
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: 'DELETE FROM user_attended_in_meeting WHERE user_id = ? AND meeting_id = ?',
+      values: [userId, meetingId],
+    },
+    callback
+  );
+
+export const setActivity = (
+  {
+    userId,
+    meetingId,
+    points,
+  }: { userId: UserDTO['id']; meetingId: MeetingDTO['id']; points: number },
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: `
+        INSERT INTO
+          user_attended_in_meeting(user_id, meeting_id, point)
+        VALUES
+          (?, ?, ?)
+        ON DUPLICATE KEY UPDATE
+          points = VALUES(points)`,
+      values: [userId, meetingId, points],
     },
     callback
   );
