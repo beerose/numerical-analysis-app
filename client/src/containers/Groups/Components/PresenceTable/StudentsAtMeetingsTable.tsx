@@ -63,7 +63,7 @@ export class StudentsAtMeetingsTable<
       title: (
         <CenteredText>
           {meetingName}
-          <Em>{'date'}</Em>
+          <Em>{new Date(date).toLocaleDateString('pl')}</Em>
         </CenteredText>
       ),
     })),
@@ -83,7 +83,7 @@ export class StudentsAtMeetingsTable<
           }
           .ant-table-fixed-columns-in-body {
             > div {
-              width: 80px;
+              width: 0px;
               visibility: hidden;
             }
             color: transparent;

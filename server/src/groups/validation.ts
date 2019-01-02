@@ -93,3 +93,24 @@ export const validateGetMeetingsDetailsRequest = (
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidRequest });
 };
+
+export const validateAddPresenceRequest = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body && req.body.meeting_id && req.body.user_id) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidRequest });
+};
+
+export const validateDeletePresenceRequest = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body && req.body.meeting_id && req.body.user_id) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidRequest });
+};
+
+export const validateSetActivityRequest = (req: Request, res: Response, next: NextFunction) => {
+  if (req.body && req.body.meeting_id && req.body.user_id && req.body.points) {
+    return next();
+  }
+  return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidRequest });
+};
