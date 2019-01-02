@@ -4,6 +4,8 @@ import FormItem from 'antd/lib/form/FormItem';
 import { css } from 'emotion';
 import * as React from 'react';
 
+import { DateIncrementors } from '../../../components/DateIncrementors';
+
 const formStyles = css`
   padding: 25px;
 `;
@@ -16,7 +18,7 @@ type Props = {
   onSubmit: ({ name, date }: { name: string; date: any }) => void;
 } & FormComponentProps;
 const NewMeetingForm = (props: Props) => {
-  const { getFieldDecorator } = props.form;
+  const { getFieldDecorator, getFieldValue, setFieldsValue } = props.form;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,11 +46,18 @@ const NewMeetingForm = (props: Props) => {
           />
         )}
       </FormItem>
-      <FormItem>
-        {getFieldDecorator('date', {
-          rules: [{ required: true, message: 'data jest wymagana' }],
-        })(<DatePicker className={formItems} />)}
-      </FormItem>
+      <div style={{ display: 'flex' }}>
+        <FormItem>
+          {getFieldDecorator('date', {
+            rules: [{ required: true, message: 'data jest wymagana' }],
+          })(<DatePicker style={{ width: 280 }} />)}
+        </FormItem>
+        <DateIncrementors
+          setFieldsValue={setFieldsValue}
+          getFieldValue={getFieldValue}
+          config={[{ value: 1 }, { value: 7 }]}
+        />
+      </div>
       <Button type="primary" htmlType="submit">
         Dodaj
       </Button>
