@@ -36,6 +36,25 @@ const Em = styled.em`
   display: block;
 `;
 
+const tableStylesFixes = css`
+  th.ant-table-fixed-columns-in-body.ant-table-column-sort {
+    background-color: rgb(250, 250, 250);
+  }
+  td.ant-table-fixed-columns-in-body.ant-table-column-sort {
+    background-color: transparent;
+  }
+
+  .ant-table-fixed-columns-in-body {
+    > div {
+      width: 80px;
+      visibility: hidden;
+    }
+    pointer-events: none;
+    color: transparent;
+    user-select: none;
+  }
+`;
+
 export class StudentsAtMeetingsTable<
   TBoxedMeetingData extends BoxedMeetingData
 > extends React.Component<Props<TBoxedMeetingData>> {
@@ -63,7 +82,7 @@ export class StudentsAtMeetingsTable<
       title: (
         <CenteredText>
           {meetingName}
-          <Em>{'date'}</Em>
+          <Em>{date}</Em>
         </CenteredText>
       ),
     })),
@@ -73,32 +92,14 @@ export class StudentsAtMeetingsTable<
     const { meetingsDetails } = this.props;
 
     return (
-      <article
-        css={css`
-          th.ant-table-fixed-columns-in-body.ant-table-column-sort {
-            background-color: rgb(250, 250, 250);
-          }
-          td.ant-table-fixed-columns-in-body.ant-table-column-sort {
-            background-color: none;
-          }
-          .ant-table-fixed-columns-in-body {
-            > div {
-              width: 80px;
-              visibility: hidden;
-            }
-            color: transparent;
-            user-select: none;
-          }
-        `}
-      >
-        <Table
-          rowKey={record => record.student.id}
-          scroll={TABLE_SCROLL_CONFIG}
-          columns={this.columns}
-          dataSource={meetingsDetails}
-          pagination={false}
-        />
-      </article>
+      <Table
+        rowKey={record => record.student.id}
+        scroll={TABLE_SCROLL_CONFIG}
+        columns={this.columns}
+        dataSource={meetingsDetails}
+        pagination={false}
+        css={tableStylesFixes}
+      />
     );
   }
 }
