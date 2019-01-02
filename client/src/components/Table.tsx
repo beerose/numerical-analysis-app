@@ -24,6 +24,14 @@ const tableStylesFixes = css`
   .ant-table-body {
     overflow: auto;
   }
+
+  .ant-table {
+    width: auto;
+  }
+
+  .ant-table-scroll table {
+    min-width: auto;
+  }
 `;
 
 // We usually want to have arrows, but i don't want to say <T extends any>

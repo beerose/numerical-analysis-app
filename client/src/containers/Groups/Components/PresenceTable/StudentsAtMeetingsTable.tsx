@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
+import { MeetingDetailsModel, MeetingDTO } from 'common/api';
 import React from 'react';
 
-import { MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
 import { Table } from '../../../../components/Table';
 
 import {
@@ -26,10 +26,6 @@ type Props<TBoxedMeetingData extends BoxedMeetingData> = {
     index: number
   ) => React.ReactNode;
   handleChange: IdentifiedChangeHandler;
-};
-
-const TABLE_SCROLL_CONFIG = {
-  x: '100%',
 };
 
 const CenteredText = styled.div`
