@@ -10,15 +10,14 @@ export const addUser = (user: UserDTO, callback: Callback) =>
   connection.query(
     {
       sql: `
-    INSERT INTO
-      users (
-        user_name,
-        email,
-        user_role,
-        student_index
-      )
-    VALUES (?, ?, ?, ?);
-    `,
+        INSERT INTO
+          users (
+            user_name,
+            email,
+            user_role,
+            student_index
+          )
+        VALUES (?, ?, ?, ?);`,
       values: [user.user_name, user.email, user.user_role, user.student_index],
     },
     callback
@@ -163,11 +162,9 @@ export const addGroup = (
 ) =>
   connection.query(
     {
-      sql: `INSERT INTO \`groups\` (
-        group_name, group_type, academic_year
-      ) VALUES (
-        ?, ?, ?
-      )`,
+      sql: `INSERT INTO
+        \`groups\` (group_name, group_type, academic_year)
+      VALUES (?, ?, ?)`,
       values: [group.group_name, group.group_type, group.academic_year],
     },
     callback
@@ -304,7 +301,7 @@ export const setActivity = (
     {
       sql: `
         INSERT INTO
-          user_attended_in_meeting(user_id, meeting_id, point)
+          user_was_active_in_meeting(user_id, meeting_id, points)
         VALUES
           (?, ?, ?)
         ON DUPLICATE KEY UPDATE

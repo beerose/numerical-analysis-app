@@ -42,8 +42,8 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
     groupService.deletePresence(userId, meetingId);
   };
 
-  handleSetActivity = (userId: string, meetingId: number, activity: number) => {
-    groupService.setActivity(userId, meetingId, activity);
+  handleSetActivity = (userId: string, meetingId: number, points: number) => {
+    groupService.setActivity(userId, meetingId, points);
   };
 
   render() {

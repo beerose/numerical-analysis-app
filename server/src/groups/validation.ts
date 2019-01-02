@@ -95,21 +95,21 @@ export const validateGetMeetingsDetailsRequest = (
 };
 
 export const validateAddPresenceRequest = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body && req.body.meeting_id && req.body.user_id) {
+  if (req.body && req.body.meeting_id && req.body.student_id) {
     return next();
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidRequest });
 };
 
 export const validateDeletePresenceRequest = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body && req.body.meeting_id && req.body.user_id) {
+  if (req.body && req.body.meeting_id && req.body.student_id) {
     return next();
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidRequest });
 };
 
 export const validateSetActivityRequest = (req: Request, res: Response, next: NextFunction) => {
-  if (req.body && req.body.meeting_id && req.body.user_id && req.body.points) {
+  if (req.body && req.body.meeting_id && req.body.student_id && req.body.points !== undefined) {
     return next();
   }
   return res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidRequest });

@@ -158,10 +158,10 @@ export const deletePresence = (studentId: UserDTO['id'], meetingId: MeetingDTO['
 export const setActivity = (
   studentId: UserDTO['id'],
   meetingId: MeetingDTO['id'],
-  activity: number
+  points: number
 ) => {
   const options = {
-    body: JSON.stringify({ activity, student_id: studentId, meeting_id: meetingId }),
+    body: JSON.stringify({ points, student_id: studentId, meeting_id: meetingId }),
     method: 'POST',
   };
 
