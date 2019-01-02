@@ -88,6 +88,15 @@ export const addMeeting = async (
   await authFetch(SERVER_URL + Groups.Meetings.Create, options).then(showMessage);
 };
 
+export const updateMeeting = async (meeting: Pick<MeetingDTO, 'meeting_name' & 'date' & 'id'>) => {
+  const options = {
+    body: JSON.stringify({ meeting }),
+    method: 'POST',
+  };
+
+  await authFetch(SERVER_URL + Groups.Meetings.Update, options).then(showMessage);
+};
+
 export const deleteMeeting = async (id: number) => {
   const options = {
     body: JSON.stringify({ meeting_id: id }),

@@ -71,7 +71,9 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   handleEditMeeting = (meeting: MeetingDTO) => {
-    console.log(meeting);
+    groupsService.updateMeeting(meeting).then(() => {
+      this.updateMeetingsList();
+    });
   };
 
   render() {
