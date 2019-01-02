@@ -16,6 +16,8 @@ const Container = styled(Flex)`
     font-size: 25vw;
     font-weight: 700;
     margin-bottom: 0.1em;
+
+    user-select: none;
   }
 `;
 
