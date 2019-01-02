@@ -21,6 +21,7 @@ import {
   validateGetMeetingsDetailsRequest,
   validateListStudentsForGroupRequest,
   validateSetActivityRequest,
+  validateUpdateMeetingRequest,
   validateUploadRequest,
 } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
@@ -77,6 +78,12 @@ app.post(
 
 app.get(Groups.Meetings.List, auth.authorize, groups.listMeetings);
 app.post(Groups.Meetings.Create, auth.authorize, validateAddMeetingRequest, groups.addMeeting);
+app.post(
+  Groups.Meetings.Update,
+  auth.authorize,
+  validateUpdateMeetingRequest,
+  groups.updateMeeting
+);
 app.delete(
   Groups.Meetings.Delete,
   auth.authorize,

@@ -156,6 +156,18 @@ export const addMeeting = (
     callback
   );
 
+export const updateMeeting = (
+  { id, name, date }: { id: MeetingDTO['id']; name: MeetingDTO['meeting_name']; date: Date },
+  callback: Callback
+) =>
+  connection.query(
+    {
+      sql: 'UPDATE meetings SET meeting_name = ?, date = ? WHERE id = ?;',
+      values: [name, date, id],
+    },
+    callback
+  );
+
 export const addGroup = (
   group: Pick<GroupDTO, 'group_name' | 'group_type' | 'academic_year'>,
   callback: Callback

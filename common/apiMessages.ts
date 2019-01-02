@@ -24,6 +24,7 @@ export const apiMessages = {
   meetingCreated: 'Spotkanie zostało utworzone',
   meetingDeleted: 'Spotkanie zostało usunięte',
   meetingIdRequired: 'meeting_id jest wymagane',
+  meetingUpdated: 'Spotkanie zostało zaktualizowane',
   presenceAdded: 'Obecność dodana',
   presenceDeleted: 'Obecność usunięta',
   tokenUsed: 'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',

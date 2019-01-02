@@ -74,6 +74,7 @@ export class MeetingsSection extends React.Component<Props, State> {
     groupsService.updateMeeting(meeting).then(() => {
       this.updateMeetingsList();
     });
+    this.hideNewMeetingModal();
   };
 
   render() {

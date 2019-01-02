@@ -44,7 +44,7 @@ class EditMeetingForm extends React.Component<Props> {
       if (err) {
         return;
       }
-      this.props.onSubmit(values);
+      this.props.onSubmit({ id: this.props.model.id, ...values });
       setTimeout(() => {
         this.props.form.resetFields();
       }, 1000);
