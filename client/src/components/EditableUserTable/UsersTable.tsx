@@ -2,10 +2,9 @@ import styled from '@emotion/styled';
 import { Popconfirm, Table } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { PaginationConfig } from 'antd/lib/table';
+import { UserDTO, userRoleOptions } from 'common';
 import * as React from 'react';
 
-import { UserDTO } from '../../../../common/api';
-import { userRoleOptions } from '../../../../common/roles';
 import { LABELS } from '../../utils/labels';
 
 import { EditableConsumer } from './Context';
@@ -75,7 +74,10 @@ type UsersTableProps = {
   onTableChange?: (cfg: PaginationConfig) => void;
   className?: string;
 };
-export class UsersTable extends React.Component<UsersTableProps, UsersTableState> {
+export class UsersTable extends React.Component<
+  UsersTableProps,
+  UsersTableState
+> {
   state = { data: this.props.users, editingKey: '', currentPage: 1 };
   columns: TableColumn[] = [
     ...tableColumns,
@@ -93,10 +95,14 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
                 </ActionLink>
               )}
             </EditableConsumer>
-            <ActionLink onClick={this.handleCancelEdit}>{LABELS.cancel}</ActionLink>
+            <ActionLink onClick={this.handleCancelEdit}>
+              {LABELS.cancel}
+            </ActionLink>
           </div>
         ) : (
-          <ActionLink onClick={() => this.handleEdit(record.email)}>{LABELS.edit}</ActionLink>
+          <ActionLink onClick={() => this.handleEdit(record.email)}>
+            {LABELS.edit}
+          </ActionLink>
         );
       },
     },
@@ -120,7 +126,10 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
   ];
 
   componentWillReceiveProps(nextProps: UsersTableProps) {
-    this.setState({ data: nextProps.users, currentPage: nextProps.currentPage || 1 });
+    this.setState({
+      data: nextProps.users,
+      currentPage: nextProps.currentPage || 1,
+    });
   }
 
   isEditing = ({ email }: UserDTO) => {
@@ -147,7 +156,13 @@ export class UsersTable extends React.Component<UsersTableProps, UsersTableState
   }
 
   render() {
-    const { onTableChange, showPagination, pageSize, total, className } = this.props;
+    const {
+      onTableChange,
+      showPagination,
+      pageSize,
+      total,
+      className,
+    } = this.props;
     const { data, currentPage } = this.state;
 
     const components = {

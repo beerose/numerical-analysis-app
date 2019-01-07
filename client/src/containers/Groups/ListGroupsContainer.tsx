@@ -5,7 +5,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { GroupDTO, Routes } from '../../../../common/api';
+import { GroupDTO, ServerRoutes } from 'common';
 import { groupsService } from '../../api';
 import { Breadcrumbs } from '../../components';
 import { DeleteWithConfirm } from '../../components/DeleteWithConfirm';
@@ -22,7 +22,10 @@ type State = {
   groups: GroupDTO[];
   isLoading: boolean;
 };
-export class ListGroupsContainer extends React.Component<RouteComponentProps, State> {
+export class ListGroupsContainer extends React.Component<
+  RouteComponentProps,
+  State
+> {
   state = {
     groups: [] as GroupDTO[],
     isLoading: false,
@@ -64,14 +67,18 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps, St
             renderItem={(item: GroupDTO) => (
               <List.Item
                 actions={[
-                  <DeleteWithConfirm onConfirm={() => this.handleDeleteGroup(item.id)}>
+                  <DeleteWithConfirm
+                    onConfirm={() => this.handleDeleteGroup(item.id)}
+                  >
                     <a>{LABELS.delete}</a>
                   </DeleteWithConfirm>,
                 ]}
               >
                 <List.Item.Meta
                   title={
-                    <Link to={`${Routes.Groups.Get.replace(':id', item.id)}`}>
+                    <Link
+                      to={`${ServerRoutes.Groups.Get.replace(':id', item.id)}`}
+                    >
                       {item.group_name}
                     </Link>
                   }

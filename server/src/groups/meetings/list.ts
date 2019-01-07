@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { GroupDTO } from '../../../../common/api';
-import { apiMessages } from '../../../../common/apiMessages';
+import { GroupDTO } from 'common';
+import { apiMessages } from 'common';
 import { db } from '../../store';
 
 interface ListMeetingsOfGroupRequest extends Request {
@@ -10,11 +10,16 @@ interface ListMeetingsOfGroupRequest extends Request {
     group_id: GroupDTO['id'];
   };
 }
-export const listMeetings = (req: ListMeetingsOfGroupRequest, res: Response) => {
+export const listMeetings = (
+  req: ListMeetingsOfGroupRequest,
+  res: Response
+) => {
   return db.listMeetings(req.query.group_id, (error, result) => {
     if (error) {
       console.error('listMeetings error:', error);
-      res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      res
+        .status(codes.INTERNAL_SERVER_ERROR)
+        .send({ error: apiMessages.internalError });
       return;
     }
     console.log({ result });

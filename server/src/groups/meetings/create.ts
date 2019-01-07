@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { apiMessages } from '../../../../common/apiMessages';
+import { apiMessages } from 'common';
 import { db } from '../../store';
 
 interface AddMeetingRequest extends Request {
@@ -20,12 +20,17 @@ export const addMeeting = (req: AddMeetingRequest, res: Response) => {
   } = req.body;
 
   const parsedDate = new Date(date);
-  db.addMeeting({ date: parsedDate, name: meeting_name, groupId: group_id }, err => {
-    if (err) {
-      console.error(err);
-      res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
-      return;
+  db.addMeeting(
+    { date: parsedDate, name: meeting_name, groupId: group_id },
+    err => {
+      if (err) {
+        console.error(err);
+        res
+          .status(codes.INTERNAL_SERVER_ERROR)
+          .send({ error: apiMessages.internalError });
+        return;
+      }
+      res.status(codes.OK).send({ message: apiMessages.meetingCreated });
     }
-    res.status(codes.OK).send({ message: apiMessages.meetingCreated });
-  });
+  );
 };

@@ -1,6 +1,6 @@
 import { MysqlError, queryCallback } from 'mysql';
 
-import { GroupDTO, MeetingDTO, UserDTO } from '../../../common/api';
+import { GroupDTO, MeetingDTO, UserDTO } from 'common';
 
 import { connection } from './connection';
 

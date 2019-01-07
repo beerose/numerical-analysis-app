@@ -1,11 +1,13 @@
+import { UserDTO, UserRole } from 'common';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { UserDTO } from '../../../../common/api';
-import { apiMessages } from '../../../../common/apiMessages';
-import { ROLES } from '../../../../common/roles';
+import { apiMessages } from 'common';
 import { connection } from '../../store/connection';
-import { prepareAttachStudentToGroupQuery, upsertUserQuery } from '../../store/queries';
+import {
+  prepareAttachStudentToGroupQuery,
+  upsertUserQuery,
+} from '../../store/queries';
 
 interface AddStudentToGroupRequest extends Request {
   body: {
@@ -13,20 +15,30 @@ interface AddStudentToGroupRequest extends Request {
     group_id: string;
   };
 }
-export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) => {
+export const addStudentToGroup = (
+  req: AddStudentToGroupRequest,
+  res: Response
+) => {
   const { user, group_id } = req.body;
   connection.query(
     {
       sql: upsertUserQuery,
-      values: [[[user.user_name, user.email, ROLES.student, user.student_index]]],
+      values: [
+        [[user.user_name, user.email, UserRole.student, user.student_index]],
+      ],
     },
     upsertErr => {
       if (upsertErr) {
         console.error({ upsertErr });
-        res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+        res
+          .status(codes.INTERNAL_SERVER_ERROR)
+          .send({ error: apiMessages.internalError });
         return;
       }
-      const attachQuery = prepareAttachStudentToGroupQuery([user.email], group_id);
+      const attachQuery = prepareAttachStudentToGroupQuery(
+        [user.email],
+        group_id
+      );
       connection.query(
         {
           sql: attachQuery,
@@ -34,10 +46,14 @@ export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) 
         attachErr => {
           if (attachErr) {
             console.error({ attachErr });
-            res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+            res
+              .status(codes.INTERNAL_SERVER_ERROR)
+              .send({ error: apiMessages.internalError });
             return;
           }
-          return res.status(codes.OK).send({ message: apiMessages.userCreated });
+          return res
+            .status(codes.OK)
+            .send({ message: apiMessages.userCreated });
         }
       );
     }

@@ -1,16 +1,22 @@
+import { UserDTO, UserRole } from 'common';
 import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { UserDTO } from '../../../common/api';
-import { apiMessages } from '../../../common/apiMessages';
-import { ROLES } from '../../../common/roles';
+import { apiMessages } from 'common';
 import { connection } from '../store/connection';
-import { prepareAttachStudentToGroupQuery, upsertUserQuery } from '../store/queries';
+import {
+  prepareAttachStudentToGroupQuery,
+  upsertUserQuery,
+} from '../store/queries';
 
 interface UploadRequest extends Request {
   body: { data: string; group_id: string };
 }
-export const upload = (req: UploadRequest, res: Response, next: NextFunction) => {
+export const upload = (
+  req: UploadRequest,
+  res: Response,
+  next: NextFunction
+) => {
   const { users, isValid } = readCSV(req.body.data);
   if (!isValid) {
     res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
@@ -29,7 +35,9 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
   ]);
   connection.beginTransaction(beginError => {
     if (beginError) {
-      res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+      res
+        .status(codes.INTERNAL_SERVER_ERROR)
+        .send({ error: apiMessages.internalError });
       return;
     }
     connection.query(
@@ -40,12 +48,17 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
       upsertErr => {
         if (upsertErr) {
           connection.rollback(() =>
-            res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+            res
+              .status(codes.INTERNAL_SERVER_ERROR)
+              .send({ error: apiMessages.internalError })
           );
           return;
         }
         const groupId = req.body.group_id;
-        const attachQuery = prepareAttachStudentToGroupQuery(users.map(u => u.email), groupId);
+        const attachQuery = prepareAttachStudentToGroupQuery(
+          users.map(u => u.email),
+          groupId
+        );
         connection.query(
           {
             sql: attachQuery,
@@ -54,7 +67,9 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
             if (attachErr) {
               console.error(attachErr);
               connection.rollback(() =>
-                res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+                res
+                  .status(codes.INTERNAL_SERVER_ERROR)
+                  .send({ error: apiMessages.internalError })
               );
               return;
             }
@@ -62,7 +77,9 @@ export const upload = (req: UploadRequest, res: Response, next: NextFunction) =>
               if (commitErr) {
                 console.error(commitErr);
                 connection.rollback(() =>
-                  res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError })
+                  res
+                    .status(codes.INTERNAL_SERVER_ERROR)
+                    .send({ error: apiMessages.internalError })
                 );
               }
               res.status(codes.OK).send({ message: apiMessages.usersUploaded });
@@ -83,8 +100,13 @@ const isCSVRowValid = (line: string) => {
 };
 
 // csv format: name, surename, index, email
-type NewUser = Pick<UserDTO, 'email' | 'student_index' | 'user_name' | 'user_role'>;
-const readCSV = (csvString: string): { users?: NewUser[]; isValid: boolean } => {
+type NewUser = Pick<
+  UserDTO,
+  'email' | 'student_index' | 'user_name' | 'user_role'
+>;
+const readCSV = (
+  csvString: string
+): { users?: NewUser[]; isValid: boolean } => {
   const lines = csvString.trim().split('\n');
   if (!lines.every(line => isCSVRowValid(line))) {
     return { isValid: false };
@@ -97,7 +119,7 @@ const readCSV = (csvString: string): { users?: NewUser[]; isValid: boolean } => 
       email: values[3],
       student_index: values[2],
       user_name: `${values[0]} ${values[1]}`,
-      user_role: ROLES.student,
+      user_role: UserRole.student,
     };
     users.push(user);
   });

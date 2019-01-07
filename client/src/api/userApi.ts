@@ -1,12 +1,12 @@
+import { ServerRoutes, UserDTO } from 'common';
 import * as qs from 'query-string';
 
-import { Routes, UserDTO } from '../../../common/api';
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from './';
 import { authFetch } from './authFetch';
 
-const { Users } = Routes;
+const { Users } = ServerRoutes;
 
 const LIMIT = 10;
 
@@ -44,7 +44,9 @@ export const addUser = async (user: UserDTO) => {
     },
     method: 'POST',
   };
-  await authFetch(SERVER_URL + Users.Create, options).then(res => showMessage(res));
+  await authFetch(SERVER_URL + Users.Create, options).then(res =>
+    showMessage(res)
+  );
 };
 
 export const deleteUser = async (id: string) => {

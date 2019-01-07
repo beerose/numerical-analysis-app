@@ -1,16 +1,22 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Icon, Menu } from 'antd';
-import MenuItem from 'antd/lib/menu/MenuItem';
+import { Icon, Menu, Spin } from 'antd';
+import { GroupDTO, ServerRoutes } from 'common';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-import { Routes } from '../../../../common/api';
+import { groupsService } from '../../api';
 import { Breadcrumbs, NotFoundPage } from '../../components';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
-import { MeetingsDetailsSections, MeetingsSection, StudentsSection } from './sections';
+import {
+  MeetingsDetailsSections,
+  MeetingsSection,
+  StudentsSection,
+} from './sections';
+
+const MenuItem = Menu.Item;
 
 const menuStyles = css`
   width: 200px;
@@ -18,40 +24,62 @@ const menuStyles = css`
 
 type State = {
   groupId: string;
+  group?: GroupDTO;
 };
-export class GroupDetailsContainer extends React.Component<RouteComponentProps, State> {
+export class GroupDetailsContainer extends React.Component<
+  RouteComponentProps,
+  State
+> {
   state = {
+    group: undefined,
     groupId: this.props.location.pathname.split('/')[2],
   };
 
+  componentDidMount() {
+    const { groupId } = this.state;
+    groupsService.getGroup(groupId).then(this.setState);
+  }
+
   goToStudents = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/students`);
+    this.props.history.push(
+      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/students`
+    );
   };
 
   goToLists = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/lists`);
+    this.props.history.push(
+      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/lists`
+    );
   };
 
   goToMeetings = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/meetings`);
+    this.props.history.push(
+      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/meetings`
+    );
   };
 
   goToPresence = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/presence`);
+    this.props.history.push(
+      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/presence`
+    );
   };
 
   goToAcitivity = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/acitivity`);
+    this.props.history.push(
+      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/acitivity`
+    );
   };
 
   goToGrades = () => {
     const { groupId } = this.state;
-    this.props.history.push(`${Routes.Groups.Get.replace(':id', groupId)}/grades`);
+    this.props.history.push(
+      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/grades`
+    );
   };
 
   getSelectedItem() {
@@ -59,11 +87,23 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
   }
 
   render() {
-    const { groupId } = this.state;
+    const { groupId, group } = this.state;
+
+    if (!group) {
+      return (
+        <Flex flex={1} justifyContent="center" alignItems="center">
+          <Spin />
+        </Flex>
+      );
+    }
 
     return (
       <Flex flex={1}>
-        <Menu mode="inline" defaultSelectedKeys={[this.getSelectedItem()]} css={menuStyles}>
+        <Menu
+          mode="inline"
+          defaultSelectedKeys={[this.getSelectedItem()]}
+          css={menuStyles}
+        >
           <MenuItem key="settings">
             <Icon type="setting" />
             Ustawienia grupy

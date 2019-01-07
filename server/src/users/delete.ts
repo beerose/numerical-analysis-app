@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { apiMessages } from '../../../common/apiMessages';
+import { apiMessages } from 'common';
 import { db } from '../store';
 
 interface DeleteUserRequest extends Request {

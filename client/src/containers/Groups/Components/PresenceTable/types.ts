@@ -1,4 +1,4 @@
-import { MeetingDTO, UserDTO } from '../../../../../../common/api';
+import { MeetingDTO, UserDTO } from '../common';
 
 export type Student = Pick<UserDTO, 'id' | 'user_name' | 'student_index'>;
 export type MeetingId = MeetingDTO['id'];
@@ -19,8 +19,14 @@ export type BoxedPresencesAndActivities = {
   data: PresencesAndActivities;
 };
 
-export type BoxedMeetingData = BoxedPresences | BoxedActivities | BoxedPresencesAndActivities;
+export type BoxedMeetingData =
+  | BoxedPresences
+  | BoxedActivities
+  | BoxedPresencesAndActivities;
 
 export type Unboxed<T> = T[keyof T];
 
-export type FieldIdentifier = { meetingId: MeetingId; studentId: Student['id'] };
+export type FieldIdentifier = {
+  meetingId: MeetingId;
+  studentId: Student['id'];
+};

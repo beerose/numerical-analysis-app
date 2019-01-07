@@ -1,15 +1,17 @@
-import { LABELS } from '../utils/labels';
+import { ApiResponse, ServerRoutes } from 'common';
 
-import { ApiResponse, Routes } from '../../../common/api';
+import { LABELS } from '../utils/labels';
 
 import { SERVER_URL } from '.';
 
-const { Accounts } = Routes;
+const { Accounts } = ServerRoutes;
 
 export const login = (
   email: string,
   password: string
-): Promise<{ token: string; user_name: string; user_role: string } & ApiResponse> => {
+): Promise<
+  { token: string; user_name: string; user_role: string } & ApiResponse
+> => {
   const data = new URLSearchParams();
   data.append('email', email);
   data.append('password', password);
@@ -41,7 +43,9 @@ export const login = (
 export const newAccount = (
   token: string,
   password: string
-): Promise<{ token: string; user_name: string; user_role: string } & ApiResponse> => {
+): Promise<
+  { token: string; user_name: string; user_role: string } & ApiResponse
+> => {
   const data = new URLSearchParams();
   data.append('token', token);
   data.append('password', password);

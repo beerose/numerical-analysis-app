@@ -1,11 +1,12 @@
 import { Button, Form, Icon, Input, Radio, Select } from 'antd';
+// tslint:disable: no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
 import { SelectValue } from 'antd/lib/select';
+// tslint:enable: no-submodule-imports
+import { GroupType, UserDTO } from 'common';
 import { css } from 'emotion';
 import * as React from 'react';
 
-import { UserDTO } from '../../../../../common/api';
-import { GROUPS } from '../../../../../common/groups';
 import { LABELS } from '../../../utils/labels';
 
 const FormItem = Form.Item;
@@ -23,14 +24,20 @@ const FORM_ITEM_LAYOUT = {
 
 const SelectSuperUser = React.forwardRef(
   (
-    { superUsers, onChange }: { superUsers: UserDTO[]; onChange?: (value: SelectValue) => void },
+    {
+      superUsers,
+      onChange,
+    }: { superUsers: UserDTO[]; onChange?: (value: SelectValue) => void },
     ref: React.Ref<Select>
   ) => (
     <Select
       showArrow
       placeholder={
         <>
-          <Icon type="user" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
+          <Icon
+            type="user"
+            style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }}
+          />
           {LABELS.superUser}
         </>
       }
@@ -47,13 +54,19 @@ const SelectSuperUser = React.forwardRef(
 );
 
 export const SelectSemester = React.forwardRef(
-  ({ onChange }: { onChange?: (value: SelectValue) => void }, ref: React.Ref<Select>) => (
+  (
+    { onChange }: { onChange?: (value: SelectValue) => void },
+    ref: React.Ref<Select>
+  ) => (
     <Select
       showArrow
       mode="single"
       placeholder={
         <>
-          <Icon type="table" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
+          <Icon
+            type="table"
+            style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }}
+          />
           Rok akademicki
         </>
       }
@@ -80,7 +93,7 @@ const formStyles = css`
 export type NewGroupFormValues = {
   academic_year: string;
   class_room: number | string;
-  group: GROUPS;
+  group: GroupType;
   group_name: string;
   super_user_id: string;
 };
@@ -155,10 +168,18 @@ class NewGroupForm extends React.Component<Props> {
             xs: { span: 24, offset: 0 },
           }}
         >
-          <Button type="primary" htmlType="submit" style={{ marginRight: '5px' }}>
+          <Button
+            type="primary"
+            htmlType="submit"
+            style={{ marginRight: '5px' }}
+          >
             Dodaj
           </Button>
-          <Button type="default" style={{ marginLeft: '5px' }} onClick={onCancel}>
+          <Button
+            type="default"
+            style={{ marginLeft: '5px' }}
+            onClick={onCancel}
+          >
             Anuluj
           </Button>
         </FormItem>

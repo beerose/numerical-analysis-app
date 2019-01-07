@@ -1,6 +1,6 @@
 import { message } from 'antd';
 
-import { ApiResponse } from '../../../common/api';
+import { ApiResponse } from 'common';
 
 export const showMessage = (res: ApiResponse) => {
   if (res.error) {

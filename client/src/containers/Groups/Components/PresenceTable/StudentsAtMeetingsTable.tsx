@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { MeetingDetailsModel, MeetingDTO } from 'common/api';
+import { MeetingDetailsModel, MeetingDTO } from 'common';
 import React from 'react';
 
 import { Table } from '../../../../components/Table';

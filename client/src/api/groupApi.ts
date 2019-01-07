@@ -1,20 +1,20 @@
-import * as qs from 'query-string';
-import { Omit } from 'react-router';
-
 import {
   ApiResponse,
   GroupDTO,
   MeetingDetailsModel,
   MeetingDTO,
-  Routes,
+  ServerRoutes,
   UserDTO,
-} from '../../../common/api';
+} from 'common';
+import * as qs from 'query-string';
+import { Omit } from 'react-router';
+
 import { showMessage } from '../utils/message';
 
 import { SERVER_URL } from '.';
 import { authFetch } from './authFetch';
 
-const { Groups } = Routes;
+const { Groups } = ServerRoutes;
 
 export const uploadUsers = async (fileContent: string, groupId: string) => {
   const options = {
@@ -22,7 +22,10 @@ export const uploadUsers = async (fileContent: string, groupId: string) => {
     method: 'POST',
   };
 
-  await authFetch<{ message: string }>(SERVER_URL + Groups.Upload, options).then(showMessage);
+  await authFetch<{ message: string }>(
+    SERVER_URL + Groups.Upload,
+    options
+  ).then(showMessage);
 };
 
 export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
@@ -33,13 +36,21 @@ export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
   return authFetch<{ groups: GroupDTO[] }>(SERVER_URL + Groups.List, options);
 };
 
-export const listStudentsForGroup = async (groupId: string): Promise<{ students: UserDTO[] }> => {
+export const getGroup = async (
+  groupId: GroupDTO['id']
+): Promise<{ group: GroupDTO }> => authFetch(SERVER_URL + Groups.Get + groupId);
+
+export const listStudentsForGroup = async (
+  groupId: string
+): Promise<{ students: UserDTO[] }> => {
   const options = {
     method: 'GET',
   };
 
   return authFetch<{ students: UserDTO[] }>(
-    `${SERVER_URL + Groups.Students.List}?${qs.stringify({ group_id: groupId })}`,
+    `${SERVER_URL + Groups.Students.List}?${qs.stringify({
+      group_id: groupId,
+    })}`,
     options
   );
 };
@@ -50,7 +61,9 @@ export const deleteUserFromGroup = async (userId: string) => {
     method: 'DELETE',
   };
 
-  return authFetch(SERVER_URL + Groups.Students.AddToGroup, options).then(showMessage);
+  return authFetch(SERVER_URL + Groups.Students.AddToGroup, options).then(
+    showMessage
+  );
 };
 
 export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
@@ -59,21 +72,26 @@ export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + Groups.Students.AddToGroup, options).then(showMessage);
+  await authFetch(SERVER_URL + Groups.Students.AddToGroup, options).then(
+    showMessage
+  );
 };
 
-export const addGroup = (group: Omit<GroupDTO, 'id'>): Promise<{ group_id: string }> => {
+export const addGroup = (
+  group: Omit<GroupDTO, 'id'>
+): Promise<{ group_id: string }> => {
   const options = {
     body: JSON.stringify(group),
     method: 'POST',
   };
 
-  return authFetch<ApiResponse & { group_id: string }>(SERVER_URL + Groups.Create, options).then(
-    res => {
-      showMessage(res);
-      return res;
-    }
-  );
+  return authFetch<ApiResponse & { group_id: string }>(
+    SERVER_URL + Groups.Create,
+    options
+  ).then(res => {
+    showMessage(res);
+    return res;
+  });
 };
 
 export const addMeeting = async (
@@ -85,16 +103,22 @@ export const addMeeting = async (
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + Groups.Meetings.Create, options).then(showMessage);
+  await authFetch(SERVER_URL + Groups.Meetings.Create, options).then(
+    showMessage
+  );
 };
 
-export const updateMeeting = async (meeting: Pick<MeetingDTO, 'meeting_name' & 'date' & 'id'>) => {
+export const updateMeeting = async (
+  meeting: Pick<MeetingDTO, 'meeting_name' & 'date' & 'id'>
+) => {
   const options = {
     body: JSON.stringify({ meeting }),
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + Groups.Meetings.Update, options).then(showMessage);
+  await authFetch(SERVER_URL + Groups.Meetings.Update, options).then(
+    showMessage
+  );
 };
 
 export const deleteMeeting = async (id: number) => {
@@ -103,7 +127,9 @@ export const deleteMeeting = async (id: number) => {
     method: 'DELETE',
   };
 
-  await authFetch(SERVER_URL + Groups.Meetings.Delete, options).then(showMessage);
+  await authFetch(SERVER_URL + Groups.Meetings.Delete, options).then(
+    showMessage
+  );
 };
 
 export const listMeetings = (groupId: string): Promise<MeetingDTO[]> => {
@@ -112,7 +138,9 @@ export const listMeetings = (groupId: string): Promise<MeetingDTO[]> => {
   };
 
   return authFetch<MeetingDTO[]>(
-    `${SERVER_URL + Groups.Meetings.List}?${qs.stringify({ group_id: groupId })}`,
+    `${SERVER_URL + Groups.Meetings.List}?${qs.stringify({
+      group_id: groupId,
+    })}`,
     options
   );
 };
@@ -126,13 +154,17 @@ export const deleteGroup = (groupId: string) => {
   return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Delete, options);
 };
 
-export const getMeetingsDetails = (groupId: string): Promise<MeetingDetailsModel[]> => {
+export const getMeetingsDetails = (
+  groupId: string
+): Promise<MeetingDetailsModel[]> => {
   const options = {
     method: 'GET',
   };
 
   return authFetch<{ details: MeetingDetailsModel[] }>(
-    `${SERVER_URL + Groups.Meetings.Details}?${qs.stringify({ group_id: groupId })}`,
+    `${SERVER_URL + Groups.Meetings.Details}?${qs.stringify({
+      group_id: groupId,
+    })}`,
     options
   ).then(res =>
     res.details.map(item => ({
@@ -145,22 +177,34 @@ export const getMeetingsDetails = (groupId: string): Promise<MeetingDetailsModel
   );
 };
 
-export const addPresence = (studentId: UserDTO['id'], meetingId: MeetingDTO['id']) => {
+export const addPresence = (
+  studentId: UserDTO['id'],
+  meetingId: MeetingDTO['id']
+) => {
   const options = {
     body: JSON.stringify({ student_id: studentId, meeting_id: meetingId }),
     method: 'POST',
   };
 
-  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Meetings.AddPresence, options);
+  return authFetch<MeetingDTO[]>(
+    SERVER_URL + Groups.Meetings.AddPresence,
+    options
+  );
 };
 
-export const deletePresence = (studentId: UserDTO['id'], meetingId: MeetingDTO['id']) => {
+export const deletePresence = (
+  studentId: UserDTO['id'],
+  meetingId: MeetingDTO['id']
+) => {
   const options = {
     body: JSON.stringify({ student_id: studentId, meeting_id: meetingId }),
     method: 'DELETE',
   };
 
-  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Meetings.DeletePresence, options);
+  return authFetch<MeetingDTO[]>(
+    SERVER_URL + Groups.Meetings.DeletePresence,
+    options
+  );
 };
 
 export const setActivity = (
@@ -169,9 +213,16 @@ export const setActivity = (
   points: number
 ) => {
   const options = {
-    body: JSON.stringify({ points, student_id: studentId, meeting_id: meetingId }),
+    body: JSON.stringify({
+      points,
+      student_id: studentId,
+      meeting_id: meetingId,
+    }),
     method: 'POST',
   };
 
-  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Meetings.SetActivity, options);
+  return authFetch<MeetingDTO[]>(
+    SERVER_URL + Groups.Meetings.SetActivity,
+    options
+  );
 };

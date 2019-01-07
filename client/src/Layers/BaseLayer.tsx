@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import * as React from 'react';
 import { RouteChildrenProps } from 'react-router';
 
-import { Routes } from '../../../common/api';
+import { ServerRoutes } from 'common';
 import { LoginForm, MainMenu } from '../components/';
 import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
@@ -54,15 +54,23 @@ export class BaseLayer extends React.Component<Props> {
           return (
             <StyledLayout>
               <StyledHeader>
-                <Title onClick={() => this.props.history.push('/')}>{LABELS.appName}</Title>
-                <MainMenu userRole={userRole || ''} location={this.props.location} />
+                <Title onClick={() => this.props.history.push('/')}>
+                  {LABELS.appName}
+                </Title>
+                <MainMenu
+                  userRole={userRole || ''}
+                  location={this.props.location}
+                />
               </StyledHeader>
               <ErrorBoundary>
                 <StyledContent>
-                  {userAuth || pathname === Routes.Accounts.new ? (
+                  {userAuth || pathname === ServerRoutes.Accounts.New ? (
                     this.props.children
                   ) : (
-                    <LoginForm onSubmit={actions.login} errorMessage={errorMessage} />
+                    <LoginForm
+                      onSubmit={actions.login}
+                      errorMessage={errorMessage}
+                    />
                   )}
                 </StyledContent>
               </ErrorBoundary>

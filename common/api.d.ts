@@ -1,9 +1,8 @@
-import { GROUPS } from './groups';
 export interface ApiResponse {
     message?: string;
     error?: string;
 }
-export declare const Routes: {
+export declare const ServerRoutes: {
     Accounts: {
         Login: string;
         New: string;
@@ -37,21 +36,32 @@ export declare const Routes: {
         Update: string;
     };
 };
+export declare enum UserRole {
+    admin = "admin",
+    superUser = "superUser",
+    student = "student"
+}
+export declare const userRoleOptions: any[];
 export declare type UserDTO = {
     id: string;
     user_name: string;
     email: string;
     student_index?: string;
-    user_role: string;
+    user_role: UserRole;
 };
 export declare type Pagination = {
     offset: number;
     limit: number;
 };
+export declare enum GroupType {
+    LAB = "lab",
+    EXERCISE = "exercise",
+    LECTURE = "lecture"
+}
 export declare type GroupDTO = {
     id: string;
     group_name: string;
-    group_type: GROUPS;
+    group_type: GroupType;
     academic_year?: string;
     data?: Record<string, unknown>;
 };

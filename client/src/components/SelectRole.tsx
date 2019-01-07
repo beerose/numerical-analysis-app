@@ -2,7 +2,7 @@ import { Icon, Select } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import * as React from 'react';
 
-import { userRoleOptions } from '../../../common/roles';
+import { userRoleOptions } from 'common';
 
 type Props = {
   onChange?: (value: SelectValue) => void;
@@ -20,7 +20,10 @@ export const SelectRole = React.forwardRef(
       mode={mode}
       placeholder={
         <>
-          <Icon type="tag" style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }} />
+          <Icon
+            type="tag"
+            style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }}
+          />
           {placeholder}
         </>
       }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { GroupDTO, MeetingDetailsModel, MeetingDTO } from '../../../../../common/api';
+import { GroupDTO, MeetingDetailsModel, MeetingDTO } from 'common';
 import * as groupService from '../../../api/groupApi';
 import { PresenceTable } from '../components';
 

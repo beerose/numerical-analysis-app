@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { apiMessages } from '../../../../common/apiMessages';
+import { apiMessages } from 'common';
 import { connection } from '../../store/connection';
 import { listStudentsForGroupQuery } from '../../store/queries';
 
@@ -10,7 +10,10 @@ interface ListStudentsForGroupRequest extends Request {
     group_id: string;
   };
 }
-export const listStudentsForGroup = (req: ListStudentsForGroupRequest, res: Response) => {
+export const listStudentsForGroup = (
+  req: ListStudentsForGroupRequest,
+  res: Response
+) => {
   return connection.query(
     {
       sql: listStudentsForGroupQuery,
@@ -19,7 +22,9 @@ export const listStudentsForGroup = (req: ListStudentsForGroupRequest, res: Resp
     (err, students) => {
       if (err) {
         console.log(err);
-        return res.status(codes.INTERNAL_SERVER_ERROR).send({ error: apiMessages.internalError });
+        return res
+          .status(codes.INTERNAL_SERVER_ERROR)
+          .send({ error: apiMessages.internalError });
       }
       return res.status(codes.OK).send({ students });
     }

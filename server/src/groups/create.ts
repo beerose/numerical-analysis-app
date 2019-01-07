@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { GroupDTO } from '../../../common/api';
-import { apiMessages } from '../../../common/apiMessages';
+import { GroupDTO } from 'common';
+import { apiMessages } from 'common';
 import { db } from '../store';
 
 interface CreateGroupRequest extends Request {

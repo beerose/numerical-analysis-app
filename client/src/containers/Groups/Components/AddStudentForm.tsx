@@ -3,7 +3,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { UserDTO } from '../../../../../common/api';
+import { UserDTO } from 'common';
 import { LABELS } from '../../../utils/labels';
 
 const FormItem = Form.Item;
@@ -54,7 +54,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
 
   handleSelectChange = (value: string) => {
     const { allStudents } = this.props;
-    this.setState({ selectedStudent: allStudents.find(s => s.id === value) || null });
+    this.setState({
+      selectedStudent: allStudents.find(s => s.id === value) || null,
+    });
   };
 
   clearSelectedStudent = () => {
@@ -93,7 +95,10 @@ export class NewStudentModalForm extends React.Component<Props, State> {
           ))}
         </Select>
         {selectedStudent && (
-          <RemoveSelectedStudent type="close-circle" onClick={this.clearSelectedStudent} />
+          <RemoveSelectedStudent
+            type="close-circle"
+            onClick={this.clearSelectedStudent}
+          />
         )}
         <Divider />
         <Form onSubmit={this.handleSubmit}>
@@ -102,7 +107,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: true, message: LABELS.nameRequired }],
             })(
               <Input
-                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                prefix={
+                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
                 placeholder={LABELS.name}
                 disabled={!!this.state.selectedStudent}
               />
@@ -113,7 +120,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: true, message: LABELS.emailRequired }],
             })(
               <Input
-                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                prefix={
+                  <Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
                 placeholder={LABELS.email}
                 disabled={!!this.state.selectedStudent}
               />
@@ -124,7 +133,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: false }],
             })(
               <Input
-                prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                prefix={
+                  <Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />
+                }
                 placeholder={LABELS.index}
                 disabled={!!this.state.selectedStudent}
               />

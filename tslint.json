@@ -1,5 +1,9 @@
 {
-  "extends": ["tslint:latest", "tslint-config-airbnb", "tslint-config-prettier"],
+  "extends": [
+    "tslint:latest",
+    "tslint-config-airbnb",
+    "tslint-config-prettier"
+  ],
   "rules": {
     "no-console": false,
     "prefer-template": true,
@@ -29,7 +33,7 @@
     "no-string-literal": false,
     "object-literal-sort-keys": [true, "shorthand-first"],
     "no-unused-expression": [true, "allow-tagged-template"],
-    "no-submodule-imports": false,
+    "no-submodule-imports": true,
     "no-object-literal-type-assertion": false,
     "max-classes-per-file": false,
     "import-name": false,

@@ -1,9 +1,11 @@
 import { Input } from 'antd';
+// tslint:disable: no-submodule-imports
 import Form, { FormComponentProps, WrappedFormUtils } from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
+// tslint:enable: no-submodule-imports
+import { UserDTO } from 'common';
 import * as React from 'react';
 
-import { UserDTO } from '../../../../common/api';
 import { SelectRole } from '../../components/SelectRole';
 import { LABELS } from '../../utils/labels';
 
@@ -30,13 +32,22 @@ type EditableCellProps = {
 export class EditableCell extends React.Component<EditableCellProps> {
   getInput = () => {
     if (this.props.options) {
-      return <SelectRole mode="single" initialValue={this.props.record.user_role} />;
+      return (
+        <SelectRole mode="single" initialValue={this.props.record.user_role} />
+      );
     }
     return <Input />;
   };
 
   render() {
-    const { editing, dataIndex, required, record, title, ...restProps } = this.props;
+    const {
+      editing,
+      dataIndex,
+      required,
+      record,
+      title,
+      ...restProps
+    } = this.props;
     return (
       <EditableConsumer>
         {(form: WrappedFormUtils) => {
@@ -50,7 +61,9 @@ export class EditableCell extends React.Component<EditableCellProps> {
                     rules: [
                       {
                         message: LABELS.requiredField,
-                        required: requiredFields.find(f => f === dataIndex) ? true : false,
+                        required: requiredFields.find(f => f === dataIndex)
+                          ? true
+                          : false,
                       },
                     ],
                   })(this.getInput())}

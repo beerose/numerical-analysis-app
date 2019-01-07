@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // TODO: function l<T extends string>(s: T): T;
-exports.Routes = {
+exports.ServerRoutes = {
     Accounts: {
         Login: '/accounts/login',
         New: '/accounts/new',
@@ -35,6 +35,19 @@ exports.Routes = {
         Update: '/users/update',
     },
 };
+var UserRole;
+(function (UserRole) {
+    UserRole["admin"] = "admin";
+    UserRole["superUser"] = "superUser";
+    UserRole["student"] = "student";
+})(UserRole = exports.UserRole || (exports.UserRole = {}));
+exports.userRoleOptions = Object.values(UserRole);
+var GroupType;
+(function (GroupType) {
+    GroupType["LAB"] = "lab";
+    GroupType["EXERCISE"] = "exercise";
+    GroupType["LECTURE"] = "lecture";
+})(GroupType = exports.GroupType || (exports.GroupType = {}));
 var GroupEnumUI;
 (function (GroupEnumUI) {
     GroupEnumUI["Exercise"] = "\u0106wiczenia";

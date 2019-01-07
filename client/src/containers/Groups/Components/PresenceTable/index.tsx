@@ -1,7 +1,7 @@
 import { Spin } from 'antd';
 import React from 'react';
 
-import { MeetingDetailsModel, MeetingDTO } from '../../../../../../common/api';
+import { MeetingDetailsModel, MeetingDTO } from '../common';
 import { PaddingContainer } from '../../../../components/PaddingContainer';
 
 import {
@@ -18,7 +18,8 @@ import {
 import { StudentsAtMeetingsTable } from './StudentsAtMeetingsTable';
 
 type ActivityNumber = number & { __brand: 'ActivityNumber' };
-const boundActivity = (num: number) => Math.max(-99, Math.min(99, num)) as ActivityNumber;
+const boundActivity = (num: number) =>
+  Math.max(-99, Math.min(99, num)) as ActivityNumber;
 
 const makeRenderCheckboxAndInput = (
   meetingId: MeetingId,
@@ -84,7 +85,10 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
     } else {
       const activity = boundActivity((data as { activity: number }).activity);
 
-      newMeetingData.activities = { ...newMeetingData.activities, [meetingId]: activity };
+      newMeetingData.activities = {
+        ...newMeetingData.activities,
+        [meetingId]: activity,
+      };
 
       setActivity(studentId, meetingId, activity);
     }

@@ -19,5 +19,5 @@
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
   "exclude": ["node_modules", "build", "scripts", "jest"],
-  "references": [{ "path": "../common" }]
+  "references": [{ "path": "common" }]
 }

@@ -2,11 +2,10 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Spin, Upload } from 'antd';
+import { UserDTO, UserRole } from 'common';
 import * as React from 'react';
 import { Omit } from 'react-router';
 
-import { UserDTO } from '../../../../../common/api';
-import { ROLES } from '../../../../../common/roles';
 import { groupsService, usersService } from '../../../api';
 import { UsersTable } from '../../../components';
 import { Theme } from '../../../components/theme';
@@ -49,7 +48,7 @@ export class StudentsSection extends React.Component<Props, State> {
     groupsService.listStudentsForGroup(this.props.groupId).then(res => {
       this.setState({ students: res.students, isFetching: false });
     });
-    usersService.listUsers({ roles: ROLES.student }).then(res => {
+    usersService.listUsers({ roles: UserRole.student }).then(res => {
       this.setState({ allStudents: res.users });
     });
   }
@@ -65,9 +64,11 @@ export class StudentsSection extends React.Component<Props, State> {
   };
 
   updateStudent = (user: Omit<UserDTO, 'user_role'>) => {
-    usersService.updateUser({ ...user, user_role: ROLES.student }).then(() => {
-      this.updateStudentsLists();
-    });
+    usersService
+      .updateUser({ ...user, user_role: UserRole.student })
+      .then(() => {
+        this.updateStudentsLists();
+      });
   };
 
   onUpload = (uploadObject: UploadObject) => {
@@ -98,7 +99,12 @@ export class StudentsSection extends React.Component<Props, State> {
   };
 
   render() {
-    const { students, isFetching, addStudentModalVisible, allStudents } = this.state;
+    const {
+      students,
+      isFetching,
+      addStudentModalVisible,
+      allStudents,
+    } = this.state;
     return (
       <Container>
         <WrappedNewStudentModalForm
@@ -116,7 +122,11 @@ export class StudentsSection extends React.Component<Props, State> {
           >
             {LABELS.addNewUser}
           </Button>
-          <Upload accept="text/csv" showUploadList={false} customRequest={this.onUpload}>
+          <Upload
+            accept="text/csv"
+            showUploadList={false}
+            customRequest={this.onUpload}
+          >
             <Button type="default" icon="upload">
               CSV Upload
             </Button>

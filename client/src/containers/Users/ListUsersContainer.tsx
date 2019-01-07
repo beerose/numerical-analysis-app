@@ -6,7 +6,7 @@ import { SelectValue } from 'antd/lib/select';
 import { PaginationConfig } from 'antd/lib/table';
 import * as React from 'react';
 
-import { UserDTO } from '../../../../common/api';
+import { UserDTO } from 'common';
 import { usersService } from '../../api';
 import { Breadcrumbs, SelectRole, UsersTable } from '../../components';
 import { PaddingContainer } from '../../components/PaddingContainer';
@@ -120,21 +120,38 @@ export class ListUsersContainer extends React.Component<{}, State> {
   };
 
   render() {
-    const { addUserModalVisible, users, total, currentPage, isLoading } = this.state;
+    const {
+      addUserModalVisible,
+      users,
+      total,
+      currentPage,
+      isLoading,
+    } = this.state;
     return (
       <PaddingContainer>
         <Breadcrumbs />
         <SearchPanel onKeyPress={this.handleKeyPress}>
-          <Input placeholder={LABELS.searchUserPlaceholder} onChange={this.onSearchInputChange} />
+          <Input
+            placeholder={LABELS.searchUserPlaceholder}
+            onChange={this.onSearchInputChange}
+          />
           <SelectRole
             onChange={this.onSearchRoleChange}
             css={selectStyles}
             placeholder={LABELS.searchByRolePlaceholder}
             mode="multiple"
           />
-          <Button shape="circle" icon="search" onClick={() => this.updateUsersList(1)} />
+          <Button
+            shape="circle"
+            icon="search"
+            onClick={() => this.updateUsersList(1)}
+          />
         </SearchPanel>
-        <Button icon="user-add" onClick={this.showAddUserModal} css={buttonStyles}>
+        <Button
+          icon="user-add"
+          onClick={this.showAddUserModal}
+          css={buttonStyles}
+        >
           {LABELS.addNewUser}
         </Button>
         <WrappedNewUserModalForm

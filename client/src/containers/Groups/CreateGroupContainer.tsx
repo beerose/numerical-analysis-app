@@ -1,14 +1,16 @@
 import styled from '@emotion/styled';
+import { UserDTO, UserRole } from 'common';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { UserDTO } from '../../../../common/api';
-import { ROLES } from '../../../../common/roles';
 import * as groupsService from '../../api/groupApi';
 import { listUsers } from '../../api/userApi';
 import { Breadcrumbs } from '../../components';
 
-import { NewGroupFormValues, WrappedNewGroupForm } from './components/NewGroupForm';
+import {
+  NewGroupFormValues,
+  WrappedNewGroupForm,
+} from './components/NewGroupForm';
 
 const Container = styled.div`
   align-items: center;
@@ -24,13 +26,18 @@ const initialState = {
 export class CreateGroupContainer extends React.Component<RouteComponentProps> {
   state = initialState;
   componentDidMount() {
-    listUsers({ roles: ROLES.superUser }).then(res => {
+    listUsers({ roles: UserRole.superUser }).then(res => {
       this.setState({ superUsers: res.users });
     });
   }
 
   handleSubmit = (formValues: NewGroupFormValues) => {
-    const { academic_year, group: group_type, group_name, super_user_id } = formValues;
+    const {
+      academic_year,
+      group: group_type,
+      group_name,
+      super_user_id,
+    } = formValues;
 
     groupsService
       .addGroup({

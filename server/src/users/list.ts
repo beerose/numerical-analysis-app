@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { UserDTO } from '../../../common/api';
-import { apiMessages } from '../../../common/apiMessages';
+import { UserDTO } from 'common';
+import { apiMessages } from 'common';
 import { db } from '../store';
 import { connection } from '../store/connection';
 

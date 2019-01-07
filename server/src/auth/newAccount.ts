@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
-import { apiMessages } from '../../../common/apiMessages';
+import { apiMessages } from 'common';
 import { db } from '../store';
 
 interface CreateWithTokenRequest extends Request {

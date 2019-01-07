@@ -2,7 +2,7 @@ import { Button, Form, Icon, Input, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
 
-import { UserDTO } from '../../../../common/api';
+import { UserDTO } from 'common';
 import { SelectRole } from '../../components/';
 import { LABELS } from '../../utils/labels';
 
@@ -24,7 +24,9 @@ export const NewUserModalForm = (props: Props) => {
       setTimeout(() => {
         props.form.resetFields();
         // workaround for ant bug
-        const selected = document.getElementsByClassName('ant-select-selection-selected-value');
+        const selected = document.getElementsByClassName(
+          'ant-select-selection-selected-value'
+        );
         if (selected && selected[0]) {
           selected[0].innerHTML =
             '<div unselectable="on" class="ant-select-selection__placeholder" style="display: block; user-select: none;">Rola użytkownika</div>';
@@ -36,7 +38,12 @@ export const NewUserModalForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
 
   return (
-    <Modal visible={props.visible} title={LABELS.newUser} onCancel={props.onCancel} footer={null}>
+    <Modal
+      visible={props.visible}
+      title={LABELS.newUser}
+      onCancel={props.onCancel}
+      footer={null}
+    >
       <Form onSubmit={handleSubmit}>
         <FormItem>
           {getFieldDecorator('user_name', {

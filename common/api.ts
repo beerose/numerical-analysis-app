@@ -1,5 +1,3 @@
-import { GROUPS } from './groups';
-
 export interface ApiResponse {
   message?: string;
   error?: string;
@@ -7,7 +5,7 @@ export interface ApiResponse {
 
 // TODO: function l<T extends string>(s: T): T;
 
-export const Routes = {
+export const ServerRoutes = {
   Accounts: {
     Login: '/accounts/login',
     New: '/accounts/new',
@@ -42,12 +40,20 @@ export const Routes = {
   },
 };
 
+export enum UserRole {
+  admin = 'admin',
+  superUser = 'superUser',
+  student = 'student',
+}
+
+export const userRoleOptions = Object.values(UserRole);
+
 export type UserDTO = {
   id: string;
   user_name: string;
   email: string;
   student_index?: string;
-  user_role: string;
+  user_role: UserRole;
 };
 
 export type Pagination = {
@@ -55,10 +61,16 @@ export type Pagination = {
   limit: number;
 };
 
+export enum GroupType {
+  LAB = 'lab',
+  EXERCISE = 'exercise',
+  LECTURE = 'lecture',
+}
+
 export type GroupDTO = {
   id: string;
   group_name: string;
-  group_type: GROUPS;
+  group_type: GroupType;
   academic_year?: string;
   data?: Record<string, unknown>;
 };
