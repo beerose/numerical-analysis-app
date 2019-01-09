@@ -215,8 +215,8 @@ export const setActivity = (
   const options = {
     body: JSON.stringify({
       points,
-      student_id: studentId,
       meeting_id: meetingId,
+      student_id: studentId,
     }),
     method: 'POST',
   };
