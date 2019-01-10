@@ -1,7 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Icon, Menu } from 'antd';
-import { IconProps } from 'antd/lib/icon';
 import { GroupDTO, ServerRoutes } from 'common';
 import { PropsOf } from 'props-of';
 import * as React from 'react';
@@ -19,9 +18,6 @@ import {
   MeetingsSection,
   StudentsSection,
 } from './sections';
-
-// tslint:disable-next-line:no-submodule-imports
-// type PropsOf<T> = T extends React.ComponentType<infer P> ? P : never;
 
 type MenuLinkProps = {
   to: LinkProps['to'];
@@ -60,49 +56,18 @@ export class GroupDetailsContainer extends React.Component<
     groupsService.getGroup(groupId).then(group => this.setState({ group }));
   }
 
-  goToLists = () => {
-    const { groupId } = this.state;
-    this.props.history.push(
-      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/lists`
-    );
-  };
-
-  goToMeetings = () => {
-    const { groupId } = this.state;
-    this.props.history.push(
-      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/meetings`
-    );
-  };
-
-  goToPresence = () => {
-    const { groupId } = this.state;
-    this.props.history.push(
-      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/presence`
-    );
-  };
-
-  goToGrades = () => {
-    const { groupId } = this.state;
-    this.props.history.push(
-      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/grades`
-    );
-  };
-
   getSelectedItem() {
     return this.props.location.pathname.split('/')[3] || 'settings';
   }
 
   render() {
+    const {
+      match: { url: matchUrl },
+    } = this.props;
     const { groupId, group } = this.state;
     const { texts } = this.context;
 
-    // if (!group) {
-    //   return (
-    //     <Flex flex={1} justifyContent="center" alignItems="center">
-    //       <Spin />
-    //     </Flex>
-    //   );
-    // }
+    console.log({ group });
 
     return (
       <Flex flex={1}>
@@ -111,27 +76,27 @@ export class GroupDetailsContainer extends React.Component<
           defaultSelectedKeys={[this.getSelectedItem()]}
           css={menuStyles}
         >
-          <MenuLink to={'/'}>
+          <MenuLink to={matchUrl}>
             <Icon type="setting" />
             {texts.groupSettings}
           </MenuLink>
-          <MenuLink to="students">
+          <MenuLink to={`${matchUrl}/students`}>
             <Icon type="team" />
             {texts.students}
           </MenuLink>
-          <Menu.Item key="lists" onClick={this.goToLists}>
+          <MenuLink to={`${matchUrl}/lists`}>
             <Icon type="calculator" />
             Listy zadań
-          </Menu.Item>
-          <Menu.Item key="meetings" onClick={this.goToMeetings}>
+          </MenuLink>
+          <MenuLink to={`${matchUrl}/meetings`}>
             <Icon type="schedule" />
             {texts.meetings}
-          </Menu.Item>
-          <MenuLink to="presence">
+          </MenuLink>
+          <MenuLink to={`${matchUrl}/presence`}>
             <Icon type="calendar" />
             {texts.presence}
           </MenuLink>
-          <MenuLink to="grades">
+          <MenuLink to={`${matchUrl}/grades`}>
             <Icon type="line-chart" />
             {texts.grades}
           </MenuLink>
