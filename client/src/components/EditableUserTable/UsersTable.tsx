@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { Popconfirm, Table } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
 import { WrappedFormUtils } from 'antd/lib/form/Form';
+// tslint:disable-next-line:no-submodule-imports
 import { PaginationConfig } from 'antd/lib/table';
 import { UserDTO, userRoleOptions } from 'common';
 import * as React from 'react';

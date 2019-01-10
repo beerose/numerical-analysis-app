@@ -1,13 +1,15 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, List, Modal, Spin } from 'antd';
-import { css } from 'emotion';
+import { MeetingDTO } from 'common';
 import moment, { Moment } from 'moment';
 import * as React from 'react';
 
-import { MeetingDTO } from 'common';
 import * as groupsService from '../../../api/groupApi';
 import { Theme } from '../../../components/theme';
 import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
+import { Flex } from '../../../components/Flex';
 import { LABELS } from '../../../utils/labels';
 import { WrappedEditMeetingForm } from '../components/EditMeetingForm';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
@@ -40,9 +42,14 @@ export class MeetingsSection extends React.Component<Props, State> {
 
   updateMeetingsList = () => {
     this.setState({ isLoading: true });
-    groupsService.listMeetings(this.props.groupId).then(res => {
-      this.setState({ meetings: res, isLoading: false });
-    });
+    groupsService
+      .listMeetings(this.props.groupId)
+      .then(res => {
+        this.setState({ meetings: res });
+      })
+      .finally(() => {
+        this.setState({ isLoading: false });
+      });
   };
 
   openNewMeetingModal = () => {
@@ -68,9 +75,9 @@ export class MeetingsSection extends React.Component<Props, State> {
 
   handleEditClick = (meeting: MeetingDTO) => {
     this.setState({
-      modalMode: 'edit',
       editingItem: meeting,
       meetingModalVisible: true,
+      modalMode: 'edit',
     });
   };
 
@@ -108,7 +115,7 @@ export class MeetingsSection extends React.Component<Props, State> {
           <List
             itemLayout="horizontal"
             dataSource={meetings}
-            className={css`
+            css={css`
               padding: ${Theme.Padding.Standard} 0;
               max-height: 100vh;
               width: 400px;
@@ -136,13 +143,9 @@ export class MeetingsSection extends React.Component<Props, State> {
             }}
           />
         )}
-        <div
-          className={css`
-            width: 100%;
-          `}
-        >
+        <Flex justifyContent="center">
           <Spin spinning={this.state.isLoading} />
-        </div>
+        </Flex>
       </Container>
     );
   }

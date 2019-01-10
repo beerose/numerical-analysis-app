@@ -36,9 +36,10 @@ export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
   return authFetch<{ groups: GroupDTO[] }>(SERVER_URL + Groups.List, options);
 };
 
-export const getGroup = async (
-  groupId: GroupDTO['id']
-): Promise<{ group: GroupDTO }> => authFetch(SERVER_URL + Groups.Get + groupId);
+export const getGroup = async (groupId: GroupDTO['id']): Promise<GroupDTO> =>
+  authFetch(
+    `${SERVER_URL + Groups.Get}?${qs.stringify({ group_id: groupId })}`
+  );
 
 export const listStudentsForGroup = async (
   groupId: string

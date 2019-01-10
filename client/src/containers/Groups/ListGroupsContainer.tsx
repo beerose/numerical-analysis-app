@@ -1,11 +1,11 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, List, Spin } from 'antd';
+import { GroupDTO, ServerRoutes } from 'common';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { GroupDTO, ServerRoutes } from 'common';
 import { groupsService } from '../../api';
 import { Breadcrumbs } from '../../components';
 import { DeleteWithConfirm } from '../../components/DeleteWithConfirm';
@@ -76,11 +76,7 @@ export class ListGroupsContainer extends React.Component<
               >
                 <List.Item.Meta
                   title={
-                    <Link
-                      to={`${ServerRoutes.Groups.Get.replace(':id', item.id)}`}
-                    >
-                      {item.group_name}
-                    </Link>
+                    <Link to={`groups/${item.id}`}>{item.group_name}</Link>
                   }
                   // TO DO description={`Prowadzący: ${item.lecturer}`}
                 />

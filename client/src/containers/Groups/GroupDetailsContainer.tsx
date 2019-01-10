@@ -1,12 +1,16 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Icon, Menu, Spin } from 'antd';
+import { Icon, Menu } from 'antd';
+import { IconProps } from 'antd/lib/icon';
 import { GroupDTO, ServerRoutes } from 'common';
+import { PropsOf } from 'props-of';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
+import { Link, LinkProps } from 'react-router-dom';
 
 import { groupsService } from '../../api';
 import { Breadcrumbs, NotFoundPage } from '../../components';
+import { LocaleContext } from '../../components/locale';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
@@ -16,7 +20,18 @@ import {
   StudentsSection,
 } from './sections';
 
-const MenuItem = Menu.Item;
+// tslint:disable-next-line:no-submodule-imports
+// type PropsOf<T> = T extends React.ComponentType<infer P> ? P : never;
+
+type MenuLinkProps = {
+  to: LinkProps['to'];
+} & PropsOf<typeof Menu.Item>;
+
+const MenuLink = ({ children, to, ...rest }: MenuLinkProps) => (
+  <Menu.Item {...rest}>
+    <Link to={to}>{children}</Link>
+  </Menu.Item>
+);
 
 const menuStyles = css`
   width: 200px;
@@ -30,6 +45,9 @@ export class GroupDetailsContainer extends React.Component<
   RouteComponentProps,
   State
 > {
+  static contextType = LocaleContext;
+  context!: React.ContextType<typeof LocaleContext>;
+
   state = {
     group: undefined,
     groupId: this.props.location.pathname.split('/')[2],
@@ -37,15 +55,10 @@ export class GroupDetailsContainer extends React.Component<
 
   componentDidMount() {
     const { groupId } = this.state;
-    groupsService.getGroup(groupId).then(this.setState);
+    // TODO: Add lift state for groups higher up,
+    // so GroupDetails can use ListGroups's fresh state
+    groupsService.getGroup(groupId).then(group => this.setState({ group }));
   }
-
-  goToStudents = () => {
-    const { groupId } = this.state;
-    this.props.history.push(
-      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/students`
-    );
-  };
 
   goToLists = () => {
     const { groupId } = this.state;
@@ -68,13 +81,6 @@ export class GroupDetailsContainer extends React.Component<
     );
   };
 
-  goToAcitivity = () => {
-    const { groupId } = this.state;
-    this.props.history.push(
-      `${ServerRoutes.Groups.Get.replace(':id', groupId)}/acitivity`
-    );
-  };
-
   goToGrades = () => {
     const { groupId } = this.state;
     this.props.history.push(
@@ -88,14 +94,15 @@ export class GroupDetailsContainer extends React.Component<
 
   render() {
     const { groupId, group } = this.state;
+    const { texts } = this.context;
 
-    if (!group) {
-      return (
-        <Flex flex={1} justifyContent="center" alignItems="center">
-          <Spin />
-        </Flex>
-      );
-    }
+    // if (!group) {
+    //   return (
+    //     <Flex flex={1} justifyContent="center" alignItems="center">
+    //       <Spin />
+    //     </Flex>
+    //   );
+    // }
 
     return (
       <Flex flex={1}>
@@ -104,34 +111,30 @@ export class GroupDetailsContainer extends React.Component<
           defaultSelectedKeys={[this.getSelectedItem()]}
           css={menuStyles}
         >
-          <MenuItem key="settings">
+          <MenuLink to={'/'}>
             <Icon type="setting" />
-            Ustawienia grupy
-          </MenuItem>
-          <MenuItem key="students" onClick={this.goToStudents}>
+            {texts.groupSettings}
+          </MenuLink>
+          <MenuLink to="students">
             <Icon type="team" />
-            Studenci
-          </MenuItem>
+            {texts.students}
+          </MenuLink>
           <Menu.Item key="lists" onClick={this.goToLists}>
             <Icon type="calculator" />
             Listy zadań
           </Menu.Item>
           <Menu.Item key="meetings" onClick={this.goToMeetings}>
             <Icon type="schedule" />
-            Spotkania
+            {texts.meetings}
           </Menu.Item>
-          <Menu.Item key="presence" onClick={this.goToPresence}>
+          <MenuLink to="presence">
             <Icon type="calendar" />
-            Obecności
-          </Menu.Item>
-          <Menu.Item key="activity" onClick={this.goToAcitivity}>
-            <Icon type="plus" />
-            Aktywności
-          </Menu.Item>
-          <Menu.Item key="grades" onClick={this.goToGrades}>
+            {texts.presence}
+          </MenuLink>
+          <MenuLink to="grades">
             <Icon type="line-chart" />
-            Oceny
-          </Menu.Item>
+            {texts.grades}
+          </MenuLink>
         </Menu>
         <Flex flexDirection="column" width="100%" overflow="hidden">
           <Breadcrumbs

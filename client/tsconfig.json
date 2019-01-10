@@ -12,7 +12,7 @@
     "importHelpers": true,
     "noEmitHelpers": true,
     "jsx": "react",
-    "lib": ["es6", "dom", "es7"],
+    "lib": ["es2018", "dom"],
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",

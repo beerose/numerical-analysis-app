@@ -1,6 +1,9 @@
 {
+  "groupSettings": "Ustawienia grupy",
+  "students": "Studenci",
   "groups": "Grupy",
   "presence": "Obecność",
   "users": "Użytkownicy",
-  "grades": "Oceny"
+  "grades": "Oceny",
+  "meetings": "Spotkania"
 }

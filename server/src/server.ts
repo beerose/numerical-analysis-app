@@ -66,6 +66,7 @@ app.delete(
   users.deleteUser
 );
 
+// Groups
 app.post(
   Groups.Create,
   auth.authorize,
@@ -143,6 +144,10 @@ app.post(
   validateSetActivityRequest,
   groups.setActivity
 );
+app.post(
+  Groups.Get,
+  
+)
 
 const listener = app.listen(PORT, () => {
   console.log(

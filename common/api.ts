@@ -13,7 +13,7 @@ export const ServerRoutes = {
   Groups: {
     Create: '/groups/create',
     Delete: '/groups/delete',
-    Get: '/groups/:id',
+    Get: '/groups',
     List: '/groups',
     Meetings: {
       AddPresence: '/groups/meetings.addPresence',
