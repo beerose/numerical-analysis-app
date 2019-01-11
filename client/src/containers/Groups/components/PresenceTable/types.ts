@@ -1,4 +1,4 @@
-import { MeetingDTO, UserDTO } from '../common';
+import { MeetingDetailsModel, MeetingDTO, UserDTO } from 'common';
 
 export type Student = Pick<UserDTO, 'id' | 'user_name' | 'student_index'>;
 export type MeetingId = MeetingDTO['id'];
@@ -28,5 +28,5 @@ export type Unboxed<T> = T[keyof T];
 
 export type FieldIdentifier = {
   meetingId: MeetingId;
-  studentId: Student['id'];
+  studentId: MeetingDetailsModel['student']['id'];
 };

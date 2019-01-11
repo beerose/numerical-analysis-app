@@ -1,15 +1,10 @@
 import { Spin } from 'antd';
+import { MeetingDetailsModel, MeetingDTO } from 'common';
 import React from 'react';
 
-import { MeetingDetailsModel, MeetingDTO } from '../common';
 import { PaddingContainer } from '../../../../components/PaddingContainer';
 
-import {
-  BoxedPresencesAndActivities,
-  BoxedStudent,
-  MeetingId,
-  PresencesAndActivities,
-} from './types';
+import { MeetingId, PresencesAndActivities } from './types';
 import {
   PresenceAndActivityChangeHandler,
   PresenceAndActivityControls,
@@ -25,8 +20,8 @@ const makeRenderCheckboxAndInput = (
   meetingId: MeetingId,
   handleChange: PresenceAndActivityControlsProps['onChange']
 ) => (
-  meetingData: PresencesAndActivities,
-  record: BoxedStudent & BoxedPresencesAndActivities,
+  meetingData: MeetingDetailsModel['data'],
+  record: MeetingDetailsModel,
   _index: number
 ) => {
   return (
