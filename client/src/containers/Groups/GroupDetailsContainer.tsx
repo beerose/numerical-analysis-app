@@ -44,8 +44,7 @@ export class GroupDetailsContainer extends React.Component<
   static contextType = LocaleContext;
   context!: React.ContextType<typeof LocaleContext>;
 
-  state = {
-    group: undefined,
+  state: State = {
     groupId: this.props.location.pathname.split('/')[2],
   };
 
@@ -59,6 +58,9 @@ export class GroupDetailsContainer extends React.Component<
   getSelectedItem() {
     return this.props.location.pathname.split('/')[3] || 'settings';
   }
+
+  replaceGroupIdBreadcrumb = (s: string) =>
+    Number(s) ? this.state.group!.group_name : s;
 
   render() {
     const {
@@ -114,6 +116,7 @@ export class GroupDetailsContainer extends React.Component<
             css={css`
               padding: ${Theme.Padding.Half} 0 0 ${Theme.Padding.Standard};
             `}
+            replace={this.replaceGroupIdBreadcrumb}
           />
           <Switch>
             <Route
