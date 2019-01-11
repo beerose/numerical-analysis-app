@@ -4,25 +4,19 @@ import React from 'react';
 
 import { Table } from '../../../../components/Table';
 
-import {
-  BoxedMeetingData,
-  BoxedStudent,
-  FieldIdentifier,
-  MeetingId,
-  Unboxed,
-} from './types';
+import { FieldIdentifier, MeetingId } from './types';
 
 type IdentifiedChangeHandler = (value: FieldIdentifier) => void;
 
-type Props<TBoxedMeetingData extends BoxedMeetingData> = {
+type Props = {
   meetings: MeetingDTO[];
   meetingsDetails: MeetingDetailsModel[];
   makeRenderMeetingData: (
     meetingId: MeetingId,
     handleChange: IdentifiedChangeHandler
   ) => (
-    meetingData: Unboxed<TBoxedMeetingData>,
-    record: BoxedStudent & TBoxedMeetingData,
+    meetingData: MeetingDetailsModel['data'],
+    record: MeetingDetailsModel,
     index: number
   ) => React.ReactNode;
   handleChange: IdentifiedChangeHandler;
@@ -36,15 +30,13 @@ const Em = styled.em`
   display: block;
 `;
 
-export class StudentsAtMeetingsTable<
-  TBoxedMeetingData extends BoxedMeetingData
-> extends React.Component<Props<TBoxedMeetingData>> {
+export class StudentsAtMeetingsTable extends React.Component<Props> {
   columns = [
     {
       dataIndex: 'student.user_name',
       fixed: true,
       key: 'user_name',
-      sorter: (a: BoxedStudent, b: BoxedStudent) =>
+      sorter: (a: MeetingDetailsModel, b: MeetingDetailsModel) =>
         Number(a.student.user_name < b.student.user_name),
       title: 'Student',
     },
@@ -52,7 +44,7 @@ export class StudentsAtMeetingsTable<
       dataIndex: 'student.student_index',
       fixed: true,
       key: 'student_index',
-      sorter: (a: BoxedStudent, b: BoxedStudent) =>
+      sorter: (a: MeetingDetailsModel, b: MeetingDetailsModel) =>
         Number(a.student.student_index) - Number(b.student.student_index),
       title: 'Indeks',
     },
@@ -79,6 +71,8 @@ export class StudentsAtMeetingsTable<
 
     return (
       <Table
+        sortDirections={['descend', 'ascend']}
+        size="small"
         rowKey={record => record.student.id}
         columns={this.columns}
         dataSource={meetingsDetails}

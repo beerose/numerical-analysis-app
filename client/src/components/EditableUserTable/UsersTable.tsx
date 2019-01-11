@@ -129,8 +129,8 @@ export class UsersTable extends React.Component<
 
   componentWillReceiveProps(nextProps: UsersTableProps) {
     this.setState({
-      data: nextProps.users,
       currentPage: nextProps.currentPage || 1,
+      data: nextProps.users,
     });
   }
 
