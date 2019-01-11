@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Icon, Menu, Spin } from 'antd';
-import { GroupDTO, ServerRoutes } from 'common';
+import { GroupDTO, groupFeatures } from 'common';
 import { PropsOf } from 'props-of';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
@@ -59,8 +59,13 @@ export class GroupDetailsContainer extends React.Component<
     return this.props.location.pathname.split('/')[3] || 'settings';
   }
 
-  replaceGroupIdBreadcrumb = (s: string) =>
-    Number(s) ? this.state.group!.group_name : s;
+  replaceGroupIdBreadcrumb = (s: string) => {
+    const { group } = this.state;
+    if (Number(s) === group!.id) {
+      return group!.group_name;
+    }
+    return s;
+  };
 
   render() {
     const {
@@ -76,6 +81,8 @@ export class GroupDetailsContainer extends React.Component<
         </Flex>
       );
     }
+
+    const features = groupFeatures[group.group_type];
 
     console.log({ group });
 
@@ -94,18 +101,24 @@ export class GroupDetailsContainer extends React.Component<
             <Icon type="team" />
             {texts.students}
           </MenuLink>
-          <MenuLink to={`${matchUrl}/lists`}>
-            <Icon type="calculator" />
-            Listy zadań
-          </MenuLink>
-          <MenuLink to={`${matchUrl}/meetings`}>
-            <Icon type="schedule" />
-            {texts.meetings}
-          </MenuLink>
-          <MenuLink to={`${matchUrl}/presence`}>
-            <Icon type="calendar" />
-            {texts.presence}
-          </MenuLink>
+          {features.hasLists && (
+            <MenuLink to={`${matchUrl}/lists`}>
+              <Icon type="calculator" />
+              {texts.lists}
+            </MenuLink>
+          )}
+          {features.hasMeetings && (
+            <MenuLink to={`${matchUrl}/meetings`}>
+              <Icon type="schedule" />
+              {texts.meetings}
+            </MenuLink>
+          )}
+          {features.hasPresence && (
+            <MenuLink to={`${matchUrl}/presence`}>
+              <Icon type="calendar" />
+              {texts.presence}
+            </MenuLink>
+          )}
           <MenuLink to={`${matchUrl}/grades`}>
             <Icon type="line-chart" />
             {texts.grades}

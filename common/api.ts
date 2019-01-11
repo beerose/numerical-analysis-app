@@ -68,7 +68,7 @@ export enum GroupType {
 }
 
 export type GroupDTO = {
-  id: string;
+  id: number;
   group_name: string;
   group_type: GroupType;
   academic_year?: string;
