@@ -7,11 +7,14 @@ export const apiMessages = {
   groupCreated: 'Grupa została dodana',
   groupDeleted: 'Grupa została usunięta',
   groupIdRequired: 'group_id jest wymagane',
+  groupMissing: 'Nie ma grupy o podanym id',
   idRequired: 'Id jest wymagane',
   internalError: 'Wystąpił błąd, spróbuj ponownie',
   invalidAddMeetingRequest: 'Pola meeting_name, date, group_id są wymagane',
-  invalidCSV: 'Nieprawidłowy plik CSV. Wymagany format to: imię, nazwisko, indeks, email.',
-  invalidCreateGroupRequest: 'Pola group_type, group_name, academic_year są wymagane',
+  invalidCSV:
+    'Nieprawidłowy plik CSV. Wymagany format to: imię, nazwisko, indeks, email.',
+  invalidCreateGroupRequest:
+    'Pola group_type, group_name, academic_year są wymagane',
   invalidDeleteStudentFromGroupReq: 'user_id jest wymagane',
   invalidEmailOrPassword: 'Nieprawidłowy email lub hasło',
   invalidJWT: 'Nieprawidłowy format JWT',
@@ -27,7 +30,8 @@ export const apiMessages = {
   meetingUpdated: 'Spotkanie zostało zaktualizowane',
   presenceAdded: 'Obecność dodana',
   presenceDeleted: 'Obecność usunięta',
-  tokenUsed: 'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',
+  tokenUsed:
+    'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',
   userAlreadyExists: 'Użytkownik o tym adresie email już istnieje',
   userCreated: 'Użytkownik został dodany',
   userDeleted: 'Użytkonik został usunięty',

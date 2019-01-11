@@ -7,13 +7,13 @@ export interface ApiResponse {
 
 export const ServerRoutes = {
   Accounts: {
-    Login: '/accounts/login',
-    New: '/accounts/new',
+    Login: '/accounts.login',
+    New: '/accounts.new',
   },
   Groups: {
-    Create: '/groups/create',
-    Delete: '/groups/delete',
-    Get: '/groups',
+    Create: '/groups.create',
+    Delete: '/groups.delete',
+    Get: '/groups.get',
     List: '/groups',
     Meetings: {
       AddPresence: '/groups/meetings.addPresence',
@@ -62,9 +62,9 @@ export type Pagination = {
 };
 
 export enum GroupType {
-  LAB = 'lab',
-  EXERCISE = 'exercise',
-  LECTURE = 'lecture',
+  Lab = 'lab',
+  Exercise = 'exercise',
+  Lecture = 'lecture',
 }
 
 export type GroupDTO = {

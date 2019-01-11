@@ -1,8 +1,8 @@
+import { MeetingDTO, UserDTO } from 'common';
+import { apiMessages } from 'common';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { MeetingDTO, UserDTO } from 'common';
-import { apiMessages } from 'common';
 import { db } from '../../store';
 
 interface SetActivityRequest extends Request {

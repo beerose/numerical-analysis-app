@@ -1,23 +1,34 @@
-import { apiMessages, GroupDTO } from 'common';
-import { Request, Response } from 'express';
+import { apiMessages } from 'common';
+import { Response } from 'express';
 import * as codes from 'http-status-codes';
+import * as t from 'io-ts';
 
+import { GetRequest, handleBadRequest } from '../lib/request';
 import { db } from '../store';
 
-interface GetGroupRequest extends Request {
-  query: {
-    group_id: GroupDTO['id'];
-  };
-}
+const GetGroupQueryV = t.type({
+  group_id: t.string,
+});
+
+type GetGroupRequest = GetRequest<typeof GetGroupQueryV>;
 
 export const get = (req: GetGroupRequest, res: Response) => {
-  return db.getGroup({ groupId: req.query.group_id }, (err, [group]) => {
-    if (err) {
-      console.log(err);
-      return res
-        .status(codes.INTERNAL_SERVER_ERROR)
-        .send({ error: apiMessages.internalError });
-    }
-    return res.status(codes.OK).send(group);
+  handleBadRequest(GetGroupQueryV, req.query, res).then(query => {
+    db.getGroup({ groupId: query.group_id }, (mysqlErr, [group]) => {
+      if (mysqlErr) {
+        console.error(mysqlErr);
+        return res
+          .status(codes.INTERNAL_SERVER_ERROR)
+          .send({ error: apiMessages.internalError });
+      }
+
+      if (!group) {
+        return res
+          .status(codes.NOT_FOUND)
+          .send({ error: apiMessages.groupMissing });
+      }
+
+      return res.status(codes.OK).send(group);
+    });
   });
 };

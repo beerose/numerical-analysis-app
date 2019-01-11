@@ -1,7 +1,7 @@
+import { apiMessages } from 'common';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { apiMessages } from 'common';
 import { connection } from '../../store/connection';
 import { deleteStudentFromGroupQuery } from '../../store/queries';
 

@@ -1,8 +1,7 @@
-import { UserDTO, UserRole } from 'common';
+import { apiMessages, UserDTO, UserRole } from 'common';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { apiMessages } from 'common';
 import { connection } from '../../store/connection';
 import {
   prepareAttachStudentToGroupQuery,

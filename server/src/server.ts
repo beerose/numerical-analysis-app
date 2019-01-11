@@ -1,11 +1,10 @@
 import * as bodyParser from 'body-parser';
+import { ServerRoutes } from 'common';
 import cors from 'cors';
 import express from 'express';
 import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 import swaggerUi from 'swagger-ui-express';
-
-import { ServerRoutes } from 'common';
 
 import * as auth from './auth';
 import {
@@ -144,10 +143,7 @@ app.post(
   validateSetActivityRequest,
   groups.setActivity
 );
-app.post(
-  Groups.Get,
-  
-)
+app.get(Groups.Get, auth.authorize, groups.get);
 
 const listener = app.listen(PORT, () => {
   console.log(

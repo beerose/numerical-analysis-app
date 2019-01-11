@@ -1,6 +1,3 @@
-import { Request, Response } from 'express';
-import * as codes from 'http-status-codes';
-
 import {
   GroupDTO,
   MeetingDetailsDTO,
@@ -8,6 +5,9 @@ import {
   StudentActivities,
 } from 'common';
 import { apiMessages } from 'common';
+import { Request, Response } from 'express';
+import * as codes from 'http-status-codes';
+
 import { db } from '../../store';
 
 interface GetMeetingsDetailsRequest extends Request {

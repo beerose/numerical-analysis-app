@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Icon, Menu } from 'antd';
+import { Icon, Menu, Spin } from 'antd';
 import { GroupDTO, ServerRoutes } from 'common';
 import { PropsOf } from 'props-of';
 import * as React from 'react';
@@ -51,7 +51,7 @@ export class GroupDetailsContainer extends React.Component<
 
   componentDidMount() {
     const { groupId } = this.state;
-    // TODO: Add lift state for groups higher up,
+    // TODO: lift state for groups higher up,
     // so GroupDetails can use ListGroups's fresh state
     groupsService.getGroup(groupId).then(group => this.setState({ group }));
   }
@@ -66,6 +66,14 @@ export class GroupDetailsContainer extends React.Component<
     } = this.props;
     const { groupId, group } = this.state;
     const { texts } = this.context;
+
+    if (!group) {
+      return (
+        <Flex flex={1} justifyContent="center" alignItems="center">
+          <Spin />
+        </Flex>
+      );
+    }
 
     console.log({ group });
 
