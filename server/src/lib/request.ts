@@ -21,11 +21,9 @@ export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
     const result = decoder.decode(payload);
     result.fold(_err => {
       response.status(codes.BAD_REQUEST).send({
-        error: {
-          message: apiMessages.invalidRequest,
-          // tslint:disable-next-line:object-literal-sort-keys
-          details: reporter(result).join('\n'),
-        },
+        error: apiMessages.invalidRequest,
+        // tslint:disable-next-line:object-literal-sort-keys
+        errorDetails: reporter(result).join('\n'),
       });
     }, resolve);
   });

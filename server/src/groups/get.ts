@@ -7,7 +7,7 @@ import { GetRequest, handleBadRequest } from '../lib/request';
 import { db } from '../store';
 
 const GetGroupQueryV = t.type({
-  group_id: t.string,
+  group_id: t.number,
 });
 
 type GetGroupRequest = GetRequest<typeof GetGroupQueryV>;
