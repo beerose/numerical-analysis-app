@@ -1,17 +1,22 @@
-import { UserDTO, UserRole } from 'common';
-import { NextFunction, Request, Response } from 'express';
+import { apiMessages, UserDTO, UserRole } from 'common';
+import { NextFunction, Response } from 'express';
 import * as codes from 'http-status-codes';
+import * as t from 'io-ts';
 
-import { apiMessages } from 'common';
+import { GetRequest } from '../lib/request';
 import { connection } from '../store/connection';
 import {
   prepareAttachStudentToGroupQuery,
   upsertUserQuery,
 } from '../store/queries';
 
-interface UploadRequest extends Request {
-  body: { data: string; group_id: string };
-}
+const UploadBodyV = t.type({
+  data: t.string,
+  group_id: t.string,
+});
+
+type UploadRequest = GetRequest<typeof UploadBodyV>;
+
 export const upload = (
   req: UploadRequest,
   res: Response,
@@ -19,7 +24,9 @@ export const upload = (
 ) => {
   const { users, isValid } = readCSV(req.body.data);
   if (!isValid) {
-    res.status(codes.BAD_REQUEST).send({ error: apiMessages.invalidCSV });
+    res
+      .status(codes.PRECONDITION_FAILED)
+      .send({ error: apiMessages.invalidCSV });
     return;
   }
   if (!users || !users.length) {

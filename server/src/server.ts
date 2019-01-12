@@ -7,10 +7,6 @@ import { AddressInfo } from 'net';
 import swaggerUi from 'swagger-ui-express';
 
 import * as auth from './auth';
-import {
-  validateLoginUserRequest,
-  validateNewAccountRequest,
-} from './auth/validation';
 import * as groups from './groups';
 import {
   validateAddMeetingRequest,
@@ -24,15 +20,9 @@ import {
   validateListStudentsForGroupRequest,
   validateSetActivityRequest,
   validateUpdateMeetingRequest,
-  validateUploadRequest,
 } from './groups/validation';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
-import {
-  validateAddRequest,
-  validateDeleteRequest,
-  validateUpdateRequest,
-} from './users/validation';
 
 const PORT = process.env.PORT;
 
@@ -47,23 +37,13 @@ const { Users, Groups, Accounts } = ServerRoutes;
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.post(
-  Accounts.New,
-  validateNewAccountRequest,
-  auth.checkNewAccountToken,
-  auth.storeUserPassword
-);
-app.post(Accounts.Login, validateLoginUserRequest, auth.loginUser);
+app.post(Accounts.New, auth.checkNewAccountToken, auth.storeUserPassword);
+app.post(Accounts.Login, auth.loginUser);
 
 app.get(Users.List, auth.authorize, users.list);
-app.post(Users.Create, auth.authorize, validateAddRequest, users.create);
-app.post(Users.Update, auth.authorize, validateUpdateRequest, users.update);
-app.delete(
-  Users.Delete,
-  auth.authorize,
-  validateDeleteRequest,
-  users.deleteUser
-);
+app.post(Users.Create, auth.authorize, users.create);
+app.post(Users.Update, auth.authorize, users.update);
+app.delete(Users.Delete, auth.authorize, users.deleteUser);
 
 // Groups
 app.post(
@@ -72,13 +52,7 @@ app.post(
   validateCreateGroupRequest,
   groups.create
 );
-app.post(
-  Groups.Upload,
-  auth.authorize,
-  validateUploadRequest,
-  groups.upload,
-  auth.sendMagicLinks
-);
+app.post(Groups.Upload, auth.authorize, groups.upload, auth.sendMagicLinks);
 app.get(Groups.List, auth.authorize, groups.list);
 app.get(
   Groups.Students.List,

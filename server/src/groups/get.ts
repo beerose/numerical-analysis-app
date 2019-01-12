@@ -7,14 +7,14 @@ import { GetRequest, handleBadRequest } from '../lib/request';
 import { db } from '../store';
 
 const GetGroupQueryV = t.type({
-  group_id: t.number,
+  group_id: t.string,
 });
 
 type GetGroupRequest = GetRequest<typeof GetGroupQueryV>;
 
 export const get = (req: GetGroupRequest, res: Response) => {
   handleBadRequest(GetGroupQueryV, req.query, res).then(query => {
-    db.getGroup({ groupId: query.group_id }, (mysqlErr, [group]) => {
+    db.getGroup({ groupId: Number(query.group_id) }, (mysqlErr, [group]) => {
       if (mysqlErr) {
         console.error(mysqlErr);
         return res
