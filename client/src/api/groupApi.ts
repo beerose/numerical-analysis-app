@@ -148,13 +148,13 @@ export const listMeetings = (groupId: string): Promise<MeetingDTO[]> => {
   );
 };
 
-export const deleteGroup = (groupId: string) => {
+export const deleteGroup = async (groupId: string) => {
   const options = {
     body: JSON.stringify({ group_id: groupId }),
     method: 'DELETE',
   };
 
-  return authFetch<MeetingDTO[]>(SERVER_URL + Groups.Delete, options);
+  await authFetch(SERVER_URL + Groups.Delete, options).then(showMessage);
 };
 
 export const getMeetingsDetails = (

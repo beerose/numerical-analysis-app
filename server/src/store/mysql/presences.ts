@@ -8,9 +8,9 @@ import { QueryCallback } from './QueryCallback';
 type GetPresencesCallback = (
   err: MysqlError | null,
   results: Array<{
-    id: string;
-    user_name: string;
-    student_index: string;
+    id: UserDTO['id'];
+    user_name: UserDTO['user_name'];
+    student_index: UserDTO['student_index'];
     presences: string;
   }>
 ) => void;
@@ -42,7 +42,7 @@ export const getPresencesInGroup = (
 export const getActivitiesInGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
-    Array<{ id: string; meeting_id: string; points: string }>
+    Array<{ id: UserDTO['id']; meeting_id: MeetingDTO['id']; points: string }>
   >
 ) =>
   connection.query(

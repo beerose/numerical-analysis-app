@@ -1,14 +1,21 @@
-import { apiMessages, MeetingDTO } from 'common';
-import { Request, Response } from 'express';
+import { apiMessages } from 'common';
+import { Response } from 'express';
 import * as codes from 'http-status-codes';
+import * as t from 'io-ts';
 
+import { PostRequest } from '../../lib/request';
 import { db } from '../../store';
 
-interface UpdateMeetingRequest extends Request {
-  body: {
-    meeting: Pick<MeetingDTO, 'id' | 'meeting_name' | 'date'>;
-  };
-}
+const UpdateMeetingBodyV = t.type({
+  meeting: t.type({
+    date: t.string,
+    id: t.number,
+    meeting_name: t.string,
+  }),
+});
+
+type UpdateMeetingRequest = PostRequest<typeof UpdateMeetingBodyV>;
+
 export const updateMeeting = (req: UpdateMeetingRequest, res: Response) => {
   const {
     meeting: { meeting_name, date, id },

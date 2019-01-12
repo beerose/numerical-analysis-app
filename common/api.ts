@@ -49,7 +49,7 @@ export enum UserRole {
 export const userRoleOptions = Object.values(UserRole);
 
 export type UserDTO = {
-  id: string;
+  id: number;
   user_name: string;
   email: string;
   student_index?: string;

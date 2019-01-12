@@ -31,7 +31,7 @@ export const addGroup = (
   );
 
 export const deleteGroup = (
-  { groupId }: { groupId: string },
+  { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback
 ) =>
   connection.query(

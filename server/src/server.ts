@@ -8,19 +8,6 @@ import swaggerUi from 'swagger-ui-express';
 
 import * as auth from './auth';
 import * as groups from './groups';
-import {
-  validateAddMeetingRequest,
-  validateAddPresenceRequest,
-  validateAddStudentToGroupRequest,
-  validateCreateGroupRequest,
-  validateDeleteGroupRequest,
-  validateDeleteMeetingRequest,
-  validateDeletePresenceRequest,
-  validateGetMeetingsDetailsRequest,
-  validateListStudentsForGroupRequest,
-  validateSetActivityRequest,
-  validateUpdateMeetingRequest,
-} from './groups/validation';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
 
@@ -46,77 +33,26 @@ app.post(Users.Update, auth.authorize, users.update);
 app.delete(Users.Delete, auth.authorize, users.deleteUser);
 
 // Groups
-app.post(
-  Groups.Create,
-  auth.authorize,
-  validateCreateGroupRequest,
-  groups.create
-);
+app.post(Groups.Create, auth.authorize, groups.create);
 app.post(Groups.Upload, auth.authorize, groups.upload, auth.sendMagicLinks);
 app.get(Groups.List, auth.authorize, groups.list);
-app.get(
-  Groups.Students.List,
-  auth.authorize,
-  validateListStudentsForGroupRequest,
-  groups.listStudentsForGroup
-);
-app.delete(
-  Groups.Delete,
-  auth.authorize,
-  validateDeleteGroupRequest,
-  groups.deleteGroup
-);
+app.get(Groups.Students.List, auth.authorize, groups.listStudentsForGroup);
+app.delete(Groups.Delete, auth.authorize, groups.deleteGroup);
 
-app.post(
-  Groups.Students.AddToGroup,
-  auth.authorize,
-  validateAddStudentToGroupRequest,
-  groups.addStudentToGroup
-);
+app.post(Groups.Students.AddToGroup, auth.authorize, groups.addStudentToGroup);
 
 app.get(Groups.Meetings.List, auth.authorize, groups.listMeetings);
-app.post(
-  Groups.Meetings.Create,
-  auth.authorize,
-  validateAddMeetingRequest,
-  groups.addMeeting
-);
-app.post(
-  Groups.Meetings.Update,
-  auth.authorize,
-  validateUpdateMeetingRequest,
-  groups.updateMeeting
-);
-app.delete(
-  Groups.Meetings.Delete,
-  auth.authorize,
-  validateDeleteMeetingRequest,
-  groups.deleteMeeting
-);
-app.get(
-  Groups.Meetings.Details,
-  auth.authorize,
-  validateGetMeetingsDetailsRequest,
-  groups.getMeetingsDetails
-);
-app.post(
-  Groups.Meetings.AddPresence,
-  auth.authorize,
-  validateAddPresenceRequest,
-  groups.addPresence
-);
+app.post(Groups.Meetings.Create, auth.authorize, groups.addMeeting);
+app.post(Groups.Meetings.Update, auth.authorize, groups.updateMeeting);
+app.delete(Groups.Meetings.Delete, auth.authorize, groups.deleteMeeting);
+app.get(Groups.Meetings.Details, auth.authorize, groups.getMeetingsDetails);
+app.post(Groups.Meetings.AddPresence, auth.authorize, groups.addPresence);
 app.delete(
   Groups.Meetings.DeletePresence,
   auth.authorize,
-  validateDeletePresenceRequest,
   groups.deletePresence
 );
-app.post(
-  Groups.Meetings.SetActivity,
-  auth.authorize,
-  validateSetActivityRequest,
-  groups.setActivity
-);
+app.post(Groups.Meetings.SetActivity, auth.authorize, groups.setActivity);
 app.get(Groups.Get, auth.authorize, groups.get);
 
 const listener = app.listen(PORT, () => {
