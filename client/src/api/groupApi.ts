@@ -135,7 +135,9 @@ export const deleteMeeting = async (id: number) => {
   );
 };
 
-export const listMeetings = (groupId: string): Promise<MeetingDTO[]> => {
+export const listMeetings = (
+  groupId: GroupDTO['id']
+): Promise<MeetingDTO[]> => {
   const options = {
     method: 'GET',
   };
@@ -158,7 +160,7 @@ export const deleteGroup = async (groupId: string) => {
 };
 
 export const getMeetingsDetails = (
-  groupId: string
+  groupId: GroupDTO['id']
 ): Promise<MeetingDetailsModel[]> => {
   const options = {
     method: 'GET',

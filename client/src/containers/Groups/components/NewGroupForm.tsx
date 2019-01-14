@@ -45,7 +45,7 @@ const SelectSuperUser = React.forwardRef(
       ref={ref}
     >
       {superUsers.map(superUser => (
-        <Select.Option key={superUser.id} value={superUser.id}>
+        <Select.Option key={String(superUser.id)} value={superUser.id}>
           {superUser.user_name}
         </Select.Option>
       ))}
@@ -83,11 +83,7 @@ export const SelectSemester = React.forwardRef(
 );
 
 const formStyles = css`
-  min-width: 28.5vw;
-
-  @media (max-device-width: 680px) {
-    min-width: 42vw;
-  }
+  width: 420px;
 `;
 
 export type NewGroupFormValues = {
@@ -103,9 +99,17 @@ type Props = {
   onSubmit: (group: NewGroupFormValues) => void;
   onCancel: () => void;
 } & FormComponentProps;
-class NewGroupForm extends React.Component<Props> {
+type State = {
+  submitting: boolean;
+};
+class NewGroupForm extends React.Component<Props, State> {
+  state: State = {
+    submitting: false,
+  };
+
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    this.setState({ submitting: true });
     this.props.form.validateFields((err, values: NewGroupFormValues) => {
       if (err) {
         return;
@@ -120,6 +124,7 @@ class NewGroupForm extends React.Component<Props> {
       onCancel,
       superUsers,
     } = this.props;
+    const { submitting } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit} className={formStyles}>
@@ -172,6 +177,7 @@ class NewGroupForm extends React.Component<Props> {
             type="primary"
             htmlType="submit"
             style={{ marginRight: '5px' }}
+            loading={submitting}
           >
             Dodaj
           </Button>

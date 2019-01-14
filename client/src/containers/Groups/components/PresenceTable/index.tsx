@@ -1,10 +1,12 @@
-import { Spin } from 'antd';
-import { MeetingDetailsModel, MeetingDTO } from 'common';
+import { Button, Spin } from 'antd';
+import { MeetingDetailsModel, MeetingDTO, UserDTO } from 'common';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
+import { Flex } from '../../../../components/Flex';
 import { PaddingContainer } from '../../../../components/PaddingContainer';
 
-import { MeetingId, PresencesAndActivities } from './types';
+import { MeetingId } from './types';
 import {
   PresenceAndActivityChangeHandler,
   PresenceAndActivityControls,
@@ -39,9 +41,13 @@ type PresenceTableProps = {
   meetings?: MeetingDTO[];
   meetingsDetails?: MeetingDetailsModel[];
   setMeetingsDetails: (details: MeetingDetailsModel[]) => void;
-  addPresence: (userId: string, meetingId: number) => void;
-  deletePresence: (userId: string, meetingId: number) => void;
-  setActivity: (userId: string, meetingId: number, activity: number) => void;
+  addPresence: (userId: UserDTO['id'], meetingId: number) => void;
+  deletePresence: (userId: UserDTO['id'], meetingId: number) => void;
+  setActivity: (
+    userId: UserDTO['id'],
+    meetingId: number,
+    activity: number
+  ) => void;
 };
 
 export class PresenceTable extends React.Component<PresenceTableProps> {
@@ -102,7 +108,23 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
     }
 
     if (!meetings.length) {
-      return <div>Nie ma spotkań</div>;
+      return (
+        <Flex
+          justifyContent="center"
+          alignItems="center"
+          flex={1}
+          flexDirection="column"
+          fontSize="1.4em"
+        >
+          <Flex fontSize="1.6em" paddingBottom="0.5em">
+            Nie ma spotkań 🤷
+          </Flex>
+          <div>
+            Chcesz stworzyć spotkanie?{' '}
+            <Link to="meetings">Idź do spotkań.</Link>
+          </div>
+        </Flex>
+      );
     }
 
     return (

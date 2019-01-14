@@ -1,6 +1,6 @@
+import { GroupDTO, MeetingDetailsModel, MeetingDTO } from 'common';
 import * as React from 'react';
 
-import { GroupDTO, MeetingDetailsModel, MeetingDTO } from 'common';
 import * as groupService from '../../../api/groupApi';
 import { PresenceTable } from '../components';
 
@@ -34,18 +34,6 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
     this.setState({ meetingsDetails: newDetails });
   };
 
-  handleAddPresence = (userId: string, meetingId: number) => {
-    groupService.addPresence(userId, meetingId);
-  };
-
-  handleDeletePresence = (userId: string, meetingId: number) => {
-    groupService.deletePresence(userId, meetingId);
-  };
-
-  handleSetActivity = (userId: string, meetingId: number, points: number) => {
-    groupService.setActivity(userId, meetingId, points);
-  };
-
   render() {
     const { meetings, meetingsDetails } = this.state;
     return (
@@ -53,9 +41,9 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
         meetings={meetings}
         meetingsDetails={meetingsDetails}
         setMeetingsDetails={this.setMeetingsDetails}
-        setActivity={this.handleSetActivity}
-        addPresence={this.handleAddPresence}
-        deletePresence={this.handleDeletePresence}
+        setActivity={groupService.setActivity}
+        addPresence={groupService.addPresence}
+        deletePresence={groupService.deletePresence}
       />
     );
   }

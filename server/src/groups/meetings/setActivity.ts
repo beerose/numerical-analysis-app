@@ -1,5 +1,5 @@
-import { apiMessages, MeetingDTO, UserDTO } from 'common';
-import { Request, Response } from 'express';
+import { apiMessages } from 'common';
+import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
@@ -15,7 +15,7 @@ const SetActivityBodyV = t.type({
 type SetActivityRequest = PostRequest<typeof SetActivityBodyV>;
 
 export const setActivity = (req: SetActivityRequest, res: Response) => {
-  handleBadRequest(SetActivityBodyV, req.body, res).then(() => {
+  handleBadRequest(SetActivityBodyV, { dupa: 2 } /*req.body*/, res).then(() => {
     const { meeting_id, student_id, points } = req.body;
 
     db.setActivity(

@@ -138,7 +138,7 @@ export class GroupDetailsContainer extends React.Component<
               component={() => <StudentsSection groupId={groupId} />}
             />
             <Route exact={true} path={'/groups/:id/presence'}>
-              <MeetingsDetailsSections groupId={groupId} />
+              <MeetingsDetailsSections groupId={Number(groupId)} />
             </Route>
             <Route exact={true} path={'/groups/:id/meetings'}>
               <MeetingsSection groupId={groupId} />

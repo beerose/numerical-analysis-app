@@ -11,7 +11,6 @@ import { generateToken } from './utils';
 
 const LoginUserBodyV = t.type({
   email: t.string,
-  group_id: t.string,
   password: t.string,
 });
 
