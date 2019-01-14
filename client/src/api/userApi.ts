@@ -1,4 +1,4 @@
-import { ServerRoutes, UserDTO } from 'common';
+import { ApiResponse, ServerRoutes, UserDTO } from 'common';
 import * as qs from 'query-string';
 
 import { showMessage } from '../utils/message';
@@ -44,8 +44,8 @@ export const addUser = async (user: UserDTO) => {
     },
     method: 'POST',
   };
-  await authFetch(SERVER_URL + Users.Create, options).then(res =>
-    showMessage(res)
+  await authFetch<ApiResponse>(SERVER_URL + Users.Create, options).then(
+    showMessage
   );
 };
 
@@ -58,7 +58,9 @@ export const deleteUser = async (id: string) => {
     method: 'DELETE',
   };
 
-  await authFetch(SERVER_URL + Users.Delete, options).then(showMessage);
+  await authFetch<ApiResponse>(SERVER_URL + Users.Delete, options).then(
+    showMessage
+  );
 };
 
 export const updateUser = async (user: UserDTO) => {
@@ -70,5 +72,7 @@ export const updateUser = async (user: UserDTO) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + Users.Update, options).then(showMessage);
+  await authFetch<ApiResponse>(SERVER_URL + Users.Update, options).then(
+    showMessage
+  );
 };

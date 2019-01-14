@@ -64,9 +64,10 @@ export const deleteUserFromGroup = async (userId: string) => {
     method: 'DELETE',
   };
 
-  return authFetch(SERVER_URL + Groups.Students.AddToGroup, options).then(
-    showMessage
-  );
+  return authFetch<ApiResponse>(
+    SERVER_URL + Groups.Students.AddToGroup,
+    options
+  ).then(showMessage);
 };
 
 export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
@@ -75,9 +76,10 @@ export const addStudentToGroup = async (user: UserDTO, groupId: string) => {
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + Groups.Students.AddToGroup, options).then(
-    showMessage
-  );
+  await authFetch<ApiResponse>(
+    SERVER_URL + Groups.Students.AddToGroup,
+    options
+  ).then(showMessage);
 };
 
 export const addGroup = (
@@ -106,9 +108,10 @@ export const addMeeting = async (
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + Groups.Meetings.Create, options).then(
-    showMessage
-  );
+  await authFetch<ApiResponse>(
+    SERVER_URL + Groups.Meetings.Create,
+    options
+  ).then(showMessage);
 };
 
 export const updateMeeting = async (
@@ -119,9 +122,10 @@ export const updateMeeting = async (
     method: 'POST',
   };
 
-  await authFetch(SERVER_URL + Groups.Meetings.Update, options).then(
-    showMessage
-  );
+  await authFetch<ApiResponse>(
+    SERVER_URL + Groups.Meetings.Update,
+    options
+  ).then(showMessage);
 };
 
 export const deleteMeeting = async (id: number) => {
@@ -130,9 +134,10 @@ export const deleteMeeting = async (id: number) => {
     method: 'DELETE',
   };
 
-  await authFetch(SERVER_URL + Groups.Meetings.Delete, options).then(
-    showMessage
-  );
+  await authFetch<ApiResponse>(
+    SERVER_URL + Groups.Meetings.Delete,
+    options
+  ).then(showMessage);
 };
 
 export const listMeetings = (
@@ -156,7 +161,9 @@ export const deleteGroup = async (groupId: string) => {
     method: 'DELETE',
   };
 
-  await authFetch(SERVER_URL + Groups.Delete, options).then(showMessage);
+  await authFetch<ApiResponse>(SERVER_URL + Groups.Delete, options).then(
+    showMessage
+  );
 };
 
 export const getMeetingsDetails = (
@@ -191,10 +198,15 @@ export const addPresence = (
     method: 'POST',
   };
 
-  return authFetch<MeetingDTO[]>(
+  return authFetch<ApiResponse>(
     SERVER_URL + Groups.Meetings.AddPresence,
     options
-  );
+  ).then(result => {
+    if ('error' in result) {
+      showMessage(result);
+    }
+    return result;
+  });
 };
 
 export const deletePresence = (
@@ -203,13 +215,21 @@ export const deletePresence = (
 ) => {
   const options = {
     body: JSON.stringify({ student_id: studentId, meeting_id: meetingId }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+    },
     method: 'DELETE',
   };
 
-  return authFetch<MeetingDTO[]>(
+  return authFetch<ApiResponse>(
     SERVER_URL + Groups.Meetings.DeletePresence,
     options
-  );
+  ).then(result => {
+    if ('error' in result) {
+      showMessage(result);
+    }
+    return result;
+  });
 };
 
 export const setActivity = (
@@ -226,8 +246,13 @@ export const setActivity = (
     method: 'POST',
   };
 
-  return authFetch<MeetingDTO[]>(
+  return authFetch<ApiResponse>(
     SERVER_URL + Groups.Meetings.SetActivity,
     options
-  );
+  ).then(result => {
+    if ('error' in result) {
+      showMessage(result);
+    }
+    return result;
+  });
 };

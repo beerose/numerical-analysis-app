@@ -1,7 +1,11 @@
-export interface ApiResponse {
-  message?: string;
-  error?: string;
-}
+export type ApiResponse =
+  | {
+      message: string;
+    }
+  | {
+      error: string;
+      errorDetails?: string;
+    };
 
 // TODO: function l<T extends string>(s: T): T;
 

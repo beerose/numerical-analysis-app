@@ -98,7 +98,7 @@ app.post(
 );
 app.delete(
   Groups.Meetings.DeletePresence,
-  auth.authorize,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
   groups.deletePresence
 );
 app.post(

@@ -15,7 +15,7 @@ const SetActivityBodyV = t.type({
 type SetActivityRequest = PostRequest<typeof SetActivityBodyV>;
 
 export const setActivity = (req: SetActivityRequest, res: Response) => {
-  handleBadRequest(SetActivityBodyV, { dupa: 2 } /*req.body*/, res).then(() => {
+  handleBadRequest(SetActivityBodyV, req.body, res).then(() => {
     const { meeting_id, student_id, points } = req.body;
 
     db.setActivity(

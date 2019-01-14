@@ -1,6 +1,14 @@
-import { GroupDTO, MeetingDetailsModel, MeetingDTO } from 'common';
+import { message } from 'antd';
+import {
+  ApiResponse,
+  GroupDTO,
+  MeetingDetailsModel,
+  MeetingDTO,
+  UserDTO,
+} from 'common';
 import * as React from 'react';
 
+import { groupsService } from '../../../api';
 import * as groupService from '../../../api/groupApi';
 import { PresenceTable } from '../components';
 
@@ -17,20 +25,37 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
     meetingsDetails: [],
   };
 
-  componentDidMount() {
-    groupService.listMeetings(this.props.groupId).then(res => {
-      this.setState({
-        meetings: res,
-      });
+  handleSetActivity = this.withErrorHandler(groupsService.setActivity);
+  handleAddPresence = this.withErrorHandler(groupService.addPresence);
+  handleDeletePresence = this.withErrorHandler(groupsService.deletePresence);
+
+  setStateFromApi() {
+    const { groupId } = this.props;
+    groupService.listMeetings(groupId).then(meetings => {
+      this.setState({ meetings });
     });
-    groupService.getMeetingsDetails(this.props.groupId).then(res => {
-      this.setState({
-        meetingsDetails: res,
-      });
+    groupService.getMeetingsDetails(groupId).then(meetingsDetails => {
+      this.setState({ meetingsDetails });
     });
   }
 
-  setMeetingsDetails = (newDetails: MeetingDetailsModel[]) => {
+  componentDidMount() {
+    this.setStateFromApi();
+  }
+
+  withErrorHandler<Args extends any[]>(
+    func: (...args: Args) => Promise<ApiResponse>
+  ) {
+    return (...args: Args) =>
+      func(...args).then(result => {
+        if ('error' in result) {
+          this.setStateFromApi();
+        }
+        return result;
+      });
+  }
+
+  handleSetMeetingDetails = (newDetails: MeetingDetailsModel[]) => {
     this.setState({ meetingsDetails: newDetails });
   };
 
@@ -40,10 +65,10 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
       <PresenceTable
         meetings={meetings}
         meetingsDetails={meetingsDetails}
-        setMeetingsDetails={this.setMeetingsDetails}
-        setActivity={groupService.setActivity}
-        addPresence={groupService.addPresence}
-        deletePresence={groupService.deletePresence}
+        setMeetingsDetails={this.handleSetMeetingDetails}
+        setActivity={this.handleSetActivity}
+        addPresence={this.handleAddPresence}
+        deletePresence={this.handleDeletePresence}
       />
     );
   }
