@@ -1,5 +1,5 @@
 import * as bodyParser from 'body-parser';
-import { ServerRoutes } from 'common';
+import { ServerRoutes, UserRole } from 'common';
 import cors from 'cors';
 import express from 'express';
 import morganBody from 'morgan-body';
@@ -27,33 +27,90 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.post(Accounts.New, auth.checkNewAccountToken, auth.storeUserPassword);
 app.post(Accounts.Login, auth.loginUser);
 
-app.get(Users.List, auth.authorize, users.list);
-app.post(Users.Create, auth.authorize, users.create);
-app.post(Users.Update, auth.authorize, users.update);
-app.delete(Users.Delete, auth.authorize, users.deleteUser);
+app.get(Users.List, auth.authorize([UserRole.admin]), users.list);
+app.post(Users.Create, auth.authorize([UserRole.admin]), users.create);
+app.post(Users.Update, auth.authorize([UserRole.admin]), users.update);
+app.delete(Users.Delete, auth.authorize([UserRole.admin]), users.deleteUser);
 
 // Groups
-app.post(Groups.Create, auth.authorize, groups.create);
-app.post(Groups.Upload, auth.authorize, groups.upload, auth.sendMagicLinks);
-app.get(Groups.List, auth.authorize, groups.list);
-app.get(Groups.Students.List, auth.authorize, groups.listStudentsForGroup);
-app.delete(Groups.Delete, auth.authorize, groups.deleteGroup);
+app.post(
+  Groups.Create,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.create
+);
+app.post(
+  Groups.Upload,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.upload,
+  auth.sendMagicLinks
+);
+app.get(
+  Groups.List,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.list
+);
+app.delete(
+  Groups.Delete,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.deleteGroup
+);
 
-app.post(Groups.Students.AddToGroup, auth.authorize, groups.addStudentToGroup);
+app.get(
+  Groups.Students.List,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.listStudentsForGroup
+);
+app.post(
+  Groups.Students.AddToGroup,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.addStudentToGroup
+);
 
-app.get(Groups.Meetings.List, auth.authorize, groups.listMeetings);
-app.post(Groups.Meetings.Create, auth.authorize, groups.addMeeting);
-app.post(Groups.Meetings.Update, auth.authorize, groups.updateMeeting);
-app.delete(Groups.Meetings.Delete, auth.authorize, groups.deleteMeeting);
-app.get(Groups.Meetings.Details, auth.authorize, groups.getMeetingsDetails);
-app.post(Groups.Meetings.AddPresence, auth.authorize, groups.addPresence);
+app.get(
+  Groups.Meetings.List,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.listMeetings
+);
+app.post(
+  Groups.Meetings.Create,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.addMeeting
+);
+app.post(
+  Groups.Meetings.Update,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.updateMeeting
+);
+app.delete(
+  Groups.Meetings.Delete,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.deleteMeeting
+);
+app.get(
+  Groups.Meetings.Details,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.getMeetingsDetails
+);
+app.post(
+  Groups.Meetings.AddPresence,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.addPresence
+);
 app.delete(
   Groups.Meetings.DeletePresence,
   auth.authorize,
   groups.deletePresence
 );
-app.post(Groups.Meetings.SetActivity, auth.authorize, groups.setActivity);
-app.get(Groups.Get, auth.authorize, groups.get);
+app.post(
+  Groups.Meetings.SetActivity,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.setActivity
+);
+app.get(
+  Groups.Get,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.get
+);
 
 const listener = app.listen(PORT, () => {
   console.log(

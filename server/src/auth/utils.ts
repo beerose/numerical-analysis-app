@@ -1,8 +1,15 @@
 import jwt from 'jsonwebtoken';
 import nodeMailer from 'nodemailer';
 
-export const generateToken = (email: string, userName: string) => {
-  return jwt.sign({ email, user_name: userName }, process.env.JWT_SECRET!);
+export const generateToken = (
+  email: string,
+  userName: string,
+  userRole: string
+) => {
+  return jwt.sign(
+    { email, user_role: userRole, user_name: userName },
+    process.env.JWT_SECRET!
+  );
 };
 
 export const transporter = nodeMailer.createTransport({
@@ -15,7 +22,13 @@ export const transporter = nodeMailer.createTransport({
   secure: false,
 });
 
-export const prepareEmailTemplate = ({ username, link }: { username: string; link: string }) => `
+export const prepareEmailTemplate = ({
+  username,
+  link,
+}: {
+  username: string;
+  link: string;
+}) => `
   <b>Witaj ${username},</b>
   <br /><br />
   Poniżej znajduje się link, dzięki któremu możesz założyć konto w portalu Analiza Numeryczna M.
