@@ -53,7 +53,7 @@ export const loginUser = (req: LoginUserRequest, res: Response) => {
               .send({ error: apiMessages.invalidEmailOrPassword });
           }
 
-          const token = generateToken(email, user_name);
+          const token = generateToken(email, user_name, user_role);
 
           return res.status(codes.OK).send({ token, user_name, user_role });
         }
