@@ -58,14 +58,17 @@ export const listStudentsForGroup = async (
   );
 };
 
-export const deleteUserFromGroup = async (userId: string) => {
+export const deleteUserFromGroup = async (
+  userId: UserDTO['id'],
+  groupId: GroupDTO['id']
+) => {
   const options = {
-    body: JSON.stringify({ user_id: userId }),
+    body: JSON.stringify({ user_id: userId, group_id: groupId }),
     method: 'DELETE',
   };
 
   return authFetch<ApiResponse>(
-    SERVER_URL + Groups.Students.AddToGroup,
+    SERVER_URL + Groups.Students.RemoveFromGroup,
     options
   ).then(showMessage);
 };

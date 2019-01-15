@@ -57,10 +57,12 @@ export class StudentsSection extends React.Component<Props, State> {
     this.updateStudentsLists();
   }
 
-  deleteStudent = (userId: string) => {
-    groupsService.deleteUserFromGroup(userId).then(() => {
-      this.updateStudentsLists();
-    });
+  deleteStudent = (userId: UserDTO['id']) => {
+    groupsService
+      .deleteUserFromGroup(userId, Number(this.props.groupId))
+      .then(() => {
+        this.updateStudentsLists();
+      });
   };
 
   updateStudent = (user: Omit<UserDTO, 'user_role'>) => {

@@ -32,7 +32,6 @@ app.post(Users.Create, auth.authorize([UserRole.admin]), users.create);
 app.post(Users.Update, auth.authorize([UserRole.admin]), users.update);
 app.delete(Users.Delete, auth.authorize([UserRole.admin]), users.deleteUser);
 
-// Groups
 app.post(
   Groups.Create,
   auth.authorize([UserRole.admin, UserRole.superUser]),
@@ -49,6 +48,11 @@ app.get(
   auth.authorize([UserRole.admin, UserRole.superUser]),
   groups.list
 );
+app.get(
+  Groups.Get,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.get
+);
 app.delete(
   Groups.Delete,
   auth.authorize([UserRole.admin, UserRole.superUser]),
@@ -64,6 +68,11 @@ app.post(
   Groups.Students.AddToGroup,
   auth.authorize([UserRole.admin, UserRole.superUser]),
   groups.addStudentToGroup
+);
+app.delete(
+  Groups.Students.RemoveFromGroup,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  groups.removeStudentFromGroup
 );
 
 app.get(
@@ -105,11 +114,6 @@ app.post(
   Groups.Meetings.SetActivity,
   auth.authorize([UserRole.admin, UserRole.superUser]),
   groups.setActivity
-);
-app.get(
-  Groups.Get,
-  auth.authorize([UserRole.admin, UserRole.superUser]),
-  groups.get
 );
 
 const listener = app.listen(PORT, () => {
