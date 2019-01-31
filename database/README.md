@@ -1,4 +1,8 @@
-# How to setup a database?
+# 🚛 Deployment
+
+We're deploying the database on heroku as https://numerical-db.herokuapp.com/
+
+# 🔌 How to setup a database?
 
 ```sh
 yarn db:setup
