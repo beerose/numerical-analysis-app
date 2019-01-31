@@ -8,7 +8,14 @@
   ],
   "scripts": {
     "start": "concurrently \"cd server/ && yarn start\" \"cd client/ && yarn dev\"",
-    "dev": "concurrently -c blue,green,yellow -n c,s,f \"cd common && yarn watch\" \"cd server/ && yarn dev\" \"cd client/ && yarn dev\""
+    "dev": "concurrently -c blue,green,yellow -n c,s,f \"cd common && yarn watch\" \"cd server/ && yarn dev\" \"cd client/ && yarn dev\"",
+    "db:setup": "yarn workspace database setup",
+    "db:grepForPassword": "yarn workspace database grepForPassword",
+    "db:ports": "yarn workspace database ports",
+    "db:interactive": "yarn workspace database interactive",
+    "db:start": "yarn workspace database start",
+    "db:stop": "yarn workspace database stop",
+    "db:remove": "yarn workspace database remove"
   },
   "devDependencies": {
     "tslint": "^5.12.0",
