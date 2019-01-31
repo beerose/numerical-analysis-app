@@ -1,11 +1,4 @@
-import { message } from 'antd';
-import {
-  ApiResponse,
-  GroupDTO,
-  MeetingDetailsModel,
-  MeetingDTO,
-  UserDTO,
-} from 'common';
+import { ApiResponse, GroupDTO, MeetingDetailsModel, MeetingDTO } from 'common';
 import * as React from 'react';
 
 import { groupsService } from '../../../api';
