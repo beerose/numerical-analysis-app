@@ -1,4 +1,4 @@
-import { GroupDTO, MeetingDTO, MeetingId } from 'common';
+import { GroupDTO, MeetingDTO, MeetingId, UserDTO } from 'common';
 
 import { connection } from '../connection';
 
@@ -68,7 +68,30 @@ export const listMeetings = (
         group_id = ?
       ORDER BY date ASC
     `,
+      typeCast: (field, orig) => {
+        return field.type === 'DATE' ? new Date(field.string()) : orig();
+      },
       values: [groupId],
+    },
+    callback
+  );
+
+export const removeStudentFromGroup = (
+  {
+    userId,
+    groupId,
+  }: {
+    userId: UserDTO['id'];
+    groupId: GroupDTO['id'];
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: `
+    DELETE FROM user_belongs_to_group WHERE user_id = ? AND group_id = ?
+  `,
+      values: [userId, groupId],
     },
     callback
   );

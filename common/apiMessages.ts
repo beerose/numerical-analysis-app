@@ -36,6 +36,7 @@ export const apiMessages = {
   userCreated: 'Użytkownik został dodany',
   userDeleted: 'Użytkonik został usunięty',
   userNotFound: 'Użytkownik o podanym adresie email nie istnieje',
+  userRemovedFromGroup: 'Student został usunięty z grupy',
   userUpdated: 'Użytkownik został poprawnie zedytowany',
   usersUploaded: 'Użytkownicy zostali dodani',
 };

@@ -1,5 +1,5 @@
 import { apiMessages } from 'common';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 

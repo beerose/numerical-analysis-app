@@ -72,7 +72,7 @@ type UsersTableProps = {
   total?: number;
   extraColumns?: ExtraColumnTypes[];
   onUpdate: (user: UserDTO) => void;
-  onDelete: (id: string) => void;
+  onDelete: (id: UserDTO['id']) => void;
   onTableChange?: (cfg: PaginationConfig) => void;
   className?: string;
 };
@@ -146,14 +146,14 @@ export class UsersTable extends React.Component<
     this.setState({ editingKey: '' });
   };
 
-  handleUpdate(form: WrappedFormUtils, id: string) {
+  handleUpdate(form: WrappedFormUtils, id: UserDTO['id']) {
     form.validateFields((_, row) => {
       this.props.onUpdate({ id, ...row });
     });
     this.setState({ editingKey: '' });
   }
 
-  handleDelete(id: string) {
+  handleDelete(id: UserDTO['id']) {
     this.props.onDelete(id);
   }
 

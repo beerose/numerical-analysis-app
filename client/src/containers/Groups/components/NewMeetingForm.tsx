@@ -1,6 +1,6 @@
 import { Button, DatePicker, Form, Icon, Input } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import FormItem from 'antd/lib/form/FormItem';
 import { css } from 'emotion';
 import * as React from 'react';
 
@@ -35,7 +35,7 @@ const NewMeetingForm = (props: Props) => {
 
   return (
     <Form onSubmit={handleSubmit} className={formStyles}>
-      <FormItem>
+      <Form.Item>
         {getFieldDecorator('meeting_name', {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
@@ -45,13 +45,13 @@ const NewMeetingForm = (props: Props) => {
             className={formItems}
           />
         )}
-      </FormItem>
+      </Form.Item>
       <div style={{ display: 'flex' }}>
-        <FormItem>
+        <Form.Item>
           {getFieldDecorator('date', {
             rules: [{ required: true, message: 'data jest wymagana' }],
           })(<DatePicker style={{ width: 280 }} />)}
-        </FormItem>
+        </Form.Item>
         <DateIncrementors
           setFieldsValue={setFieldsValue}
           getFieldValue={getFieldValue}

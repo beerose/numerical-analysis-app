@@ -1,11 +1,11 @@
 import { Button, DatePicker, Form, Icon, Input } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import FormItem from 'antd/lib/form/FormItem';
+import { MeetingDTO } from 'common';
 import { css } from 'emotion';
 import moment from 'moment';
 import * as React from 'react';
 
-import { MeetingDTO } from 'common';
 import { DateIncrementors } from '../../../components/DateIncrementors';
 
 const formStyles = css`
@@ -23,8 +23,9 @@ type Props = {
 class EditMeetingForm extends React.Component<Props> {
   componentDidMount() {
     const { model } = this.props;
+    console.log(moment(model.date));
     this.props.form.setFieldsValue({
-      date: moment(model.date),
+      date: moment.utc(model.date),
       meeting_name: model.meeting_name,
     });
   }
@@ -74,7 +75,7 @@ class EditMeetingForm extends React.Component<Props> {
 
     return (
       <Form onSubmit={this.handleSubmit} className={formStyles}>
-        <FormItem>
+        <Form.Item>
           {getFieldDecorator('meeting_name', {
             rules: [{ required: true, message: 'nazwa jest wymagana' }],
           })(
@@ -84,13 +85,13 @@ class EditMeetingForm extends React.Component<Props> {
               className={formItems}
             />
           )}
-        </FormItem>
+        </Form.Item>
         <div style={{ display: 'flex' }}>
-          <FormItem>
+          <Form.Item>
             {getFieldDecorator('date', {
               rules: [{ required: true, message: 'data jest wymagana' }],
             })(<DatePicker />)}
-          </FormItem>
+          </Form.Item>
           <DateIncrementors
             setFieldsValue={setFieldsValue}
             getFieldValue={getFieldValue}
