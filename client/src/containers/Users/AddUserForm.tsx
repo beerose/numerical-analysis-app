@@ -1,10 +1,11 @@
 import { Button, Form, Icon, Input, Modal } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
+import { UserDTO } from 'common';
 import * as React from 'react';
 
-import { UserDTO } from 'common';
 import { SelectRole } from '../../components/';
-import { LABELS } from '../../utils/labels';
+import { colors, LABELS } from '../../utils';
 
 const FormItem = Form.Item;
 
@@ -28,6 +29,7 @@ export const NewUserModalForm = (props: Props) => {
           'ant-select-selection-selected-value'
         );
         if (selected && selected[0]) {
+          // tslint:disable-next-line:no-inner-html
           selected[0].innerHTML =
             '<div unselectable="on" class="ant-select-selection__placeholder" style="display: block; user-select: none;">Rola użytkownika</div>';
         }
@@ -50,7 +52,7 @@ export const NewUserModalForm = (props: Props) => {
             rules: [{ required: true, message: LABELS.nameRequired }],
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={<Icon type="user" style={{ color: colors.semiLightGrey }} />}
               placeholder={LABELS.name}
             />
           )}
@@ -60,7 +62,7 @@ export const NewUserModalForm = (props: Props) => {
             rules: [{ required: true, message: LABELS.emailRequired }],
           })(
             <Input
-              prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={<Icon type="mail" style={{ color: colors.semiLightGrey }} />}
               placeholder={LABELS.email}
             />
           )}
@@ -75,7 +77,7 @@ export const NewUserModalForm = (props: Props) => {
             rules: [{ required: false }],
           })(
             <Input
-              prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={<Icon type="book" style={{ color: colors.semiLightGrey }} />}
               placeholder={LABELS.optionalIndex}
             />
           )}

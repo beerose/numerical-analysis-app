@@ -1,3 +1,5 @@
+import { GroupDTO } from 'common';
+
 export const upsertUserQuery = `
   INSERT IGNORE INTO
     users (
@@ -45,7 +47,11 @@ export const deleteStudentFromGroupQuery = `
   DELETE FROM user_belongs_to_group WHERE user_id = ?;
 `;
 
-export const prepareAttachStudentToGroupQuery = (userEmails: string[], groupId: string) => `
+// tslint:disable:no-nested-template-literals
+export const prepareAttachStudentToGroupQuery = (
+  userEmails: string[],
+  groupId: GroupDTO['id']
+) => `
   INSERT IGNORE INTO user_belongs_to_group(user_id, group_id)
   VALUES ${userEmails
     .map(email => `((SELECT id FROM users WHERE email = "${email}"), ${groupId})`)

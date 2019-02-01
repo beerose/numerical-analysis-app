@@ -1,8 +1,9 @@
+// tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Spin, Upload } from 'antd';
-import { UserDTO, UserRole } from 'common';
+import { GroupDTO, UserDTO, UserRole } from 'common';
 import * as React from 'react';
 import { Omit } from 'react-router';
 
@@ -27,7 +28,7 @@ type UploadObject = {
 };
 
 type Props = {
-  groupId: string;
+  groupId: GroupDTO['id'];
 };
 type State = {
   students: UserDTO[];
@@ -58,19 +59,15 @@ export class StudentsSection extends React.Component<Props, State> {
   }
 
   deleteStudent = (userId: UserDTO['id']) => {
-    groupsService
-      .deleteUserFromGroup(userId, Number(this.props.groupId))
-      .then(() => {
-        this.updateStudentsLists();
-      });
+    groupsService.deleteUserFromGroup(userId, Number(this.props.groupId)).then(() => {
+      this.updateStudentsLists();
+    });
   };
 
   updateStudent = (user: Omit<UserDTO, 'user_role'>) => {
-    usersService
-      .updateUser({ ...user, user_role: UserRole.student })
-      .then(() => {
-        this.updateStudentsLists();
-      });
+    usersService.updateUser({ ...user, user_role: UserRole.student }).then(() => {
+      this.updateStudentsLists();
+    });
   };
 
   onUpload = (uploadObject: UploadObject) => {
@@ -101,12 +98,7 @@ export class StudentsSection extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      students,
-      isFetching,
-      addStudentModalVisible,
-      allStudents,
-    } = this.state;
+    const { students, isFetching, addStudentModalVisible, allStudents } = this.state;
     return (
       <Container>
         <WrappedNewStudentModalForm
@@ -124,11 +116,7 @@ export class StudentsSection extends React.Component<Props, State> {
           >
             {LABELS.addNewUser}
           </Button>
-          <Upload
-            accept="text/csv"
-            showUploadList={false}
-            customRequest={this.onUpload}
-          >
+          <Upload accept="text/csv" showUploadList={false} customRequest={this.onUpload}>
             <Button type="default" icon="upload">
               CSV Upload
             </Button>

@@ -17,15 +17,20 @@ export const getGroup = (
   );
 
 export const addGroup = (
-  group: Pick<GroupDTO, 'group_name' | 'group_type' | 'academic_year'>,
+  group: Pick<GroupDTO, 'group_name' | 'group_type' | 'academic_year' | 'lecturer_id'>,
   callback: QueryCallback
 ) =>
   connection.query(
     {
       sql: `INSERT INTO
-        \`groups\` (group_name, group_type, academic_year)
-      VALUES (?, ?, ?)`,
-      values: [group.group_name, group.group_type, group.academic_year],
+        \`groups\` (group_name, group_type, academic_year, lecturer_id)
+      VALUES (?, ?, ?, ?)`,
+      values: [
+        group.group_name,
+        group.group_type,
+        group.academic_year,
+        group.lecturer_id,
+      ],
     },
     callback
   );

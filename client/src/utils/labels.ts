@@ -1,3 +1,4 @@
+// tslint:disable:no-hardcoded-credentials
 export const LABELS = {
   academicYear: 'Rok akademicki',
   academicYearRequired: 'Rok akademicki jest wymagany',

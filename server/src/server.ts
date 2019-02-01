@@ -43,15 +43,11 @@ app.post(
   groups.upload,
   auth.sendMagicLinks
 );
-app.get(
-  Groups.List,
-  auth.authorize([UserRole.admin, UserRole.superUser]),
-  groups.list
-);
+app.get(Groups.List, auth.authorize([UserRole.admin, UserRole.superUser]), groups.list);
 app.get(
   Groups.Get,
   auth.authorize([UserRole.admin, UserRole.superUser]),
-  groups.get
+  groups.getGroup
 );
 app.delete(
   Groups.Delete,

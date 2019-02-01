@@ -7,7 +7,7 @@ import { GroupType, UserDTO } from 'common';
 import { css } from 'emotion';
 import * as React from 'react';
 
-import { LABELS } from '../../../utils/labels';
+import { colors, LABELS } from '../../../utils';
 
 const FormItem = Form.Item;
 
@@ -34,10 +34,7 @@ const SelectSuperUser = React.forwardRef(
       showArrow
       placeholder={
         <>
-          <Icon
-            type="user"
-            style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }}
-          />
+          <Icon type="user" style={{ color: colors.semiLightGrey, marginRight: '5px' }} />
           {LABELS.superUser}
         </>
       }
@@ -54,10 +51,7 @@ const SelectSuperUser = React.forwardRef(
 );
 
 export const SelectSemester = React.forwardRef(
-  (
-    { onChange }: { onChange?: (value: SelectValue) => void },
-    ref: React.Ref<Select>
-  ) => (
+  ({ onChange }: { onChange?: (value: SelectValue) => void }, ref: React.Ref<Select>) => (
     <Select
       showArrow
       mode="single"
@@ -65,7 +59,7 @@ export const SelectSemester = React.forwardRef(
         <>
           <Icon
             type="table"
-            style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }}
+            style={{ color: colors.semiLightGrey, marginRight: '5px' }}
           />
           Rok akademicki
         </>
@@ -91,7 +85,7 @@ export type NewGroupFormValues = {
   class_room: number | string;
   group: GroupType;
   group_name: string;
-  super_user_id: string;
+  lecturer_id: UserDTO['id'];
 };
 
 type Props = {
@@ -140,7 +134,7 @@ class NewGroupForm extends React.Component<Props, State> {
           )}
         </FormItem>
         <FormItem label={LABELS.superUser} {...FORM_ITEM_LAYOUT}>
-          {getFieldDecorator('super_user', {
+          {getFieldDecorator('lecturer_id', {
             rules: [{ required: true, message: LABELS.nameRequired }],
           })(<SelectSuperUser superUsers={superUsers} />)}
         </FormItem>
@@ -149,7 +143,7 @@ class NewGroupForm extends React.Component<Props, State> {
             rules: [{ required: true, message: LABELS.groupNameRequired }],
           })(
             <Input
-              prefix={<Icon type="tags" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={<Icon type="tags" style={{ color: colors.semiLightGrey }} />}
               placeholder={LABELS.groupName}
             />
           )}
@@ -162,7 +156,7 @@ class NewGroupForm extends React.Component<Props, State> {
         <FormItem label={LABELS.classRoomNumber} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('class_room')(
             <Input
-              prefix={<Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />}
+              prefix={<Icon type="book" style={{ color: colors.semiLightGrey }} />}
               placeholder={LABELS.classRoomNumber}
             />
           )}
@@ -181,11 +175,7 @@ class NewGroupForm extends React.Component<Props, State> {
           >
             Dodaj
           </Button>
-          <Button
-            type="default"
-            style={{ marginLeft: '5px' }}
-            onClick={onCancel}
-          >
+          <Button type="default" style={{ marginLeft: '5px' }} onClick={onCancel}>
             Anuluj
           </Button>
         </FormItem>

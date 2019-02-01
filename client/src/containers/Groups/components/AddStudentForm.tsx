@@ -1,10 +1,11 @@
+import styled from '@emotion/styled';
 import { Button, Divider, Form, Icon, Input, Modal, Select } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import * as React from 'react';
-import styled from 'styled-components';
-
 import { UserDTO } from 'common';
-import { LABELS } from '../../../utils/labels';
+import * as React from 'react';
+
+import { colors, LABELS } from '../../../utils/';
 
 const FormItem = Form.Item;
 
@@ -17,7 +18,7 @@ const RemoveSelectedStudent = styled(Icon)`
 `;
 
 type State = {
-  selectedStudent: UserDTO | null;
+  selectedStudent?: UserDTO;
 };
 type Props = {
   onSubmit: (user: UserDTO) => void;
@@ -26,9 +27,7 @@ type Props = {
   allStudents: UserDTO[];
 } & FormComponentProps;
 export class NewStudentModalForm extends React.Component<Props, State> {
-  state: State = {
-    selectedStudent: null,
-  };
+  state: State = {};
   getFieldDecorator = this.props.form.getFieldDecorator;
 
   handleSubmit = (e: React.FormEvent) => {
@@ -37,7 +36,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
     const { selectedStudent } = this.state;
     if (selectedStudent) {
       this.props.onSubmit(selectedStudent);
-      setTimeout(() => this.setState({ selectedStudent: null }), 1000);
+      setTimeout(() => this.setState({ selectedStudent: undefined }), 1000);
       return;
     }
 
@@ -55,12 +54,12 @@ export class NewStudentModalForm extends React.Component<Props, State> {
   handleSelectChange = (value: string) => {
     const { allStudents } = this.props;
     this.setState({
-      selectedStudent: allStudents.find(s => s.id === value) || null,
+      selectedStudent: allStudents.find(s => s.id === Number(value)) || undefined,
     });
   };
 
   clearSelectedStudent = () => {
-    this.setState({ selectedStudent: null });
+    this.setState({ selectedStudent: undefined });
   };
 
   render() {
@@ -75,7 +74,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
         <p>{LABELS.selectFromListOrCreate}</p>
         <Select
           showSearch
-          value={selectedStudent ? selectedStudent.user_name : undefined}
+          value={selectedStudent && selectedStudent.user_name}
           style={{ width: 300 }}
           placeholder={LABELS.selectFromList}
           optionFilterProp="children"
@@ -89,7 +88,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
           }
         >
           {this.props.allStudents.map(student => (
-            <Select.Option key={student.id} value={student.id}>
+            <Select.Option key={`${student.id}`} value={student.id}>
               {student.user_name}
             </Select.Option>
           ))}
@@ -107,9 +106,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: true, message: LABELS.nameRequired }],
             })(
               <Input
-                prefix={
-                  <Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
+                prefix={<Icon type="user" style={{ color: colors.semiLightGrey }} />}
                 placeholder={LABELS.name}
                 disabled={!!this.state.selectedStudent}
               />
@@ -120,9 +117,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: true, message: LABELS.emailRequired }],
             })(
               <Input
-                prefix={
-                  <Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
+                prefix={<Icon type="mail" style={{ color: colors.semiLightGrey }} />}
                 placeholder={LABELS.email}
                 disabled={!!this.state.selectedStudent}
               />
@@ -133,9 +128,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: false }],
             })(
               <Input
-                prefix={
-                  <Icon type="book" style={{ color: 'rgba(0,0,0,.25)' }} />
-                }
+                prefix={<Icon type="book" style={{ color: colors.semiLightGrey }} />}
                 placeholder={LABELS.index}
                 disabled={!!this.state.selectedStudent}
               />

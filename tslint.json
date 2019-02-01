@@ -7,6 +7,8 @@
     "tslint-config-prettier"
   ],
   "rules": {
+    "no-null-keyword": false,
+    "use-simple-attributes": false,
     // According to Microsoft/TypeScript#10717 the only way to get variance inference to work
     // is to use the function signature style.
     "prefer-method-signature": false,

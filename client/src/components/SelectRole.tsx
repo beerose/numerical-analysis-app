@@ -1,8 +1,10 @@
 import { Icon, Select } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
 import { SelectValue } from 'antd/lib/select';
+import { userRoleOptions } from 'common';
 import * as React from 'react';
 
-import { userRoleOptions } from 'common';
+import { colors } from '../utils';
 
 type Props = {
   onChange?: (value: SelectValue) => void;
@@ -20,10 +22,7 @@ export const SelectRole = React.forwardRef(
       mode={mode}
       placeholder={
         <>
-          <Icon
-            type="tag"
-            style={{ color: 'rgba(0,0,0,.25)', marginRight: '5px' }}
-          />
+          <Icon type="tag" style={{ color: colors.semiLightGrey, marginRight: '5px' }} />
           {placeholder}
         </>
       }

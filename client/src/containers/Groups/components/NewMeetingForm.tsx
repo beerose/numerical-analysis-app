@@ -5,6 +5,7 @@ import { css } from 'emotion';
 import * as React from 'react';
 
 import { DateIncrementors } from '../../../components/DateIncrementors';
+import { colors } from '../../../utils';
 
 const formStyles = css`
   padding: 25px;
@@ -40,7 +41,7 @@ const NewMeetingForm = (props: Props) => {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
           <Input
-            prefix={<Icon type="tag" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="tag" style={{ color: colors.semiLightGrey }} />}
             placeholder="Nazwa spotkania"
             className={formItems}
           />

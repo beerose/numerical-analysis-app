@@ -1,8 +1,9 @@
 import { Button, Form, Icon, Input } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
 
-import { LABELS } from '../../utils/labels';
+import { colors, LABELS } from '../../utils';
 
 const FormItem = Form.Item;
 
@@ -29,7 +30,7 @@ export const NewAccountWithToken = (props: Props) => {
           rules: [{ required: true, message: LABELS.passwordRequired }],
         })(
           <Input
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="lock" style={{ color: colors.semiLightGrey }} />}
             type="password"
             placeholder={LABELS.password}
           />
@@ -40,13 +41,17 @@ export const NewAccountWithToken = (props: Props) => {
           rules: [{ required: true, message: LABELS.passwordRequired }],
         })(
           <Input
-            prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+            prefix={<Icon type="lock" style={{ color: colors.semiLightGrey }} />}
             type="password"
             placeholder={LABELS.confirmPassword}
           />
         )}
       </FormItem>
-      <Button type="primary" htmlType="submit" style={{ width: '100%', marginTop: '20px' }}>
+      <Button
+        type="primary"
+        htmlType="submit"
+        style={{ width: '100%', marginTop: '20px' }}
+      >
         OK
       </Button>
     </Form>

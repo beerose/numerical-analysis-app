@@ -13,11 +13,7 @@ import { LocaleContext } from '../../components/locale';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
-import {
-  MeetingsDetailsSections,
-  MeetingsSection,
-  StudentsSection,
-} from './sections';
+import { MeetingsDetailsSections, MeetingsSection, StudentsSection } from './sections';
 
 type MenuLinkProps = {
   to: LinkProps['to'];
@@ -34,25 +30,22 @@ const menuStyles = css`
 `;
 
 type State = {
-  groupId: string;
+  groupId: GroupDTO['id'];
   group?: GroupDTO;
 };
-export class GroupDetailsContainer extends React.Component<
-  RouteComponentProps,
-  State
-> {
+export class GroupDetailsContainer extends React.Component<RouteComponentProps, State> {
   static contextType = LocaleContext;
   context!: React.ContextType<typeof LocaleContext>;
 
   state: State = {
-    groupId: this.props.location.pathname.split('/')[2],
+    groupId: Number(this.props.location.pathname.split('/')[2]),
   };
 
   componentDidMount() {
     const { groupId } = this.state;
     // TODO: lift state for groups higher up,
     // so GroupDetails can use ListGroups's fresh state
-    groupsService.getGroup(groupId).then(group => this.setState({ group }));
+    groupsService.getGroup(Number(groupId)).then(group => this.setState({ group }));
   }
 
   getSelectedItem() {
@@ -61,8 +54,11 @@ export class GroupDetailsContainer extends React.Component<
 
   replaceGroupIdBreadcrumb = (s: string) => {
     const { group } = this.state;
-    if (Number(s) === group!.id) {
-      return group!.group_name;
+    if (!group) {
+      return s;
+    }
+    if (Number(s) === group.id) {
+      return group.group_name;
     }
     return s;
   };

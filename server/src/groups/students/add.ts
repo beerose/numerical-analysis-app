@@ -5,13 +5,10 @@ import * as t from 'io-ts';
 
 import { handleBadRequest, PostRequest } from '../../lib/request';
 import { connection } from '../../store/connection';
-import {
-  prepareAttachStudentToGroupQuery,
-  upsertUserQuery,
-} from '../../store/queries';
+import { prepareAttachStudentToGroupQuery, upsertUserQuery } from '../../store/queries';
 
 const AddStudentToGroupBodyV = t.type({
-  group_id: t.string,
+  group_id: t.number,
   user: t.type({
     email: t.string,
     id: t.number,
@@ -27,18 +24,13 @@ const AddStudentToGroupBodyV = t.type({
 
 type AddStudentToGroupRequest = PostRequest<typeof AddStudentToGroupBodyV>;
 
-export const addStudentToGroup = (
-  req: AddStudentToGroupRequest,
-  res: Response
-) => {
+export const addStudentToGroup = (req: AddStudentToGroupRequest, res: Response) => {
   handleBadRequest(AddStudentToGroupBodyV, req.body, res).then(() => {
     const { user, group_id } = req.body;
     connection.query(
       {
         sql: upsertUserQuery,
-        values: [
-          [[user.user_name, user.email, UserRole.student, user.student_index]],
-        ],
+        values: [[[user.user_name, user.email, UserRole.student, user.student_index]]],
       },
       upsertErr => {
         if (upsertErr) {
@@ -48,10 +40,7 @@ export const addStudentToGroup = (
             .send({ error: apiMessages.internalError });
           return;
         }
-        const attachQuery = prepareAttachStudentToGroupQuery(
-          [user.email],
-          group_id
-        );
+        const attachQuery = prepareAttachStudentToGroupQuery([user.email], group_id);
         connection.query(
           {
             sql: attachQuery,
@@ -64,9 +53,7 @@ export const addStudentToGroup = (
                 .send({ error: apiMessages.internalError });
               return;
             }
-            return res
-              .status(codes.OK)
-              .send({ message: apiMessages.userCreated });
+            return res.status(codes.OK).send({ message: apiMessages.userCreated });
           }
         );
       }

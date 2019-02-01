@@ -75,6 +75,7 @@ export type GroupDTO = {
   id: number;
   group_name: string;
   group_type: GroupType;
+  lecturer_id: UserDTO['id'];
   academic_year?: string;
   data?: Record<string, unknown>;
 };
@@ -100,7 +101,7 @@ export type StudentActivities = Record<MeetingId, number>;
 
 export type MeetingDetailsDTO = {
   data: {
-    presences: Array<MeetingDTO['id']>;
+    presences: MeetingDTO['id'][];
     activities: StudentActivities;
   };
   student: Student;

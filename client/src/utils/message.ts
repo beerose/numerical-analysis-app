@@ -1,10 +1,15 @@
 import { message } from 'antd';
 import { ApiResponse } from 'common';
 
-export const showMessage = (res: ApiResponse) => {
-  if ('error' in res) {
+export const showMessage = (
+  res: ApiResponse,
+  opts?: { errorOnly: boolean; successOnly: boolean }
+) => {
+  if ('error' in res && !(opts && opts.successOnly)) {
     message.error(res.error);
     return;
   }
-  message.success(res.message);
+  if ('message' in res && !(opts && opts.errorOnly)) {
+    message.success(res.message);
+  }
 };

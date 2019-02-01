@@ -1,8 +1,9 @@
+// tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, List, Modal, Spin } from 'antd';
-import { MeetingDTO } from 'common';
+import { GroupDTO, MeetingDTO } from 'common';
 import moment, { Moment } from 'moment';
 import * as React from 'react';
 
@@ -19,7 +20,7 @@ const Container = styled.section`
 `;
 
 type Props = {
-  groupId: string;
+  groupId: GroupDTO['id'];
 };
 
 type State = {
@@ -124,7 +125,7 @@ export class MeetingsSection extends React.Component<Props, State> {
               return (
                 <List.Item
                   actions={[
-                    <a onClick={() => this.handleEditClick(meeting)}>
+                    <a role="edit" onClick={() => this.handleEditClick(meeting)}>
                       {LABELS.edit}
                     </a>,
                     <DeleteWithConfirm

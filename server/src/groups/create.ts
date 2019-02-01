@@ -14,6 +14,7 @@ const CreateGroupBodyV = t.type({
     t.literal(GroupType.Lab),
     t.literal(GroupType.Lecture),
   ]),
+  lecturer_id: t.number,
 });
 
 type CreateGroupRequest = PostRequest<typeof CreateGroupBodyV>;
