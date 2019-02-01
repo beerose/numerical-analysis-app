@@ -162,7 +162,7 @@ export const listMeetings = (
   );
 };
 
-export const deleteGroup = async (groupId: string) => {
+export const deleteGroup = async (groupId: GroupDTO['id']) => {
   const options = {
     body: JSON.stringify({ group_id: groupId }),
     method: 'DELETE',

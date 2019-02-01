@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, List, Spin } from 'antd';
-import { GroupDTO, ServerRoutes } from 'common';
+import { GroupDTO } from 'common';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -42,7 +42,7 @@ export class ListGroupsContainer extends React.Component<
     });
   };
 
-  handleDeleteGroup = (id: string) => {
+  handleDeleteGroup = (id: GroupDTO['id']) => {
     groupsService.deleteGroup(id).then(() => {
       this.updateGroupsList();
     });
@@ -78,7 +78,7 @@ export class ListGroupsContainer extends React.Component<
                   title={
                     <Link to={`groups/${item.id}`}>{item.group_name}</Link>
                   }
-                  // TO DO description={`Prowadzący: ${item.lecturer}`}
+                  // description={`Prowadzący: ${item.lecture}`} TO DO
                 />
               </List.Item>
             )}
