@@ -18,6 +18,7 @@ import { showMessage } from '../../utils';
 import {
   MeetingsDetailsSections,
   MeetingsSection,
+  SettingsSection,
   StudentsSection,
 } from './sections';
 
@@ -95,8 +96,6 @@ export class GroupDetailsContainer extends React.Component<
 
     const features = groupFeatures[group.group_type];
 
-    console.log({ group });
-
     return (
       <Flex flex={1}>
         <Menu
@@ -104,33 +103,33 @@ export class GroupDetailsContainer extends React.Component<
           defaultSelectedKeys={[this.getSelectedItem()]}
           css={menuStyles}
         >
-          <MenuLink to={matchUrl}>
+          <MenuLink to={matchUrl} key="settings">
             <Icon type="setting" />
             {texts.groupSettings}
           </MenuLink>
-          <MenuLink to={`${matchUrl}/students`}>
+          <MenuLink to={`${matchUrl}/students`} key="students">
             <Icon type="team" />
             {texts.students}
           </MenuLink>
           {features.hasLists && (
-            <MenuLink to={`${matchUrl}/lists`}>
+            <MenuLink to={`${matchUrl}/lists`} key="lists">
               <Icon type="calculator" />
               {texts.lists}
             </MenuLink>
           )}
           {features.hasMeetings && (
-            <MenuLink to={`${matchUrl}/meetings`}>
+            <MenuLink to={`${matchUrl}/meetings`} key="meetings">
               <Icon type="schedule" />
               {texts.meetings}
             </MenuLink>
           )}
           {features.hasPresence && (
-            <MenuLink to={`${matchUrl}/presence`}>
+            <MenuLink to={`${matchUrl}/presence`} key="presence">
               <Icon type="calendar" />
               {texts.presence}
             </MenuLink>
           )}
-          <MenuLink to={`${matchUrl}/grades`}>
+          <MenuLink to={`${matchUrl}/grades`} key="grades">
             <Icon type="line-chart" />
             {texts.grades}
           </MenuLink>
@@ -143,11 +142,12 @@ export class GroupDetailsContainer extends React.Component<
             replace={this.replaceGroupIdBreadcrumb}
           />
           <Switch>
-            <Route
-              exact={true}
-              path={'/groups/:id/students'}
-              component={() => <StudentsSection groupId={groupId} />}
-            />
+            <Route exact={true} path={'/groups/:id'}>
+              <SettingsSection groupId={groupId} />
+            </Route>
+            <Route exact={true} path={'/groups/:id/students'}>
+              <StudentsSection groupId={groupId} />
+            </Route>
             <Route exact={true} path={'/groups/:id/presence'}>
               <MeetingsDetailsSections groupId={Number(groupId)} />
             </Route>
