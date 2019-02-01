@@ -7,3 +7,4 @@ export * from './LoginForm';
 export * from './NewAccount';
 export * from './NotFoundPage';
 export * from './Breadcrumbs';
+export * from './DateControls';

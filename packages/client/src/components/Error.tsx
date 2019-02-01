@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Alert } from 'antd';
@@ -11,6 +12,6 @@ export const ErrorMessage = ({ message }: { message: string }) => (
     message={message}
     description="Nastąpił błąd. Spróbuj ponownie lub zgłoś problem do administratora."
     type="error"
-    className={alertStyles}
+    css={alertStyles}
   />
 );

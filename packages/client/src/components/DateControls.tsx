@@ -28,10 +28,12 @@ type Props = {
   config: Config[];
 };
 
-export const DateIncrementors = (props: Props) => {
+export const DateControls = (props: Props) => {
   const onSelectorClick = (config: Config) => {
     const selectedDate = props.getFieldValue('date');
-    const defaultDate = selectedDate ? moment(selectedDate) : moment(new Date());
+    const defaultDate = selectedDate
+      ? moment(selectedDate)
+      : moment(new Date());
     props.setFieldsValue({ date: defaultDate.add(config.value, 'days') });
   };
 
