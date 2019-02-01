@@ -1,8 +1,0 @@
-node_modules
-.env
-.vscode
-# parcel dist
-dist
-# tsc outDir
-build
-.cache
