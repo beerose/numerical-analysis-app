@@ -87,12 +87,17 @@ class EditMeetingForm extends React.Component<Props> {
           <Form.Item>
             {getFieldDecorator('date', {
               rules: [{ required: true, message: 'data jest wymagana' }],
-            })(<DatePicker />)}
+            })(<DatePicker style={{ width: 280 }} />)}
           </Form.Item>
           <DateIncrementors
             setFieldsValue={setFieldsValue}
             getFieldValue={getFieldValue}
-            config={[{ value: 1 }, { value: 7 }]}
+            config={[
+              { value: -7, decr: true },
+              { value: -1, decr: true },
+              { value: 1 },
+              { value: 7 },
+            ]}
           />
         </div>
         <Button type="primary" htmlType="submit">

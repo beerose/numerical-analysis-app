@@ -56,7 +56,12 @@ const NewMeetingForm = (props: Props) => {
         <DateIncrementors
           setFieldsValue={setFieldsValue}
           getFieldValue={getFieldValue}
-          config={[{ value: 1 }, { value: 7 }]}
+          config={[
+            { value: -7, decr: true },
+            { value: -1, decr: true },
+            { value: 1 },
+            { value: 7 },
+          ]}
         />
       </div>
       <Button type="primary" htmlType="submit">

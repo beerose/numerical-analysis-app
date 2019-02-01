@@ -6,41 +6,47 @@ import * as React from 'react';
 const dateSelectorsStyles = css`
   color: rgba(0, 0, 0, 0.5);
   font-size: 90%;
-  margin-left: 10px;
-  margin-top: 5px;
+  margin-left: 5px;
+  margin-top: 4px;
+  width: 30px;
+  height: 30px;
 `;
+
+const containerStyles = css`
+  width: 100%;
+`;
+
+type Config = {
+  value: number;
+  decr?: boolean;
+  label?: string;
+};
 
 type Props = {
   getFieldValue: (s: string) => any;
   setFieldsValue: (o: object) => void;
-  config: Array<{
-    value: number;
-    label?: string;
-  }>;
+  config: Config[];
 };
 
 export const DateIncrementors = (props: Props) => {
-  const onSelectorClick = (value: number) => {
+  const onSelectorClick = (config: Config) => {
     const selectedDate = props.getFieldValue('date');
-    if (!selectedDate) {
-      props.setFieldsValue({ date: moment(new Date()).add(value, 'days') });
-      return;
-    }
-    props.setFieldsValue({ date: moment(selectedDate).add(value, 'days') });
+    const defaultDate = selectedDate ? moment(selectedDate) : moment(new Date());
+    props.setFieldsValue({ date: defaultDate.add(config.value, 'days') });
   };
 
   return (
-    <>
+    <div className={containerStyles}>
       {props.config.map(s => (
         <Button
           key={s.value}
           shape="circle"
-          onClick={() => onSelectorClick(s.value)}
+          onClick={() => onSelectorClick(s)}
           className={dateSelectorsStyles}
         >
-          {s.label ? s.label : `+${s.value}`}
+          {s.label ? s.label : s.decr ? `${s.value}` : `+${s.value}`}
         </Button>
       ))}
-    </>
+    </div>
   );
 };
