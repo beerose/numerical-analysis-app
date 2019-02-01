@@ -1,10 +1,11 @@
+import { UserRole } from 'common';
 import jwt from 'jsonwebtoken';
 import nodeMailer from 'nodemailer';
 
 export const generateToken = (
   email: string,
   userName: string,
-  userRole: string
+  userRole: UserRole
 ) => {
   return jwt.sign(
     { email, user_role: userRole, user_name: userName },

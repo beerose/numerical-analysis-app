@@ -1,5 +1,5 @@
-import { GroupDTO, MeetingDTO, UserDTO } from 'common';
-import { MysqlError, queryCallback as QueryCallback } from 'mysql';
+import { UserDTO } from 'common';
+import { queryCallback as QueryCallback } from 'mysql';
 
 import { connection } from '../connection';
 export const addUser = (user: UserDTO, callback: QueryCallback) =>
@@ -128,8 +128,8 @@ export const findUserByEmail = (
       values: [email],
     },
     (err, res) => {
-      if (err) return callback(err);
-      if (!res.length) return callback(null, null);
+      if (err) { return callback(err); }
+      if (!res.length) { return callback(null, null); }
       return callback(null, res[0]);
     }
   );

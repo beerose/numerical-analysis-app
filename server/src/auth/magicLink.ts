@@ -1,7 +1,9 @@
+import { UserRole } from 'common';
+
 import { generateToken, prepareEmailTemplate, transporter } from './utils';
 
 export const sendMagicLinks = () => {
-  const token = generateToken(process.env.EMAIL || '', 'Ola');
+  const token = generateToken(process.env.EMAIL || '', 'Ola', UserRole.admin);
   const mailOptions = {
     from: 'Analiza numeryczna',
     html: prepareEmailTemplate({
