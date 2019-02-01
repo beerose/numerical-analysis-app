@@ -7,7 +7,7 @@ export type ApiResponse =
       errorDetails?: string;
     };
 
-// TODO: function l<T extends string>(s: T): T;
+// TODO: as const
 
 export const ServerRoutes = {
   Accounts: {

@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.settings.json",
+  "compilerOptions": {
+    // This project will be built by server
+    "outDir": "../../dist/common",
+    "composite": true,
+    "declaration": true,
+    "target": "es5",
+    "module": "commonjs",
+    "skipLibCheck": true,
+    "lib": ["es2015", "es2016", "es2017"]
+  }
+}

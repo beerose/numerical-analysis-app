@@ -1,0 +1,25 @@
+{
+  "extends": "../tsconfig.settings.json",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    // This project will be bundled by parcel
+    "outDir": "../../dist/__client-BAD",
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "jsx": "react",
+    "lib": ["es2018", "dom"],
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node"
+  },
+  "include": ["src"],
+  "exclude": ["../../node_modules"],
+  "references": [{ "path": "../common" }]
+}
