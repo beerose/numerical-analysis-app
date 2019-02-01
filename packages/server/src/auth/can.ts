@@ -1,8 +1,7 @@
-import { What } from 'common';
 import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-type Where = 'groups' | 'users';
+import { What, Where } from '../../../../dist/common';
 
 export const can = (what: What, where: Where) => (
   req: Request,

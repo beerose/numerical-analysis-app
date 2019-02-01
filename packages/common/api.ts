@@ -61,10 +61,9 @@ export type UserDTO = {
   active_user?: boolean;
 };
 
+export type Where = 'groups' | 'users';
 export type What = 'edit' | 'read';
-export type UserPrivileges = {
-  groups: Record<GroupDTO['id'], What[]>;
-};
+export type UserPrivileges = { [key in Where]: Record<GroupDTO['id'], What[]> };
 
 export type Pagination = {
   offset: number;

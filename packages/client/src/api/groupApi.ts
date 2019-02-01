@@ -16,15 +16,19 @@ import { authFetch } from './authFetch';
 
 const { Groups } = ServerRoutes;
 
-export const uploadUsers = async (fileContent: string, groupId: GroupDTO['id']) => {
+export const uploadUsers = async (
+  fileContent: string,
+  groupId: GroupDTO['id']
+) => {
   const options = {
     body: JSON.stringify({ data: fileContent, group_id: groupId }),
     method: 'POST',
   };
 
-  await authFetch<{ message: string }>(SERVER_URL + Groups.Upload, options).then(
-    showMessage
-  );
+  await authFetch<{ message: string }>(
+    SERVER_URL + Groups.Upload,
+    options
+  ).then(showMessage);
 };
 
 export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
@@ -36,7 +40,9 @@ export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
 };
 
 export const getGroup = async (groupId: GroupDTO['id']): Promise<GroupDTO> =>
-  authFetch(`${SERVER_URL + Groups.Get}?${qs.stringify({ group_id: groupId })}`);
+  authFetch(
+    `${SERVER_URL + Groups.Get}?${qs.stringify({ group_id: groupId })}`
+  );
 
 export const listStudentsForGroup = async (
   groupId: GroupDTO['id']
@@ -68,18 +74,24 @@ export const deleteUserFromGroup = async (
   ).then(showMessage);
 };
 
-export const addStudentToGroup = async (user: UserDTO, groupId: GroupDTO['id']) => {
+export const addStudentToGroup = async (
+  user: UserDTO,
+  groupId: GroupDTO['id']
+) => {
   const options = {
     body: JSON.stringify({ user, group_id: groupId }),
     method: 'POST',
   };
 
-  await authFetch<ApiResponse>(SERVER_URL + Groups.Students.AddToGroup, options).then(
-    showMessage
-  );
+  await authFetch<ApiResponse>(
+    SERVER_URL + Groups.Students.AddToGroup,
+    options
+  ).then(showMessage);
 };
 
-export const addGroup = (group: Omit<GroupDTO, 'id'>): Promise<{ group_id: string }> => {
+export const addGroup = (
+  group: Omit<GroupDTO, 'id'>
+): Promise<{ group_id: string }> => {
   const options = {
     body: JSON.stringify(group),
     method: 'POST',
@@ -103,9 +115,10 @@ export const addMeeting = async (
     method: 'POST',
   };
 
-  await authFetch<ApiResponse>(SERVER_URL + Groups.Meetings.Create, options).then(
-    showMessage
-  );
+  await authFetch<ApiResponse>(
+    SERVER_URL + Groups.Meetings.Create,
+    options
+  ).then(showMessage);
 };
 
 export const updateMeeting = async (
@@ -116,9 +129,10 @@ export const updateMeeting = async (
     method: 'POST',
   };
 
-  await authFetch<ApiResponse>(SERVER_URL + Groups.Meetings.Update, options).then(
-    showMessage
-  );
+  await authFetch<ApiResponse>(
+    SERVER_URL + Groups.Meetings.Update,
+    options
+  ).then(showMessage);
 };
 
 export const deleteMeeting = async (id: number) => {
@@ -127,12 +141,15 @@ export const deleteMeeting = async (id: number) => {
     method: 'DELETE',
   };
 
-  await authFetch<ApiResponse>(SERVER_URL + Groups.Meetings.Delete, options).then(
-    showMessage
-  );
+  await authFetch<ApiResponse>(
+    SERVER_URL + Groups.Meetings.Delete,
+    options
+  ).then(showMessage);
 };
 
-export const listMeetings = (groupId: GroupDTO['id']): Promise<MeetingDTO[]> => {
+export const listMeetings = (
+  groupId: GroupDTO['id']
+): Promise<MeetingDTO[]> => {
   const options = {
     method: 'GET',
   };
@@ -151,7 +168,9 @@ export const deleteGroup = async (groupId: string) => {
     method: 'DELETE',
   };
 
-  await authFetch<ApiResponse>(SERVER_URL + Groups.Delete, options).then(showMessage);
+  await authFetch<ApiResponse>(SERVER_URL + Groups.Delete, options).then(
+    showMessage
+  );
 };
 
 export const getMeetingsDetails = (
@@ -177,23 +196,30 @@ export const getMeetingsDetails = (
   );
 };
 
-export const addPresence = (studentId: UserDTO['id'], meetingId: MeetingDTO['id']) => {
+export const addPresence = (
+  studentId: UserDTO['id'],
+  meetingId: MeetingDTO['id']
+) => {
   const options = {
     body: JSON.stringify({ student_id: studentId, meeting_id: meetingId }),
     method: 'POST',
   };
 
-  return authFetch<ApiResponse>(SERVER_URL + Groups.Meetings.AddPresence, options).then(
-    result => {
-      if ('error' in result) {
-        showMessage(result);
-      }
-      return result;
+  return authFetch<ApiResponse>(
+    SERVER_URL + Groups.Meetings.AddPresence,
+    options
+  ).then(result => {
+    if ('error' in result) {
+      showMessage(result);
     }
-  );
+    return result;
+  });
 };
 
-export const deletePresence = (studentId: UserDTO['id'], meetingId: MeetingDTO['id']) => {
+export const deletePresence = (
+  studentId: UserDTO['id'],
+  meetingId: MeetingDTO['id']
+) => {
   const options = {
     body: JSON.stringify({ student_id: studentId, meeting_id: meetingId }),
     headers: {
@@ -225,10 +251,11 @@ export const setActivity = (
     method: 'POST',
   };
 
-  return authFetch<ApiResponse>(SERVER_URL + Groups.Meetings.SetActivity, options).then(
-    result => {
-      showMessage(result);
-      return result;
-    }
-  );
+  return authFetch<ApiResponse>(
+    SERVER_URL + Groups.Meetings.SetActivity,
+    options
+  ).then(result => {
+    showMessage(result);
+    return result;
+  });
 };
