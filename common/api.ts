@@ -7,7 +7,7 @@ export type ApiResponse =
       errorDetails?: string;
     };
 
-// TODO: function l<T extends string>(s: T): T;
+// TODO: as const
 
 export const ServerRoutes = {
   Accounts: {
@@ -100,7 +100,7 @@ export type StudentActivities = Record<MeetingId, number>;
 
 export type MeetingDetailsDTO = {
   data: {
-    presences: Array<MeetingDTO['id']>;
+    presences: MeetingDTO['id'][];
     activities: StudentActivities;
   };
   student: Student;
