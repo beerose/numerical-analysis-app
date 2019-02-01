@@ -1,5 +1,7 @@
 {
+  // This config is extended by every package we have
   "compilerOptions": {
+    "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -10,14 +12,12 @@
     "noUnusedParameters": true,
     "experimentalDecorators": true,
     "strictNullChecks": true,
-    "target": "es5",
-    "lib": ["es2017"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "jsx": "react",
-    "typeRoots": ["./node_modules/@types", "./src/types"]
-  },
-  "exclude": ["node_modules", "build", "scripts", "jest"],
-  "references": [{ "path": "common" }]
+    "noEmitOnError": true,
+    "noFallthroughCasesInSwitch": true,
+    "removeComments": true,
+    "downlevelIteration": true,
+    "resolveJsonModule": true,
+    "strictBindCallApply": true,
+    "moduleResolution": "node"
+  }
 }
