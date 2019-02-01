@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Icon, Menu, Spin } from 'antd';
@@ -12,8 +13,13 @@ import { Breadcrumbs, NotFoundPage } from '../../components';
 import { LocaleContext } from '../../components/locale';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
+import { showMessage } from '../../utils';
 
-import { MeetingsDetailsSections, MeetingsSection, StudentsSection } from './sections';
+import {
+  MeetingsDetailsSections,
+  MeetingsSection,
+  StudentsSection,
+} from './sections';
 
 type MenuLinkProps = {
   to: LinkProps['to'];
@@ -33,7 +39,10 @@ type State = {
   groupId: GroupDTO['id'];
   group?: GroupDTO;
 };
-export class GroupDetailsContainer extends React.Component<RouteComponentProps, State> {
+export class GroupDetailsContainer extends React.Component<
+  RouteComponentProps,
+  State
+> {
   static contextType = LocaleContext;
   context!: React.ContextType<typeof LocaleContext>;
 
@@ -45,7 +54,13 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
     const { groupId } = this.state;
     // TODO: lift state for groups higher up,
     // so GroupDetails can use ListGroups's fresh state
-    groupsService.getGroup(Number(groupId)).then(group => this.setState({ group }));
+    groupsService.getGroup(groupId).then(res => {
+      if ('error' in res) {
+        showMessage(res);
+        this.props.history.push('/groups/');
+      }
+      this.setState({ group: res });
+    });
   }
 
   getSelectedItem() {

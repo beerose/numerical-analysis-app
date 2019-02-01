@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.settings.json",
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
     // This project will be bundled by parcel
     "outDir": "../../dist/__client-BAD",
     "allowSyntheticDefaultImports": true,
