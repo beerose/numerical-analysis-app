@@ -1,8 +1,7 @@
-// tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Button, Spin, Upload } from 'antd';
+import { Button, Spin } from 'antd';
 import { GroupDTO, UserDTO, UserRole } from 'common';
 import * as React from 'react';
 import { Omit } from 'react-router';
@@ -10,8 +9,11 @@ import { Omit } from 'react-router';
 import { groupsService, usersService } from '../../../api';
 import { UsersTable } from '../../../components';
 import { Theme } from '../../../components/theme';
+import { isSafari } from '../../../utils/isSafari';
 import { LABELS } from '../../../utils/labels';
+import { studentsToCsv } from '../../../utils/studentsToCsv';
 import { WrappedNewStudentModalForm } from '../components/AddStudentForm';
+import { CsvControls } from '../components/CsvControls';
 
 const Container = styled.section`
   display: flex;
@@ -48,29 +50,34 @@ export class StudentsSection extends React.Component<Props, State> {
     this.setState({ isFetching: true });
     groupsService.listStudentsForGroup(this.props.groupId).then(res => {
       this.setState({ students: res.students, isFetching: false });
+      console.log(res.students);
     });
     usersService.listUsers({ roles: UserRole.student }).then(res => {
       this.setState({ allStudents: res.users });
     });
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateStudentsLists();
   }
 
   deleteStudent = (userId: UserDTO['id']) => {
-    groupsService.deleteUserFromGroup(userId, Number(this.props.groupId)).then(() => {
-      this.updateStudentsLists();
-    });
+    groupsService
+      .deleteUserFromGroup(userId, Number(this.props.groupId))
+      .then(() => {
+        this.updateStudentsLists();
+      });
   };
 
   updateStudent = (user: Omit<UserDTO, 'user_role'>) => {
-    usersService.updateUser({ ...user, user_role: UserRole.student }).then(() => {
-      this.updateStudentsLists();
-    });
+    usersService
+      .updateUser({ ...user, user_role: UserRole.student })
+      .then(() => {
+        this.updateStudentsLists();
+      });
   };
 
-  onUpload = (uploadObject: UploadObject) => {
+  handleStudentsCsvUpload = (uploadObject: UploadObject) => {
     const { groupId } = this.props;
     const { file } = uploadObject;
     const reader = new FileReader();
@@ -80,6 +87,15 @@ export class StudentsSection extends React.Component<Props, State> {
         this.updateStudentsLists();
       });
     };
+  };
+
+  handleStudentsCsvDownload = () => {
+    const { students } = this.state;
+
+    const mimeType = isSafari() ? 'application/csv' : 'text/csv';
+    const blob = new Blob([studentsToCsv(students)], { type: mimeType });
+
+    window.open(URL.createObjectURL(blob), '_blank');
   };
 
   addNewStudent = (user: UserDTO) => {
@@ -98,7 +114,13 @@ export class StudentsSection extends React.Component<Props, State> {
   };
 
   render() {
-    const { students, isFetching, addStudentModalVisible, allStudents } = this.state;
+    const {
+      students,
+      isFetching,
+      addStudentModalVisible,
+      allStudents,
+    } = this.state;
+
     return (
       <Container>
         <WrappedNewStudentModalForm
@@ -116,11 +138,10 @@ export class StudentsSection extends React.Component<Props, State> {
           >
             {LABELS.addNewUser}
           </Button>
-          <Upload accept="text/csv" showUploadList={false} customRequest={this.onUpload}>
-            <Button type="default" icon="upload">
-              CSV Upload
-            </Button>
-          </Upload>
+          <CsvControls
+            onDownloadClick={this.handleStudentsCsvDownload}
+            onUploadClick={this.handleStudentsCsvUpload}
+          />
         </section>
         <Spin spinning={isFetching}>
           <UsersTable

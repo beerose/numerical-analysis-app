@@ -1,4 +1,4 @@
-import { apiMessages, UserDTO, UserRole } from 'common';
+import { apiMessages, CSV_DELIMITER, UserDTO, UserRole } from 'common';
 import { NextFunction, Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
@@ -99,14 +99,12 @@ export const upload = (
   });
 };
 
-const DELIMITER = ',';
-
 const isCSVRowValid = (line: string) => {
-  const values = line.split(DELIMITER);
+  const values = line.split(CSV_DELIMITER);
   return values.length === 4 && values.every(value => value !== '');
 };
 
-// csv format: name, surename, index, email
+// csv format: name, surname, index, email
 type NewUser = Pick<
   UserDTO,
   'email' | 'student_index' | 'user_name' | 'user_role'
@@ -115,13 +113,13 @@ const readCSV = (
   csvString: string
 ): { users?: NewUser[]; isValid: boolean } => {
   const lines = csvString.trim().split('\n');
-  if (!lines.every(line => isCSVRowValid(line))) {
+  if (!lines.every(isCSVRowValid)) {
     return { isValid: false };
   }
 
   const users: NewUser[] = [];
   lines.forEach(line => {
-    const values = line.split(DELIMITER);
+    const values = line.split(CSV_DELIMITER);
     const user = {
       email: values[3],
       student_index: values[2],

@@ -6,5 +6,8 @@
   "users": "Użytkownicy",
   "grades": "Oceny",
   "meetings": "Spotkania",
-  "lists": "Listy zadań"
+  "lists": "Listy zadań",
+  "exportCsv": "Eksportuj CSV",
+  "importCsv": "Zaimportuj CSV",
+  "csvInfo": "Obsługiwany format CSV to"
 }

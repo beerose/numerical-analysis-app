@@ -25,7 +25,7 @@ const { Users, Groups, Accounts } = ServerRoutes;
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (_, res) => {
-  res.send('Hello 👋');
+  res.send('Hello! 👋');
 });
 
 app.post(Accounts.New, auth.checkNewAccountToken, auth.storeUserPassword);
