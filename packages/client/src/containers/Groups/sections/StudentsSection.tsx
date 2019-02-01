@@ -3,6 +3,7 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Spin } from 'antd';
 import { GroupDTO, UserDTO, UserRole } from 'common';
+import { saveAs } from 'file-saver';
 import * as React from 'react';
 import { Omit } from 'react-router';
 
@@ -90,12 +91,13 @@ export class StudentsSection extends React.Component<Props, State> {
   };
 
   handleStudentsCsvDownload = () => {
+    const { groupId } = this.props;
     const { students } = this.state;
 
     const mimeType = isSafari() ? 'application/csv' : 'text/csv';
     const blob = new Blob([studentsToCsv(students)], { type: mimeType });
 
-    window.open(URL.createObjectURL(blob), '_blank');
+    saveAs(blob, `students-of-group-${groupId}.csv`);
   };
 
   addNewStudent = (user: UserDTO) => {

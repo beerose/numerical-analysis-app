@@ -40,11 +40,21 @@ export const CsvControls: React.FC<CsvControlsProps> = ({
             customRequest={onUploadClick}
           >
             <Tooltip title={texts.importCsv}>
-              <Button type="default" icon="upload" />
+              <Button
+                type="default"
+                icon="upload"
+                aria-label={texts.importCsv}
+              />
             </Tooltip>
           </Upload>
+
           <Tooltip title={texts.exportCsv}>
-            <Button type="default" icon="download" onClick={onDownloadClick} />
+            <Button
+              type="default"
+              icon="download"
+              onClick={onDownloadClick}
+              aria-label={texts.exportCsv}
+            />
           </Tooltip>
           <Flex inline center cursor="help" size="32px" fontSize="1.2em">
             <Tooltip title={`${texts.csvInfo} "${CSV_FORMAT}"`}>
