@@ -1,0 +1,121 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Numerical Analysis Server API documentation",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/v1",
+  "schemes": ["http"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/users": {
+      "parameters": [
+        {
+          "name": "search_param",
+          "in": "path",
+          "required": false,
+          "description": "Will be matched agains user name, user email and user index",
+          "type": "string"
+        },
+        {
+          "name": "role",
+          "in": "path",
+          "required": false,
+          "description": "Will be match against user role",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Users"
+            }
+          }
+        }
+      }
+    },
+    "/users/add": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Add new user to the system",
+        "requestBody": {
+          "$ref": "#/components/requestBodies/User"
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/delete": {
+      "parameters": [
+        {
+          "name": "email",
+          "in": "path",
+          "required": true,
+          "description": "Email of the user that is about to be deleted",
+          "type": "string"
+        }
+      ],
+      "delete": {
+        "tags": ["Users"],
+        "summary": "Delete user from the system",
+        "requestBody": {
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "/users/update": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Update user in the system",
+        "requestBody": {
+          "$ref": "#/definitions/User"
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "properties": {
+        "user_name": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string",
+          "uniqueItems": true
+        },
+        "role": {
+          "type": "string"
+        },
+        "student_index": {
+          "type": "string"
+        }
+      }
+    },
+    "Users": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/User"
+      }
+    }
+  }
+}
