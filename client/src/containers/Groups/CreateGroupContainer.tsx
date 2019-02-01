@@ -5,7 +5,6 @@ import { RouteComponentProps } from 'react-router';
 
 import * as groupsService from '../../api/groupApi';
 import { listUsers } from '../../api/userApi';
-import { Breadcrumbs } from '../../components';
 
 import { NewGroupFormValues, WrappedNewGroupForm } from './components/NewGroupForm';
 
@@ -17,10 +16,12 @@ const Container = styled.div`
 `;
 
 const initialState = {
+  loading: false,
   superUsers: [] as UserDTO[],
 };
 
-export class CreateGroupContainer extends React.Component<RouteComponentProps> {
+type State = typeof initialState;
+export class CreateGroupContainer extends React.Component<RouteComponentProps, State> {
   state = initialState;
   componentDidMount() {
     listUsers({ roles: UserRole.superUser }).then(res => {
@@ -31,6 +32,7 @@ export class CreateGroupContainer extends React.Component<RouteComponentProps> {
   handleSubmit = (formValues: NewGroupFormValues) => {
     const { academic_year, group: group_type, group_name, lecturer_id } = formValues;
 
+    this.setState({ loading: true });
     groupsService
       .addGroup({
         academic_year,
@@ -39,7 +41,10 @@ export class CreateGroupContainer extends React.Component<RouteComponentProps> {
         lecturer_id,
       })
       .then(res => {
-        this.props.history.push(`/groups/${res.group_id}`);
+        this.setState({ loading: false });
+        if (!('error' in res)) {
+          this.props.history.push(`/groups/${res.group_id}`);
+        }
       });
   };
 
@@ -49,6 +54,7 @@ export class CreateGroupContainer extends React.Component<RouteComponentProps> {
     return (
       <Container>
         <WrappedNewGroupForm
+          loading={this.state.loading}
           superUsers={this.state.superUsers}
           onSubmit={this.handleSubmit}
           onCancel={this.handleCancel}

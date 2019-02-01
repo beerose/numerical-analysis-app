@@ -92,15 +92,9 @@ type Props = {
   superUsers: UserDTO[];
   onSubmit: (group: NewGroupFormValues) => void;
   onCancel: () => void;
+  loading: boolean;
 } & FormComponentProps;
-type State = {
-  submitting: boolean;
-};
-class NewGroupForm extends React.Component<Props, State> {
-  state: State = {
-    submitting: false,
-  };
-
+class NewGroupForm extends React.Component<Props> {
   handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     this.setState({ submitting: true });
@@ -117,8 +111,8 @@ class NewGroupForm extends React.Component<Props, State> {
       form: { getFieldDecorator },
       onCancel,
       superUsers,
+      loading,
     } = this.props;
-    const { submitting } = this.state;
 
     return (
       <Form onSubmit={this.handleSubmit} className={formStyles}>
@@ -171,7 +165,7 @@ class NewGroupForm extends React.Component<Props, State> {
             type="primary"
             htmlType="submit"
             style={{ marginRight: '5px' }}
-            loading={submitting}
+            loading={loading}
           >
             Dodaj
           </Button>
