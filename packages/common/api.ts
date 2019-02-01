@@ -58,6 +58,12 @@ export type UserDTO = {
   email: string;
   student_index?: string;
   user_role: UserRole;
+  active_user?: boolean;
+};
+
+export type What = 'edit' | 'read';
+export type UserPrivileges = {
+  groups: Record<GroupDTO['id'], What[]>;
 };
 
 export type Pagination = {

@@ -24,7 +24,7 @@ export const loginUser = (req: LoginUserRequest, res: Response) => {
       password: string;
     };
 
-    db.findUserByEmail({ email }, (err, result: UserWithPassword) => {
+    db.findUserByEmail({ email }, (err, result: UserWithPassword | null) => {
       if (err) {
         return res
           .status(codes.INTERNAL_SERVER_ERROR)

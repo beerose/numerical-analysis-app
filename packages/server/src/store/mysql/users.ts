@@ -1,7 +1,9 @@
 import { UserDTO } from 'common';
-import { queryCallback as QueryCallback } from 'mysql';
 
 import { connection } from '../connection';
+
+import { QueryCallback } from './QueryCallback';
+
 export const addUser = (user: UserDTO, callback: QueryCallback) =>
   connection.query(
     {
@@ -62,6 +64,7 @@ const roleSubQuery = (roles: string | string[]) => {
   if (typeof roles === 'string') {
     return `user_role = ("${roles}")`;
   }
+  // tslint:disable-next-line:no-nested-template-literals
   return `user_role IN (${roles.map(role => `"${role}"`)})`;
 };
 
@@ -120,7 +123,7 @@ export const countUsers = (
 
 export const findUserByEmail = (
   { email }: { email: string },
-  callback: QueryCallback
+  callback: QueryCallback<UserDTO & { password: string } | null>
 ) =>
   connection.query(
     {
@@ -128,8 +131,12 @@ export const findUserByEmail = (
       values: [email],
     },
     (err, res) => {
-      if (err) { return callback(err); }
-      if (!res.length) { return callback(null, null); }
+      if (err) {
+        return callback(err, res);
+      }
+      if (!res.length) {
+        return callback(null, null);
+      }
       return callback(null, res[0]);
     }
   );

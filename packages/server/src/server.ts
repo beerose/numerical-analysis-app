@@ -39,11 +39,13 @@ app.delete(Users.Delete, auth.authorize([UserRole.admin]), users.deleteUser);
 app.post(
   Groups.Create,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.create
 );
 app.post(
   Groups.Upload,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.upload,
   auth.sendMagicLinks
 );
