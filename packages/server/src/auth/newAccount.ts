@@ -31,7 +31,7 @@ export const checkNewAccountToken = (
     const { token } = req.body;
     let decoded;
     try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET!);
+      decoded = jwt.verify(token, process.env.JWT_SECRET || '');
     } catch {
       res.status(codes.FORBIDDEN).send({ error: apiMessages.cannotVerifyJWT });
       return;
@@ -61,7 +61,7 @@ export const checkNewAccountToken = (
         return;
       }
       res.locals.email = userRes.email;
-      res.locals.user = userRes.user;
+      res.locals.user = userRes;
       return next();
     });
   });

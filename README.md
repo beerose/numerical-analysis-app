@@ -133,3 +133,21 @@ yarn workspaces server start
 ```
 
 Documentation will be server on `localhost:8082/api-docs`
+
+## Authorization
+
+We are using two levels of authorization.
+The first one is based on RBAC (Role Based Access Control). We have three roles defined:
+
+1. Admin -- an administrator of the whole system that has access to the all endpoints. There's no limit on how many admins there can be.
+2. SuperUser -- we assumed that role SuperUser (this name may be changed when we come up with a better one) will be given to the Univerity employes -- lecturers, people that give classes and so on. This type of user has access to the limited amount of endpoints. He doesn't have access to the users management section, so he cannot for example add new admins.
+3. Student -- any student that attend a class. This role endpoints starts with the prefix `students` and this user doesn't have access to any of the Admin and SuperUser endpoints.
+
+The second layer of the authorization is linked to the SuperUser role and groups management. Each SuperUser can have a different privileges in each group. For example in group with id `1` user can have all possible privileges, but in group with id `2` he can only perfom read operations.
+Following the Attribute Based Access Control (ABAC) we define waht a SuperUser is allowed to do in a particular group:
+
+1. Edit
+2. Read
+
+The lecturer of the group has full access in it, but he can also share privileges to edit this group to the another user. So when a new group is created privilege `edit` is granted to its `lecturer`.
+This model will allow us to extend it to a different attributes, for example: `EditUsers`, `ReadUsers`, `EditMeetings` and so on. By default each SuperUser is granted with `Read` attribute for each group.

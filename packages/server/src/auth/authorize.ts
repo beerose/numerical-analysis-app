@@ -16,7 +16,7 @@ const decodeJWTtoken = (
   const token = auth.substring(7, auth.length);
   let decoded;
   try {
-    decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    decoded = jwt.verify(token, process.env.JWT_SECRET || '');
   } catch {
     return { error: 'cannot verify jwt' };
   }
@@ -60,6 +60,7 @@ export const authorize = (roles: UserRole[]) => (
       return;
     }
 
+    res.locals.user = userRes;
     return next();
   });
 };

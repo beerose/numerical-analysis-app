@@ -4,7 +4,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { css } from 'emotion';
 import * as React from 'react';
 
-import { DateIncrementors } from '../../../components/DateIncrementors';
+import { DateControls } from '../../../components/DateControls';
 import { colors } from '../../../utils';
 
 const formStyles = css`
@@ -53,10 +53,15 @@ const NewMeetingForm = (props: Props) => {
             rules: [{ required: true, message: 'data jest wymagana' }],
           })(<DatePicker style={{ width: 280 }} />)}
         </Form.Item>
-        <DateIncrementors
+        <DateControls
           setFieldsValue={setFieldsValue}
           getFieldValue={getFieldValue}
-          config={[{ value: 1 }, { value: 7 }]}
+          config={[
+            { value: -7, decr: true },
+            { value: -1, decr: true },
+            { value: 1 },
+            { value: 7 },
+          ]}
         />
       </div>
       <Button type="primary" htmlType="submit">

@@ -1,3 +1,4 @@
+// tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Icon, Menu, Spin } from 'antd';
@@ -12,8 +13,14 @@ import { Breadcrumbs, NotFoundPage } from '../../components';
 import { LocaleContext } from '../../components/locale';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
+import { showMessage } from '../../utils';
 
-import { MeetingsDetailsSections, MeetingsSection, StudentsSection } from './sections';
+import {
+  MeetingsDetailsSections,
+  MeetingsSection,
+  SettingsSection,
+  StudentsSection,
+} from './sections';
 
 type MenuLinkProps = {
   to: LinkProps['to'];
@@ -33,7 +40,10 @@ type State = {
   groupId: GroupDTO['id'];
   group?: GroupDTO;
 };
-export class GroupDetailsContainer extends React.Component<RouteComponentProps, State> {
+export class GroupDetailsContainer extends React.Component<
+  RouteComponentProps,
+  State
+> {
   static contextType = LocaleContext;
   context!: React.ContextType<typeof LocaleContext>;
 
@@ -45,7 +55,13 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
     const { groupId } = this.state;
     // TODO: lift state for groups higher up,
     // so GroupDetails can use ListGroups's fresh state
-    groupsService.getGroup(Number(groupId)).then(group => this.setState({ group }));
+    groupsService.getGroup(groupId).then(res => {
+      if ('error' in res) {
+        showMessage(res);
+        this.props.history.push('/groups/');
+      }
+      this.setState({ group: res });
+    });
   }
 
   getSelectedItem() {
@@ -80,8 +96,6 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
 
     const features = groupFeatures[group.group_type];
 
-    console.log({ group });
-
     return (
       <Flex flex={1}>
         <Menu
@@ -89,33 +103,33 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
           defaultSelectedKeys={[this.getSelectedItem()]}
           css={menuStyles}
         >
-          <MenuLink to={matchUrl}>
+          <MenuLink to={matchUrl} key="settings">
             <Icon type="setting" />
             {texts.groupSettings}
           </MenuLink>
-          <MenuLink to={`${matchUrl}/students`}>
+          <MenuLink to={`${matchUrl}/students`} key="students">
             <Icon type="team" />
             {texts.students}
           </MenuLink>
           {features.hasLists && (
-            <MenuLink to={`${matchUrl}/lists`}>
+            <MenuLink to={`${matchUrl}/lists`} key="lists">
               <Icon type="calculator" />
               {texts.lists}
             </MenuLink>
           )}
           {features.hasMeetings && (
-            <MenuLink to={`${matchUrl}/meetings`}>
+            <MenuLink to={`${matchUrl}/meetings`} key="meetings">
               <Icon type="schedule" />
               {texts.meetings}
             </MenuLink>
           )}
           {features.hasPresence && (
-            <MenuLink to={`${matchUrl}/presence`}>
+            <MenuLink to={`${matchUrl}/presence`} key="presence">
               <Icon type="calendar" />
               {texts.presence}
             </MenuLink>
           )}
-          <MenuLink to={`${matchUrl}/grades`}>
+          <MenuLink to={`${matchUrl}/grades`} key="grades">
             <Icon type="line-chart" />
             {texts.grades}
           </MenuLink>
@@ -128,11 +142,12 @@ export class GroupDetailsContainer extends React.Component<RouteComponentProps, 
             replace={this.replaceGroupIdBreadcrumb}
           />
           <Switch>
-            <Route
-              exact={true}
-              path={'/groups/:id/students'}
-              component={() => <StudentsSection groupId={groupId} />}
-            />
+            <Route exact={true} path={'/groups/:id'}>
+              <SettingsSection groupId={groupId} />
+            </Route>
+            <Route exact={true} path={'/groups/:id/students'}>
+              <StudentsSection groupId={groupId} />
+            </Route>
             <Route exact={true} path={'/groups/:id/presence'}>
               <MeetingsDetailsSections groupId={Number(groupId)} />
             </Route>

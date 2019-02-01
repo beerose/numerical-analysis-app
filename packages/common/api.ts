@@ -58,7 +58,12 @@ export type UserDTO = {
   email: string;
   student_index?: string;
   user_role: UserRole;
+  active_user?: boolean;
 };
+
+export type Where = 'groups' | 'users';
+export type What = 'edit' | 'read';
+export type UserPrivileges = { [key in Where]: Record<GroupDTO['id'], What[]> };
 
 export type Pagination = {
   offset: number;

@@ -36,87 +36,104 @@ app.post(Users.Create, auth.authorize([UserRole.admin]), users.create);
 app.post(Users.Update, auth.authorize([UserRole.admin]), users.update);
 app.delete(Users.Delete, auth.authorize([UserRole.admin]), users.deleteUser);
 
+// Outside a particular group
 app.post(
   Groups.Create,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.create
-);
-app.post(
-  Groups.Upload,
-  auth.authorize([UserRole.admin, UserRole.superUser]),
-  groups.upload,
-  auth.sendMagicLinks
 );
 app.get(
   Groups.List,
   auth.authorize([UserRole.admin, UserRole.superUser]),
   groups.list
 );
+
+// Inside a particular group
+app.post(
+  Groups.Upload,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  groups.upload,
+  auth.sendMagicLinks
+);
 app.get(
   Groups.Get,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('read', 'groups'),
   groups.getGroup
 );
 app.delete(
   Groups.Delete,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.deleteGroup
 );
-
 app.get(
   Groups.Students.List,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('read', 'groups'),
   groups.listStudentsForGroup
 );
 app.post(
   Groups.Students.AddToGroup,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.addStudentToGroup
 );
 app.delete(
   Groups.Students.RemoveFromGroup,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.removeStudentFromGroup
 );
 
 app.get(
   Groups.Meetings.List,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('read', 'groups'),
   groups.listMeetings
 );
 app.post(
   Groups.Meetings.Create,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.addMeeting
 );
 app.post(
   Groups.Meetings.Update,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.updateMeeting
 );
 app.delete(
   Groups.Meetings.Delete,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.deleteMeeting
 );
 app.get(
   Groups.Meetings.Details,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('read', 'groups'),
   groups.getMeetingsDetails
 );
 app.post(
   Groups.Meetings.AddPresence,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.addPresence
 );
 app.delete(
   Groups.Meetings.DeletePresence,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.deletePresence
 );
 app.post(
   Groups.Meetings.SetActivity,
   auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
   groups.setActivity
 );
 

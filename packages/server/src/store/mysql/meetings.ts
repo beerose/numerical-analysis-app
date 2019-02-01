@@ -66,7 +66,7 @@ export const listMeetings = (
         meetings
       WHERE
         group_id = ?
-      ORDER BY date ASC
+      ORDER BY date DESC
     `,
       typeCast: (field, orig) => {
         return field.type === 'DATE' ? new Date(field.string()) : orig();

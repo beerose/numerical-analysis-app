@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig.settings.json",
   "compilerOptions": {
-    "baseUrl": "./src",
+    "baseUrl": "./",
     // This project will be bundled by parcel
     "outDir": "../../dist/__client-BAD",
     "allowSyntheticDefaultImports": true,
@@ -20,6 +20,6 @@
     "moduleResolution": "node"
   },
   "include": ["src"],
-  "exclude": ["../../node_modules"],
+  "exclude": ["node_modules", "../../node_modules"],
   "references": [{ "path": "../common" }]
 }
