@@ -3,7 +3,7 @@ import { Button, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
 
-import { colors, LABELS } from '../../utils';
+import { Colors, LABELS } from '../../utils';
 
 const FormItem = Form.Item;
 
@@ -24,13 +24,18 @@ export const NewAccountWithToken = (props: Props) => {
 
   const { getFieldDecorator } = props.form;
   return (
-    <Form onSubmit={handleSubmit} style={{ padding: '20px 20px 0', width: '350px' }}>
+    <Form
+      onSubmit={handleSubmit}
+      style={{ padding: '20px 20px 0', width: '350px' }}
+    >
       <FormItem>
         {getFieldDecorator('password_', {
           rules: [{ required: true, message: LABELS.passwordRequired }],
         })(
           <Input
-            prefix={<Icon type="lock" style={{ color: colors.semiLightGrey }} />}
+            prefix={
+              <Icon type="lock" style={{ color: Colors.SemiLightGrey }} />
+            }
             type="password"
             placeholder={LABELS.password}
           />
@@ -41,7 +46,9 @@ export const NewAccountWithToken = (props: Props) => {
           rules: [{ required: true, message: LABELS.passwordRequired }],
         })(
           <Input
-            prefix={<Icon type="lock" style={{ color: colors.semiLightGrey }} />}
+            prefix={
+              <Icon type="lock" style={{ color: Colors.SemiLightGrey }} />
+            }
             type="password"
             placeholder={LABELS.confirmPassword}
           />

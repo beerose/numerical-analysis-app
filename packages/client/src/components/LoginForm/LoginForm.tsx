@@ -6,7 +6,7 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 
 import { ModalHeader } from '../../components/ModalHeader';
-import { colors, LABELS } from '../../utils';
+import { Colors, LABELS } from '../../utils';
 
 const FormItem = Form.Item;
 
@@ -62,7 +62,9 @@ const LoginForm = (props: Props) => {
             rules: [{ required: true, message: LABELS.emailRequired }],
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: colors.semiLightGrey }} />}
+              prefix={
+                <Icon type="user" style={{ color: Colors.SemiLightGrey }} />
+              }
               placeholder={LABELS.email}
             />
           )}
@@ -72,7 +74,9 @@ const LoginForm = (props: Props) => {
             rules: [{ required: true, message: LABELS.passwordRequired }],
           })(
             <Input
-              prefix={<Icon type="lock" style={{ color: colors.semiLightGrey }} />}
+              prefix={
+                <Icon type="lock" style={{ color: Colors.SemiLightGrey }} />
+              }
               type="password"
               placeholder={LABELS.password}
             />

@@ -92,7 +92,7 @@ export class UsersTable extends React.Component<
           <div style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '100px' }}>
             <EditableConsumer>
               {(form: WrappedFormUtils) => (
-                <ActionLink onClick={() => this.handleUpdate(form, record.id!)}>
+                <ActionLink onClick={() => this.handleUpdate(form, record.id)}>
                   {LABELS.save}
                 </ActionLink>
               )}
@@ -114,7 +114,7 @@ export class UsersTable extends React.Component<
         return (
           <Popconfirm
             title={LABELS.areYouSure}
-            onConfirm={() => this.handleDelete(record.id!)}
+            onConfirm={() => this.handleDelete(record.id)}
             okText={LABELS.yes}
             okType="danger"
             placement="topRight"

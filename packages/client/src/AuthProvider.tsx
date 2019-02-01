@@ -17,7 +17,10 @@ const getUserFromLocalStorage = () => {
   return { userRole, userName, userAuth: true };
 };
 
-export class AuthProvider extends React.Component<RouteChildrenProps, AuthContextState> {
+export class AuthProvider extends React.Component<
+  RouteChildrenProps,
+  AuthContextState
+> {
   constructor(props: RouteChildrenProps) {
     super(props);
     this.state = {
@@ -38,14 +41,18 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
   };
 
   resetState = () => {
-    this.setState({ userAuth: false, userRole: undefined, userName: undefined });
+    this.setState({
+      userAuth: false,
+      userName: undefined,
+      userRole: undefined,
+    });
   };
 
   saveCookiesState = (
     userName: string,
     userRole: string,
     token: string,
-    longExpiration?: boolean
+    longExpiration: boolean = false
   ) => {
     const now = new Date();
     const expirationHours = longExpiration ? 7 * 24 : 1;
@@ -65,7 +72,12 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
         return res;
       })
       .then(res => {
-        this.saveCookiesState(res.user_name, res.user_role, res.token, remember);
+        this.saveCookiesState(
+          res.user_name,
+          res.user_role,
+          res.token,
+          remember
+        );
         return res;
       })
       .then(res => {
@@ -107,6 +119,10 @@ export class AuthProvider extends React.Component<RouteChildrenProps, AuthContex
   };
 
   render() {
-    return <AuthContextProvider value={this.state}>{this.props.children}</AuthContextProvider>;
+    return (
+      <AuthContextProvider value={this.state}>
+        {this.props.children}
+      </AuthContextProvider>
+    );
   }
 }

@@ -5,7 +5,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { UserDTO } from 'common';
 import * as React from 'react';
 
-import { colors, LABELS } from '../../../utils/';
+import { Colors, LABELS } from '../../../utils/';
 
 const FormItem = Form.Item;
 
@@ -111,7 +111,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
             })(
               <Input
                 prefix={
-                  <Icon type="user" style={{ color: colors.semiLightGrey }} />
+                  <Icon type="user" style={{ color: Colors.SemiLightGrey }} />
                 }
                 placeholder={LABELS.name}
                 disabled={!!this.state.selectedStudent}
@@ -124,7 +124,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
             })(
               <Input
                 prefix={
-                  <Icon type="mail" style={{ color: colors.semiLightGrey }} />
+                  <Icon type="mail" style={{ color: Colors.SemiLightGrey }} />
                 }
                 placeholder={LABELS.email}
                 disabled={!!this.state.selectedStudent}
@@ -137,7 +137,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
             })(
               <Input
                 prefix={
-                  <Icon type="book" style={{ color: colors.semiLightGrey }} />
+                  <Icon type="book" style={{ color: Colors.SemiLightGrey }} />
                 }
                 placeholder={LABELS.index}
                 disabled={!!this.state.selectedStudent}

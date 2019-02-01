@@ -8,3 +8,5 @@ export * from './NewAccount';
 export * from './NotFoundPage';
 export * from './Breadcrumbs';
 export * from './DateControls';
+export * from './ErrorBoundary';
+export * from './PaddingContainer';

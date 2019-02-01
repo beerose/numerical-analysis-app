@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { ErrorMessage } from '../components/Error';
+import { ErrorMessage } from './Error';
 
 type ErrorMsg = string;
 type State = {

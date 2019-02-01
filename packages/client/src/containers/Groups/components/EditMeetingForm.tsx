@@ -7,7 +7,7 @@ import moment from 'moment';
 import * as React from 'react';
 
 import { DateControls } from '../../../components/DateControls';
-import { colors } from '../../../utils';
+import { Colors } from '../../../utils';
 
 const formStyles = css`
   padding: 25px;
@@ -82,7 +82,7 @@ class EditMeetingForm extends React.Component<Props> {
           })(
             <Input
               prefix={
-                <Icon type="tag" style={{ color: colors.semiLightGrey }} />
+                <Icon type="tag" style={{ color: Colors.SemiLightGrey }} />
               }
               placeholder="Nazwa spotkania"
               className={formItems}
