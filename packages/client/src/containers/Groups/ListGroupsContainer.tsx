@@ -76,7 +76,7 @@ export class ListGroupsContainer extends React.Component<
               >
                 <List.Item.Meta
                   title={
-                    <Link to={`groups/${item.id}`}>{item.group_name}</Link>
+                    <Link to={`/groups/${item.id}`}>{item.group_name}</Link>
                   }
                   // description={`Prowadzący: ${item.lecture}`} TO DO
                 />

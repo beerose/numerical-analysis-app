@@ -54,7 +54,8 @@ export class NewStudentModalForm extends React.Component<Props, State> {
   handleSelectChange = (value: string) => {
     const { allStudents } = this.props;
     this.setState({
-      selectedStudent: allStudents.find(s => s.id === Number(value)) || undefined,
+      selectedStudent:
+        allStudents.find(s => s.id === Number(value)) || undefined,
     });
   };
 
@@ -74,7 +75,10 @@ export class NewStudentModalForm extends React.Component<Props, State> {
         <p>{LABELS.selectFromListOrCreate}</p>
         <Select
           showSearch
-          value={selectedStudent && selectedStudent.user_name}
+          value={
+            selectedStudent &&
+            `(${selectedStudent.student_index}) ${selectedStudent.user_name}`
+          }
           style={{ width: 300 }}
           placeholder={LABELS.selectFromList}
           optionFilterProp="children"
@@ -89,7 +93,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
         >
           {this.props.allStudents.map(student => (
             <Select.Option key={`${student.id}`} value={student.id}>
-              {student.user_name}
+              {`(${student.student_index || ''}) ${student.user_name}`}
             </Select.Option>
           ))}
         </Select>
@@ -106,7 +110,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: true, message: LABELS.nameRequired }],
             })(
               <Input
-                prefix={<Icon type="user" style={{ color: colors.semiLightGrey }} />}
+                prefix={
+                  <Icon type="user" style={{ color: colors.semiLightGrey }} />
+                }
                 placeholder={LABELS.name}
                 disabled={!!this.state.selectedStudent}
               />
@@ -117,7 +123,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: true, message: LABELS.emailRequired }],
             })(
               <Input
-                prefix={<Icon type="mail" style={{ color: colors.semiLightGrey }} />}
+                prefix={
+                  <Icon type="mail" style={{ color: colors.semiLightGrey }} />
+                }
                 placeholder={LABELS.email}
                 disabled={!!this.state.selectedStudent}
               />
@@ -128,7 +136,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               rules: [{ required: false }],
             })(
               <Input
-                prefix={<Icon type="book" style={{ color: colors.semiLightGrey }} />}
+                prefix={
+                  <Icon type="book" style={{ color: colors.semiLightGrey }} />
+                }
                 placeholder={LABELS.index}
                 disabled={!!this.state.selectedStudent}
               />
