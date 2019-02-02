@@ -253,7 +253,7 @@ export const setActivity = (
     SERVER_URL + Groups.Meetings.SetActivity,
     options
   ).then(result => {
-    showMessage(result, { showError: true, showSuccess: false });
+    showMessage(result, { showSuccess: false });
     return result;
   });
 };

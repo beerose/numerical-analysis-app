@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { Checkbox as AntCheckbox, Input as AntInput } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 import React from 'react';
 
@@ -31,15 +32,18 @@ const Input = styled(AntInput)`
   width: 56px;
 `;
 
+type PresenceOrActivityValue =
+  | {
+      activity: number;
+    }
+  | {
+      isPresent: boolean;
+    };
+
+type PresenceOrActivityChangeEvent = FieldIdentifier & PresenceOrActivityValue;
+
 export type PresenceAndActivityChangeHandler = (
-  value: FieldIdentifier &
-    (
-      | {
-          activity: number;
-        }
-      | {
-          isPresent: boolean;
-        })
+  value: PresenceOrActivityChangeEvent
 ) => void;
 
 export type PresenceAndActivityControlsProps = FieldIdentifier & {
@@ -86,7 +90,7 @@ export class PresenceAndActivityControls extends React.PureComponent<
           type="number"
           value={activity}
           onChange={this.handleActivityChanged}
-          tabIndex={Math.floor(Math.random() * 100)}
+          tabIndex={0}
         />
       </ControlsContainer>
     );
