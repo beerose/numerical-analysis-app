@@ -6,7 +6,7 @@
     "watch-compile": "tsc --build --watch .",
     "watch-run": "cross-env PORT=8082 NODE_PATH=../../dist/ nodemon ../../dist/server/index.js",
     "build": "tsc --build .",
-    "test": "jest --detectOpenHandles",
+    "test": "jest",
     "start": "cross-env NODE_PATH=_prod node _prod/server/index.js",
     "dev": "concurrently -c blue,yellow -n c,r \"yarn watch-compile\" \"yarn watch-run\"",
     "deploy": "ts-node scripts/deploy.ts"

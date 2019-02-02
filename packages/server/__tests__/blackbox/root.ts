@@ -4,11 +4,10 @@ import { app } from '../../src/server';
 
 const fetch = makeFetch(app);
 
-describe('GET /', () => {
+describe('get /', () => {
   it('responds nicely', () => {
     fetch('/')
-      .expectStatus(200)
-      .then(res => res.text(), console.error)
-      .then(t => console.log({ t }));
+      .expect(200, 'Hello! 👋')
+      .end();
   });
 });

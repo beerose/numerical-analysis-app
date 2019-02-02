@@ -8,11 +8,9 @@ import swaggerUi from 'swagger-ui-express';
 
 import * as auth from './auth';
 import * as groups from './groups';
-import { connectToDb } from './store/connection';
+import { connection, connectToDb } from './store/connection';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
-
-connectToDb();
 
 const PORT = process.env.PORT;
 
@@ -140,8 +138,18 @@ app.post(
   groups.setActivity
 );
 
-const listener = app.listen(PORT, () => {
-  console.log(
-    `Your app is listening on port: ${(listener.address() as AddressInfo).port}`
-  );
-});
+let server: import('http').Server;
+
+export const startServer = () => {
+  connectToDb();
+  server = app.listen(PORT, () => {
+    console.log(
+      `Your app is listening on port: ${(server.address() as AddressInfo).port}`
+    );
+  });
+};
+
+export const stopServer = () => {
+  server.close();
+  connection.destroy();
+};

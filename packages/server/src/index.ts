@@ -5,6 +5,4 @@ if (process.env.NODE_ENV !== 'production') {
   dotenv.load();
 }
 
-require('./store/connection');
-
-require('./server');
+const { startServer, stopServer } = require('./server');
