@@ -7,6 +7,12 @@ const fetch = makeFetch(app);
 describe('get /', () => {
   it('responds nicely', () =>
     fetch('/')
-      .expect(200, 'Hello! 👋')
-      .end());
+      .expectStatus(200)
+      .then(
+        res =>
+          res
+            .text()
+            .then(text => expect(text.startsWith('Hello!')).toBeTruthy()),
+        fail
+      ));
 });

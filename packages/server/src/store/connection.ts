@@ -7,6 +7,10 @@ const dbConfig = {
   user: process.env.DB_USER,
 };
 
+// if (!dbConfig.user) {
+//   throw new Error('DB_USER is not defined');
+// }
+
 // Watch out! Type unsafe! We expect `connectToDb` will be called before accessing connection.
 export const connection = mysql.createConnection(dbConfig);
 
