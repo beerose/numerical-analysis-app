@@ -1,3 +1,4 @@
 export * from './MeetingsSection';
-export { StudentsSection } from './StudentsSection';
+export * from './StudentsSection';
 export * from './MeetingsDetailsSection';
+export * from './SettingsSection';
