@@ -1,0 +1,12 @@
+{
+  "ignore": [
+    "__tests__",
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    ".git",
+    "node_modules"
+  ],
+  "watch": ["src"],
+  "exec": "yarn tsnode",
+  "ext": "ts"
+}

@@ -5,9 +5,8 @@ import { app } from '../../src/server';
 const fetch = makeFetch(app);
 
 describe('get /', () => {
-  it('responds nicely', () => {
+  it('responds nicely', () =>
     fetch('/')
       .expect(200, 'Hello! 👋')
-      .end();
-  });
+      .end());
 });

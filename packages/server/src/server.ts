@@ -8,7 +8,7 @@ import swaggerUi from 'swagger-ui-express';
 
 import * as auth from './auth';
 import * as groups from './groups';
-import { connection, connectToDb } from './store/connection';
+import { connectToDb, disconnectFromDb } from './store/connection';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
 
@@ -26,7 +26,7 @@ const { Users, Groups, Accounts } = ServerRoutes;
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (_, res) => {
-  res.send('Hello! 👋');
+  res.send(`Hello! 👋 ${new Date().toLocaleString()}`);
 });
 
 app.post(Accounts.New, auth.checkNewAccountToken, auth.storeUserPassword);
@@ -151,5 +151,5 @@ export const startServer = () => {
 
 export const stopServer = () => {
   server.close();
-  connection.destroy();
+  disconnectFromDb();
 };

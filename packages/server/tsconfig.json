@@ -5,9 +5,14 @@
     "target": "es5",
     "module": "commonjs",
     "jsx": "react",
-    "typeRoots": ["./node_modules/@types", "./src/types"],
-    "outDir": "../../dist/server",
-    "types": ["jest"]
+    "typeRoots": [
+      "./node_modules/@types",
+      "../../node_modules/@types",
+      "./src/types"
+    ],
+    "outDir": "../../dist/server"
   },
+  "include": ["src"],
+  "exclude": ["**/__tests__/*.ts"],
   "references": [{ "path": "../common" }]
 }
