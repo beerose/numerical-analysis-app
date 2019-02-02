@@ -11,7 +11,7 @@ export const getGroup = (
   connection.query(
     {
       sql: `
-      SELECT g.*, u.user_name
+      SELECT g.*, u.user_name as lecturer_name
       FROM \`groups\` g
       JOIN
         users u ON (g.lecturer_id = u.id)
