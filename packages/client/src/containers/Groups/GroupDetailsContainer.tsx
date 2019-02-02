@@ -18,6 +18,7 @@ import {
   MeetingsDetailsSections,
   MeetingsSection,
   // SettingsSection,
+  SettingsSection,
   StudentsSection,
 } from './sections';
 
@@ -142,7 +143,7 @@ export class GroupDetailsContainer extends React.Component<
           />
           <Switch>
             <Route exact={true} path={'/groups/:id'}>
-              {/* <SettingsSection groupId={groupId} /> */}
+              <SettingsSection group={group} />
             </Route>
             <Route exact={true} path={'/groups/:id/students'}>
               <StudentsSection groupId={groupId} />

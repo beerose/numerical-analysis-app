@@ -209,9 +209,7 @@ export const addPresence = (
     SERVER_URL + Groups.Meetings.AddPresence,
     options
   ).then(result => {
-    if ('error' in result) {
-      showMessage(result);
-    }
+    showMessage(result, { showError: true, showSuccess: false });
     return result;
   });
 };
