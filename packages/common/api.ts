@@ -82,6 +82,7 @@ export type GroupDTO = {
   group_type: GroupType;
   lecturer_id: UserDTO['id'];
   lecturer_name?: string;
+  class_number?: number;
   academic_year?: string;
   data?: Record<string, unknown>;
 };
