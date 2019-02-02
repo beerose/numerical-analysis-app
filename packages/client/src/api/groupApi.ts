@@ -209,7 +209,7 @@ export const addPresence = (
     SERVER_URL + Groups.Meetings.AddPresence,
     options
   ).then(result => {
-    showMessage(result, { showSuccess: false });
+    showMessage(result, { showError: true, showSuccess: false });
     return result;
   });
 };
@@ -230,7 +230,7 @@ export const deletePresence = (
     SERVER_URL + Groups.Meetings.DeletePresence,
     options
   ).then(result => {
-    showMessage(result, { showSuccess: false });
+    showMessage(result, { showError: true, showSuccess: false });
     return result;
   });
 };
@@ -253,7 +253,7 @@ export const setActivity = (
     SERVER_URL + Groups.Meetings.SetActivity,
     options
   ).then(result => {
-    showMessage(result, { showSuccess: false });
+    showMessage(result, { showError: true, showSuccess: false });
     return result;
   });
 };

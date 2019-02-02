@@ -8,7 +8,6 @@ export const showMessage = (
     showSuccess: true,
   }
 ) => {
-  console.log(res, opts);
   if ('error' in res && opts.showError) {
     message.error(res.error);
     return;
