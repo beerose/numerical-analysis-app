@@ -209,9 +209,7 @@ export const addPresence = (
     SERVER_URL + Groups.Meetings.AddPresence,
     options
   ).then(result => {
-    if ('error' in result) {
-      showMessage(result);
-    }
+    showMessage(result, { showSuccess: false });
     return result;
   });
 };
@@ -232,7 +230,7 @@ export const deletePresence = (
     SERVER_URL + Groups.Meetings.DeletePresence,
     options
   ).then(result => {
-    showMessage(result);
+    showMessage(result, { showSuccess: false });
     return result;
   });
 };
