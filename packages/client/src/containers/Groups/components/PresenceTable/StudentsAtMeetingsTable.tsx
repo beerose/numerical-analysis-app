@@ -6,20 +6,22 @@ import { Table } from '../../../../components/Table';
 
 import { FieldIdentifier, MeetingId } from './types';
 
-type IdentifiedChangeHandler = (value: FieldIdentifier) => void;
+type IdentifiedChangeHandler<T extends FieldIdentifier> = (
+  eventTarget: T
+) => void;
 
-type Props = {
+type Props<T extends FieldIdentifier> = {
   meetings: MeetingDTO[];
   meetingsDetails: MeetingDetailsModel[];
   makeRenderMeetingData: (
     meetingId: MeetingId,
-    handleChange: IdentifiedChangeHandler
+    handleChange: IdentifiedChangeHandler<T>
   ) => (
     meetingData: MeetingDetailsModel['data'],
     record: MeetingDetailsModel,
     index: number
   ) => React.ReactNode;
-  handleChange: IdentifiedChangeHandler;
+  handleChange: IdentifiedChangeHandler<T>;
 };
 
 const CenteredText = styled.div`
@@ -30,7 +32,9 @@ const Em = styled.em`
   display: block;
 `;
 
-export class StudentsAtMeetingsTable extends React.Component<Props> {
+export class StudentsAtMeetingsTable<
+  T extends FieldIdentifier
+> extends React.Component<Props<T>> {
   columns = [
     {
       dataIndex: 'student.user_name',
@@ -73,7 +77,7 @@ export class StudentsAtMeetingsTable extends React.Component<Props> {
       <Table
         sortDirections={['descend', 'ascend']}
         size="small"
-        rowKey={record => record.student.id}
+        rowKey={record => String(record.student.id)}
         columns={this.columns}
         dataSource={meetingsDetails}
         pagination={false}

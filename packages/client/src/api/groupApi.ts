@@ -232,7 +232,7 @@ export const deletePresence = (
     SERVER_URL + Groups.Meetings.DeletePresence,
     options
   ).then(result => {
-    showMessage(result);
+    showMessage(result, { showError: true, showSuccess: false });
     return result;
   });
 };
