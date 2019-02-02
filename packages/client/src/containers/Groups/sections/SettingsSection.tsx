@@ -2,30 +2,21 @@ import styled from '@emotion/styled';
 import { GroupDTO } from 'common';
 import * as React from 'react';
 
-import { EditGroupForm } from '../components';
-
 const Container = styled.section`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   height: 80vh;
 `;
 
 type Props = {
-  groupId: GroupDTO['id'];
+  group: GroupDTO;
 };
 
 export class SettingsSection extends React.Component<Props> {
   render() {
-    return (
-      <Container>
-        <EditGroupForm
-          loading={false}
-          superUsers={[]}
-          onSubmit={() => console.log('submit')}
-          onCancel={() => console.log('submit')}
-        />
-      </Container>
-    );
+    const { id, lecturer_id } = this.props.group;
+    console.log(this.props.group);
+    return <Container>Prowadzący: {lecturer_id}</Container>;
   }
 }

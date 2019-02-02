@@ -7,7 +7,7 @@ import { GroupType, UserDTO } from 'common';
 import { css } from 'emotion';
 import * as React from 'react';
 
-import { colors, LABELS } from '../../../utils';
+import { Colors, LABELS } from '../../../utils';
 
 const FormItem = Form.Item;
 
@@ -36,7 +36,7 @@ const SelectSuperUser = React.forwardRef(
         <>
           <Icon
             type="user"
-            style={{ color: colors.semiLightGrey, marginRight: '5px' }}
+            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
           />
           {LABELS.superUser}
         </>
@@ -65,7 +65,7 @@ export const SelectSemester = React.forwardRef(
         <>
           <Icon
             type="table"
-            style={{ color: colors.semiLightGrey, marginRight: '5px' }}
+            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
           />
           Rok akademicki
         </>
@@ -144,7 +144,7 @@ class EditGroupForm extends React.Component<Props> {
           })(
             <Input
               prefix={
-                <Icon type="tags" style={{ color: colors.semiLightGrey }} />
+                <Icon type="tags" style={{ color: Colors.SemiLightGrey }} />
               }
               placeholder={LABELS.groupName}
             />
@@ -159,7 +159,7 @@ class EditGroupForm extends React.Component<Props> {
           {getFieldDecorator('class_room')(
             <Input
               prefix={
-                <Icon type="book" style={{ color: colors.semiLightGrey }} />
+                <Icon type="book" style={{ color: Colors.SemiLightGrey }} />
               }
               placeholder={LABELS.classRoomNumber}
             />
