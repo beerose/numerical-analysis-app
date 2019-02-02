@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import React from 'react';
+import { Icon } from 'antd';
 import { Link, LinkProps } from 'react-router-dom';
 
 import { Colors } from '../utils';
@@ -9,7 +10,6 @@ import { PaddingContainer } from '../components';
 import { LocaleContext } from '../components/locale';
 import { AuthContextState } from '../AuthContext';
 import { Flex } from '../components/Flex';
-import { Icon } from 'antd';
 
 type TileLinkProps = LinkProps;
 
