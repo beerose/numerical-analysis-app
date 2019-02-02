@@ -7,27 +7,29 @@ const dbConfig = {
   user: process.env.DB_USER,
 };
 
-let connection: Connection;
+// Watch out! Type unsafe! We expect `connectToDb` will be called before accessing connection.
+let con: Connection = {} as Connection;
+export const connection = new Proxy(con, {
+  get: (target, prop) => target[prop as keyof Connection],
+});
 
-const handleDisconnect = () => {
-  connection = mysql.createConnection(dbConfig);
-  connection.connect(err => {
+export const connectToDb = () => {
+  console.log('Connecting to database...');
+  con = mysql.createConnection(dbConfig);
+  con.connect(err => {
     if (err) {
-      console.log('error when connecting to db:', err);
-      setTimeout(handleDisconnect, 2000);
+      console.warn('Error occurred when connecting to database:\n', err);
+      setTimeout(connectToDb, 2000);
     }
   });
-  connection.on('error', err => {
+  con.on('error', err => {
     if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      handleDisconnect();
+      console.log('Connection to database lost!');
+      connectToDb();
     } else {
       throw err;
     }
   });
 };
 
-handleDisconnect();
-
-const DUPLICATE_ENTRY_ERROR = 'ER_DUP_ENTRY';
-
-export { connection, DUPLICATE_ENTRY_ERROR };
+export const DUPLICATE_ENTRY_ERROR = 'ER_DUP_ENTRY';

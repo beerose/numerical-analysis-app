@@ -6,8 +6,8 @@
     "module": "commonjs",
     "jsx": "react",
     "typeRoots": ["./node_modules/@types", "./src/types"],
-    "outDir": "../../dist/server"
+    "outDir": "../../dist/server",
+    "types": ["jest"]
   },
-  "exclude": ["node_modules", "scripts", "jest"],
   "references": [{ "path": "../common" }]
 }

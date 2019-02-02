@@ -8,12 +8,15 @@ import swaggerUi from 'swagger-ui-express';
 
 import * as auth from './auth';
 import * as groups from './groups';
+import { connectToDb } from './store/connection';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
 
+connectToDb();
+
 const PORT = process.env.PORT;
 
-const app = express();
+export const app = express();
 
 morganBody(app);
 app.use(cors());

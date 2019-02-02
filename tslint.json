@@ -7,6 +7,8 @@
     "tslint-config-prettier"
   ],
   "rules": {
+    "mocha-no-side-effect-code": false, // We're not using mocha
+    "chai-vague-errors": false, // nor chai
     "no-backbone-get-set-outside-model": false, // We're not using Backbone!
     "no-single-line-block-comment": false, // We have @jsx jsx pragma comments for emotion
     "no-null-keyword": false,

@@ -6,6 +6,7 @@
     "watch-compile": "tsc --build --watch .",
     "watch-run": "cross-env PORT=8082 NODE_PATH=../../dist/ nodemon ../../dist/server/index.js",
     "build": "tsc --build .",
+    "test": "jest --detectOpenHandles",
     "start": "cross-env NODE_PATH=_prod node _prod/server/index.js",
     "dev": "concurrently -c blue,yellow -n c,r \"yarn watch-compile\" \"yarn watch-run\"",
     "deploy": "ts-node scripts/deploy.ts"
@@ -18,6 +19,7 @@
     "@types/dotenv": "^6.1.0",
     "@types/express": "^4.11.1",
     "@types/http-status-codes": "^1.2.0",
+    "@types/jest": "^23.3.13",
     "@types/js-cookie": "^2.2.0",
     "@types/jsonwebtoken": "^8.3.0",
     "@types/morgan": "^1.7.35",
@@ -38,19 +40,21 @@
     "mysql": "^2.16.0",
     "nodemailer": "^5.0.0",
     "parcel-bundler": "^1.11.0",
+    "supertest-fetch": "^1.2.2",
     "swagger-ui-express": "^4.0.1",
     "typescript": "^3.3.1",
     "uniqid": "^5.0.3"
   },
   "devDependencies": {
-    "@types/mysql": "^2.15.5",
     "concurrently": "^4.0.1",
     "cross-env": "^5.2.0",
     "executive": "^1.6.3",
+    "jest": "^24.0.0",
     "morgan-body": "^2.4.5",
     "nodemon": "^1.18.9",
     "prettier": "^1.11.1",
     "supervisor": "^0.12.0",
+    "ts-jest": "^23.10.5",
     "ts-node": "^8.0.2"
   },
   "engines": {
