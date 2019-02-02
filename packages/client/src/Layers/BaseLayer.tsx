@@ -1,14 +1,18 @@
 import styled from '@emotion/styled';
 import { Layout } from 'antd';
 import * as React from 'react';
-import { RouteChildrenProps } from 'react-router';
+import { Route, RouteChildrenProps, Switch } from 'react-router';
 
-import { ServerRoutes } from 'common';
-import { LoginForm, MainMenu } from '../components/';
+import {
+  ErrorBoundary,
+  LoginForm,
+  MainMenu,
+  NewAccount,
+  NotFoundPage,
+} from '../components';
+import { Groups, Home, ListUsersContainer } from '../containers';
 import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
-
-import { ErrorBoundary } from './ErrorLayer';
 
 const { Content, Header } = Layout;
 
@@ -47,10 +51,9 @@ const Title = styled.p`
 type Props = RouteChildrenProps;
 export class BaseLayer extends React.Component<Props> {
   render() {
-    const pathname = this.props.location.pathname;
     return (
       <AuthConsumer>
-        {({ userRole, userAuth, actions, errorMessage }) => {
+        {({ userRole, userAuth, actions, errorMessage, userName }) => {
           return (
             <StyledLayout>
               <StyledHeader>
@@ -64,14 +67,35 @@ export class BaseLayer extends React.Component<Props> {
               </StyledHeader>
               <ErrorBoundary>
                 <StyledContent>
-                  {userAuth || pathname === ServerRoutes.Accounts.New ? (
-                    this.props.children
-                  ) : (
-                    <LoginForm
-                      onSubmit={actions.login}
-                      errorMessage={errorMessage}
+                  <Switch>
+                    <Route
+                      path="/accounts/new"
+                      render={routeContext => <NewAccount {...routeContext} />}
                     />
-                  )}
+                    {userAuth ? (
+                      <>
+                        <Route
+                          exact
+                          path="/"
+                          render={() => (
+                            <Home userRole={userRole} userName={userName} />
+                          )}
+                        />
+                        <Route
+                          exact
+                          path="/users"
+                          component={ListUsersContainer}
+                        />
+                        <Route path="/groups" render={Groups} />
+                      </>
+                    ) : (
+                      <LoginForm
+                        onSubmit={actions.login}
+                        errorMessage={errorMessage}
+                      />
+                    )}
+                    <NotFoundPage />
+                  </Switch>
                 </StyledContent>
               </ErrorBoundary>
             </StyledLayout>

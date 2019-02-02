@@ -37,7 +37,6 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "json5": "^2.1.0",
     "parcel-bundler": "^1.11.0",
-    "props-of": "^0.1.1",
     "tslib": "^1.9.3",
     "typescript": "^3.3.1"
   }

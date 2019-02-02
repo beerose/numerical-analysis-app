@@ -5,7 +5,7 @@ import { UserDTO } from 'common';
 import * as React from 'react';
 
 import { SelectRole } from '../../components/';
-import { colors, LABELS } from '../../utils';
+import { Colors, LABELS } from '../../utils';
 
 const FormItem = Form.Item;
 
@@ -52,7 +52,9 @@ export const NewUserModalForm = (props: Props) => {
             rules: [{ required: true, message: LABELS.nameRequired }],
           })(
             <Input
-              prefix={<Icon type="user" style={{ color: colors.semiLightGrey }} />}
+              prefix={
+                <Icon type="user" style={{ color: Colors.SemiLightGrey }} />
+              }
               placeholder={LABELS.name}
             />
           )}
@@ -62,7 +64,9 @@ export const NewUserModalForm = (props: Props) => {
             rules: [{ required: true, message: LABELS.emailRequired }],
           })(
             <Input
-              prefix={<Icon type="mail" style={{ color: colors.semiLightGrey }} />}
+              prefix={
+                <Icon type="mail" style={{ color: Colors.SemiLightGrey }} />
+              }
               placeholder={LABELS.email}
             />
           )}
@@ -77,7 +81,9 @@ export const NewUserModalForm = (props: Props) => {
             rules: [{ required: false }],
           })(
             <Input
-              prefix={<Icon type="book" style={{ color: colors.semiLightGrey }} />}
+              prefix={
+                <Icon type="book" style={{ color: Colors.SemiLightGrey }} />
+              }
               placeholder={LABELS.optionalIndex}
             />
           )}

@@ -9,5 +9,6 @@
   "lists": "Listy zadań",
   "exportCsv": "Eksportuj CSV",
   "importCsv": "Zaimportuj CSV",
-  "csvInfo": "Obsługiwany format CSV to"
+  "csvInfo": "Obsługiwany format CSV to",
+  "hello": "Witaj"
 }

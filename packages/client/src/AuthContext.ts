@@ -14,6 +14,15 @@ export type AuthContextState = {
   userRole?: string;
 };
 
-export const { Consumer: AuthConsumer, Provider: AuthContextProvider } = React.createContext<
-  AuthContextState
->({} as AuthContextState);
+export const {
+  Consumer: AuthConsumer,
+  Provider: AuthContextProvider,
+} = React.createContext<AuthContextState>({
+  actions: {
+    createNewAccount: console.log.bind(console, 'createNewAccount'),
+    goToMainPage: console.log.bind(console, 'goToMainPage'),
+    login: console.log.bind(console, 'login'),
+  },
+  error: false,
+  userAuth: false,
+});

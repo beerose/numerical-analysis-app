@@ -7,7 +7,7 @@ import { GroupType, UserDTO } from 'common';
 import { css } from 'emotion';
 import * as React from 'react';
 
-import { colors, LABELS } from '../../../utils';
+import { Colors, LABELS } from '../../../utils';
 
 const FormItem = Form.Item;
 
@@ -34,7 +34,10 @@ const SelectSuperUser = React.forwardRef(
       showArrow
       placeholder={
         <>
-          <Icon type="user" style={{ color: colors.semiLightGrey, marginRight: '5px' }} />
+          <Icon
+            type="user"
+            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
+          />
           {LABELS.superUser}
         </>
       }
@@ -51,7 +54,10 @@ const SelectSuperUser = React.forwardRef(
 );
 
 export const SelectSemester = React.forwardRef(
-  ({ onChange }: { onChange?: (value: SelectValue) => void }, ref: React.Ref<Select>) => (
+  (
+    { onChange }: { onChange?: (value: SelectValue) => void },
+    ref: React.Ref<Select>
+  ) => (
     <Select
       showArrow
       mode="single"
@@ -59,7 +65,7 @@ export const SelectSemester = React.forwardRef(
         <>
           <Icon
             type="table"
-            style={{ color: colors.semiLightGrey, marginRight: '5px' }}
+            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
           />
           Rok akademicki
         </>
@@ -137,7 +143,9 @@ class NewGroupForm extends React.Component<Props> {
             rules: [{ required: true, message: LABELS.groupNameRequired }],
           })(
             <Input
-              prefix={<Icon type="tags" style={{ color: colors.semiLightGrey }} />}
+              prefix={
+                <Icon type="tags" style={{ color: Colors.SemiLightGrey }} />
+              }
               placeholder={LABELS.groupName}
             />
           )}
@@ -150,7 +158,9 @@ class NewGroupForm extends React.Component<Props> {
         <FormItem label={LABELS.classRoomNumber} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('class_room')(
             <Input
-              prefix={<Icon type="book" style={{ color: colors.semiLightGrey }} />}
+              prefix={
+                <Icon type="book" style={{ color: Colors.SemiLightGrey }} />
+              }
               placeholder={LABELS.classRoomNumber}
             />
           )}
@@ -169,7 +179,11 @@ class NewGroupForm extends React.Component<Props> {
           >
             Dodaj
           </Button>
-          <Button type="default" style={{ marginLeft: '5px' }} onClick={onCancel}>
+          <Button
+            type="default"
+            style={{ marginLeft: '5px' }}
+            onClick={onCancel}
+          >
             Anuluj
           </Button>
         </FormItem>

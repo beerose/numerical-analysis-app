@@ -3,7 +3,6 @@
 import { css, jsx } from '@emotion/core';
 import { Icon, Menu, Spin } from 'antd';
 import { GroupDTO, groupFeatures } from 'common';
-import { PropsOf } from 'props-of';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { Link, LinkProps } from 'react-router-dom';
@@ -18,13 +17,13 @@ import { showMessage } from '../../utils';
 import {
   MeetingsDetailsSections,
   MeetingsSection,
-  SettingsSection,
+  // SettingsSection,
   StudentsSection,
 } from './sections';
 
 type MenuLinkProps = {
   to: LinkProps['to'];
-} & PropsOf<typeof Menu.Item>;
+} & React.ComponentProps<typeof Menu.Item>;
 
 const MenuLink = ({ children, to, ...rest }: MenuLinkProps) => (
   <Menu.Item {...rest}>
@@ -143,7 +142,7 @@ export class GroupDetailsContainer extends React.Component<
           />
           <Switch>
             <Route exact={true} path={'/groups/:id'}>
-              <SettingsSection groupId={groupId} />
+              {/* <SettingsSection groupId={groupId} /> */}
             </Route>
             <Route exact={true} path={'/groups/:id/students'}>
               <StudentsSection groupId={groupId} />
