@@ -4,6 +4,7 @@ import { RouteChildrenProps } from 'react-router';
 
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
+import { showMessage } from '../../utils';
 
 import { GroupApiContext, GroupContextState } from './GroupApiContext';
 
@@ -19,6 +20,7 @@ export class GroupApiProvider extends React.Component<
       },
       apiActions: {
         createGroup: this.createGroup,
+        getGroup: this.getGroup,
         listSuperUsers: this.listSuperUsers,
       },
       error: false,
@@ -60,6 +62,17 @@ export class GroupApiProvider extends React.Component<
     usersService.listUsers({ roles: UserRole.superUser }).then(res => {
       this.setState({ superUsers: res.users });
     });
+
+  getGroup = () => {
+    const groupId = Number(this.props.location.pathname.split('/')[2]);
+    groupsService.getGroup(groupId).then(res => {
+      if ('error' in res) {
+        showMessage(res);
+        this.props.history.push('/groups/');
+      }
+      this.setState({ currentGroup: res });
+    });
+  };
 
   render() {
     return (

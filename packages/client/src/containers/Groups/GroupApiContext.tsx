@@ -14,10 +14,12 @@ export type GroupContextState = {
       GroupDTO,
       'academic_year' | 'group_name' | 'group_type' | 'lecturer_id'
     >) => void;
+    getGroup: () => void;
   };
   actions: {
     goToGroupsPage: () => void;
   };
+  currentGroup?: GroupDTO;
   isLoading: boolean;
   error: boolean;
   errorMessage?: string;
@@ -30,6 +32,7 @@ export const GroupApiContext = React.createContext<GroupContextState>({
   },
   apiActions: {
     createGroup: console.log.bind(console, 'createGroup'),
+    getGroup: console.log.bind(console, 'getGroup'),
     listSuperUsers: console.log.bind(console, 'listSuperUsers'),
   },
   error: false,
