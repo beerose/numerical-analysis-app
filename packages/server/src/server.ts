@@ -8,12 +8,13 @@ import swaggerUi from 'swagger-ui-express';
 
 import * as auth from './auth';
 import * as groups from './groups';
+import { connectToDb, disconnectFromDb } from './store/connection';
 import * as swaggerDocument from './swagger.json';
 import * as users from './users';
 
 const PORT = process.env.PORT;
 
-const app = express();
+export const app = express();
 
 morganBody(app);
 app.use(cors());
@@ -25,7 +26,7 @@ const { Users, Groups, Accounts } = ServerRoutes;
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.get('/', (_, res) => {
-  res.send('Hello! 👋');
+  res.send(`Hello! 👋 ${new Date().toLocaleString()}`);
 });
 
 app.post(Accounts.New, auth.checkNewAccountToken, auth.storeUserPassword);
@@ -137,8 +138,18 @@ app.post(
   groups.setActivity
 );
 
-const listener = app.listen(PORT, () => {
-  console.log(
-    `Your app is listening on port: ${(listener.address() as AddressInfo).port}`
-  );
-});
+let server: import('http').Server;
+
+export const startServer = () => {
+  connectToDb();
+  server = app.listen(PORT, () => {
+    console.log(
+      `Your app is listening on port: ${(server.address() as AddressInfo).port}`
+    );
+  });
+};
+
+export const stopServer = () => {
+  server.close();
+  disconnectFromDb();
+};
