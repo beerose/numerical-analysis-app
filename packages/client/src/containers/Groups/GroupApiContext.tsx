@@ -15,10 +15,13 @@ export type GroupContextState = {
       'academic_year' | 'group_name' | 'group_type' | 'lecturer_id'
     >) => void;
     getGroup: () => void;
+    listGroups: () => void;
+    deleteGroup: (groupId: GroupDTO['id']) => void;
   };
   actions: {
     goToGroupsPage: () => void;
   };
+  groups?: GroupDTO[];
   currentGroup?: GroupDTO;
   isLoading: boolean;
   error: boolean;
@@ -32,7 +35,9 @@ export const GroupApiContext = React.createContext<GroupContextState>({
   },
   apiActions: {
     createGroup: console.log.bind(console, 'createGroup'),
+    deleteGroup: console.log.bind(console, 'deleteGroup'),
     getGroup: console.log.bind(console, 'getGroup'),
+    listGroups: console.log.bind(console, 'listGroups'),
     listSuperUsers: console.log.bind(console, 'listSuperUsers'),
   },
   error: false,

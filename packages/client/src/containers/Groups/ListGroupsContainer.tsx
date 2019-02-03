@@ -6,11 +6,12 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { groupsService } from '../../api';
 import { Breadcrumbs, ErrorMessage } from '../../components';
 import { DeleteWithConfirm } from '../../components/DeleteWithConfirm';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { LABELS } from '../../utils/labels';
+
+import { GroupApiContext } from './GroupApiContext';
 
 const newGroupButtonStyles = css`
   width: 140px;
@@ -18,44 +19,20 @@ const newGroupButtonStyles = css`
   align-self: start;
 `;
 
-type State = {
-  error?: Error;
-  groups: GroupDTO[];
-  isLoading: boolean;
-};
-
-export class ListGroupsContainer extends React.Component<
-  RouteComponentProps,
-  State
-> {
-  state: State = {
-    error: undefined,
-    groups: [] as GroupDTO[],
-    isLoading: false,
-  };
+export class ListGroupsContainer extends React.Component<RouteComponentProps> {
+  static contextType = GroupApiContext;
+  context!: React.ContextType<typeof GroupApiContext>;
 
   componentDidMount() {
-    this.updateGroupsList();
+    this.context.apiActions.listGroups();
   }
 
-  updateGroupsList = () => {
-    this.setState({ isLoading: true });
-    groupsService
-      .listGroups()
-      .then(res => {
-        this.setState({ groups: res.groups, isLoading: false });
-      })
-      .catch(error => this.setState({ error, isLoading: false }));
-  };
-
   handleDeleteGroup = (id: GroupDTO['id']) => {
-    groupsService.deleteGroup(id).then(() => {
-      this.updateGroupsList();
-    });
+    this.context.apiActions.deleteGroup(id);
   };
 
   render() {
-    const { isLoading, error, groups } = this.state;
+    const { groups, isLoading, error } = this.context;
 
     return (
       <PaddingContainer>

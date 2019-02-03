@@ -20,7 +20,9 @@ export class GroupApiProvider extends React.Component<
       },
       apiActions: {
         createGroup: this.createGroup,
+        deleteGroup: this.deleteGroup,
         getGroup: this.getGroup,
+        listGroups: this.listGroups,
         listSuperUsers: this.listSuperUsers,
       },
       error: false,
@@ -71,6 +73,23 @@ export class GroupApiProvider extends React.Component<
         this.props.history.push('/groups/');
       }
       this.setState({ currentGroup: res });
+    });
+  };
+
+  listGroups = () => {
+    this.setState({ isLoading: true });
+    groupsService
+      .listGroups()
+      .then(res => {
+        this.setState({ groups: res.groups, isLoading: false });
+      })
+      .catch(error => this.setState({ error, isLoading: false }));
+  };
+
+  deleteGroup = (id: GroupDTO['id']) => {
+    this.setState({ isLoading: true });
+    groupsService.deleteGroup(id).then(() => {
+      this.listGroups();
     });
   };
 
