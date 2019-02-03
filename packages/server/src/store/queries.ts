@@ -23,21 +23,6 @@ export const listGroupsQuery = `
   ORDER BY created_at DESC
 `;
 
-export const listStudentsForGroupQuery = `
-  SELECT
-    id, user_name, email, student_index
-  FROM
-    users as u
-  WHERE id IN (
-    SELECT
-      user_id
-    FROM
-      user_belongs_to_group
-    WHERE
-      group_id = ?
-  );
-`;
-
 export const deleteStudentFromGroupQuery = `
   DELETE FROM user_belongs_to_group WHERE user_id = ?;
 `;

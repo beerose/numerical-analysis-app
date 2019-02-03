@@ -61,6 +61,8 @@ export type UserDTO = {
   active_user?: boolean;
 };
 
+export type UserWithGroups = UserDTO & { group_ids: GroupDTO['id'][] };
+
 export type Where = 'groups' | 'users';
 export type What = 'edit' | 'read';
 export type UserPrivileges = { [key in Where]: Record<GroupDTO['id'], What[]> };

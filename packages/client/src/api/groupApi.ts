@@ -44,17 +44,15 @@ export const getGroup = async (groupId: GroupDTO['id']): Promise<GroupDTO> =>
     `${SERVER_URL + Groups.Get}?${qs.stringify({ group_id: groupId })}`
   );
 
-export const listStudentsForGroup = async (
-  groupId: GroupDTO['id']
-): Promise<{ students: UserDTO[] }> => {
+export const listStudentsWithGroup = async (): Promise<{
+  students: (UserDTO & { group_ids: GroupDTO['id'][] })[];
+}> => {
   const options = {
     method: 'GET',
   };
 
-  return authFetch<{ students: UserDTO[] }>(
-    `${SERVER_URL + Groups.Students.List}?${qs.stringify({
-      group_id: groupId,
-    })}`,
+  return authFetch<{ students: (UserDTO & { group_ids: GroupDTO['id'][] })[] }>(
+    SERVER_URL + Groups.Students.List,
     options
   );
 };
