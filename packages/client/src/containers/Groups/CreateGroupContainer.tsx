@@ -7,18 +7,18 @@ import {
   NewGroupFormValues,
   WrappedNewGroupForm,
 } from './components/NewGroupForm';
-import { GroupApiContext } from './GroupApiContext';
+import { GroupApiContext, GroupApiContextState } from './GroupApiProvider';
 
 export class CreateGroupContainer extends React.Component<RouteComponentProps> {
   static contextType = GroupApiContext;
-  context!: React.ContextType<typeof GroupApiContext>;
+  context!: GroupApiContextState;
 
   componentDidMount() {
-    this.context.apiActions.listSuperUsers();
+    this.context.actions.listSuperUsers();
   }
 
   handleSubmit = (formValues: NewGroupFormValues) => {
-    this.context.apiActions.createGroup({
+    this.context.actions.createGroup({
       group_type: formValues.group,
       ...formValues,
     });

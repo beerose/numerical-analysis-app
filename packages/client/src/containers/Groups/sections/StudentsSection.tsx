@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import styled from '@emotion/styled';
 import { Button, Spin } from 'antd';
 import { GroupDTO, UserDTO, UserRole } from 'common';
 import { saveAs } from 'file-saver';
@@ -10,16 +9,12 @@ import { Omit } from 'react-router';
 import { groupsService, usersService } from '../../../api';
 import { UsersTable } from '../../../components';
 import { Theme } from '../../../components/theme';
+import { Flex } from '../../../components/Flex';
 import { isSafari } from '../../../utils/isSafari';
 import { LABELS } from '../../../utils/labels';
 import { studentsToCsv } from '../../../utils/studentsToCsv';
 import { WrappedNewStudentModalForm } from '../components/AddStudentForm';
 import { CsvControls } from '../components/CsvControls';
-
-const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-`;
 
 const addUserButtonStyles = css`
   margin: ${Theme.Padding.Half};
@@ -124,7 +119,7 @@ export class StudentsSection extends React.Component<Props, State> {
     } = this.state;
 
     return (
-      <Container>
+      <Flex flexDirection="column">
         <WrappedNewStudentModalForm
           allStudents={allStudents}
           onSubmit={this.addNewStudent}
@@ -158,7 +153,7 @@ export class StudentsSection extends React.Component<Props, State> {
             }}
           />
         </Spin>
-      </Container>
+      </Flex>
     );
   }
 }

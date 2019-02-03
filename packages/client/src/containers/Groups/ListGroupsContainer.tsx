@@ -6,11 +6,12 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { groupsService } from '../../api';
 import { Breadcrumbs, ErrorMessage } from '../../components';
 import { DeleteWithConfirm } from '../../components/DeleteWithConfirm';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { LABELS } from '../../utils/labels';
+
+import { GroupApiContext, GroupApiContextState } from './GroupApiProvider';
 
 const newGroupButtonStyles = css`
   width: 140px;
@@ -18,44 +19,21 @@ const newGroupButtonStyles = css`
   align-self: start;
 `;
 
-type State = {
-  error?: Error;
-  groups: GroupDTO[];
-  isLoading: boolean;
-};
-
-export class ListGroupsContainer extends React.Component<
-  RouteComponentProps,
-  State
-> {
-  state: State = {
-    error: undefined,
-    groups: [] as GroupDTO[],
-    isLoading: false,
-  };
+export class ListGroupsContainer extends React.Component<RouteComponentProps> {
+  static contextType = GroupApiContext;
+  context!: GroupApiContextState;
 
   componentDidMount() {
-    this.updateGroupsList();
+    this.context.actions.listGroups();
   }
 
-  updateGroupsList = () => {
-    this.setState({ isLoading: true });
-    groupsService
-      .listGroups()
-      .then(res => {
-        this.setState({ groups: res.groups, isLoading: false });
-      })
-      .catch(error => this.setState({ error, isLoading: false }));
-  };
-
-  handleDeleteGroup = (id: GroupDTO['id']) => {
-    groupsService.deleteGroup(id).then(() => {
-      this.updateGroupsList();
-    });
-  };
-
   render() {
-    const { isLoading, error, groups } = this.state;
+    const {
+      groups,
+      isLoading,
+      error,
+      actions: { deleteGroup },
+    } = this.context;
 
     return (
       <PaddingContainer>
@@ -78,9 +56,7 @@ export class ListGroupsContainer extends React.Component<
               renderItem={(item: GroupDTO) => (
                 <List.Item
                   actions={[
-                    <DeleteWithConfirm
-                      onConfirm={() => this.handleDeleteGroup(item.id)}
-                    >
+                    <DeleteWithConfirm onConfirm={() => deleteGroup(item.id)}>
                       <a>{LABELS.delete}</a>
                     </DeleteWithConfirm>,
                   ]}

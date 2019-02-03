@@ -1,15 +1,15 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import React from 'react';
 import { Icon } from 'antd';
+import React from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 
-import { Colors } from '../utils';
 import { UserRole } from '../../../../dist/common';
 import { PaddingContainer } from '../components';
 import { LocaleContext } from '../components/locale';
-import { AuthContextState } from '../AuthContext';
 import { Flex } from '../components/Flex';
+import { Colors } from '../utils';
+import { AuthContextState } from '../AuthContext';
 
 type TileLinkProps = LinkProps;
 

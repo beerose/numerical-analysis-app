@@ -3,55 +3,37 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, List, Modal, Spin } from 'antd';
-import { GroupDTO, MeetingDTO } from 'common';
+import { MeetingDTO } from 'common';
 import moment, { Moment } from 'moment';
 import * as React from 'react';
 
-import * as groupsService from '../../../api/groupApi';
 import { Theme } from '../../../components/theme';
 import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
 import { Flex } from '../../../components/Flex';
 import { LABELS } from '../../../utils/labels';
 import { WrappedEditMeetingForm } from '../components/EditMeetingForm';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
+import { GroupApiContextState } from '../GroupApiProvider';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
 `;
 
-type Props = {
-  groupId: GroupDTO['id'];
-};
+type Props = GroupApiContextState;
 
 type State = {
-  meetings: MeetingDTO[];
-  isLoading: boolean;
   meetingModalVisible: boolean;
   modalMode?: 'edit' | 'create';
   editingItem?: MeetingDTO;
 };
 export class MeetingsSection extends React.Component<Props, State> {
   state: State = {
-    isLoading: false,
     meetingModalVisible: false,
-    meetings: [],
   };
 
   componentDidMount() {
-    this.updateMeetingsList();
+    this.props.actions.listMeetings();
   }
-
-  updateMeetingsList = () => {
-    this.setState({ isLoading: true });
-    groupsService
-      .listMeetings(Number(this.props.groupId))
-      .then(res => {
-        this.setState({ meetings: res });
-      })
-      .finally(() => {
-        this.setState({ isLoading: false });
-      });
-  };
 
   openNewMeetingModal = () => {
     this.setState({ meetingModalVisible: true, modalMode: 'create' });
@@ -62,16 +44,14 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   handleAddNewMeeting = (values: { name: string; date: Moment }) => {
-    groupsService.addMeeting(values, this.props.groupId).then(() => {
-      this.updateMeetingsList();
-    });
+    const { addMeeting, listMeetings } = this.props.actions;
+    addMeeting(values).then(listMeetings);
     this.hideNewMeetingModal();
   };
 
   handleDeleteMeeting = (id: number) => {
-    groupsService.deleteMeeting(id).then(() => {
-      this.updateMeetingsList();
-    });
+    const { deleteMeeting, listMeetings } = this.props.actions;
+    deleteMeeting(id).then(listMeetings);
   };
 
   handleEditClick = (meeting: MeetingDTO) => {
@@ -83,14 +63,14 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   handleEditMeeting = (meeting: MeetingDTO) => {
-    groupsService.updateMeeting(meeting).then(() => {
-      this.updateMeetingsList();
-    });
+    const { updateMeeting, listMeetings } = this.props.actions;
+    updateMeeting(meeting).then(listMeetings);
     this.hideNewMeetingModal();
   };
 
   render() {
-    const { meetings, modalMode, editingItem } = this.state;
+    const { modalMode, editingItem } = this.state;
+    const { meetings, isLoading } = this.props;
 
     return (
       <Container>
@@ -125,7 +105,10 @@ export class MeetingsSection extends React.Component<Props, State> {
               return (
                 <List.Item
                   actions={[
-                    <a role="edit" onClick={() => this.handleEditClick(meeting)}>
+                    <a
+                      role="edit"
+                      onClick={() => this.handleEditClick(meeting)}
+                    >
                       {LABELS.edit}
                     </a>,
                     <DeleteWithConfirm
@@ -145,7 +128,7 @@ export class MeetingsSection extends React.Component<Props, State> {
           />
         )}
         <Flex justifyContent="center">
-          <Spin spinning={this.state.isLoading} />
+          <Spin spinning={isLoading} />
         </Flex>
       </Container>
     );

@@ -94,6 +94,11 @@ export type MeetingDTO = {
   group_id: number;
 };
 
+export type MeetingModel = {
+  name: string;
+  date: Date;
+};
+
 export type Student = Pick<UserDTO, 'id' | 'user_name' | 'student_index'>;
 export type MeetingId = MeetingDTO['id'];
 
