@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, RouteChildrenProps, Switch } from 'react-router';
 
 import { CreateGroupContainer } from './CreateGroupContainer';
-import { GroupApiProvider } from './GroupApiProvider';
+import { GroupApiProvider } from './GroupApiContext';
 import { GroupDetailsContainer } from './GroupDetailsContainer';
 import { ListGroupsContainer } from './ListGroupsContainer';
 

@@ -7,7 +7,7 @@ import {
   NewGroupFormValues,
   WrappedNewGroupForm,
 } from './components/NewGroupForm';
-import { GroupApiContext, GroupApiContextState } from './GroupApiProvider';
+import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 export class CreateGroupContainer extends React.Component<RouteComponentProps> {
   static contextType = GroupApiContext;

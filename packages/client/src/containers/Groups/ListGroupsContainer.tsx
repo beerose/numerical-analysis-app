@@ -11,7 +11,7 @@ import { DeleteWithConfirm } from '../../components/DeleteWithConfirm';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { LABELS } from '../../utils/labels';
 
-import { GroupApiContext, GroupApiContextState } from './GroupApiProvider';
+import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 const newGroupButtonStyles = css`
   width: 140px;

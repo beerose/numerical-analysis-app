@@ -13,7 +13,7 @@ import { Flex } from '../../../components/Flex';
 import { LABELS } from '../../../utils/labels';
 import { WrappedEditMeetingForm } from '../components/EditMeetingForm';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
-import { GroupApiContextState } from '../GroupApiProvider';
+import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};

@@ -219,7 +219,7 @@ export class GroupApiProvider extends React.Component<
 
   render() {
     return (
-      <GroupApiContext.Provider value={this.state}>
+      <GroupApiContext.Provider value={this.state as GroupApiContextState}>
         {this.props.children}
       </GroupApiContext.Provider>
     );

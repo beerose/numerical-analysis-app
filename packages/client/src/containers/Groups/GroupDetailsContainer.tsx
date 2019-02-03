@@ -18,7 +18,7 @@ import {
   SettingsSection,
   StudentsSection,
 } from './sections';
-import { GroupApiContext, GroupApiContextState } from './GroupApiProvider';
+import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 type MenuLinkProps = {
   to: LinkProps['to'];
