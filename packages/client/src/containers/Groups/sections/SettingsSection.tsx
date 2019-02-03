@@ -4,6 +4,7 @@ import { GroupDTO } from 'common';
 import * as React from 'react';
 
 import { LABELS } from '../../../utils';
+import { GroupContextState } from '../GroupApiContext';
 
 const Container = styled.section`
   margin-left: 40px;
@@ -49,16 +50,11 @@ class GroupInfo extends React.Component<GroupInfoProps, GroupInfoState> {
   }
 }
 
-type Props = {
-  group: GroupDTO;
-};
+type Props = GroupContextState;
 type State = {
   group: GroupDTO;
 };
 export class SettingsSection extends React.Component<Props, State> {
-  state = {
-    group: this.props.group,
-  };
   editProperty = (propertyName: keyof GroupDTO) => (
     newValue: string | number
   ) => {
@@ -69,8 +65,8 @@ export class SettingsSection extends React.Component<Props, State> {
   };
 
   render() {
-    const { lecturer_name, group_name, class_number } = this.props.group;
-    console.log(this.props.group);
+    //const { lecturer_name, group_name, class_number } = this.props.currentGroup;
+    //console.log(this.props.currentGroup);
     return (
       <Container>
         <GroupInfo header={LABELS.lecturer} info={lecturer_name || ''} />

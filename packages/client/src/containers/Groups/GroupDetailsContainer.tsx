@@ -125,7 +125,7 @@ export class GroupDetailsContainer extends React.Component<
               />
               <Switch>
                 <Route exact={true} path={'/groups/:id'}>
-                  <SettingsSection group={group} />
+                  <SettingsSection {...this.context} />
                 </Route>
                 <Route exact={true} path={'/groups/:id/students'}>
                   <StudentsSection groupId={group.id} />
