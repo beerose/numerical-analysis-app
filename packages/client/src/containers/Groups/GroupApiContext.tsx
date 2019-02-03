@@ -1,6 +1,11 @@
+import {
+  ApiResponse,
+  GroupDTO,
+  MeetingDetailsModel,
+  MeetingDTO,
+  UserDTO,
+} from 'common';
 import * as React from 'react';
-
-import { ApiResponse, GroupDTO, UserDTO } from '../../../../../dist/common';
 
 export type GroupContextState = {
   apiActions: {
@@ -27,10 +32,15 @@ export type GroupContextState = {
       studentId: number,
       meetingId: number
     ) => Promise<ApiResponse>;
+    listMeetings: () => void;
+    getMeetingsDetails: () => void;
   };
   actions: {
     goToGroupsPage: () => void;
+    setMeetingDetails: (details: MeetingDetailsModel[]) => void;
   };
+  meetings?: MeetingDTO[];
+  meetingsDetails?: MeetingDetailsModel[];
   groups?: GroupDTO[];
   currentGroup?: GroupDTO;
   isLoading: boolean;
@@ -42,6 +52,7 @@ export type GroupContextState = {
 export const GroupApiContext = React.createContext<GroupContextState>({
   actions: {
     goToGroupsPage: console.log.bind(console, 'goToGroupsPage'),
+    setMeetingDetails: console.log.bind(console, 'setMeetingDetails'),
   },
   apiActions: {
     addPresence: (_: any) => ({} as Promise<ApiResponse>),
@@ -49,7 +60,9 @@ export const GroupApiContext = React.createContext<GroupContextState>({
     deleteGroup: console.log.bind(console, 'deleteGroup'),
     deletePresence: (_: any) => ({} as Promise<ApiResponse>),
     getGroup: console.log.bind(console, 'getGroup'),
+    getMeetingsDetails: console.log.bind(console, 'getMeetingsDetails'),
     listGroups: console.log.bind(console, 'listGroups'),
+    listMeetings: console.log.bind(console, 'listMeetings'),
     listSuperUsers: console.log.bind(console, 'listSuperUsers'),
     setActivity: (_: any) => ({} as Promise<ApiResponse>),
   },

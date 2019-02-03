@@ -2,7 +2,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Icon, Menu, Spin } from 'antd';
-import { ApiResponse, groupFeatures } from 'common';
+import { groupFeatures } from 'common';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { Link, LinkProps } from 'react-router-dom';
@@ -64,7 +64,7 @@ export class GroupDetailsContainer extends React.Component<
       match: { url: matchUrl },
     } = this.props;
 
-    const { currentGroup: group, apiActions } = this.context;
+    const { currentGroup: group } = this.context;
 
     if (!group) {
       return (
@@ -131,12 +131,7 @@ export class GroupDetailsContainer extends React.Component<
                   <StudentsSection groupId={group.id} />
                 </Route>
                 <Route exact={true} path={'/groups/:id/presence'}>
-                  <MeetingsDetailsSections
-                    groupId={group.id}
-                    setActivity={apiActions.setActivity}
-                    addPresence={apiActions.addPresence}
-                    deletePresence={apiActions.deletePresence}
-                  />
+                  <MeetingsDetailsSections {...this.context} />
                 </Route>
                 <Route exact={true} path={'/groups/:id/meetings'}>
                   <MeetingsSection groupId={group.id} />

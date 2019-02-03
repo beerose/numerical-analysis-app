@@ -1,4 +1,4 @@
-import { ApiResponse, GroupDTO, UserRole } from 'common';
+import { ApiResponse, GroupDTO, MeetingDetailsModel, UserRole } from 'common';
 import React from 'react';
 import { RouteChildrenProps } from 'react-router';
 
@@ -17,6 +17,7 @@ export class GroupApiProvider extends React.Component<
     this.state = {
       actions: {
         goToGroupsPage: this.goToGroupsPage,
+        setMeetingDetails: this.setMeetingsDetails,
       },
       apiActions: {
         addPresence: this.addPresence,
@@ -24,7 +25,9 @@ export class GroupApiProvider extends React.Component<
         deleteGroup: this.deleteGroup,
         deletePresence: this.deletePresence,
         getGroup: this.getGroup,
+        getMeetingsDetails: this.getMeetingsDetails,
         listGroups: this.listGroups,
+        listMeetings: this.listMeetings,
         listSuperUsers: this.listSuperUsers,
         setActivity: this.setActivity,
       },
@@ -116,6 +119,28 @@ export class GroupApiProvider extends React.Component<
     points: number
   ): Promise<ApiResponse> => {
     return groupsService.setActivity(studentId, meetingId, points);
+  };
+
+  listMeetings = () => {
+    if (!this.state.currentGroup) {
+      throw new Error('No group in state');
+    }
+    groupsService.listMeetings(this.state.currentGroup.id).then(meetings => {
+      this.setState({ meetings });
+    });
+  };
+
+  getMeetingsDetails = () => {
+    if (!this.state.currentGroup) {
+      throw new Error('No group in state');
+    }
+    groupsService.getMeetingsDetails(this.state.currentGroup.id).then(res => {
+      this.setState({ meetingsDetails: res });
+    });
+  };
+
+  setMeetingsDetails = (newDetails: MeetingDetailsModel[]) => {
+    this.setState({ meetingsDetails: newDetails });
   };
 
   render() {

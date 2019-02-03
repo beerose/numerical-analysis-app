@@ -1,44 +1,22 @@
-import { ApiResponse, GroupDTO, MeetingDetailsModel, MeetingDTO } from 'common';
+import { ApiResponse } from 'common';
 import * as React from 'react';
 
-import * as groupService from '../../../api/groupApi';
 import { PresenceTable } from '../components';
+import { GroupContextState } from '../GroupApiContext';
 
-type Props = {
-  groupId: GroupDTO['id'];
-  setActivity: (
-    studentId: number,
-    meetingId: number,
-    points: number
-  ) => Promise<ApiResponse>;
-  addPresence: (studentId: number, meetingId: number) => Promise<ApiResponse>;
-  deletePresence: (
-    studentId: number,
-    meetingId: number
-  ) => Promise<ApiResponse>;
-};
+type Props = GroupContextState;
 
-type State = {
-  meetings?: MeetingDTO[];
-  meetingsDetails: MeetingDetailsModel[];
-};
-export class MeetingsDetailsSections extends React.Component<Props, State> {
-  state: State = {
-    meetingsDetails: [],
-  };
-
-  handleSetActivity = this.withErrorHandler(this.props.setActivity);
-  handleAddPresence = this.withErrorHandler(this.props.addPresence);
-  handleDeletePresence = this.withErrorHandler(this.props.deletePresence);
+export class MeetingsDetailsSections extends React.Component<Props> {
+  handleSetActivity = this.withErrorHandler(this.props.apiActions.setActivity);
+  handleAddPresence = this.withErrorHandler(this.props.apiActions.addPresence);
+  handleDeletePresence = this.withErrorHandler(
+    this.props.apiActions.deletePresence
+  );
 
   setStateFromApi() {
-    const { groupId } = this.props;
-    groupService.listMeetings(groupId).then(meetings => {
-      this.setState({ meetings });
-    });
-    groupService.getMeetingsDetails(groupId).then(meetingsDetails => {
-      this.setState({ meetingsDetails });
-    });
+    const { listMeetings, getMeetingsDetails } = this.props.apiActions;
+    listMeetings();
+    getMeetingsDetails();
   }
 
   componentDidMount() {
@@ -57,17 +35,17 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
       });
   }
 
-  handleSetMeetingDetails = (newDetails: MeetingDetailsModel[]) => {
-    this.setState({ meetingsDetails: newDetails });
-  };
-
   render() {
-    const { meetings, meetingsDetails } = this.state;
+    const {
+      meetings,
+      meetingsDetails,
+      actions: { setMeetingDetails },
+    } = this.props;
     return (
       <PresenceTable
         meetings={meetings}
         meetingsDetails={meetingsDetails}
-        setMeetingsDetails={this.handleSetMeetingDetails}
+        setMeetingsDetails={setMeetingDetails}
         setActivity={this.handleSetActivity}
         addPresence={this.handleAddPresence}
         deletePresence={this.handleDeletePresence}
