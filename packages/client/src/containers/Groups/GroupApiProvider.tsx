@@ -1,4 +1,11 @@
-import { ApiResponse, GroupDTO, MeetingDetailsModel, UserRole } from 'common';
+import {
+  ApiResponse,
+  GroupDTO,
+  MeetingDetailsModel,
+  MeetingDTO,
+  UserRole,
+} from 'common';
+import { Moment } from 'moment';
 import React from 'react';
 import { RouteChildrenProps } from 'react-router';
 
@@ -7,6 +14,8 @@ import * as usersService from '../../api/userApi';
 import { showMessage } from '../../utils';
 
 import { GroupApiContext, GroupContextState } from './GroupApiContext';
+
+const noGroupError = 'No group in state.';
 
 export class GroupApiProvider extends React.Component<
   RouteChildrenProps,
@@ -20,9 +29,11 @@ export class GroupApiProvider extends React.Component<
         setMeetingDetails: this.setMeetingsDetails,
       },
       apiActions: {
+        addMeeting: this.addMeeting,
         addPresence: this.addPresence,
         createGroup: this.createGroup,
         deleteGroup: this.deleteGroup,
+        deleteMeeting: this.deleteMeeting,
         deletePresence: this.deletePresence,
         getGroup: this.getGroup,
         getMeetingsDetails: this.getMeetingsDetails,
@@ -30,6 +41,7 @@ export class GroupApiProvider extends React.Component<
         listMeetings: this.listMeetings,
         listSuperUsers: this.listSuperUsers,
         setActivity: this.setActivity,
+        updateMeeting: this.updateMeeting,
       },
       error: false,
       isLoading: false,
@@ -123,7 +135,7 @@ export class GroupApiProvider extends React.Component<
 
   listMeetings = () => {
     if (!this.state.currentGroup) {
-      throw new Error('No group in state');
+      throw new Error(noGroupError);
     }
     groupsService.listMeetings(this.state.currentGroup.id).then(meetings => {
       this.setState({ meetings });
@@ -132,7 +144,7 @@ export class GroupApiProvider extends React.Component<
 
   getMeetingsDetails = () => {
     if (!this.state.currentGroup) {
-      throw new Error('No group in state');
+      throw new Error(noGroupError);
     }
     groupsService.getMeetingsDetails(this.state.currentGroup.id).then(res => {
       this.setState({ meetingsDetails: res });
@@ -141,6 +153,27 @@ export class GroupApiProvider extends React.Component<
 
   setMeetingsDetails = (newDetails: MeetingDetailsModel[]) => {
     this.setState({ meetingsDetails: newDetails });
+  };
+
+  addMeeting = async (values: { name: string; date: Moment }) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    this.setState({ isLoading: true });
+    await groupsService.addMeeting(values, this.state.currentGroup.id);
+    this.setState({ isLoading: false });
+  };
+
+  deleteMeeting = async (id: MeetingDTO['id']) => {
+    this.setState({ isLoading: true });
+    await groupsService.deleteMeeting(id);
+    this.setState({ isLoading: false });
+  };
+
+  updateMeeting = async (values: Pick<MeetingDTO, 'id' & 'name' & 'date'>) => {
+    this.setState({ isLoading: true });
+    await groupsService.updateMeeting(values);
+    this.setState({ isLoading: false });
   };
 
   render() {

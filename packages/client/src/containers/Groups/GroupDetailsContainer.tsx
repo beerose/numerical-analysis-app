@@ -134,7 +134,7 @@ export class GroupDetailsContainer extends React.Component<
                   <MeetingsDetailsSections {...this.context} />
                 </Route>
                 <Route exact={true} path={'/groups/:id/meetings'}>
-                  <MeetingsSection groupId={group.id} />
+                  <MeetingsSection {...this.context} />
                 </Route>
                 <NotFoundPage />
               </Switch>

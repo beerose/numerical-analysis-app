@@ -106,7 +106,7 @@ export const addGroup = (
   });
 };
 
-export const addMeeting = async (
+export const addMeeting = (
   meeting: Pick<MeetingDTO, 'meeting_name' & 'date'>,
   groupId: GroupDTO['id']
 ) => {
@@ -115,13 +115,16 @@ export const addMeeting = async (
     method: 'POST',
   };
 
-  await authFetch<ApiResponse>(
+  return authFetch<ApiResponse>(
     SERVER_URL + Groups.Meetings.Create,
     options
-  ).then(showMessage);
+  ).then(res => {
+    showMessage(res);
+    return res;
+  });
 };
 
-export const updateMeeting = async (
+export const updateMeeting = (
   meeting: Pick<MeetingDTO, 'meeting_name' & 'date' & 'id'>
 ) => {
   const options = {
@@ -129,22 +132,28 @@ export const updateMeeting = async (
     method: 'POST',
   };
 
-  await authFetch<ApiResponse>(
+  return authFetch<ApiResponse>(
     SERVER_URL + Groups.Meetings.Update,
     options
-  ).then(showMessage);
+  ).then(res => {
+    showMessage(res);
+    return res;
+  });
 };
 
-export const deleteMeeting = async (id: number) => {
+export const deleteMeeting = (id: number) => {
   const options = {
     body: JSON.stringify({ meeting_id: id }),
     method: 'DELETE',
   };
 
-  await authFetch<ApiResponse>(
+  return authFetch<ApiResponse>(
     SERVER_URL + Groups.Meetings.Delete,
     options
-  ).then(showMessage);
+  ).then(res => {
+    showMessage(res);
+    return res;
+  });
 };
 
 export const listMeetings = (
