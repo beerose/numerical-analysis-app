@@ -49,7 +49,7 @@ export const addUser = async (user: UserDTO) => {
   );
 };
 
-export const deleteUser = async (id: string) => {
+export const deleteUser = async (id: UserDTO['id']) => {
   const options = {
     body: JSON.stringify({ id }),
     headers: {

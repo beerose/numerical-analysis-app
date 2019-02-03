@@ -2,20 +2,22 @@ import * as React from 'react';
 
 import { ErrorMessage } from './Error';
 
-type ErrorMsg = string;
 type State = {
-  error?: ErrorMsg;
+  error?: Error;
 };
+
 export class ErrorBoundary extends React.Component<{}, State> {
   state: State = {};
 
   componentDidCatch(error: Error) {
-    this.setState({ error: error.message });
+    this.setState({ error });
   }
 
   render() {
-    if (this.state.error) {
-      return <ErrorMessage message={this.state.error} />;
+    const { error } = this.state;
+
+    if (error) {
+      return <ErrorMessage message={error.toString()} />;
     }
     return this.props.children;
   }
