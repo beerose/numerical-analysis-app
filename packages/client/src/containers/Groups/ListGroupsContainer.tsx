@@ -7,7 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { groupsService } from '../../api';
-import { Breadcrumbs } from '../../components';
+import { Breadcrumbs, ErrorMessage } from '../../components';
 import { DeleteWithConfirm } from '../../components/DeleteWithConfirm';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { LABELS } from '../../utils/labels';
@@ -19,27 +19,33 @@ const newGroupButtonStyles = css`
 `;
 
 type State = {
+  error?: Error;
   groups: GroupDTO[];
   isLoading: boolean;
 };
+
 export class ListGroupsContainer extends React.Component<
   RouteComponentProps,
   State
 > {
-  state = {
+  state: State = {
+    error: undefined,
     groups: [] as GroupDTO[],
     isLoading: false,
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateGroupsList();
   }
 
   updateGroupsList = () => {
     this.setState({ isLoading: true });
-    groupsService.listGroups().then(res => {
-      this.setState({ groups: res.groups, isLoading: false });
-    });
+    groupsService
+      .listGroups()
+      .then(res => {
+        this.setState({ groups: res.groups, isLoading: false });
+      })
+      .catch(error => this.setState({ error, isLoading: false }));
   };
 
   handleDeleteGroup = (id: GroupDTO['id']) => {
@@ -49,6 +55,8 @@ export class ListGroupsContainer extends React.Component<
   };
 
   render() {
+    const { isLoading, error, groups } = this.state;
+
     return (
       <PaddingContainer>
         <Breadcrumbs />
@@ -60,29 +68,33 @@ export class ListGroupsContainer extends React.Component<
         >
           {LABELS.newGroup}
         </Button>
-        <Spin spinning={this.state.isLoading}>
-          <List
-            itemLayout="horizontal"
-            dataSource={this.state.groups}
-            renderItem={(item: GroupDTO) => (
-              <List.Item
-                actions={[
-                  <DeleteWithConfirm
-                    onConfirm={() => this.handleDeleteGroup(item.id)}
-                  >
-                    <a>{LABELS.delete}</a>
-                  </DeleteWithConfirm>,
-                ]}
-              >
-                <List.Item.Meta
-                  title={
-                    <Link to={`/groups/${item.id}`}>{item.group_name}</Link>
-                  }
-                  // description={`Prowadzący: ${item.lecture}`} TO DO
-                />
-              </List.Item>
-            )}
-          />
+        <Spin spinning={isLoading}>
+          {error ? (
+            <ErrorMessage message={error.toString()} />
+          ) : (
+            <List
+              itemLayout="horizontal"
+              dataSource={groups}
+              renderItem={(item: GroupDTO) => (
+                <List.Item
+                  actions={[
+                    <DeleteWithConfirm
+                      onConfirm={() => this.handleDeleteGroup(item.id)}
+                    >
+                      <a>{LABELS.delete}</a>
+                    </DeleteWithConfirm>,
+                  ]}
+                >
+                  <List.Item.Meta
+                    title={
+                      <Link to={`/groups/${item.id}`}>{item.group_name}</Link>
+                    }
+                    // description={`Prowadzący: ${item.lecture}`} TO DO
+                  />
+                </List.Item>
+              )}
+            />
+          )}
         </Spin>
       </PaddingContainer>
     );
