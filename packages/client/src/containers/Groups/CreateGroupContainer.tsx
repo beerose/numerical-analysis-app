@@ -1,65 +1,42 @@
-import styled from '@emotion/styled';
-import { UserDTO, UserRole } from 'common';
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import * as groupsService from '../../api/groupApi';
-import { listUsers } from '../../api/userApi';
+import { Flex } from '../../components/Flex';
 
-import { NewGroupFormValues, WrappedNewGroupForm } from './components/NewGroupForm';
+import {
+  NewGroupFormValues,
+  WrappedNewGroupForm,
+} from './components/NewGroupForm';
+import { GroupApiContext } from './GroupApiContext';
 
-const Container = styled.div`
-  align-items: center;
-  display: flex;
-  height: 80vh;
-  justify-content: center;
-`;
+export class CreateGroupContainer extends React.Component<RouteComponentProps> {
+  static contextType = GroupApiContext;
+  context!: React.ContextType<typeof GroupApiContext>;
 
-const initialState = {
-  loading: false,
-  superUsers: [] as UserDTO[],
-};
-
-type State = typeof initialState;
-export class CreateGroupContainer extends React.Component<RouteComponentProps, State> {
-  state = initialState;
   componentDidMount() {
-    listUsers({ roles: UserRole.superUser }).then(res => {
-      this.setState({ superUsers: res.users });
-    });
+    this.context.apiActions.listSuperUsers();
   }
 
   handleSubmit = (formValues: NewGroupFormValues) => {
-    const { academic_year, group: group_type, group_name, lecturer_id } = formValues;
-
-    this.setState({ loading: true });
-    groupsService
-      .addGroup({
-        academic_year,
-        group_name,
-        group_type,
-        lecturer_id,
-      })
-      .then(res => {
-        this.setState({ loading: false });
-        if (!('error' in res)) {
-          this.props.history.push(`/groups/${res.group_id}`);
-        }
-      });
+    this.context.apiActions.createGroup({
+      group_type: formValues.group,
+      ...formValues,
+    });
   };
 
   handleCancel = () => this.props.history.push('/groups');
 
   render() {
+    const { isLoading, superUsers } = this.context;
     return (
-      <Container>
+      <Flex center justifyContent="center" alignItems="center" height="80vh">
         <WrappedNewGroupForm
-          loading={this.state.loading}
-          superUsers={this.state.superUsers}
+          loading={isLoading}
+          superUsers={superUsers}
           onSubmit={this.handleSubmit}
           onCancel={this.handleCancel}
         />
-      </Container>
+      </Flex>
     );
   }
 }

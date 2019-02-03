@@ -2,6 +2,8 @@ import Cookies from 'js-cookie';
 import React from 'react';
 import { RouteChildrenProps } from 'react-router';
 
+import { ApiResponse } from '../../../dist/common';
+
 import { login, newAccount } from './api/authApi';
 import { AuthContextProvider, AuthContextState } from './AuthContext';
 
@@ -16,6 +18,13 @@ const getUserFromLocalStorage = () => {
 
   return { userRole, userName, userAuth: true };
 };
+
+function handleApiError<R = any>(res: ApiResponse & R) {
+  if ('error' in res) {
+    throw new Error(res.error);
+  }
+  return res;
+}
 
 export class AuthProvider extends React.Component<
   RouteChildrenProps,
@@ -65,12 +74,8 @@ export class AuthProvider extends React.Component<
 
   loginUser = (email: string, password: string, remember: boolean) => {
     login(email, password)
-      .then(res => {
-        if (res.error) {
-          throw new Error(res.error);
-        }
-        return res;
-      })
+      .then(handleApiError
+      )
       .then(res => {
         this.saveCookiesState(
           res.user_name,
@@ -95,12 +100,7 @@ export class AuthProvider extends React.Component<
 
   createNewAccount = (token: string, password: string) => {
     newAccount(token, password)
-      .then(res => {
-        if (res.error) {
-          throw new Error(res.error);
-        }
-        return res;
-      })
+      .then(handleApiError)
       .then(res => {
         this.saveCookiesState(res.user_name, res.user_role, res.token);
         return res;

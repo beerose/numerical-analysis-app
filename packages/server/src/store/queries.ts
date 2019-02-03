@@ -17,12 +17,7 @@ export const getUserRoleQuery = `
 
 export const listGroupsQuery = `
   SELECT
-    id,
-    group_name,
-    group_type,
-    academic_year,
-    class,
-    data
+    *
   FROM
     \`groups\`
   ORDER BY created_at DESC
@@ -54,6 +49,8 @@ export const prepareAttachStudentToGroupQuery = (
 ) => `
   INSERT IGNORE INTO user_belongs_to_group(user_id, group_id)
   VALUES ${userEmails
-    .map(email => `((SELECT id FROM users WHERE email = "${email}"), ${groupId})`)
+    .map(
+      email => `((SELECT id FROM users WHERE email = "${email}"), ${groupId})`
+    )
     .join(',')};
 `;
