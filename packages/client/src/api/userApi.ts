@@ -39,9 +39,6 @@ export const listUsers = async ({
 export const addUser = async (user: UserDTO) => {
   const options = {
     body: JSON.stringify(user),
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'POST',
   };
   await authFetch<ApiResponse>(SERVER_URL + Users.Create, options).then(
@@ -52,9 +49,6 @@ export const addUser = async (user: UserDTO) => {
 export const deleteUser = async (id: UserDTO['id']) => {
   const options = {
     body: JSON.stringify({ id }),
-    headers: {
-      Accept: 'application/json, text/plain, */*',
-    },
     method: 'DELETE',
   };
 

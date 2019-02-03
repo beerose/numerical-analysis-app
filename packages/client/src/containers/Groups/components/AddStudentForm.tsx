@@ -93,7 +93,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
         >
           {this.props.allStudents.map(student => (
             <Select.Option key={`${student.id}`} value={student.id}>
-              {`(${student.student_index || ''}) ${student.user_name}`}
+              {`[${student.student_index || ''}] ${student.user_name}`}
             </Select.Option>
           ))}
         </Select>

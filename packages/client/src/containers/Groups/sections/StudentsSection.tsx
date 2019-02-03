@@ -44,12 +44,16 @@ export class StudentsSection extends React.Component<Props, State> {
 
   updateStudentsLists() {
     this.setState({ isFetching: true });
-    groupsService.listStudentsForGroup(this.props.groupId).then(res => {
-      this.setState({ students: res.students, isFetching: false });
-      console.log(res.students);
-    });
-    usersService.listUsers({ roles: UserRole.student }).then(res => {
-      this.setState({ allStudents: res.users });
+    groupsService.listStudentsWithGroup().then(res => {
+      this.setState({
+        allStudents: res.students.filter(
+          s => !s.group_ids.includes(this.props.groupId)
+        ),
+        isFetching: false,
+        students: res.students.filter(s =>
+          s.group_ids.includes(this.props.groupId)
+        ),
+      });
     });
   }
 

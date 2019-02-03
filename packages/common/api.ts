@@ -61,6 +61,8 @@ export type UserDTO = {
   active_user?: boolean;
 };
 
+export type UserWithGroups = UserDTO & { group_ids: GroupDTO['id'][] };
+
 export type Pagination = {
   offset: number;
   limit: number;

@@ -1,4 +1,4 @@
-import { GroupDTO, GroupWithLecturer } from 'common';
+import { GroupDTO, GroupWithLecturer, UserDTO } from 'common';
 
 import { connection } from '../connection';
 
@@ -52,6 +52,24 @@ export const deleteGroup = (
     {
       sql: 'DELETE FROM `groups` WHERE id = ?',
       values: [groupId],
+    },
+    callback
+  );
+
+export const listUsersWithGroup = (
+  callback: QueryCallback<(UserDTO & { group_ids: string })[]>
+) =>
+  connection.query(
+    {
+      sql: `
+      SELECT
+        DISTINCT id, user_name, email, student_index, GROUP_CONCAT(group_id) as group_ids
+      FROM
+        users AS u
+      LEFT JOIN user_belongs_to_group AS ug
+      ON (u.id = ug.user_id)
+      GROUP BY u.id;
+      `,
     },
     callback
   );
