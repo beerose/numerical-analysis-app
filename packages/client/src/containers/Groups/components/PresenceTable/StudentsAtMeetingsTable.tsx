@@ -5,6 +5,7 @@ import React from 'react';
 import { Table } from '../../../../components/Table';
 
 import { FieldIdentifier, MeetingId } from './types';
+import { AllStudentsPresenceCheckbox } from './AllStudentsPresenceCheckbox';
 
 type IdentifiedChangeHandler<T extends FieldIdentifier> = (
   eventTarget: T
@@ -30,6 +31,7 @@ const CenteredText = styled.div`
 
 const Em = styled.em`
   display: block;
+  border-bottom: 1px solid currentColor;
 `;
 
 export class StudentsAtMeetingsTable<
@@ -64,6 +66,7 @@ export class StudentsAtMeetingsTable<
           <CenteredText>
             {meetingName}
             <Em>{new Date(date).toLocaleDateString('pl')}</Em>
+            <AllStudentsPresenceCheckbox meetingId={meetingId} />
           </CenteredText>
         ),
       })

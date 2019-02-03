@@ -28,6 +28,7 @@
     "react-emotion": "^10.0.0",
     "react-router-dom": "^4.3.1",
     "src": "^1.1.2",
+    "utility-types": "^3.4.1",
     "utils": "^0.3.1"
   },
   "devDependencies": {

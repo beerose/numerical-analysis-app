@@ -10,5 +10,8 @@
   "exportCsv": "Eksportuj CSV",
   "importCsv": "Zaimportuj CSV",
   "csvInfo": "Obsługiwany format CSV to",
-  "hello": "Witaj"
+  "hello": "Witaj",
+  "thereAreNoMeetings": "Nie ma spotkań 🤷",
+  "doYouWantToCreateAMeeting": "Chcesz stworzyć spotkanie?",
+  "goToMeetings": "Idź do spotkań."
 }

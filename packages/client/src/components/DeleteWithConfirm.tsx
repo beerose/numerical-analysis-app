@@ -1,13 +1,11 @@
 import { Popconfirm } from 'antd';
-import * as React from 'react';
+import React from 'react';
 
 import { LABELS } from '../utils/labels';
 
-export const DeleteWithConfirm = ({
-  onConfirm,
-}: {
+export const DeleteWithConfirm: React.FC<{
   onConfirm: (e?: React.MouseEvent<any>) => void;
-}) => (
+}> = ({ onConfirm }) => (
   <Popconfirm
     title={LABELS.areYouSure}
     onConfirm={onConfirm}

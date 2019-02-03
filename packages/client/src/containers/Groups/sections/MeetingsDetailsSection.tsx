@@ -2,19 +2,19 @@ import { ApiResponse } from 'common';
 import * as React from 'react';
 
 import { PresenceTable } from '../components';
-import { GroupContextState } from '../GroupApiContext';
+import { GroupApiContextState } from '../GroupApiContext';
 
-type Props = GroupContextState;
+type Props = GroupApiContextState;
 
 export class MeetingsDetailsSections extends React.Component<Props> {
-  handleSetActivity = this.withErrorHandler(this.props.apiActions.setActivity);
-  handleAddPresence = this.withErrorHandler(this.props.apiActions.addPresence);
+  handleSetActivity = this.withErrorHandler(this.props.actions.setActivity);
+  handleAddPresence = this.withErrorHandler(this.props.actions.addPresence);
   handleDeletePresence = this.withErrorHandler(
-    this.props.apiActions.deletePresence
+    this.props.actions.deletePresence
   );
 
   setStateFromApi() {
-    const { listMeetings, getMeetingsDetails } = this.props.apiActions;
+    const { listMeetings, getMeetingsDetails } = this.props.actions;
     listMeetings();
     getMeetingsDetails();
   }
@@ -39,13 +39,13 @@ export class MeetingsDetailsSections extends React.Component<Props> {
     const {
       meetings,
       meetingsDetails,
-      actions: { setMeetingDetails },
+      actions: { setStudentMeetingDetails },
     } = this.props;
     return (
       <PresenceTable
         meetings={meetings}
         meetingsDetails={meetingsDetails}
-        setMeetingsDetails={setMeetingDetails}
+        setStudentMeetingDetails={setStudentMeetingDetails}
         setActivity={this.handleSetActivity}
         addPresence={this.handleAddPresence}
         deletePresence={this.handleDeletePresence}

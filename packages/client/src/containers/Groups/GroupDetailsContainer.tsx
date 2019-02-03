@@ -18,7 +18,7 @@ import {
   SettingsSection,
   StudentsSection,
 } from './sections';
-import { GroupApiContext } from './GroupApiContext';
+import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 type MenuLinkProps = {
   to: LinkProps['to'];
@@ -38,10 +38,10 @@ export class GroupDetailsContainer extends React.Component<
   RouteComponentProps
 > {
   static contextType = GroupApiContext;
-  context!: React.ContextType<typeof GroupApiContext>;
+  context!: GroupApiContextState;
 
   componentDidMount() {
-    this.context.apiActions.getGroup();
+    this.context.actions.getGroup();
   }
 
   getSelectedItem() {

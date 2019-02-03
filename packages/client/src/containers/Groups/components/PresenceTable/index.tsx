@@ -1,17 +1,17 @@
-import { Button, Spin } from 'antd';
+import { Spin } from 'antd';
 import { MeetingDetailsModel, MeetingDTO, UserDTO } from 'common';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import { Flex } from '../../../../components/Flex';
 import { PaddingContainer } from '../../../../components/PaddingContainer';
 
 import { MeetingId } from './types';
+import { MeetingsMissingInfo } from './MeetingsMissingInfo';
 import {
   PresenceAndActivityChangeHandler,
   PresenceAndActivityControls,
   PresenceAndActivityControlsProps,
 } from './PresenceAndActivityControls';
+import { PresenceTableStateProvider } from './PresenceTableStateContext';
 import { StudentsAtMeetingsTable } from './StudentsAtMeetingsTable';
 
 type ActivityNumber = number & { __brand: 'ActivityNumber' };
@@ -37,10 +37,13 @@ const makeRenderCheckboxAndInput = (
   );
 };
 
-type PresenceTableProps = {
+export type PresenceTableProps = {
   meetings?: MeetingDTO[];
   meetingsDetails?: MeetingDetailsModel[];
-  setMeetingsDetails: (details: MeetingDetailsModel[]) => void;
+  setStudentMeetingDetails: (
+    studentId: number,
+    newStudentMeetingDetails: MeetingDetailsModel
+  ) => void;
   addPresence: (userId: UserDTO['id'], meetingId: number) => void;
   deletePresence: (userId: UserDTO['id'], meetingId: number) => void;
   setActivity: (
@@ -57,7 +60,7 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
       addPresence,
       deletePresence,
       setActivity,
-      setMeetingsDetails,
+      setStudentMeetingDetails,
     } = this.props;
     if (!meetingsDetails) {
       return;
@@ -94,10 +97,7 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
       setActivity(studentId, meetingId, activity);
     }
 
-    const newStudents = [...meetingsDetails];
-    newStudents[changedStudentIndexInArray] = newStudent;
-
-    setMeetingsDetails(newStudents);
+    setStudentMeetingDetails(changedStudentIndexInArray, newStudent);
   };
 
   render() {
@@ -108,33 +108,25 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
     }
 
     if (!meetings.length) {
-      return (
-        <Flex
-          justifyContent="center"
-          alignItems="center"
-          flex={1}
-          flexDirection="column"
-          fontSize="1.4em"
-        >
-          <Flex fontSize="1.6em" paddingBottom="0.5em">
-            Nie ma spotkań 🤷
-          </Flex>
-          <div>
-            Chcesz stworzyć spotkanie?{' '}
-            <Link to="meetings">Idź do spotkań.</Link>
-          </div>
-        </Flex>
-      );
+      return <MeetingsMissingInfo />;
     }
+
+    // TODO: useMemo dependent on this.props
+    const contextValue = {
+      onChange: this.handleChange,
+      value: this.props,
+    };
 
     return (
       <PaddingContainer>
-        <StudentsAtMeetingsTable
-          meetings={meetings}
-          meetingsDetails={meetingsDetails}
-          makeRenderMeetingData={makeRenderCheckboxAndInput}
-          handleChange={this.handleChange}
-        />
+        <PresenceTableStateProvider value={contextValue}>
+          <StudentsAtMeetingsTable
+            meetings={meetings}
+            meetingsDetails={meetingsDetails}
+            makeRenderMeetingData={makeRenderCheckboxAndInput}
+            handleChange={this.handleChange}
+          />
+        </PresenceTableStateProvider>
       </PaddingContainer>
     );
   }

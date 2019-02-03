@@ -13,13 +13,13 @@ import { Flex } from '../../../components/Flex';
 import { LABELS } from '../../../utils/labels';
 import { WrappedEditMeetingForm } from '../components/EditMeetingForm';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
-import { GroupContextState } from '../GroupApiContext';
+import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
 `;
 
-type Props = GroupContextState;
+type Props = GroupApiContextState;
 
 type State = {
   meetingModalVisible: boolean;
@@ -32,7 +32,7 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    this.props.apiActions.listMeetings();
+    this.props.actions.listMeetings();
   }
 
   openNewMeetingModal = () => {
@@ -44,13 +44,13 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   handleAddNewMeeting = (values: { name: string; date: Moment }) => {
-    const { addMeeting, listMeetings } = this.props.apiActions;
+    const { addMeeting, listMeetings } = this.props.actions;
     addMeeting(values).then(listMeetings);
     this.hideNewMeetingModal();
   };
 
   handleDeleteMeeting = (id: number) => {
-    const { deleteMeeting, listMeetings } = this.props.apiActions;
+    const { deleteMeeting, listMeetings } = this.props.actions;
     deleteMeeting(id).then(listMeetings);
   };
 
@@ -63,7 +63,7 @@ export class MeetingsSection extends React.Component<Props, State> {
   };
 
   handleEditMeeting = (meeting: MeetingDTO) => {
-    const { updateMeeting, listMeetings } = this.props.apiActions;
+    const { updateMeeting, listMeetings } = this.props.actions;
     updateMeeting(meeting).then(listMeetings);
     this.hideNewMeetingModal();
   };

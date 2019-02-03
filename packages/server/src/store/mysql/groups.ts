@@ -1,4 +1,4 @@
-import { GroupDTO, UserDTO } from 'common';
+import { GroupDTO, GroupWithLecturer, UserDTO } from 'common';
 
 import { connection } from '../connection';
 
@@ -6,7 +6,7 @@ import { QueryCallback } from './QueryCallback';
 
 export const getGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
-  callback: QueryCallback<[GroupDTO & UserDTO['user_name']]>
+  callback: QueryCallback<[GroupWithLecturer]>
 ) =>
   connection.query(
     {

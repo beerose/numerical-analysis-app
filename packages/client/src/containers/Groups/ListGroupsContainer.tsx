@@ -11,7 +11,7 @@ import { DeleteWithConfirm } from '../../components/DeleteWithConfirm';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { LABELS } from '../../utils/labels';
 
-import { GroupApiContext } from './GroupApiContext';
+import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 const newGroupButtonStyles = css`
   width: 140px;
@@ -21,18 +21,19 @@ const newGroupButtonStyles = css`
 
 export class ListGroupsContainer extends React.Component<RouteComponentProps> {
   static contextType = GroupApiContext;
-  context!: React.ContextType<typeof GroupApiContext>;
+  context!: GroupApiContextState;
 
   componentDidMount() {
-    this.context.apiActions.listGroups();
+    this.context.actions.listGroups();
   }
 
-  handleDeleteGroup = (id: GroupDTO['id']) => {
-    this.context.apiActions.deleteGroup(id);
-  };
-
   render() {
-    const { groups, isLoading, error } = this.context;
+    const {
+      groups,
+      isLoading,
+      error,
+      actions: { deleteGroup },
+    } = this.context;
 
     return (
       <PaddingContainer>
@@ -55,9 +56,7 @@ export class ListGroupsContainer extends React.Component<RouteComponentProps> {
               renderItem={(item: GroupDTO) => (
                 <List.Item
                   actions={[
-                    <DeleteWithConfirm
-                      onConfirm={() => this.handleDeleteGroup(item.id)}
-                    >
+                    <DeleteWithConfirm onConfirm={() => deleteGroup(item.id)}>
                       <a>{LABELS.delete}</a>
                     </DeleteWithConfirm>,
                   ]}
