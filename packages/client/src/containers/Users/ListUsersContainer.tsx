@@ -2,13 +2,20 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Input as AntInput, Spin } from 'antd';
+// tslint:disable:no-submodule-imports
 import { SelectValue } from 'antd/lib/select';
 import { PaginationConfig } from 'antd/lib/table';
+// tslint:enable:no-submodule-imports
+import { UserDTO } from 'common';
 import * as React from 'react';
 
-import { UserDTO } from 'common';
 import { usersService } from '../../api';
-import { Breadcrumbs, SelectRole, UsersTable } from '../../components';
+import {
+  Breadcrumbs,
+  ErrorMessage,
+  SelectRole,
+  UsersTable,
+} from '../../components';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { LABELS } from '../../utils/labels';
 
@@ -34,17 +41,18 @@ const buttonStyles = css`
 `;
 
 type State = {
+  error?: Error;
   addUserModalVisible: boolean;
   currentPage: number;
   isLoading: boolean;
-  searchRoles: string[] | undefined;
-  searchValue: string | undefined;
+  searchRoles?: string[];
+  searchValue?: string;
   total: number;
   users: UserDTO[];
 };
 
 export class ListUsersContainer extends React.Component<{}, State> {
-  state = {
+  state: State = {
     addUserModalVisible: false,
     currentPage: 1,
     isLoading: false,
@@ -61,11 +69,21 @@ export class ListUsersContainer extends React.Component<{}, State> {
   updateUsersList = (currentPage: number) => {
     const { searchValue, searchRoles } = this.state;
     this.setState({ currentPage, isLoading: true });
+
     usersService
-      .listUsers({ currentPage, searchParam: searchValue, roles: searchRoles })
-      .then(({ users, total }) =>
-        this.setState({ users, total: parseInt(total, 10), isLoading: false })
-      );
+      .listUsers({
+        currentPage,
+        roles: searchRoles,
+        searchParam: searchValue,
+      })
+      .then(({ users, total }) => {
+        this.setState({
+          users,
+          isLoading: false,
+          total: parseInt(total, 10),
+        });
+      })
+      .catch(error => this.setState({ error, isLoading: false }));
   };
 
   showAddUserModal = () => {
@@ -95,7 +113,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
     });
   };
 
-  handleDeleteUser = (id: string) => {
+  handleDeleteUser = (id: UserDTO['id']) => {
     usersService.deleteUser(id).then(() => {
       this.updateUsersList(this.state.currentPage);
     });
@@ -121,12 +139,14 @@ export class ListUsersContainer extends React.Component<{}, State> {
 
   render() {
     const {
+      error,
       addUserModalVisible,
       users,
       total,
       currentPage,
       isLoading,
     } = this.state;
+
     return (
       <PaddingContainer>
         <Breadcrumbs />
@@ -160,17 +180,21 @@ export class ListUsersContainer extends React.Component<{}, State> {
           onCancel={this.cancelAddUser}
         />
         <Spin spinning={isLoading}>
-          <UsersTable
-            showPagination
-            pageSize={10}
-            currentPage={currentPage}
-            onDelete={this.handleDeleteUser}
-            onUpdate={this.handleUpdateUser}
-            users={users}
-            total={total}
-            extraColumns={['role', 'index']}
-            onTableChange={this.handlePaginationChange}
-          />
+          {error ? (
+            <ErrorMessage message={error.toString()} />
+          ) : (
+            <UsersTable
+              showPagination
+              pageSize={10}
+              currentPage={currentPage}
+              onDelete={this.handleDeleteUser}
+              onUpdate={this.handleUpdateUser}
+              users={users}
+              total={total}
+              extraColumns={['role', 'index']}
+              onTableChange={this.handlePaginationChange}
+            />
+          )}
         </Spin>
       </PaddingContainer>
     );
