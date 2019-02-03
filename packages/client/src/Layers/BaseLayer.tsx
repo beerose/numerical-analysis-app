@@ -86,7 +86,10 @@ export class BaseLayer extends React.Component<Props> {
                           path="/users"
                           component={ListUsersContainer}
                         />
-                        <Route path="/groups" render={Groups} />
+                        <Route
+                          path="/groups"
+                          render={routeContext => <Groups {...routeContext} />}
+                        />
                       </>
                     ) : (
                       <LoginForm
