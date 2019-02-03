@@ -61,10 +61,6 @@ export type UserDTO = {
   active_user?: boolean;
 };
 
-export type Where = 'groups' | 'users';
-export type What = 'edit' | 'read';
-export type UserPrivileges = { [key in Where]: Record<GroupDTO['id'], What[]> };
-
 export type Pagination = {
   offset: number;
   limit: number;
@@ -87,11 +83,9 @@ export type GroupDTO = {
   data?: Record<string, unknown>;
 };
 
-export enum GroupEnumUI { // TODO: Move this to component / presentational helper or sth like that
-  Exercise = 'Ćwiczenia',
-  Lab = 'Pracownia',
-  Lecture = 'Wykład',
-}
+export type GroupWithLecturer = GroupDTO & {
+  lecturer_name: UserDTO['user_name'];
+};
 
 export type MeetingDTO = {
   id: number;

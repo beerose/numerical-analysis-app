@@ -1,6 +1,10 @@
-import { UserRole, What, Where } from 'common';
+import { GroupDTO, UserRole } from 'common';
 import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
+
+type Where = 'groups' | 'users';
+type What = 'edit' | 'read';
+export type UserPrivileges = { [key in Where]: Record<GroupDTO['id'], What[]> };
 
 export const can = (what: What, where: Where) => (
   req: Request,

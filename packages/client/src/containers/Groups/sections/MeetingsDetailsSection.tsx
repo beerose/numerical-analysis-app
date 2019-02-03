@@ -1,4 +1,10 @@
-import { ApiResponse, GroupDTO, MeetingDetailsModel, MeetingDTO } from 'common';
+import {
+  ApiResponse,
+  GroupDTO,
+  MeetingDetailsModel,
+  MeetingDTO,
+  UserDTO,
+} from 'common';
 import * as React from 'react';
 
 import { groupsService } from '../../../api';
@@ -48,8 +54,15 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
       });
   }
 
-  handleSetMeetingDetails = (newDetails: MeetingDetailsModel[]) => {
-    this.setState({ meetingsDetails: newDetails });
+  handleSetMeetingDetails = (
+    studentId: UserDTO['id'],
+    newStudentMeetingDetails: MeetingDetailsModel
+  ) => {
+    this.setState(({ meetingsDetails }) => {
+      const newMeetingsDetails = [...meetingsDetails];
+      newMeetingsDetails[studentId] = newStudentMeetingDetails;
+      return { meetingsDetails: newMeetingsDetails };
+    });
   };
 
   render() {
@@ -58,7 +71,7 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
       <PresenceTable
         meetings={meetings}
         meetingsDetails={meetingsDetails}
-        setMeetingsDetails={this.handleSetMeetingDetails}
+        setStudentMeetingDetails={this.handleSetMeetingDetails}
         setActivity={this.handleSetActivity}
         addPresence={this.handleAddPresence}
         deletePresence={this.handleDeletePresence}

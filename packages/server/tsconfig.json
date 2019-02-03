@@ -10,7 +10,8 @@
       "../../node_modules/@types",
       "./src/types"
     ],
-    "outDir": "../../dist/server"
+    "outDir": "../../dist/server",
+    "downlevelIteration": false
   },
   "include": ["src"],
   "exclude": ["**/__tests__/*.ts"],

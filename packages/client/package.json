@@ -13,6 +13,7 @@
     "@emotion/styled-base": "^10.0.5",
     "@reach/visually-hidden": "^0.1.2",
     "@types/antd": "^1.0.0",
+    "@types/file-saver": "^2.0.0",
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.7",
     "@types/react-router-dom": "^4.3.0",
@@ -27,6 +28,7 @@
     "react-emotion": "^10.0.0",
     "react-router-dom": "^4.3.1",
     "src": "^1.1.2",
+    "utility-types": "^3.4.1",
     "utils": "^0.3.1"
   },
   "devDependencies": {

@@ -7,7 +7,6 @@ import { GroupDetailsContainer } from './GroupDetailsContainer';
 import { ListGroupsContainer } from './ListGroupsContainer';
 
 export const Groups = (props: RouteChildrenProps) => {
-  console.log({ props });
   return (
     <GroupApiProvider {...props}>
       <Switch>
