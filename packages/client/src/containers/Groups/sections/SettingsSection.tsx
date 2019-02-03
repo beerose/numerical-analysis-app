@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
-import { Col, Input, Row } from 'antd';
+import { Col, Input, Row, Select } from 'antd';
 import { GroupDTO } from 'common';
 import * as React from 'react';
 
 import { LABELS } from '../../../utils';
-import { GroupContextState } from '../GroupApiContext';
+import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
   margin-left: 40px;
@@ -19,6 +19,8 @@ const Container = styled.section`
 type GroupInfoProps = {
   header: string;
   info: string | number;
+  inputType?: 'input' | 'select';
+  selectOptions?: ({})[];
 };
 type GroupInfoState = {
   isEditing: boolean;
@@ -32,14 +34,24 @@ class GroupInfo extends React.Component<GroupInfoProps, GroupInfoState> {
     this.setState({ isEditing: true });
   };
   render() {
-    const { header, info } = this.props;
+    const { header, info, inputType } = this.props;
     const { isEditing } = this.state;
     return (
       <Row gutter={8}>
         <Col span={8}>
           <b>{header}: </b>
         </Col>
-        <Col span={8}>{isEditing ? <Input size="small" /> : info}</Col>
+        <Col span={8}>
+          {isEditing ? (
+            inputType === 'select' ? (
+              <Select />
+            ) : (
+              <Input size="small" />
+            )
+          ) : (
+            info
+          )}
+        </Col>
         <Col span={8}>
           <a role="link" onClick={this.onEditClick}>
             Edutuj
@@ -50,28 +62,39 @@ class GroupInfo extends React.Component<GroupInfoProps, GroupInfoState> {
   }
 }
 
-type Props = GroupContextState;
-type State = {
-  group: GroupDTO;
-};
-export class SettingsSection extends React.Component<Props, State> {
+type Props = GroupApiContextState;
+export class SettingsSection extends React.Component<Props> {
+  componentDidMount() {
+    this.props.actions.listSuperUsers();
+  }
+
   editProperty = (propertyName: keyof GroupDTO) => (
     newValue: string | number
   ) => {
-    const { group } = this.state;
-    const newGroup = group;
+    const { currentGroup } = this.context;
+    const newGroup = currentGroup;
     newGroup[propertyName] = newValue;
-    this.setState({ group: newGroup });
+    console.log({ newGroup });
   };
 
   render() {
-    //const { lecturer_name, group_name, class_number } = this.props.currentGroup;
-    //console.log(this.props.currentGroup);
+    const { currentGroup: group } = this.props;
+    if (!group) {
+      throw new Error('No group in state');
+    }
+    console.log(this.props.currentGroup);
     return (
       <Container>
-        <GroupInfo header={LABELS.lecturer} info={lecturer_name || ''} />
-        <GroupInfo header={LABELS.name} info={group_name} />
-        <GroupInfo header={LABELS.classRoomNumber} info={class_number || '-'} />
+        <GroupInfo
+          header={LABELS.lecturer}
+          info={group.lecturer_name || ''}
+          inputType="select"
+        />
+        <GroupInfo header={LABELS.groupName} info={group.group_name} />
+        <GroupInfo
+          header={LABELS.classRoomNumber}
+          info={group.class_number || '-'}
+        />
       </Container>
     );
   }
