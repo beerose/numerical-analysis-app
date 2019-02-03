@@ -1,12 +1,21 @@
 import { ApiResponse, GroupDTO, MeetingDetailsModel, MeetingDTO } from 'common';
 import * as React from 'react';
 
-import { groupsService } from '../../../api';
 import * as groupService from '../../../api/groupApi';
 import { PresenceTable } from '../components';
 
 type Props = {
   groupId: GroupDTO['id'];
+  setActivity: (
+    studentId: number,
+    meetingId: number,
+    points: number
+  ) => Promise<ApiResponse>;
+  addPresence: (studentId: number, meetingId: number) => Promise<ApiResponse>;
+  deletePresence: (
+    studentId: number,
+    meetingId: number
+  ) => Promise<ApiResponse>;
 };
 
 type State = {
@@ -18,9 +27,9 @@ export class MeetingsDetailsSections extends React.Component<Props, State> {
     meetingsDetails: [],
   };
 
-  handleSetActivity = this.withErrorHandler(groupsService.setActivity);
-  handleAddPresence = this.withErrorHandler(groupService.addPresence);
-  handleDeletePresence = this.withErrorHandler(groupsService.deletePresence);
+  handleSetActivity = this.withErrorHandler(this.props.setActivity);
+  handleAddPresence = this.withErrorHandler(this.props.addPresence);
+  handleDeletePresence = this.withErrorHandler(this.props.deletePresence);
 
   setStateFromApi() {
     const { groupId } = this.props;

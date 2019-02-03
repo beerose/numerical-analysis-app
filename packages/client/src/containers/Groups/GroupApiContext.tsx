@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { GroupDTO, UserDTO } from '../../../../../dist/common';
+import { ApiResponse, GroupDTO, UserDTO } from '../../../../../dist/common';
 
 export type GroupContextState = {
   apiActions: {
@@ -17,6 +17,16 @@ export type GroupContextState = {
     getGroup: () => void;
     listGroups: () => void;
     deleteGroup: (groupId: GroupDTO['id']) => void;
+    setActivity: (
+      studentId: number,
+      meetingId: number,
+      points: number
+    ) => Promise<ApiResponse>;
+    addPresence: (studentId: number, meetingId: number) => Promise<ApiResponse>;
+    deletePresence: (
+      studentId: number,
+      meetingId: number
+    ) => Promise<ApiResponse>;
   };
   actions: {
     goToGroupsPage: () => void;
@@ -34,11 +44,14 @@ export const GroupApiContext = React.createContext<GroupContextState>({
     goToGroupsPage: console.log.bind(console, 'goToGroupsPage'),
   },
   apiActions: {
+    addPresence: (_: any) => ({} as Promise<ApiResponse>),
     createGroup: console.log.bind(console, 'createGroup'),
     deleteGroup: console.log.bind(console, 'deleteGroup'),
+    deletePresence: (_: any) => ({} as Promise<ApiResponse>),
     getGroup: console.log.bind(console, 'getGroup'),
     listGroups: console.log.bind(console, 'listGroups'),
     listSuperUsers: console.log.bind(console, 'listSuperUsers'),
+    setActivity: (_: any) => ({} as Promise<ApiResponse>),
   },
   error: false,
   isLoading: false,

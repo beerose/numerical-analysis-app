@@ -1,4 +1,4 @@
-import { GroupDTO, UserRole } from 'common';
+import { ApiResponse, GroupDTO, UserRole } from 'common';
 import React from 'react';
 import { RouteChildrenProps } from 'react-router';
 
@@ -19,11 +19,14 @@ export class GroupApiProvider extends React.Component<
         goToGroupsPage: this.goToGroupsPage,
       },
       apiActions: {
+        addPresence: this.addPresence,
         createGroup: this.createGroup,
         deleteGroup: this.deleteGroup,
+        deletePresence: this.deletePresence,
         getGroup: this.getGroup,
         listGroups: this.listGroups,
         listSuperUsers: this.listSuperUsers,
+        setActivity: this.setActivity,
       },
       error: false,
       isLoading: false,
@@ -91,6 +94,28 @@ export class GroupApiProvider extends React.Component<
     groupsService.deleteGroup(id).then(() => {
       this.listGroups();
     });
+  };
+
+  addPresence = (
+    studentId: number,
+    meetingId: number
+  ): Promise<ApiResponse> => {
+    return groupsService.addPresence(studentId, meetingId);
+  };
+
+  deletePresence = (
+    studentId: number,
+    meetingId: number
+  ): Promise<ApiResponse> => {
+    return groupsService.deletePresence(studentId, meetingId);
+  };
+
+  setActivity = (
+    studentId: number,
+    meetingId: number,
+    points: number
+  ): Promise<ApiResponse> => {
+    return groupsService.setActivity(studentId, meetingId, points);
   };
 
   render() {
