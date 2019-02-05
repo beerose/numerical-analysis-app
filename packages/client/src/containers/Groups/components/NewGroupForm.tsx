@@ -9,6 +9,8 @@ import * as React from 'react';
 
 import { Colors, LABELS } from '../../../utils';
 
+import { SelectSuperUser } from './SelectSuperUser';
+
 const FormItem = Form.Item;
 
 const FORM_ITEM_LAYOUT = {
@@ -21,37 +23,6 @@ const FORM_ITEM_LAYOUT = {
     xs: { span: 24 },
   },
 };
-
-const SelectSuperUser = React.forwardRef(
-  (
-    {
-      superUsers,
-      onChange,
-    }: { superUsers: UserDTO[]; onChange?: (value: SelectValue) => void },
-    ref: React.Ref<Select>
-  ) => (
-    <Select
-      showArrow
-      placeholder={
-        <>
-          <Icon
-            type="user"
-            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
-          />
-          {LABELS.superUser}
-        </>
-      }
-      onChange={onChange}
-      ref={ref}
-    >
-      {superUsers.map(superUser => (
-        <Select.Option key={String(superUser.id)} value={superUser.id}>
-          {superUser.user_name}
-        </Select.Option>
-      ))}
-    </Select>
-  )
-);
 
 export const SelectSemester = React.forwardRef(
   (
