@@ -1,7 +1,6 @@
-import { Button, Form, Icon, Input, Radio, Select } from 'antd';
+import { Button, Form, Icon, Input, Radio } from 'antd';
 // tslint:disable: no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import { SelectValue } from 'antd/lib/select';
 // tslint:enable: no-submodule-imports
 import { GroupType, UserDTO } from 'common';
 import { css } from 'emotion';
@@ -9,6 +8,7 @@ import * as React from 'react';
 
 import { Colors, LABELS } from '../../../utils';
 
+import { SelectSemester } from './SelectSemester';
 import { SelectSuperUser } from './SelectSuperUser';
 
 const FormItem = Form.Item;
@@ -23,35 +23,6 @@ const FORM_ITEM_LAYOUT = {
     xs: { span: 24 },
   },
 };
-
-export const SelectSemester = React.forwardRef(
-  (
-    { onChange }: { onChange?: (value: SelectValue) => void },
-    ref: React.Ref<Select>
-  ) => (
-    <Select
-      showArrow
-      mode="single"
-      placeholder={
-        <>
-          <Icon
-            type="table"
-            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
-          />
-          Rok akademicki
-        </>
-      }
-      onChange={onChange}
-      ref={ref}
-    >
-      {['2018/2019', '2019'].map(o => (
-        <Select.Option value={o} key={o}>
-          {o}
-        </Select.Option>
-      ))}
-    </Select>
-  )
-);
 
 const formStyles = css`
   width: 420px;
