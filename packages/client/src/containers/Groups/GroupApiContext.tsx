@@ -5,10 +5,11 @@ import {
   MeetingDTO,
   UserDTO,
   UserRole,
+  UserWithGroups,
 } from 'common';
 import { Moment } from 'moment';
 import React from 'react';
-import { RouteChildrenProps } from 'react-router';
+import { Omit, RouteChildrenProps } from 'react-router';
 
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
@@ -60,20 +61,25 @@ export class GroupApiProvider extends React.Component<
       // actions won't be accessible from class body
       actions: {
         addMeeting: this.addMeeting,
+        addNewStudentToGroup: this.addNewStudentToGroup,
         addPresence: this.addPresence,
         createGroup: this.createGroup,
         deleteGroup: this.deleteGroup,
         deleteMeeting: this.deleteMeeting,
         deletePresence: this.deletePresence,
+        deleteStudentFromGroup: this.deleteStudentFromGroup,
         getGroup: this.getGroup,
         getMeetingsDetails: this.getMeetingsDetails,
         goToGroupsPage: this.goToGroupsPage,
         listGroups: this.listGroups,
         listMeetings: this.listMeetings,
+        listStudentsWithGroup: this.listStudentsWithGroup,
         listSuperUsers: this.listSuperUsers,
         setActivity: this.setActivity,
         setStudentMeetingDetails: this.setStudentMeetingDetails,
         updateMeeting: this.updateMeeting,
+        updateStudentInGroup: this.updateStudentInGroup,
+        uploadUsers: this.uploadUsers,
       },
       error: false,
       isLoading: false,
@@ -215,6 +221,43 @@ export class GroupApiProvider extends React.Component<
     this.setState({ isLoading: true });
     await groupsService.updateMeeting(values);
     this.setState({ isLoading: false });
+  };
+
+  listStudentsWithGroup = async () => {
+    this.setState({ isLoading: true });
+    return groupsService.listStudentsWithGroup().then(res => {
+      this.setState({
+        isLoading: false,
+      });
+      return res.students;
+    });
+  };
+
+  deleteStudentFromGroup = async (userId: UserDTO['id']) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    this.setState({ isLoading: true });
+    await groupsService.deleteUserFromGroup(userId, this.state.currentGroup.id);
+    this.setState({ isLoading: false });
+  };
+
+  updateStudentInGroup = async (user: Omit<UserDTO, 'user_role'>) => {
+    await usersService.updateUser({ ...user, user_role: UserRole.student });
+  };
+
+  addNewStudentToGroup = async (user: UserDTO) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    await groupsService.addStudentToGroup(user, this.state.currentGroup.id);
+  };
+
+  uploadUsers = async (payload: string) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    await groupsService.uploadUsers(payload, this.state.currentGroup.id);
   };
 
   render() {

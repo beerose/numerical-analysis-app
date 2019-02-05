@@ -128,7 +128,7 @@ export class GroupDetailsContainer extends React.Component<
                   <SettingsSection {...this.context} />
                 </Route>
                 <Route exact={true} path={'/groups/:id/students'}>
-                  <StudentsSection groupId={group.id} />
+                  <StudentsSection {...this.context} />
                 </Route>
                 <Route exact={true} path={'/groups/:id/presence'}>
                   <MeetingsDetailsSections {...this.context} />
