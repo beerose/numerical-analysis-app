@@ -11,10 +11,6 @@ export const upsertUserQuery = `
   VALUES ?
 `;
 
-export const getUserRoleQuery = `
-  SELECT user_role FROM users WHERE email = ?;
-`;
-
 // tslint:disable:no-nested-template-literals
 export const prepareAttachStudentToGroupQuery = (
   userEmails: string[],
