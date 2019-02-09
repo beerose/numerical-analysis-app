@@ -15,18 +15,6 @@ export const getUserRoleQuery = `
   SELECT user_role FROM users WHERE email = ?;
 `;
 
-export const listGroupsQuery = `
-  SELECT
-    *
-  FROM
-    \`groups\`
-  ORDER BY created_at DESC
-`;
-
-export const deleteStudentFromGroupQuery = `
-  DELETE FROM user_belongs_to_group WHERE user_id = ?;
-`;
-
 // tslint:disable:no-nested-template-literals
 export const prepareAttachStudentToGroupQuery = (
   userEmails: string[],

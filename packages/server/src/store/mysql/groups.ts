@@ -74,3 +74,35 @@ export const listUsersWithGroup = (
     },
     callback
   );
+
+export const deleteFromGroup = (
+  {
+    userId,
+    groupId,
+  }: {
+    userId: UserDTO['id'];
+    groupId: GroupDTO['id'];
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql:
+        'DELETE FROM user_belongs_to_group WHERE user_id = ? AND group_id = ?;',
+      values: [userId, groupId],
+    },
+    callback
+  );
+
+export const listGroups = (callback: QueryCallback<GroupDTO[]>) =>
+  connection.query(
+    {
+      sql: `
+  SELECT
+    *
+  FROM
+    \`groups\`
+  ORDER BY created_at DESC`,
+    },
+    callback
+  );

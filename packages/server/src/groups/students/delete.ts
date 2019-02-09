@@ -2,23 +2,20 @@ import { apiMessages } from 'common';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
-import { connection } from '../../store/connection';
-import { deleteStudentFromGroupQuery } from '../../store/queries';
+import { db } from '../../store';
 
 interface DeleteUserFromGroupRequest extends Request {
   query: {
-    user_id: string;
+    user_id: number;
+    group_id: number;
   };
 }
 export const deleteUserFromGroup = (
   req: DeleteUserFromGroupRequest,
   res: Response
 ) => {
-  return connection.query(
-    {
-      sql: deleteStudentFromGroupQuery,
-      values: [req.body.user_id],
-    },
+  return db.deleteFromGroup(
+    { userId: req.body.user_id, groupId: req.body.group_id },
     err => {
       if (err) {
         console.log(err);
