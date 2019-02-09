@@ -7,7 +7,7 @@ import { handleBadRequest, PostRequest } from '../../lib/request';
 import { db } from '../../store';
 
 const AddMeetingBodyV = t.type({
-  group_id: t.string,
+  group_id: t.number,
   meeting: t.type({ meeting_name: t.string, date: t.string }),
 });
 

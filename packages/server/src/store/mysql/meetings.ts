@@ -12,7 +12,7 @@ export const addMeeting = (
   }: {
     name: string;
     date: Date;
-    groupId: string;
+    groupId: GroupDTO['id'];
   },
   callback: QueryCallback
 ) =>
