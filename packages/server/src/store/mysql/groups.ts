@@ -68,6 +68,7 @@ export const listUsersWithGroup = (
         users AS u
       LEFT JOIN user_belongs_to_group AS ug
       ON (u.id = ug.user_id)
+      WHERE user_role = "student"
       GROUP BY u.id;
       `,
     },

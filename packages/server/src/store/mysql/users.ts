@@ -1,4 +1,5 @@
-import { UserDTO } from 'common';
+import { GroupDTO, UserDTO } from 'common';
+import { Omit } from 'react-router';
 
 import { connection } from '../connection';
 
@@ -149,6 +150,50 @@ export const setUserPassword = (
     {
       sql: 'UPDATE users SET password = ? WHERE email = ?',
       values: [passwordHash, email],
+    },
+    callback
+  );
+
+export const upsertUser = (
+  user: Omit<UserDTO, 'id'>,
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: `
+    INSERT IGNORE INTO
+    users (
+      user_name,
+      email,
+      user_role,
+      student_index
+    )
+    VALUES ?
+    `,
+      values: [
+        [[user.user_name, user.email, user.user_role, user.student_index]],
+      ],
+    },
+    callback
+  );
+
+export const attachStudentToGroup = (
+  {
+    email,
+    groupId,
+  }: {
+    email: UserDTO['email'];
+    groupId: GroupDTO['id'];
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: `
+    INSERT IGNORE INTO user_belongs_to_group(user_id, group_id)
+    VALUES ((SELECT id FROM users WHERE email = "${email}"), ${groupId})
+  `,
+      values: [email, groupId],
     },
     callback
   );

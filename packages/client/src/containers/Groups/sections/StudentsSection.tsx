@@ -96,9 +96,10 @@ export class StudentsSection extends React.Component<Props, State> {
   };
 
   addNewStudent = (user: UserDTO) => {
-    this.props.actions.addNewStudentToGroup(user);
-    this.setState({ addStudentModalVisible: false });
-    this.updateStudentsLists();
+    this.props.actions.addNewStudentToGroup(user).then(() => {
+      this.setState({ addStudentModalVisible: false });
+      this.updateStudentsLists();
+    });
   };
 
   cancelAddNewStudent = () => {

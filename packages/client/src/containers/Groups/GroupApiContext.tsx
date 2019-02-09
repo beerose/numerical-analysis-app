@@ -246,11 +246,11 @@ export class GroupApiProvider extends React.Component<
     await usersService.updateUser({ ...user, user_role: UserRole.student });
   };
 
-  addNewStudentToGroup = async (user: UserDTO) => {
+  addNewStudentToGroup = (user: UserDTO) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    await groupsService.addStudentToGroup(user, this.state.currentGroup.id);
+    return groupsService.addStudentToGroup(user, this.state.currentGroup.id);
   };
 
   uploadUsers = async (payload: string) => {

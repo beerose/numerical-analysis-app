@@ -77,7 +77,9 @@ export class NewStudentModalForm extends React.Component<Props, State> {
           showSearch
           value={
             selectedStudent &&
-            `(${selectedStudent.student_index}) ${selectedStudent.user_name}`
+            `(${selectedStudent.student_index || ''}) ${
+              selectedStudent.user_name
+            }`
           }
           style={{ width: 300 }}
           placeholder={LABELS.selectFromList}
