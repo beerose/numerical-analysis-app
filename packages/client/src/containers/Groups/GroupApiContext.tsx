@@ -253,11 +253,11 @@ export class GroupApiProvider extends React.Component<
     return groupsService.addStudentToGroup(user, this.state.currentGroup.id);
   };
 
-  uploadUsers = async (payload: string) => {
+  uploadUsers = (payload: string) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    await groupsService.uploadUsers(payload, this.state.currentGroup.id);
+    return groupsService.uploadUsers(payload, this.state.currentGroup.id);
   };
 
   render() {

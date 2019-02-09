@@ -77,8 +77,9 @@ export class StudentsSection extends React.Component<Props, State> {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = () => {
-      this.props.actions.uploadUsers(reader.result as string);
-      this.updateStudentsLists();
+      this.props.actions.uploadUsers(reader.result as string).then(() => {
+        this.updateStudentsLists();
+      });
     };
   };
 
