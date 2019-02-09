@@ -4,11 +4,8 @@ import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { GetRequest } from '../lib/request';
+import { db } from '../store';
 import { connection } from '../store/connection';
-import {
-  prepareAttachStudentToGroupQuery,
-  upsertUserQuery,
-} from '../store/queries';
 
 const UploadBodyV = t.type({
   data: t.string,
@@ -34,12 +31,7 @@ export const upload = (
     return;
   }
 
-  const userRows = users.map(user => [
-    user.user_name,
-    user.email,
-    user.user_role,
-    user.student_index,
-  ]);
+  const groupId = req.body.group_id;
   connection.beginTransaction(beginError => {
     if (beginError) {
       res
@@ -47,12 +39,8 @@ export const upload = (
         .send({ error: apiMessages.internalError });
       return;
     }
-    connection.query(
-      {
-        sql: upsertUserQuery,
-        values: [userRows],
-      },
-      upsertErr => {
+    users.forEach(user => {
+      db.upsertUser(user, upsertErr => {
         if (upsertErr) {
           connection.rollback(() =>
             res
@@ -61,15 +49,8 @@ export const upload = (
           );
           return;
         }
-        const groupId = req.body.group_id;
-        const attachQuery = prepareAttachStudentToGroupQuery(
-          users.map(u => u.email),
-          groupId
-        );
-        connection.query(
-          {
-            sql: attachQuery,
-          },
+        db.attachStudentToGroup(
+          { email: user.email, groupId: groupId },
           attachErr => {
             if (attachErr) {
               console.error(attachErr);
@@ -80,22 +61,22 @@ export const upload = (
               );
               return;
             }
-            connection.commit(commitErr => {
-              if (commitErr) {
-                console.error(commitErr);
-                connection.rollback(() =>
-                  res
-                    .status(codes.INTERNAL_SERVER_ERROR)
-                    .send({ error: apiMessages.internalError })
-                );
-              }
-              res.status(codes.OK).send({ message: apiMessages.usersUploaded });
-              return next();
-            });
           }
         );
+      });
+    });
+    connection.commit(commitErr => {
+      if (commitErr) {
+        console.error(commitErr);
+        connection.rollback(() =>
+          res
+            .status(codes.INTERNAL_SERVER_ERROR)
+            .send({ error: apiMessages.internalError })
+        );
       }
-    );
+      res.status(codes.OK).send({ message: apiMessages.usersUploaded });
+      return next();
+    });
   });
 };
 
