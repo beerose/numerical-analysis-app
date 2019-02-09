@@ -149,6 +149,7 @@ export class StudentsSection extends React.Component<Props, State> {
             users={students}
             extraColumns={['index']}
             css={{
+              paddingBottom: Theme.Padding.Half,
               paddingLeft: Theme.Padding.Standard,
               width: '600px',
             }}
