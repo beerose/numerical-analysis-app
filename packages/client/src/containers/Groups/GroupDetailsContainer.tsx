@@ -17,6 +17,8 @@ import {
   MeetingsSection,
   SettingsSection,
   StudentsSection,
+  TasksSection,
+  TestsSection,
 } from './sections';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
@@ -93,12 +95,6 @@ export class GroupDetailsContainer extends React.Component<
                 <Icon type="team" />
                 {texts.students}
               </MenuLink>
-              {features.hasLists && (
-                <MenuLink to={`${matchUrl}/lists`} key="lists">
-                  <Icon type="calculator" />
-                  {texts.lists}
-                </MenuLink>
-              )}
               {features.hasMeetings && (
                 <MenuLink to={`${matchUrl}/meetings`} key="meetings">
                   <Icon type="schedule" />
@@ -109,6 +105,18 @@ export class GroupDetailsContainer extends React.Component<
                 <MenuLink to={`${matchUrl}/presence`} key="presence">
                   <Icon type="calendar" />
                   {texts.presence}
+                </MenuLink>
+              )}
+              {features.hasTasks && (
+                <MenuLink to={`${matchUrl}/tasks`} key="tasks">
+                  <Icon type="calculator" />
+                  {texts.tasks}
+                </MenuLink>
+              )}
+              {features.hasTests && (
+                <MenuLink to={`${matchUrl}/tests`} key="tests">
+                  <Icon type="edit" />
+                  {texts.tests}
                 </MenuLink>
               )}
               <MenuLink to={`${matchUrl}/grades`} key="grades">
@@ -124,17 +132,23 @@ export class GroupDetailsContainer extends React.Component<
                 replace={this.replaceGroupIdBreadcrumb}
               />
               <Switch>
-                <Route exact={true} path={'/groups/:id'}>
+                <Route exact path={'/groups/:id'}>
                   <SettingsSection {...this.context} />
                 </Route>
-                <Route exact={true} path={'/groups/:id/students'}>
+                <Route exact path={'/groups/:id/students'}>
                   <StudentsSection {...this.context} />
                 </Route>
-                <Route exact={true} path={'/groups/:id/presence'}>
+                <Route exact path={'/groups/:id/presence'}>
                   <MeetingsDetailsSections {...this.context} />
                 </Route>
-                <Route exact={true} path={'/groups/:id/meetings'}>
+                <Route exact path={'/groups/:id/meetings'}>
                   <MeetingsSection {...this.context} />
+                </Route>
+                <Route exact path={'/groups/:id/tasks'}>
+                  <TasksSection {...this.context} />
+                </Route>
+                <Route exact path={'/groups/:id/tests'}>
+                  <TestsSection {...this.context} />
                 </Route>
                 <NotFoundPage />
               </Switch>

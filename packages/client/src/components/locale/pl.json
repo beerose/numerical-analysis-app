@@ -6,7 +6,6 @@
   "users": "Użytkownicy",
   "grades": "Oceny",
   "meetings": "Spotkania",
-  "lists": "Listy zadań",
   "exportCsv": "Eksportuj CSV",
   "importCsv": "Zaimportuj CSV",
   "csvInfo": "Obsługiwany format CSV to",
@@ -18,5 +17,7 @@
   "lecturer": "Prowadzący",
   "classRoomNumber": "Numer sali",
   "groupName": "Nazwa grupy",
-  "groupType": "Typ grupy"
+  "groupType": "Typ grupy",
+  "tasks": "Listy zadań",
+  "tests": "Sprawdziany"
 }
