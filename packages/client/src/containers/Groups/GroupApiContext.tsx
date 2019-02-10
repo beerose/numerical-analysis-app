@@ -5,7 +5,6 @@ import {
   MeetingDTO,
   UserDTO,
   UserRole,
-  UserWithGroups,
 } from 'common';
 import { Moment } from 'moment';
 import React from 'react';
@@ -72,9 +71,9 @@ export class GroupApiProvider extends React.Component<
         getMeetingsDetails: this.getMeetingsDetails,
         goToGroupsPage: this.goToGroupsPage,
         listGroups: this.listGroups,
+        listLecturers: this.listLecturers,
         listMeetings: this.listMeetings,
         listStudentsWithGroup: this.listStudentsWithGroup,
-        listSuperUsers: this.listSuperUsers,
         setActivity: this.setActivity,
         setStudentMeetingDetails: this.setStudentMeetingDetails,
         updateMeeting: this.updateMeeting,
@@ -118,10 +117,12 @@ export class GroupApiProvider extends React.Component<
       });
   };
 
-  listSuperUsers = () =>
-    usersService.listUsers({ roles: UserRole.superUser }).then(res => {
-      this.setState({ superUsers: res.users });
-    });
+  listLecturers = () =>
+    usersService
+      .listUsers({ roles: [UserRole.superUser, UserRole.admin] })
+      .then(res => {
+        this.setState({ superUsers: res.users });
+      });
 
   getGroup = () => {
     const groupId = Number(this.props.location.pathname.split('/')[2]);
