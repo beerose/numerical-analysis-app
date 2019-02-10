@@ -146,6 +146,8 @@ export enum TaskKind {
 }
 
 export type TaskDTO = {
+  id: number;
+  name: string;
   kind: TaskKind;
   weight: number;
   max_points: number;
@@ -167,6 +169,8 @@ export enum TestKind {
 }
 
 export type TestDTO = {
+  id: number;
+  name: string;
   kind: TestKind;
   weight: number;
   max_points: number;
