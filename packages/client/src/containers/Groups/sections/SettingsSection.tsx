@@ -10,6 +10,7 @@ import { DeepRequired } from 'utility-types';
 
 import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
+import { LABELS } from '../../../utils';
 import { GroupEquation } from '../components/GradeEquation';
 import {
   GradeTresholdsList,
@@ -21,7 +22,7 @@ import { GroupApiContextState } from '../GroupApiContext';
 
 const SettingsForm = styled.form`
   margin-left: 40px;
-  margin-top: 30px;
+  margin-top: 20px;
   height: 80vh;
   > div {
     padding-bottom: 15px;
@@ -152,7 +153,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
         />
       </FormRow>
       <Button type="primary" htmlType="submit">
-        Submit
+        {LABELS.save}
       </Button>
     </SettingsForm>
   );

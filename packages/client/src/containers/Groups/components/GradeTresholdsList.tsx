@@ -43,6 +43,17 @@ export const GradeTresholdsList: React.FC<GradeTresholdsListProps> = ({
                 }}
               />
             </Col>
+            <Col span={4}>
+              <span
+                css={css`
+                  padding-top: 6px;
+                  display: flex;
+                  align-items: center;
+                `}
+              >
+                %
+              </span>
+            </Col>
           </Row>
         </label>
       ))}
