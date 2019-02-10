@@ -139,3 +139,38 @@ export type MeetingDetailsModel = {
   };
   student: Student;
 };
+
+export enum TaskKind {
+  Homework = 'homework', // zadanie domowe
+  Assignment = 'assignment', // pracownia
+}
+
+export type TaskDTO = {
+  kind: TaskKind;
+  weight: number;
+  max_points: number;
+  results_date?: string; // if empty then due date
+  description?: string;
+  verify_upload: boolean; // default true
+  start_upload_date: string;
+  end_upload_date: string; // due date of the task
+};
+
+export enum TestKind {
+  Exam = 'exam', // egzamin
+  Test = 'test', // sprawdzian
+  MidtermTest = 'midtermTest', // sprawdzian połówkowy
+  ShortTest = 'shortTest', // kartkówka
+  Retake = 'retake', // egzamin poprawkowy
+  MidtermExam = 'midtermExam', // egzamin połówkowy
+  Colloquium = 'colloquium', // kolokwium
+}
+
+export type TestDTO = {
+  kind: TestKind;
+  weight: number;
+  max_points: number;
+  due_date: string;
+  results_date?: string; // if empty then due date
+  description?: string;
+};
