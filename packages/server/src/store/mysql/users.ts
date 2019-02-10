@@ -1,4 +1,4 @@
-import { GroupDTO, UserDTO } from 'common';
+import { GroupDTO, UserDTO, UserPrivileges } from 'common';
 import { Omit } from 'react-router';
 
 import { connection } from '../connection';
@@ -196,4 +196,40 @@ export const attachStudentToGroup = (
       values: [email, groupId],
     },
     callback
+  );
+
+export const setUserPrivileges = (
+  { privileges, userId }: { privileges: UserPrivileges; userId: UserDTO['id'] },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: `
+    UPDATE users
+    SET privileges = ?
+    WHERE id = ?
+        `,
+      values: [JSON.stringify(privileges), userId],
+    },
+    callback
+  );
+
+export const getUserPrivileges = (
+  { userId }: { userId: UserDTO['id'] },
+  callback: QueryCallback<string | null>
+) =>
+  connection.query(
+    {
+      sql: `SELECT privileges FROM users WHERE id = ?`,
+      values: [userId],
+    },
+    (err, res) => {
+      if (err) {
+        return callback(err, res);
+      }
+      if (!res.length) {
+        return callback(null, null);
+      }
+      return callback(null, res[0].privileges);
+    }
   );

@@ -1,4 +1,4 @@
-import { GroupDTO, GroupWithLecturer, UserDTO, UserPrivileges } from 'common';
+import { GroupDTO, GroupWithLecturer, UserDTO } from 'common';
 
 import { connection } from '../connection';
 
@@ -138,34 +138,6 @@ export const listGroups = (callback: QueryCallback<GroupDTO[]>) =>
   FROM
     \`groups\`
   ORDER BY created_at DESC`,
-    },
-    callback
-  );
-
-export const setUserPrivileges = (
-  { privileges, userId }: { privileges: UserPrivileges; userId: UserDTO['id'] },
-  callback: QueryCallback
-) =>
-  connection.query(
-    {
-      sql: `
-  UPDATE users
-  SET privileges = ?
-  WHERE id = ?
-      `,
-      values: [JSON.stringify(privileges), userId],
-    },
-    callback
-  );
-
-export const getUserPrivileges = (
-  { userId }: { userId: UserDTO['id'] },
-  callback: QueryCallback<string>
-) =>
-  connection.query(
-    {
-      sql: `SELECT privileges FROM users WHERE id = ?`,
-      values: [userId],
     },
     callback
   );
