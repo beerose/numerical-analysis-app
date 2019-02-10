@@ -44,6 +44,41 @@ export const addGroup = (
     callback
   );
 
+export const updateGroup = (
+  group: Pick<
+    GroupDTO,
+    | 'group_name'
+    | 'group_type'
+    | 'academic_year'
+    | 'lecturer_id'
+    | 'id'
+    | 'data'
+  >,
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: `
+  UPDATE \`groups\` SET
+    group_name = ?,
+    group_type = ?,
+    academic_year = ?,
+    lecturer_id = ?,
+    data = ?
+  WHERE id = ?;
+  `,
+      values: [
+        group.group_name,
+        group.group_type,
+        group.academic_year,
+        group.lecturer_id,
+        JSON.stringify(group.data),
+        group.id,
+      ],
+    },
+    callback
+  );
+
 export const deleteGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback

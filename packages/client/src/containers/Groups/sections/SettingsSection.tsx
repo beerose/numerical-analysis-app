@@ -38,7 +38,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
   }
 
   useEffect(() => {
-    actions.listSuperUsers().then(console.log);
+    actions.listLecturers();
 
     const initialState: FormState = {
       class_number: group.class_number,

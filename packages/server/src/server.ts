@@ -70,6 +70,19 @@ app.delete(
   auth.can('edit', 'groups'),
   groups.deleteGroup
 );
+app.post(
+  Groups.Update,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  groups.update
+);
+app.post(
+  Groups.ShareForEdit,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  groups.share
+);
+
 app.get(
   Groups.Students.List,
   auth.authorize([UserRole.admin, UserRole.superUser]),
