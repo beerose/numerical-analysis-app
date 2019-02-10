@@ -73,7 +73,7 @@ export type GroupDTO = {
   class_number?: number;
   academic_year?: string;
   data?: {
-    tresholds?: { [key in keyof Tresholds]: number };
+    tresholds?: Tresholds;
     grade_equation?: string;
   };
 };

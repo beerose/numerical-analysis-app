@@ -4,12 +4,17 @@ import styled from '@emotion/styled';
 import { Button, Col, Form, Input, Row } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import React, { useContext, useEffect, useState } from 'react';
+import fromPairs from 'lodash.frompairs';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { DeepRequired } from 'utility-types';
 
-import { GroupDTO } from '../../../../../../dist/common';
+import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
-import { Table } from '../../../components/Table';
 import { GroupEquation } from '../components/GradeEquation';
+import {
+  GradeTresholdsList,
+  tresholdsKeys,
+} from '../components/GradeTresholdsList';
 import { GroupTypeRadioGroup } from '../components/GroupTypeRadioGroup';
 import { SelectSuperUser } from '../components/SelectSuperUser';
 import { GroupApiContextState } from '../GroupApiContext';
@@ -37,13 +42,16 @@ const FormRow: React.FC<FormRowProps> = ({ label, children }) => (
   </Row>
 );
 
-type FormState = Pick<
+type AntFormState = Pick<
   GroupDTO,
   'class_number' | 'group_name' | 'group_type' | 'lecturer_id'
 >;
 
+type GroupDataState = DeepRequired<GroupDTO>['data'];
+
 type Props = GroupApiContextState & FormComponentProps;
 
+// tslint:disable-next-line:max-func-body-length
 const SettingsSectionInternal: React.FC<Props> = ({
   actions,
   currentGroup: group,
@@ -54,13 +62,31 @@ const SettingsSectionInternal: React.FC<Props> = ({
     throw new Error('No group');
   }
 
-  const [equation, setEquation] = useState('activity + presence * 0.5');
   const { texts } = useContext(LocaleContext);
+  const [groupDataState, setGroupDataState] = useState<GroupDataState>(() => {
+    const {
+      tresholds = fromPairs(
+        tresholdsKeys.map(k => [k, 0] as [keyof Tresholds, number])
+      ),
+      grade_equation = '',
+    } = group.data || {};
+
+    return {
+      grade_equation,
+      tresholds,
+    };
+  });
+  const setTresholds = useCallback(tresholds => {
+    setGroupDataState(state => ({ ...state, tresholds }));
+  }, []);
+  const setEquation = useCallback(grade_equation => {
+    setGroupDataState(state => ({ ...state, grade_equation }));
+  }, []);
 
   useEffect(() => {
     actions.listLecturers();
 
-    const initialState: FormState = {
+    const initialState: AntFormState = {
       class_number: group.class_number,
       group_name: group.group_name,
       group_type: group.group_type,
@@ -70,24 +96,27 @@ const SettingsSectionInternal: React.FC<Props> = ({
   }, [group]);
 
   const { getFieldDecorator } = form;
+
   return (
     <SettingsForm
       onSubmit={event => {
         event.preventDefault();
-        form.validateFields((err, values) => {
+        form.validateFields((err, antFormValues) => {
           if (err) {
             console.error(err);
             return;
           }
+
+          const values = { ...antFormValues, ...groupDataState };
           console.log(values);
         });
       }}
     >
       <FormRow label={texts.groupName}>
-        {getFieldDecorator<FormState>('group_name')(<Input />)}
+        {getFieldDecorator<AntFormState>('group_name')(<Input />)}
       </FormRow>
       <FormRow label={texts.groupType}>
-        {getFieldDecorator<FormState>('group_type')(
+        {getFieldDecorator<AntFormState>('group_type')(
           <GroupTypeRadioGroup
             css={css`
               display: flex;
@@ -100,7 +129,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
         )}
       </FormRow>
       <FormRow label={texts.lecturer}>
-        {getFieldDecorator<FormState>('lecturer_id')(
+        {getFieldDecorator<AntFormState>('lecturer_id')(
           <SelectSuperUser
             superUsers={superUsers}
             css={{
@@ -110,17 +139,18 @@ const SettingsSectionInternal: React.FC<Props> = ({
         )}
       </FormRow>
       <FormRow label={texts.classRoomNumber}>
-        {getFieldDecorator<FormState>('class_number')(<Input />)}
+        {getFieldDecorator<AntFormState>('class_number')(<Input />)}
       </FormRow>
-      <GroupEquation value={equation} onChange={setEquation} />
-      <Table
-        style={{
-          maxWidth: 400,
-        }}
-      >
-        <Table.Column title="Ocena" dataIndex="grade" />
-        <Table.Column title="Próg" />
-      </Table>
+      <GroupEquation
+        value={groupDataState.grade_equation}
+        onChange={setEquation}
+      />
+      <FormRow label={texts.gradeTresholds}>
+        <GradeTresholdsList
+          value={groupDataState.tresholds}
+          onChange={setTresholds}
+        />
+      </FormRow>
       <Button type="primary" htmlType="submit">
         Submit
       </Button>
