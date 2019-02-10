@@ -151,7 +151,6 @@ export type TaskDTO = {
   max_points: number;
   results_date?: string; // if empty then due date
   description?: string;
-  upload_task: boolean; // if student will upload the task in the app
   verify_upload: boolean; // default true
   start_upload_date: string;
   end_upload_date: string; // due date of the task
