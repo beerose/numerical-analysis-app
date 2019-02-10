@@ -29,6 +29,12 @@ export type UserDTO = {
   active_user?: boolean;
 };
 
+export type Where = 'groups' | 'users';
+export type What = 'edit' | 'read';
+export type UserPrivileges = {
+  [key in Where]?: Record<GroupDTO['id'], What[]>
+};
+
 const isUserId: Typeguard<GroupDTO['id']> = isNumber;
 export const userIdRuntimeType = new t.Type(
   'UserDTO.id',

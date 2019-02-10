@@ -18,6 +18,7 @@ export const ServerRoutes = {
       SetActivity: '/groups/meetings.setActivity',
       Update: '/groups/meetings.update',
     },
+    ShareForEdit: 'groups/shareForEdit',
     Students: {
       AddToGroup: '/groups/students.add',
       List: '/groups/students',

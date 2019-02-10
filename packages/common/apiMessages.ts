@@ -9,6 +9,7 @@ export const apiMessages = {
   groupIdRequired: 'group_id jest wymagane',
   groupMissing: 'Nie ma grupy o podanym id',
   groupUpdated: 'Grupa została zaktualizowana',
+  groupWasShared: 'Grupa została udostępniona do edycji',
   idRequired: 'Id jest wymagane',
   internalError: 'Wystąpił błąd, spróbuj ponownie',
   invalidAddMeetingRequest: 'Pola meeting_name, date, group_id są wymagane',
