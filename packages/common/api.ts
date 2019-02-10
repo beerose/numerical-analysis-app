@@ -72,7 +72,10 @@ export type GroupDTO = {
   lecturer_name?: string;
   class_number?: number;
   academic_year?: string;
-  data?: Record<string, unknown>;
+  data?: {
+    tresholds?: { [key in keyof Tresholds]: number };
+    grade_equation?: string;
+  };
 };
 
 const isGroupId: Typeguard<GroupDTO['id']> = isNumber;
