@@ -72,8 +72,8 @@ export type GroupDTO = {
   lecturer_name?: string;
   class_number?: number;
   academic_year?: string;
-  data: {
-    tresholds?: { [key in keyof Tresholds]: number };
+  data?: {
+    tresholds?: Tresholds;
     grade_equation?: string;
   };
 };
