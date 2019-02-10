@@ -47,3 +47,9 @@ export function Table<T>(props: TableProps<T>) {
     />
   );
 }
+
+// tslint:disable-next-line:no-namespace
+export namespace Table {
+  export const Column = AntTable.Column;
+  export const ColumnGroup = AntTable.ColumnGroup;
+}
