@@ -1,21 +1,25 @@
 import { GroupType } from '.';
 
 type GroupFeaturesConfig = {
-  hasLists?: boolean;
   hasMeetings?: boolean;
   hasPresence?: boolean;
+  hasTasks?: boolean;
+  hasTests?: boolean;
 };
 
 export const groupFeatures: Record<GroupType, GroupFeaturesConfig> = {
-  [GroupType.Lecture]: {},
+  [GroupType.Lecture]: {
+    hasTests: true,
+  },
   [GroupType.Lab]: {
-    hasLists: true,
     hasMeetings: true,
     hasPresence: true,
+    hasTasks: true,
   },
   [GroupType.Exercise]: {
-    hasLists: true,
     hasMeetings: true,
     hasPresence: true,
+    hasTasks: true,
+    hasTests: true,
   },
 };

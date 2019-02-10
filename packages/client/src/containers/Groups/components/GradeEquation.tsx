@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { jsx } from '@emotion/core';
 import { Col, Input, Row } from 'antd';
 import React from 'react';
 import html from 'tagged-template-noop';
