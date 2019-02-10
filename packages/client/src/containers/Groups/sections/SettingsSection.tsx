@@ -1,101 +1,96 @@
+/** jsx @jsx */
+import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Col, Input, Row, Select } from 'antd';
-import { GroupDTO } from 'common';
-import * as React from 'react';
+import { Button, Col, Form, Input, Row } from 'antd';
+// tslint:disable-next-line:no-submodule-imports
+import { FormComponentProps } from 'antd/lib/form';
+import React, { useContext, useEffect } from 'react';
 
-import { LABELS } from '../../../utils';
+import { GroupDTO } from '../../../../../../dist/common';
+import { LocaleContext } from '../../../components/locale';
+import { GroupEquation } from '../components/GradeEquation';
+import { SelectSuperUser } from '../components/SelectSuperUser';
 import { GroupApiContextState } from '../GroupApiContext';
 
-const Container = styled.section`
+const SettingsForm = styled.form`
   margin-left: 40px;
   margin-top: 30px;
-  width: 80vh;
   height: 80vh;
   > div {
     padding-bottom: 15px;
   }
 `;
 
-type GroupInfoProps = {
-  header: string;
-  info: string | number;
-  inputType?: 'input' | 'select';
-  selectOptions?: ({})[];
-};
-type GroupInfoState = {
-  isEditing: boolean;
-};
-class GroupInfo extends React.Component<GroupInfoProps, GroupInfoState> {
-  state = {
-    isEditing: false,
-  };
+type FormState = Pick<GroupDTO, 'class_number' | 'group_name' | 'lecturer_id'>;
 
-  onEditClick = () => {
-    this.setState({ isEditing: true });
-  };
-  render() {
-    const { header, info, inputType } = this.props;
-    const { isEditing } = this.state;
-    return (
+type Props = GroupApiContextState & FormComponentProps;
+
+const SettingsSectionInternal: React.FC<Props> = ({
+  actions,
+  currentGroup: group,
+  form,
+  superUsers,
+}) => {
+  const { texts } = useContext(LocaleContext);
+
+  if (!group) {
+    throw new Error('No group');
+  }
+
+  useEffect(() => {
+    actions.listSuperUsers().then(console.log);
+
+    const initialState: FormState = {
+      class_number: group.class_number,
+      group_name: group.group_name,
+      lecturer_id: group.lecturer_id,
+    };
+    form.setFieldsValue(initialState);
+  }, [group]);
+
+  console.log(group);
+
+  const { getFieldDecorator } = form;
+
+  return (
+    <SettingsForm onSubmit={console.log}>
       <Row gutter={8}>
-        <Col span={8}>
-          <b>{header}: </b>
+        <Col span={4}>
+          <b>{texts.lecturer}: </b>
         </Col>
-        <Col span={8}>
-          {isEditing ? (
-            inputType === 'select' ? (
-              <Select />
-            ) : (
-              <Input size="small" />
-            )
-          ) : (
-            info
+        <Col span={16}>
+          {getFieldDecorator<FormState>('lecturer_id')(
+            <SelectSuperUser
+              superUsers={superUsers}
+              css={{
+                width: '100%',
+              }}
+            />
           )}
         </Col>
-        <Col span={8}>
-          <a role="link" onClick={this.onEditClick}>
-            Edutuj
-          </a>
+      </Row>
+      <Row gutter={8}>
+        <Col span={4}>
+          <b>{texts.groupName}: </b>
+        </Col>
+        <Col span={16}>
+          {getFieldDecorator<FormState>('group_name')(<Input />)}
         </Col>
       </Row>
-    );
-  }
-}
+      <Row gutter={8}>
+        <Col span={4}>
+          <b>{texts.classRoomNumber}: </b>
+        </Col>
+        <Col span={16}>
+          {getFieldDecorator<FormState>('class_number')(<Input />)}
+        </Col>
+      </Row>
+      <GroupEquation />
+      <Button type="primary" htmlType="submit">
+        Submit
+      </Button>
+    </SettingsForm>
+  );
+};
 
-type Props = GroupApiContextState;
-export class SettingsSection extends React.Component<Props> {
-  componentDidMount() {
-    this.props.actions.listSuperUsers();
-  }
-
-  editProperty = (propertyName: keyof GroupDTO) => (
-    newValue: string | number
-  ) => {
-    const { currentGroup } = this.context;
-    const newGroup = currentGroup;
-    newGroup[propertyName] = newValue;
-    console.log({ newGroup });
-  };
-
-  render() {
-    const { currentGroup: group } = this.props;
-    if (!group) {
-      throw new Error('No group in state');
-    }
-    console.log(this.props.currentGroup);
-    return (
-      <Container>
-        <GroupInfo
-          header={LABELS.lecturer}
-          info={group.lecturer_name || ''}
-          inputType="select"
-        />
-        <GroupInfo header={LABELS.groupName} info={group.group_name} />
-        <GroupInfo
-          header={LABELS.classRoomNumber}
-          info={group.class_number || '-'}
-        />
-      </Container>
-    );
-  }
-}
+export const SettingsSection = Form.create()(SettingsSectionInternal);

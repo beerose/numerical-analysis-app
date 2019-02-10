@@ -1,34 +1,47 @@
 import { Icon, Select } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
-import { SelectValue } from 'antd/lib/select';
+import { SelectProps, SelectValue } from 'antd/lib/select';
 import { UserDTO } from 'common';
 import * as React from 'react';
 
 import { Colors, LABELS } from '../../../utils';
+
+const filterLecturer: SelectProps['filterOption'] = (
+  input,
+  { props: { children } }
+) =>
+  children &&
+  children
+    .toString()
+    .toLowerCase()
+    .indexOf(input.toLowerCase()) >= 0;
+
 export const SelectSuperUser = React.forwardRef(
   (
     {
       superUsers,
-      onChange,
+      value,
+      ...rest
     }: {
       superUsers: UserDTO[];
-      onChange?: (value: SelectValue) => void;
-    },
+    } & SelectProps,
     ref: React.Ref<Select>
   ) => (
     <Select
-      showArrow
+      showSearch
       placeholder={
         <>
           <Icon
             type="user"
             style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
           />
-          {LABELS.superUser}
+          {LABELS.lecturer}
         </>
       }
-      onChange={onChange}
       ref={ref}
+      filterOption={filterLecturer}
+      value={superUsers.length ? value : 'undefined'}
+      {...rest}
     >
       {superUsers.map(superUser => (
         <Select.Option key={String(superUser.id)} value={superUser.id}>

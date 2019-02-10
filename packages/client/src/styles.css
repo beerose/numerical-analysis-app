@@ -1,21 +1,22 @@
 #root {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
-.ant-table-thead>tr>th, .ant-table-tbody>tr>td {
-    word-break: keep-all;
-    padding: 10px !important;
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
+  word-break: keep-all;
+  padding: 10px !important;
 }
 
-.ant-table-small>.ant-table-content>.ant-table-body {
-    margin: 0;
+.ant-table-small > .ant-table-content > .ant-table-body {
+  margin: 0;
 }
 
 .ant-time-picker-panel-narrow .ant-time-picker-panel-input-wrap {
-    max-width: 150px !important;
+  max-width: 150px !important;
 }
 
 .ant-time-picker-panel-input {
-    width: 120px !important;
+  width: 120px !important;
 }

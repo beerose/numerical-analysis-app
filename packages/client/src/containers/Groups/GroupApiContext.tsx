@@ -121,6 +121,7 @@ export class GroupApiProvider extends React.Component<
   listSuperUsers = () =>
     usersService.listUsers({ roles: UserRole.superUser }).then(res => {
       this.setState({ superUsers: res.users });
+      return res.users;
     });
 
   getGroup = () => {

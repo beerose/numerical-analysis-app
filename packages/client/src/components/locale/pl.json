@@ -13,5 +13,9 @@
   "hello": "Witaj",
   "thereAreNoMeetings": "Nie ma spotkań 🤷",
   "doYouWantToCreateAMeeting": "Chcesz stworzyć spotkanie?",
-  "goToMeetings": "Idź do spotkań."
+  "goToMeetings": "Idź do spotkań.",
+  "edit": "Edytuj",
+  "lecturer": "Prowadzący",
+  "classRoomNumber": "Numer sali",
+  "groupName": "Nazwa grupy"
 }
