@@ -148,7 +148,7 @@ export enum TaskKind {
 export type TaskDTO = {
   kind: TaskKind;
   weight: number;
-  max: number;
+  max_points: number;
   results_date?: string; // if empty then due date
   description?: string;
   upload_task: boolean; // if student will upload the task in the app
@@ -170,7 +170,7 @@ export enum TestKind {
 export type TestDTO = {
   kind: TestKind;
   weight: number;
-  max: number;
+  max_points: number;
   due_date: string;
   results_date?: string; // if empty then due date
   description?: string;
