@@ -8,6 +8,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { GroupDTO } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
+import { Table } from '../../../components/Table';
 import { GroupEquation } from '../components/GradeEquation';
 import { GroupTypeRadioGroup } from '../components/GroupTypeRadioGroup';
 import { SelectSuperUser } from '../components/SelectSuperUser';
@@ -112,6 +113,14 @@ const SettingsSectionInternal: React.FC<Props> = ({
         {getFieldDecorator<FormState>('class_number')(<Input />)}
       </FormRow>
       <GroupEquation value={equation} onChange={setEquation} />
+      <Table
+        style={{
+          maxWidth: 400,
+        }}
+      >
+        <Table.Column title="Ocena" dataIndex="grade" />
+        <Table.Column title="Próg" />
+      </Table>
       <Button type="primary" htmlType="submit">
         Submit
       </Button>
