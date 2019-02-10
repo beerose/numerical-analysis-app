@@ -5,3 +5,4 @@ export * from './list';
 export * from './upload';
 export * from './delete';
 export * from './get';
+export * from './update';

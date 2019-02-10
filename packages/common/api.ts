@@ -1,3 +1,8 @@
+import * as t from 'io-ts';
+import { isNumber, isString } from 'util';
+
+import { isGroupKind, Typeguard } from './utils';
+
 export type ApiResponse =
   | {
       message: string;
@@ -6,43 +11,6 @@ export type ApiResponse =
       error: string;
       errorDetails?: string;
     };
-
-// TODO: as const
-
-export const ServerRoutes = {
-  Accounts: {
-    Login: '/accounts.login',
-    New: '/accounts.new',
-  },
-  Groups: {
-    Create: '/groups.create',
-    Delete: '/groups.delete',
-    Get: '/groups.get',
-    List: '/groups',
-    Meetings: {
-      AddPresence: '/groups/meetings.addPresence',
-      Create: '/groups/meetings.create',
-      Delete: '/groups/meetings.delete',
-      DeletePresence: '/groups/meetings.deletePresence',
-      Details: '/groups/meetings.details',
-      List: '/groups/meetings',
-      SetActivity: '/groups/meetings.setActivity',
-      Update: '/groups/meetings.update',
-    },
-    Students: {
-      AddToGroup: '/groups/students.add',
-      List: '/groups/students',
-      RemoveFromGroup: '/groups/students.delete',
-    },
-    Upload: '/groups/upload',
-  },
-  Users: {
-    Create: '/users/create',
-    Delete: '/users/delete',
-    List: '/users',
-    Update: '/users/update',
-  },
-};
 
 export enum UserRole {
   admin = 'admin',
@@ -61,6 +29,14 @@ export type UserDTO = {
   active_user?: boolean;
 };
 
+const isUserId: Typeguard<GroupDTO['id']> = isNumber;
+export const userIdRuntimeType = new t.Type(
+  'UserDTO.id',
+  isUserId,
+  t.number.validate,
+  t.identity
+);
+
 export type UserWithGroups = UserDTO & { group_ids: GroupDTO['id'][] };
 
 export type Pagination = {
@@ -74,6 +50,14 @@ export enum GroupType {
   Lecture = 'lecture',
 }
 
+const isGroupType: Typeguard<GroupDTO['group_type']> = isGroupKind;
+export const groupTypeRuntimeType = new t.Type(
+  'GroupDTO.group_type',
+  isGroupType,
+  (u, c) => (isGroupType ? t.success(u as GroupType) : t.failure(u, c)),
+  t.identity
+);
+
 export type GroupDTO = {
   id: number;
   group_name: string;
@@ -83,6 +67,30 @@ export type GroupDTO = {
   class_number?: number;
   academic_year?: string;
   data?: Record<string, unknown>;
+};
+
+const isGroupId: Typeguard<GroupDTO['id']> = isNumber;
+export const groupIdRuntimeType = new t.Type(
+  'GroupDTO.id',
+  isGroupId,
+  t.number.validate,
+  t.identity
+);
+
+const isGroupName: Typeguard<GroupDTO['group_name']> = isString;
+export const groupNameRuntimeType = new t.Type(
+  'GroupDTO.group_name',
+  isGroupName,
+  t.string.validate,
+  t.identity
+);
+
+export type Tresholds = {
+  '3': number;
+  '3.5': number;
+  '4': number;
+  '4.5': number;
+  '5': number;
 };
 
 export type GroupWithLecturer = GroupDTO & {
