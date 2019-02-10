@@ -72,7 +72,7 @@ export type GroupDTO = {
   lecturer_name?: string;
   class_number?: number;
   academic_year?: string;
-  data?: {
+  data: {
     tresholds?: { [key in keyof Tresholds]: number };
     grade_equation?: string;
   };
@@ -138,4 +138,40 @@ export type MeetingDetailsModel = {
     activities: StudentActivities;
   };
   student: Student;
+};
+
+export enum TaskKind {
+  Homework = 'homework', // zadanie domowe
+  Assignment = 'assignment', // pracownia
+}
+
+export type TaskDTO = {
+  kind: TaskKind;
+  weight: number;
+  max: number;
+  results_date?: string; // if empty then due date
+  description?: string;
+  upload_task: boolean; // if student will upload the task in the app
+  verify_upload: boolean; // default true
+  start_upload_date: string;
+  end_upload_date: string; // due date of the task
+};
+
+export enum TestKind {
+  Exam = 'exam', // egzamin
+  Test = 'test', // sprawdzian
+  MidtermTest = 'midtermTest', // sprawdzian połówkowy
+  ShortTest = 'shortTest', // kartkówka
+  Retake = 'retake', // egzamin poprawkowy
+  MidtermExam = 'midtermExam', // egzamin połówkowy
+  Colloquium = 'colloquium', // kolokwium
+}
+
+export type TestDTO = {
+  kind: TestKind;
+  weight: number;
+  max: number;
+  due_date: string;
+  results_date?: string; // if empty then due date
+  description?: string;
 };
