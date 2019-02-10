@@ -1,4 +1,4 @@
-import { Button, Form, Icon, Input, Radio } from 'antd';
+import { Button, Form, Icon, Input } from 'antd';
 // tslint:disable: no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
 // tslint:enable: no-submodule-imports
@@ -8,6 +8,7 @@ import * as React from 'react';
 
 import { Colors, LABELS } from '../../../utils';
 
+import { GroupTypeRadioGroup } from './GroupTypeRadioGroup';
 import { SelectSemester } from './SelectSemester';
 import { SelectSuperUser } from './SelectSuperUser';
 
@@ -67,13 +68,7 @@ class NewGroupForm extends React.Component<Props> {
         <FormItem label={LABELS.group} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('group', {
             rules: [{ required: true, message: LABELS.groupRequired }],
-          })(
-            <Radio.Group buttonStyle="solid">
-              <Radio.Button value="lecture">{LABELS.lecture}</Radio.Button>
-              <Radio.Button value="exercise">{LABELS.exercise}</Radio.Button>
-              <Radio.Button value="lab">{LABELS.lab}</Radio.Button>
-            </Radio.Group>
-          )}
+          })(<GroupTypeRadioGroup />)}
         </FormItem>
         <FormItem label={LABELS.superUser} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('lecturer_id', {

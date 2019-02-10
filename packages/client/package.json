@@ -27,6 +27,7 @@
     "react-dom": "^16.8.1",
     "react-emotion": "^10.0.0",
     "react-router-dom": "^4.3.1",
+    "react-use": "^5.3.0",
     "src": "^1.1.2",
     "tagged-template-noop": "^2.1.0",
     "utility-types": "^3.4.1",

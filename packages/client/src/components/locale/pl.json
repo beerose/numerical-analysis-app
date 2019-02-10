@@ -17,5 +17,6 @@
   "edit": "Edytuj",
   "lecturer": "Prowadzący",
   "classRoomNumber": "Numer sali",
-  "groupName": "Nazwa grupy"
+  "groupName": "Nazwa grupy",
+  "groupType": "Typ grupy"
 }
