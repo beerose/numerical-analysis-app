@@ -1,7 +1,7 @@
 import { Button, Form, Icon, Input } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import * as React from 'react';
+import React, { useCallback } from 'react';
 
 import { Colors, LABELS } from '../../utils';
 
@@ -12,7 +12,7 @@ type Props = {
 } & FormComponentProps;
 
 export const NewAccountWithToken = (props: Props) => {
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
       if (err) {
@@ -20,7 +20,7 @@ export const NewAccountWithToken = (props: Props) => {
       }
       props.onSubmit(values.password_);
     });
-  };
+  }, []);
 
   const { getFieldDecorator } = props.form;
   return (

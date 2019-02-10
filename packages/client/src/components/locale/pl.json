@@ -17,6 +17,7 @@
   "lecturer": "Prowadzący",
   "classRoomNumber": "Numer sali",
   "groupName": "Nazwa grupy",
+  "groupType": "Typ grupy",
   "tasks": "Listy zadań",
   "tests": "Sprawdziany"
 }

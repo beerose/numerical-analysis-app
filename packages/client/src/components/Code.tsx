@@ -5,15 +5,15 @@ import { Fonts } from '../utils/fonts';
 
 export type CodeProps = React.ComponentProps<'code'> & { inline?: boolean };
 
-export const Code: React.FC<CodeProps> = props => {
+export const Code: React.FC<CodeProps> = ({ inline, ...rest }) => {
   const code = (
     <code
       css={{
         fontFamily: Fonts.Monospace,
       }}
-      {...props}
+      {...rest}
     />
   );
 
-  return props.inline ? code : <pre>{code}</pre>;
+  return inline ? code : <pre>{code}</pre>;
 };

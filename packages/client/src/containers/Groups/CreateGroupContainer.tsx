@@ -14,7 +14,7 @@ export class CreateGroupContainer extends React.Component<RouteComponentProps> {
   context!: GroupApiContextState;
 
   componentDidMount() {
-    this.context.actions.listSuperUsers();
+    this.context.actions.listLecturers();
   }
 
   handleSubmit = (formValues: NewGroupFormValues) => {

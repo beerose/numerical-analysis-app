@@ -1,21 +1,80 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
+import styled from '@emotion/styled';
 import { Col, Input, Row } from 'antd';
-import React from 'react';
+// tslint:disable-next-line:no-submodule-imports
+import { ColProps } from 'antd/lib/col';
+import React, { useCallback, useState } from 'react';
 import html from 'tagged-template-noop';
 import { inspect } from 'util';
 
 import { Code } from '../../../components/Code';
+import { ExperimentalToggle } from '../../../components/ExperimentalToggle';
 import { Sandbox } from '../../../components/Sandbox';
+import { Colors } from '../../../utils';
 import { Fonts } from '../../../utils/fonts';
 import { usePostMessageHandler } from '../../../utils/usePostMessageHandler';
+
+const PostMessageConnectedSandbox = ({ result }: { result: string }) => (
+  <Sandbox
+    srcDoc={html`
+      <script>
+        window.onerror = err => {
+          window.parent.postMessage(
+            {
+              type: 'error',
+              value: err,
+            },
+            '*'
+          );
+        };
+      </script>
+      <script>
+        const result = ${result};
+        window.parent.postMessage(
+          {
+            type: 'result',
+            value: result,
+          },
+          '*'
+        );
+      </script>
+    `}
+  />
+);
+
+const TextArea = styled(Input.TextArea)`
+  box-sizing: content-box;
+  font-family: ${Fonts.Monospace};
+  margin-bottom: 0 !important;
+  min-height: 1.4em !important;
+`;
+
+const LeftColumn = (props: ColProps) => (
+  <Col xxl={4} md={16} xs={16} {...props} />
+);
+const RightColumn = (props: ColProps) => <Col md={19} xxl={16} {...props} />;
 
 type ErrorMessage = string;
 type Result = number | ErrorMessage;
 
-export const GroupEquation: React.FC = () => {
-  const [equation, setEquation] = React.useState('activity + 2');
-  const [result, setResult] = React.useState<Result | null>(null);
+type GroupEquationProps = {
+  value: string;
+  onChange: (value: string) => void;
+};
+export const GroupEquation: React.FC<GroupEquationProps> = ({
+  value: equation,
+  onChange,
+}) => {
+  const [result, setResult] = useState<Result | null>(null);
+  const [testMode, setTestMode] = useState(false);
+
+  const toggleTestMode = useCallback(() => setTestMode(!testMode), [testMode]);
+  const handleEquationChange = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) =>
+      onChange(event.target.value),
+    [onChange]
+  );
 
   const kvargs = {
     activity: 1,
@@ -43,68 +102,52 @@ export const GroupEquation: React.FC = () => {
   return (
     <section>
       <header>
-        <b>Wzór na ocenę:</b>
+        <b css={{ verticalAlign: 'text-bottom' }}>Wzór na ocenę</b>
+        <ExperimentalToggle value={testMode} onClick={toggleTestMode} />
       </header>
       <Row align="middle" type="flex" gutter={8}>
-        <Col span={4}>
-          <Code inline>{argumentKeys} =></Code>
-        </Col>
-        <Col span={16}>
-          <Input.TextArea
+        <LeftColumn>
+          <Code
+            inline
             css={{
-              fontFamily: Fonts.Monospace,
-              marginBottom: '0 !important',
-              minHeight: '1.4em !important',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
             }}
+          >
+            {argumentKeys} =>
+          </Code>
+        </LeftColumn>
+        <RightColumn>
+          <TextArea
             rows={1}
             value={equation}
             placeholder="0.6 * activity + 0.3 * presence"
-            onChange={event => {
-              setEquation(event.target.value);
-            }}
+            onChange={handleEquationChange}
           />
-        </Col>
+        </RightColumn>
       </Row>
-      <Sandbox
-        srcDoc={html`
-          <script>
-            window.onerror = err => {
-              window.parent.postMessage(
-                {
-                  type: 'error',
-                  value: err,
-                },
-                '*'
-              );
-            };
-          </script>
-          <script>
-            const result = (${argumentKeys} => ${equation})(${kvargsString});
-            window.parent.postMessage(
-              {
-                type: 'result',
-                value: result,
-              },
-              '*'
-            );
-          </script>
-        `}
+      <PostMessageConnectedSandbox
+        result={`(${argumentKeys} => ${equation})(${kvargsString})`}
       />
-      <output style={{ background: 'rgba(0,0,0,0.05)' }}>
-        {typeof result === 'number' ? (
-          result
-        ) : (
-          <span
-            style={{
-              color: 'red',
-              fontSize: '0.6em',
-            }}
-          >
-            {result && result.toString()}
-          </span>
-        )}
-      </output>
-      <Code>{kvargsString}</Code>
+      <Row gutter={8}>
+        <LeftColumn>{testMode && <b>Wynik</b>}</LeftColumn>
+        <RightColumn>
+          <Code>
+            <output>
+              {typeof result === 'number' ? (
+                testMode && result
+              ) : (
+                <span style={{ color: Colors.Red }}>
+                  {equation.length
+                    ? result && result.toString()
+                    : "Equation can't be empty"}
+                </span>
+              )}
+            </output>
+          </Code>
+          {testMode && <Code>{kvargsString}</Code>}
+        </RightColumn>
+      </Row>
     </section>
   );
 };
