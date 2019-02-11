@@ -157,7 +157,7 @@ app.get(
   auth.can('read', 'groups'),
   groups.listTasksForGroup
 );
-app.post(
+app.delete(
   Groups.Tasks.Delete,
   auth.authorize([UserRole.admin, UserRole.superUser]),
   auth.can('edit', 'groups'),

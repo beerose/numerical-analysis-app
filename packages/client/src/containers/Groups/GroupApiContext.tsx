@@ -70,6 +70,7 @@ export class GroupApiProvider extends React.Component<
         deleteMeeting: this.deleteMeeting,
         deletePresence: this.deletePresence,
         deleteStudentFromGroup: this.deleteStudentFromGroup,
+        deleteTaskFromGroup: this.deleteTaskFromGroup,
         getGroup: this.getGroup,
         getMeetingsDetails: this.getMeetingsDetails,
         goToGroupsPage: this.goToGroupsPage,
@@ -273,6 +274,19 @@ export class GroupApiProvider extends React.Component<
     this.setState({ isLoading: true });
     const res = await groupsService.listTasks(this.state.currentGroup.id);
     this.setState({ tasks: res.tasks, isLoading: false });
+    return res;
+  };
+
+  deleteTaskFromGroup = async (taskId: TaskDTO['id']) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    this.setState({ isLoading: true });
+    const res = await groupsService.deleteTaskFromGroup(
+      this.state.currentGroup.id,
+      taskId
+    );
+    this.setState({ isLoading: false });
     return res;
   };
 

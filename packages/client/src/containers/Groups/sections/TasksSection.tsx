@@ -9,7 +9,7 @@ import { Theme } from '../../../components/theme';
 import { DateRange } from '../../../components/DateRange';
 import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
 import { Flex } from '../../../components/Flex';
-import { LABELS } from '../../../utils';
+import { LABELS, showMessage } from '../../../utils';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
@@ -33,6 +33,14 @@ export const TasksSection = (props: Props) => {
       props.actions.listTasks();
     }
   }, []);
+
+  const deleteTask = (taskId: TaskDTO['id']) => {
+    const { deleteTaskFromGroup, listTasks } = props.actions;
+    deleteTaskFromGroup(taskId).then(res => {
+      showMessage(res);
+      listTasks();
+    });
+  };
 
   return (
     <Container>
@@ -66,7 +74,7 @@ export const TasksSection = (props: Props) => {
             return (
               <List.Item
                 actions={[
-                  <DeleteWithConfirm onConfirm={() => null}>
+                  <DeleteWithConfirm onConfirm={() => deleteTask(task.id)}>
                     <a>{LABELS.delete}</a>
                   </DeleteWithConfirm>,
                 ]}
