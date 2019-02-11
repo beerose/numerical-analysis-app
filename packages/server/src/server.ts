@@ -157,6 +157,12 @@ app.get(
   auth.can('read', 'groups'),
   groups.listTasksForGroup
 );
+app.post(
+  Groups.Tasks.Delete,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  groups.deleteTaskFromGroup
+);
 
 let server: import('http').Server;
 

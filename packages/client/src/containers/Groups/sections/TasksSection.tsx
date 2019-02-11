@@ -34,7 +34,6 @@ export const TasksSection = (props: Props) => {
     }
   }, []);
 
-  console.log({ tasks });
   return (
     <Container>
       <Button icon="plus" type="primary" onClick={() => setModalVisible(true)}>

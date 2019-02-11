@@ -162,3 +162,21 @@ export const listTasksForGroup = (
     },
     callback
   );
+
+export const deleteTaskFromGroup = (
+  {
+    groupId,
+    taskId,
+  }: {
+    groupId: GroupDTO['id'];
+    taskId: TaskDTO['id'];
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: 'DELETE FROM group_has_task WHERE task_id = ? AND group_id = ?;',
+      values: [taskId, groupId],
+    },
+    callback
+  );
