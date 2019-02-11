@@ -2,6 +2,7 @@
 
 CREATE TABLE tasks (
   id                  INT NOT NULL AUTO_INCREMENT,
+  name                VARCHAR(100),
   kind                VARCHAR(20) NOT NULL,
   max_points          INT NOT NULL,
   results_date        TIMESTAMP NOT NULL,
@@ -23,6 +24,7 @@ CREATE TABLE group_has_task (
 
 CREATE TABLE tests (
   id                  INT NOT NULL AUTO_INCREMENT,
+  name                VARCHAR(100),
   kind                VARCHAR(20) NOT NULL,
   max_points          INT NOT NULL,
   results_date        TIMESTAMP NOT NULL,
