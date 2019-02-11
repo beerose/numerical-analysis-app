@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, List, Modal, Spin } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
@@ -26,23 +26,25 @@ const TaskTitle = ({ kind, name }: Pick<TaskDTO, 'kind' | 'name'>) => (
 type Props = GroupApiContextState;
 export const TasksSection = (props: Props) => {
   const { tasks } = props;
+  const [modalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
     if (!tasks) {
       props.actions.listTasks();
     }
-  }, [tasks]);
+  }, []);
 
   console.log({ tasks });
   return (
     <Container>
-      <Button icon="plus" type="primary">
+      <Button icon="plus" type="primary" onClick={() => setModalVisible(true)}>
         Nowe zadanie
       </Button>
       <Modal
         centered
-        //visible=
+        visible={modalVisible}
         footer={null}
-        //onCancel=
+        onCancel={() => setModalVisible(false)}
       >
         {/* {modalMode === 'edit' && editingItem ? (
           <WrappedEditMeetingForm
