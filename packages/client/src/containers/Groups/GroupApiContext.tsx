@@ -123,7 +123,7 @@ export class GroupApiProvider extends React.Component<
           max_points: 10,
           name: 'Lista 3',
           results_date: '',
-          start_upload_date: '2019-03-11 13:18:28',
+          start_upload_date: '2019-01-11 13:18:28',
           verify_upload: true,
           weight: 1,
         },

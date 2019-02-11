@@ -2,10 +2,10 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, List, Modal, Spin } from 'antd';
-import * as React from 'react';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
+import { DateRange } from '../../../components/DateRange';
 import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
 import { Flex } from '../../../components/Flex';
 import { LABELS } from '../../../utils';
@@ -21,17 +21,6 @@ const TaskTitle = ({ kind, name }: Pick<TaskDTO, 'kind' | 'name'>) => (
     {name}
   </span>
 );
-
-const DateRange = ({ start, end }: { start: string; end: string }) => {
-  const startDate = new Date(Date.parse(start)).toLocaleString();
-  const endDate = new Date(Date.parse(end)).toLocaleString();
-  return (
-    <span>
-      <b>Oddawanie zadania: </b>
-      {startDate} - {endDate}
-    </span>
-  );
-};
 
 type Props = GroupApiContextState;
 export const TasksSection = (props: Props) => {
