@@ -77,6 +77,7 @@ export class GroupApiProvider extends React.Component<
         listLecturers: this.listLecturers,
         listMeetings: this.listMeetings,
         listStudentsWithGroup: this.listStudentsWithGroup,
+        listTasks: this.listTasks,
         setActivity: this.setActivity,
         setStudentMeetingDetails: this.setStudentMeetingDetails,
         updateMeeting: this.updateMeeting,
@@ -86,48 +87,6 @@ export class GroupApiProvider extends React.Component<
       error: false,
       isLoading: false,
       superUsers: [],
-      // MOCK
-      tasks: [
-        {
-          description:
-            'Zadanie numer 1 sprawdzające wiedzę z pierwszego wykładu.',
-          end_upload_date: '2019-02-10 13:18:28',
-          id: 1,
-          kind: TaskKind.Assignment,
-          max_points: 5,
-          name: 'Lista 1',
-          results_date: '',
-          start_upload_date: '2019-01-10 13:18:28',
-          verify_upload: true,
-          weight: 1,
-        },
-        {
-          description:
-            'Zadanie numer 2 sprawdzające wiedzę z drugiego wykładu.',
-          end_upload_date: '2019-05-10 13:18:28',
-          id: 2,
-          kind: TaskKind.Assignment,
-          max_points: 15,
-          name: 'Lista 2',
-          results_date: '',
-          start_upload_date: '2019-03-10 13:18:28',
-          verify_upload: true,
-          weight: 2,
-        },
-        {
-          description:
-            'Zadanie numer 3 sprawdzające wiedzę z trzeciego wykładu.',
-          end_upload_date: '2019-03-21 13:18:28',
-          id: 3,
-          kind: TaskKind.Assignment,
-          max_points: 10,
-          name: 'Lista 3',
-          results_date: '',
-          start_upload_date: '2019-01-11 13:18:28',
-          verify_upload: true,
-          weight: 1,
-        },
-      ],
     };
 
     this.state = state as StateValues;
@@ -305,6 +264,16 @@ export class GroupApiProvider extends React.Component<
       throw new Error(noGroupError);
     }
     return groupsService.uploadUsers(payload, this.state.currentGroup.id);
+  };
+
+  listTasks = async () => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    this.setState({ isLoading: true });
+    const res = await groupsService.listTasks(this.state.currentGroup.id);
+    this.setState({ tasks: res.tasks, isLoading: false });
+    return res;
   };
 
   render() {

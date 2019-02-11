@@ -132,7 +132,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
       <FormRow label={texts.lecturer}>
         {getFieldDecorator<AntFormState>('lecturer_id')(
           <SelectSuperUser
-            superUsers={superUsers}
+            superUsers={superUsers || []}
             css={{
               width: '100%',
             }}

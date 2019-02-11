@@ -4,6 +4,7 @@ import {
   MeetingDetailsModel,
   MeetingDTO,
   ServerRoutes,
+  TaskDTO,
   UserDTO,
 } from 'common';
 import * as qs from 'query-string';
@@ -264,3 +265,10 @@ export const setActivity = (
     return result;
   });
 };
+
+export const listTasks = (groupId: GroupDTO['id']) =>
+  authFetch<{ tasks: TaskDTO[] }>(
+    `${SERVER_URL + Groups.Tasks.List}?${qs.stringify({
+      group_id: groupId,
+    })}`
+  );

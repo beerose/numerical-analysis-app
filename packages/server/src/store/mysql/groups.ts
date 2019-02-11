@@ -148,7 +148,7 @@ export const listTasksForGroup = (
   }: {
     groupId: GroupDTO['id'];
   },
-  callback: QueryCallback<(TaskDTO & { weight: number })[]>
+  callback: QueryCallback<TaskDTO[]>
 ) =>
   connection.query(
     {

@@ -2,6 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, List, Modal, Spin } from 'antd';
+import { useEffect } from 'react';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
@@ -25,6 +26,13 @@ const TaskTitle = ({ kind, name }: Pick<TaskDTO, 'kind' | 'name'>) => (
 type Props = GroupApiContextState;
 export const TasksSection = (props: Props) => {
   const { tasks } = props;
+  useEffect(() => {
+    if (!tasks) {
+      props.actions.listTasks();
+    }
+  }, [tasks]);
+
+  console.log({ tasks });
   return (
     <Container>
       <Button icon="plus" type="primary">
