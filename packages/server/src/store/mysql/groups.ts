@@ -1,4 +1,4 @@
-import { GroupDTO, GroupWithLecturer, UserDTO } from 'common';
+import { GroupDTO, GroupWithLecturer, TaskDTO, UserDTO } from 'common';
 
 import { connection } from '../connection';
 
@@ -138,6 +138,27 @@ export const listGroups = (callback: QueryCallback<GroupDTO[]>) =>
   FROM
     \`groups\`
   ORDER BY created_at DESC`,
+    },
+    callback
+  );
+
+export const listTasksForGroup = (
+  {
+    groupId,
+  }: {
+    groupId: GroupDTO['id'];
+  },
+  callback: QueryCallback<(TaskDTO & { weight: number })[]>
+) =>
+  connection.query(
+    {
+      sql: `
+  SELECT t.*
+  FROM tasks t
+  JOIN group_has_task ght
+  ON (t.id = ght.task_id)
+  WHERE ght.group_id =?`,
+      values: [groupId],
     },
     callback
   );

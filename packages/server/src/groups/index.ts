@@ -7,3 +7,4 @@ export * from './delete';
 export * from './get';
 export * from './update';
 export * from './shareForEdit';
+export * from './tasks';

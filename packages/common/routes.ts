@@ -24,6 +24,13 @@ export const ServerRoutes = {
       List: '/groups/students',
       RemoveFromGroup: '/groups/students.delete',
     },
+    Tasks: {
+      Create: '/groups/tasks.create',
+      Delete: '/groups/tasks.delete',
+      Get: '/groups/tasks.get',
+      List: '/groups/tasks.list',
+      Update: '/groups/tasks.update',
+    },
     Update: '/groups/update',
     Upload: '/groups/upload',
   },

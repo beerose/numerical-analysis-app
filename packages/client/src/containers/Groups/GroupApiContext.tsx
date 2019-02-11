@@ -27,7 +27,7 @@ type StateValues = {
   isLoading: boolean;
   error: boolean;
   errorMessage?: string;
-  superUsers: UserDTO[];
+  superUsers?: UserDTO[];
   tasks?: TaskDTO[];
 };
 
