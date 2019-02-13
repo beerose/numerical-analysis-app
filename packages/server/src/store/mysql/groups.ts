@@ -1,12 +1,15 @@
 import { GroupDTO, GroupWithLecturer, UserDTO } from 'common';
+import { Omit } from 'lodash';
 
 import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
 
+type DbExtractedGroup = Omit<GroupWithLecturer, 'data'> & { data: string };
+
 export const getGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
-  callback: QueryCallback<[GroupWithLecturer]>
+  callback: QueryCallback<[DbExtractedGroup]>
 ) =>
   connection.query(
     {

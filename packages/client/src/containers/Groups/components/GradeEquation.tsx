@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Col, Input, Row } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
@@ -48,6 +48,7 @@ const TextArea = styled(Input.TextArea)`
   font-family: ${Fonts.Monospace};
   margin-bottom: 0 !important;
   min-height: 1.4em !important;
+  overflow: hidden;
 `;
 
 const LeftColumn = (props: ColProps) => (
@@ -64,6 +65,7 @@ type GroupEquationProps = {
   onErrorChange: (error: ErrorMessage) => void;
   error: ErrorMessage;
 };
+// tslint:disable-next-line:max-func-body-length
 export const GroupEquation: React.FC<GroupEquationProps> = ({
   value: equation,
   onChange: setEquation,
@@ -80,10 +82,24 @@ export const GroupEquation: React.FC<GroupEquationProps> = ({
     [setEquation]
   );
 
-  const kvargs = {
+  const [kvargs, _setKvargs] = useState({
     activity: 1,
     presence: 1,
-  };
+  });
+  const setKvargs = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      const value = event.target.value;
+      try {
+        const parsed = JSON.parse(value);
+        if (typeof parsed === 'object') {
+          _setKvargs(parsed);
+        }
+      } catch {
+        // We can totally ignore error here.
+      }
+    },
+    []
+  );
 
   const kvargsString = inspect(kvargs);
   const argumentKeys = `(${kvargsString.replace(/\: [\d]+/g, '')})`;
@@ -150,7 +166,20 @@ export const GroupEquation: React.FC<GroupEquationProps> = ({
               )}
             </output>
           </Code>
-          {testMode && <Code>{kvargsString}</Code>}
+          {testMode && (
+            <div
+              css={css`
+                margin-bottom: 1em;
+              `}
+            >
+              <span>Testowe dane</span>
+              <TextArea
+                rows={1}
+                value={JSON.stringify(kvargs)}
+                onChange={setKvargs}
+              />
+            </div>
+          )}
         </RightColumn>
       </Row>
     </section>

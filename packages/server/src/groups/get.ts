@@ -1,4 +1,4 @@
-import { apiMessages } from 'common';
+import { apiMessages, GroupDTO } from 'common';
 import { Response } from 'express';
 import codes from 'http-status-codes';
 import * as t from 'io-ts';
@@ -22,16 +22,16 @@ export const getGroup = (req: GetGroupRequest, res: Response) => {
           .send({ error: apiMessages.internalError });
       }
 
-      console.log({ results });
-
-      const groupWithLecturer = results[0];
-      if (!groupWithLecturer) {
+      const group = results[0];
+      if (!group) {
         return res
           .status(codes.NOT_FOUND)
           .send({ error: apiMessages.groupMissing });
       }
 
-      return res.status(codes.OK).send(groupWithLecturer);
+      (group as GroupDTO).data = JSON.parse(group.data);
+
+      return res.status(codes.OK).send(group);
     });
   });
 };

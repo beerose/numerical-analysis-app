@@ -8,7 +8,19 @@ import { db } from '../store';
 
 const UpdateGroupBodyV = t.type({
   academic_year: t.union([t.string, t.undefined]),
-  grade_equation: t.union([t.string, t.undefined]),
+  data: t.type({
+    grade_equation: t.union([t.string, t.undefined]),
+    tresholds: t.union([
+      t.type({
+        '3': t.number,
+        '3.5': t.number,
+        '4': t.number,
+        '4.5': t.number,
+        '5': t.number,
+      }),
+      t.undefined,
+    ]),
+  }),
   group_name: t.string,
   group_type: t.union([
     t.literal(GroupType.Exercise),
@@ -17,16 +29,6 @@ const UpdateGroupBodyV = t.type({
   ]),
   id: t.number,
   lecturer_id: t.number,
-  tresholds: t.union([
-    t.type({
-      '3': t.number,
-      '3.5': t.number,
-      '4': t.number,
-      '4.5': t.number,
-      '5': t.number,
-    }),
-    t.undefined,
-  ]),
 });
 
 type UpdateGroupBody = PostRequest<typeof UpdateGroupBodyV>;
@@ -34,12 +36,8 @@ type UpdateGroupBody = PostRequest<typeof UpdateGroupBodyV>;
 export const update = (req: UpdateGroupBody, res: Response) => {
   handleBadRequest(UpdateGroupBodyV, req.body, res).then(() => {
     const group = req.body;
-    const data = {
-      grade_equation: group.grade_equation,
-      tresholds: group.tresholds,
-    };
 
-    db.updateGroup({ ...group, data }, err => {
+    db.updateGroup(group, err => {
       if (err) {
         console.error({ err });
         return res

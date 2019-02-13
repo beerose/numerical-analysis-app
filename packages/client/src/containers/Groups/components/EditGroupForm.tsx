@@ -9,6 +9,9 @@ import * as React from 'react';
 
 import { Colors, LABELS } from '../../../utils';
 
+import { SelectSemester } from './SelectSemester';
+import { SelectSuperUser } from './SelectSuperUser';
+
 const FormItem = Form.Item;
 
 const FORM_ITEM_LAYOUT = {
@@ -21,66 +24,6 @@ const FORM_ITEM_LAYOUT = {
     xs: { span: 24 },
   },
 };
-
-const SelectSuperUser = React.forwardRef(
-  (
-    {
-      superUsers,
-      onChange,
-    }: { superUsers: UserDTO[]; onChange?: (value: SelectValue) => void },
-    ref: React.Ref<Select>
-  ) => (
-    <Select
-      showArrow
-      placeholder={
-        <>
-          <Icon
-            type="user"
-            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
-          />
-          {LABELS.superUser}
-        </>
-      }
-      onChange={onChange}
-      ref={ref}
-    >
-      {superUsers.map(superUser => (
-        <Select.Option key={String(superUser.id)} value={superUser.id}>
-          {superUser.user_name}
-        </Select.Option>
-      ))}
-    </Select>
-  )
-);
-
-export const SelectSemester = React.forwardRef(
-  (
-    { onChange }: { onChange?: (value: SelectValue) => void },
-    ref: React.Ref<Select>
-  ) => (
-    <Select
-      showArrow
-      mode="single"
-      placeholder={
-        <>
-          <Icon
-            type="table"
-            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
-          />
-          Rok akademicki
-        </>
-      }
-      onChange={onChange}
-      ref={ref}
-    >
-      {['2018/2019', '2019'].map(o => (
-        <Select.Option value={o} key={o}>
-          {o}
-        </Select.Option>
-      ))}
-    </Select>
-  )
-);
 
 const formStyles = css`
   width: 420px;
@@ -95,7 +38,7 @@ export type EditGroupFormValues = {
 };
 
 type Props = {
-  superUsers: UserDTO[];
+  lecturers: UserDTO[];
   onSubmit: (group: EditGroupFormValues) => void;
   onCancel: () => void;
   loading: boolean;
@@ -116,7 +59,7 @@ class EditGroupForm extends React.Component<Props> {
     const {
       form: { getFieldDecorator },
       onCancel,
-      superUsers,
+      lecturers,
       loading,
     } = this.props;
 
@@ -136,7 +79,7 @@ class EditGroupForm extends React.Component<Props> {
         <FormItem label={LABELS.superUser} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('lecturer_id', {
             rules: [{ required: true, message: LABELS.nameRequired }],
-          })(<SelectSuperUser superUsers={superUsers} />)}
+          })(<SelectSuperUser lecturers={lecturers} />)}
         </FormItem>
         <FormItem label={LABELS.groupName} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('group_name', {

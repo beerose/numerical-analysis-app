@@ -35,7 +35,14 @@ type FormRowProps = {
 const FormRow: React.FC<FormRowProps> = ({ label, children }) => (
   <Row gutter={8}>
     <label>
-      <Col span={4}>
+      <Col
+        span={4}
+        css={{
+          alignItems: 'center',
+          display: 'flex',
+          height: 32,
+        }}
+      >
         <b>{label}</b>
       </Col>
       <Col span={16}>{children}</Col>
@@ -45,7 +52,7 @@ const FormRow: React.FC<FormRowProps> = ({ label, children }) => (
 
 type AntFormState = Pick<
   GroupDTO,
-  'class_number' | 'group_name' | 'group_type' | 'lecturer_id'
+  'class_number' | 'group_name' | 'group_type' | 'lecturer_id' | 'academic_year'
 >;
 
 type GroupDataState = DeepRequired<GroupDTO>['data'];
@@ -57,7 +64,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
   actions,
   currentGroup: group,
   form,
-  superUsers,
+  lecturers,
 }) => {
   if (!group) {
     throw new Error('No group');
@@ -66,6 +73,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
   const { texts } = useContext(LocaleContext);
   const [groupDataState, mergeGroupDataState] = useMergeState<GroupDataState>(
     () => {
+      console.log('pupka', group);
       const {
         tresholds = fromPairs(
           tresholdsKeys.map(k => [k, 0] as [keyof Tresholds, number])
@@ -82,7 +90,26 @@ const SettingsSectionInternal: React.FC<Props> = ({
   const setTresholds = useMergeKey(mergeGroupDataState, 'tresholds');
   const setEquation = useMergeKey(mergeGroupDataState, 'grade_equation');
 
-  const [errorMsg, setErrorMsg] = useState<string>('');
+  const [equationErrorMsg, setEquationErrorMsg] = useState<string>('');
+
+  const handleSubmit = useCallback(
+    event => {
+      event.preventDefault();
+      form.validateFields((err, antFormValues: AntFormState) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        actions.updateGroup({
+          ...antFormValues,
+          data: groupDataState,
+          id: group.id,
+        });
+      });
+    },
+    [groupDataState]
+  );
 
   useEffect(() => {
     actions.listLecturers();
@@ -99,20 +126,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
   const { getFieldDecorator } = form;
 
   return (
-    <SettingsForm
-      onSubmit={event => {
-        event.preventDefault();
-        form.validateFields((err, antFormValues) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
-
-          const values = { ...antFormValues, ...groupDataState };
-          console.log(values);
-        });
-      }}
-    >
+    <SettingsForm onSubmit={handleSubmit}>
       <FormRow label={texts.groupName}>
         {getFieldDecorator<AntFormState>('group_name')(<Input />)}
       </FormRow>
@@ -132,7 +146,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
       <FormRow label={texts.lecturer}>
         {getFieldDecorator<AntFormState>('lecturer_id')(
           <SelectSuperUser
-            superUsers={superUsers}
+            lecturers={lecturers || []}
             css={{
               width: '100%',
             }}
@@ -142,11 +156,14 @@ const SettingsSectionInternal: React.FC<Props> = ({
       <FormRow label={texts.classRoomNumber}>
         {getFieldDecorator<AntFormState>('class_number')(<Input />)}
       </FormRow>
+      <FormRow label={texts.academicYear}>
+        {getFieldDecorator<AntFormState>('academic_year')(<Input />)}
+      </FormRow>
       <GroupEquation
         value={groupDataState.grade_equation}
         onChange={setEquation}
-        error={errorMsg}
-        onErrorChange={setErrorMsg}
+        error={equationErrorMsg}
+        onErrorChange={setEquationErrorMsg}
       />
       <FormRow label={texts.gradeTresholds}>
         <GradeTresholdsList
@@ -154,7 +171,11 @@ const SettingsSectionInternal: React.FC<Props> = ({
           onChange={setTresholds}
         />
       </FormRow>
-      <Button type="primary" htmlType="submit">
+      <Button
+        type="primary"
+        htmlType="submit"
+        disabled={Boolean(equationErrorMsg)}
+      >
         Submit
       </Button>
     </SettingsForm>
