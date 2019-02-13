@@ -4,6 +4,7 @@ import {
   MeetingDetailsModel,
   MeetingDTO,
   ServerRoutes,
+  TaskDTO,
   UserDTO,
 } from 'common';
 import * as qs from 'query-string';
@@ -274,4 +275,23 @@ export const setActivity = (
     showMessage(result, { showError: true, showSuccess: false });
     return result;
   });
+};
+
+export const listTasks = (groupId: GroupDTO['id']) =>
+  authFetch<{ tasks: TaskDTO[] }>(
+    `${SERVER_URL + Groups.Tasks.List}?${qs.stringify({
+      group_id: groupId,
+    })}`
+  );
+
+export const deleteTaskFromGroup = (
+  groupId: GroupDTO['id'],
+  taskId: TaskDTO['id']
+) => {
+  const options = {
+    body: JSON.stringify({ group_id: groupId, task_id: taskId }),
+    method: 'DELETE',
+  };
+
+  return authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Delete, options);
 };

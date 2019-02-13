@@ -1,4 +1,4 @@
-import { GroupDTO, GroupWithLecturer, UserDTO } from 'common';
+import { GroupDTO, GroupWithLecturer, TaskDTO, UserDTO } from 'common';
 import { Omit } from 'lodash';
 
 import { connection } from '../connection';
@@ -141,6 +141,45 @@ export const listGroups = (callback: QueryCallback<GroupDTO[]>) =>
   FROM
     \`groups\`
   ORDER BY created_at DESC`,
+    },
+    callback
+  );
+
+export const listTasksForGroup = (
+  {
+    groupId,
+  }: {
+    groupId: GroupDTO['id'];
+  },
+  callback: QueryCallback<TaskDTO[]>
+) =>
+  connection.query(
+    {
+      sql: `
+  SELECT t.*
+  FROM tasks t
+  JOIN group_has_task ght
+  ON (t.id = ght.task_id)
+  WHERE ght.group_id =?`,
+      values: [groupId],
+    },
+    callback
+  );
+
+export const deleteTaskFromGroup = (
+  {
+    groupId,
+    taskId,
+  }: {
+    groupId: GroupDTO['id'];
+    taskId: TaskDTO['id'];
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: 'DELETE FROM group_has_task WHERE task_id = ? AND group_id = ?;',
+      values: [taskId, groupId],
     },
     callback
   );

@@ -32,6 +32,7 @@ export const apiMessages = {
   meetingUpdated: 'Spotkanie zostało zaktualizowane',
   presenceAdded: 'Obecność dodana',
   presenceDeleted: 'Obecność usunięta',
+  taskDeleted: 'Zadanie zostało usunięte',
   tokenUsed:
     'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',
   userAlreadyExists: 'Użytkownik o tym adresie email już istnieje',

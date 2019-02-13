@@ -11,7 +11,7 @@ import { inspect } from 'util';
 import { Code } from '../../../components/Code';
 import { ExperimentalToggle } from '../../../components/ExperimentalToggle';
 import { Sandbox } from '../../../components/Sandbox';
-import { Colors } from '../../../utils';
+import { Colors, LABELS } from '../../../utils';
 import { Fonts } from '../../../utils/fonts';
 import { usePostMessageHandler } from '../../../utils/usePostMessageHandler';
 
@@ -159,7 +159,7 @@ export const GroupEquation: React.FC<GroupEquationProps> = ({
                 <span style={{ color: Colors.Red }}>
                   {equation.length
                     ? error && error.toString()
-                    : "Equation can't be empty"}
+                    : LABELS.equationCantBeEmpty}
                 </span>
               ) : (
                 testMode && result

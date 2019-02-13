@@ -87,7 +87,7 @@ app.get(
   Groups.Students.List,
   auth.authorize([UserRole.admin, UserRole.superUser]),
   auth.can('read', 'groups'),
-  groups.listStudentsForGroup
+  groups.listStudentsWithGroups
 );
 app.post(
   Groups.Students.AddToGroup,
@@ -149,6 +149,19 @@ app.post(
   auth.authorize([UserRole.admin, UserRole.superUser]),
   auth.can('edit', 'groups'),
   groups.setActivity
+);
+
+app.get(
+  Groups.Tasks.List,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('read', 'groups'),
+  groups.listTasksForGroup
+);
+app.delete(
+  Groups.Tasks.Delete,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  groups.deleteTaskFromGroup
 );
 
 let server: import('http').Server;

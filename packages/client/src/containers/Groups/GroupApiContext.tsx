@@ -3,6 +3,8 @@ import {
   GroupDTO,
   MeetingDetailsModel,
   MeetingDTO,
+  TaskDTO,
+  TaskKind,
   UserDTO,
   UserRole,
 } from 'common';
@@ -26,6 +28,7 @@ type StateValues = {
   error: boolean;
   errorMessage?: string;
   lecturers: UserDTO[];
+  tasks?: TaskDTO[];
 };
 
 export type GroupApiContextState = {
@@ -67,6 +70,7 @@ export class GroupApiProvider extends React.Component<
         deleteMeeting: this.deleteMeeting,
         deletePresence: this.deletePresence,
         deleteStudentFromGroup: this.deleteStudentFromGroup,
+        deleteTaskFromGroup: this.deleteTaskFromGroup,
         getGroup: this.getGroup,
         getMeetingsDetails: this.getMeetingsDetails,
         goToGroupsPage: this.goToGroupsPage,
@@ -74,6 +78,7 @@ export class GroupApiProvider extends React.Component<
         listLecturers: this.listLecturers,
         listMeetings: this.listMeetings,
         listStudentsWithGroup: this.listStudentsWithGroup,
+        listTasks: this.listTasks,
         setActivity: this.setActivity,
         setStudentMeetingDetails: this.setStudentMeetingDetails,
         updateGroup: this.updateGroup,
@@ -265,6 +270,29 @@ export class GroupApiProvider extends React.Component<
       throw new Error(noGroupError);
     }
     return groupsService.uploadUsers(payload, this.state.currentGroup.id);
+  };
+
+  listTasks = async () => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    this.setState({ isLoading: true });
+    const res = await groupsService.listTasks(this.state.currentGroup.id);
+    this.setState({ tasks: res.tasks, isLoading: false });
+    return res;
+  };
+
+  deleteTaskFromGroup = async (taskId: TaskDTO['id']) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    this.setState({ isLoading: true });
+    const res = await groupsService.deleteTaskFromGroup(
+      this.state.currentGroup.id,
+      taskId
+    );
+    this.setState({ isLoading: false });
+    return res;
   };
 
   render() {

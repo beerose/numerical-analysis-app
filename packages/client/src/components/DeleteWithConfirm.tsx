@@ -14,6 +14,8 @@ export const DeleteWithConfirm: React.FC<{
     placement="topRight"
     cancelText={LABELS.no}
   >
-    <a>{LABELS.delete}</a>
+    <a role="button" onClick={e => e.stopPropagation()}>
+      {LABELS.delete}
+    </a>
   </Popconfirm>
 );

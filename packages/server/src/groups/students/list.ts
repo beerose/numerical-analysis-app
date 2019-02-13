@@ -4,7 +4,7 @@ import * as codes from 'http-status-codes';
 
 import { db } from '../../store';
 
-export const listStudentsForGroup = (_: Request, res: Response) => {
+export const listStudentsWithGroups = (_: Request, res: Response) => {
   return db.listUsersWithGroup((err, students) => {
     if (err) {
       console.log(err);
@@ -15,9 +15,7 @@ export const listStudentsForGroup = (_: Request, res: Response) => {
     return res.status(codes.OK).send({
       students: students.map(s => ({
         ...s,
-        group_ids: s.group_ids
-          ? s.group_ids.split(',').map(Number)
-          : [],
+        group_ids: s.group_ids ? s.group_ids.split(',').map(Number) : [],
       })),
     });
   });
