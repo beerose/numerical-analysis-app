@@ -55,25 +55,29 @@ const LeftColumn = (props: ColProps) => (
 );
 const RightColumn = (props: ColProps) => <Col md={19} xxl={16} {...props} />;
 
-type ErrorMessage = string;
-type Result = number | ErrorMessage;
+type EquationResult = number;
+type ErrorMessage = string; // '' means no error
 
 type GroupEquationProps = {
   value: string;
   onChange: (value: string) => void;
+  onErrorChange: (error: ErrorMessage) => void;
+  error: ErrorMessage;
 };
 export const GroupEquation: React.FC<GroupEquationProps> = ({
   value: equation,
-  onChange,
+  onChange: setEquation,
+  onErrorChange: setError,
+  error,
 }) => {
-  const [result, setResult] = useState<Result | null>(null);
+  const [result, setResult] = useState<EquationResult | null>(null);
   const [testMode, setTestMode] = useState(false);
 
   const toggleTestMode = useCallback(() => setTestMode(!testMode), [testMode]);
   const handleEquationChange = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) =>
-      onChange(event.target.value),
-    [onChange]
+      setEquation(event.target.value),
+    [setEquation]
   );
 
   const kvargs = {
@@ -88,13 +92,14 @@ export const GroupEquation: React.FC<GroupEquationProps> = ({
     if (e.data.type === 'result') {
       const { value } = e.data;
       if (!isNaN(Number(value))) {
+        setError('');
         setResult(Number(value));
       }
     }
     if (e.data.type === 'error') {
       const { value } = e.data;
       if (typeof value === 'string') {
-        setResult(value);
+        setError(value);
       }
     }
   }, []);
@@ -134,14 +139,14 @@ export const GroupEquation: React.FC<GroupEquationProps> = ({
         <RightColumn>
           <Code>
             <output>
-              {typeof result === 'number' ? (
-                testMode && result
-              ) : (
+              {error || equation.length === 0 ? (
                 <span style={{ color: Colors.Red }}>
                   {equation.length
-                    ? result && result.toString()
+                    ? error && error.toString()
                     : "Equation can't be empty"}
                 </span>
+              ) : (
+                testMode && result
               )}
             </output>
           </Code>

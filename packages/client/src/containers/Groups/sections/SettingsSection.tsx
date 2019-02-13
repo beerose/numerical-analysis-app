@@ -10,6 +10,7 @@ import { DeepRequired } from 'utility-types';
 
 import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
+import { useMergeKey, useMergeState } from '../../../utils/useMergeState';
 import { GroupEquation } from '../components/GradeEquation';
 import {
   GradeTresholdsList,
@@ -63,25 +64,25 @@ const SettingsSectionInternal: React.FC<Props> = ({
   }
 
   const { texts } = useContext(LocaleContext);
-  const [groupDataState, setGroupDataState] = useState<GroupDataState>(() => {
-    const {
-      tresholds = fromPairs(
-        tresholdsKeys.map(k => [k, 0] as [keyof Tresholds, number])
-      ),
-      grade_equation = '',
-    } = group.data || {};
+  const [groupDataState, mergeGroupDataState] = useMergeState<GroupDataState>(
+    () => {
+      const {
+        tresholds = fromPairs(
+          tresholdsKeys.map(k => [k, 0] as [keyof Tresholds, number])
+        ),
+        grade_equation = '',
+      } = group.data || {};
 
-    return {
-      grade_equation,
-      tresholds,
-    };
-  });
-  const setTresholds = useCallback(tresholds => {
-    setGroupDataState(state => ({ ...state, tresholds }));
-  }, []);
-  const setEquation = useCallback(grade_equation => {
-    setGroupDataState(state => ({ ...state, grade_equation }));
-  }, []);
+      return {
+        grade_equation,
+        tresholds,
+      };
+    }
+  );
+  const setTresholds = useMergeKey(mergeGroupDataState, 'tresholds');
+  const setEquation = useMergeKey(mergeGroupDataState, 'grade_equation');
+
+  const [errorMsg, setErrorMsg] = useState<string>('');
 
   useEffect(() => {
     actions.listLecturers();
@@ -144,6 +145,8 @@ const SettingsSectionInternal: React.FC<Props> = ({
       <GroupEquation
         value={groupDataState.grade_equation}
         onChange={setEquation}
+        error={errorMsg}
+        onErrorChange={setErrorMsg}
       />
       <FormRow label={texts.gradeTresholds}>
         <GradeTresholdsList
