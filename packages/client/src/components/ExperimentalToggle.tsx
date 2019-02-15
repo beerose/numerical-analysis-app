@@ -20,7 +20,8 @@ export const ExperimentalToggle: React.FC<ExperimentalToggleProps> = ({
   <ResetButton
     css={css`
       margin-left: 0.5em;
-      background: inherit;
+      background: transparent;
+      border-radius: 2px;
       :hover {
         background: rgba(0, 0, 0, 0.05);
         border-radius: 2px;

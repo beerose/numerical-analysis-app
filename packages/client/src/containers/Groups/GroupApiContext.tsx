@@ -27,7 +27,7 @@ type StateValues = {
   isLoading: boolean;
   error: boolean;
   errorMessage?: string;
-  superUsers?: UserDTO[];
+  lecturers: UserDTO[];
   tasks?: TaskDTO[];
 };
 
@@ -49,7 +49,7 @@ export const GroupApiContext = React.createContext<GroupApiContextState>({
   }),
   error: false,
   isLoading: false,
-  superUsers: [],
+  lecturers: [],
 });
 
 export class GroupApiProvider extends React.Component<
@@ -81,13 +81,14 @@ export class GroupApiProvider extends React.Component<
         listTasks: this.listTasks,
         setActivity: this.setActivity,
         setStudentMeetingDetails: this.setStudentMeetingDetails,
+        updateGroup: this.updateGroup,
         updateMeeting: this.updateMeeting,
         updateStudentInGroup: this.updateStudentInGroup,
         uploadUsers: this.uploadUsers,
       },
       error: false,
       isLoading: false,
-      superUsers: [],
+      lecturers: [],
     };
 
     this.state = state as StateValues;
@@ -122,11 +123,15 @@ export class GroupApiProvider extends React.Component<
       });
   };
 
+  updateGroup = (group: groupsService.UpdateGroupPayload) => {
+    return groupsService.updateGroup(group).then(showMessage);
+  };
+
   listLecturers = () =>
     usersService
       .listUsers({ roles: [UserRole.superUser, UserRole.admin] })
       .then(res => {
-        this.setState({ superUsers: res.users });
+        this.setState({ lecturers: res.users });
         return res.users;
       });
 

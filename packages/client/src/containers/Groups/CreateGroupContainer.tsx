@@ -27,12 +27,12 @@ export class CreateGroupContainer extends React.Component<RouteComponentProps> {
   handleCancel = () => this.props.history.push('/groups');
 
   render() {
-    const { isLoading, superUsers } = this.context;
+    const { isLoading, lecturers } = this.context;
     return (
       <Flex center justifyContent="center" alignItems="center" height="80vh">
         <WrappedNewGroupForm
           loading={isLoading}
-          superUsers={superUsers}
+          lecturers={lecturers}
           onSubmit={this.handleSubmit}
           onCancel={this.handleCancel}
         />

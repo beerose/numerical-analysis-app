@@ -9,6 +9,7 @@ import {
 } from 'common';
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
+import { DeepRequired } from 'utility-types';
 
 import { showMessage } from '../utils/message';
 
@@ -102,6 +103,16 @@ export const addGroup = (
   ).then(res => {
     showMessage(res);
     return res;
+  });
+};
+
+export type UpdateGroupPayload = Omit<GroupDTO, 'data' | 'lecturer_name'> &
+  Pick<DeepRequired<GroupDTO>, 'data'>;
+
+export const updateGroup = (group: UpdateGroupPayload) => {
+  return authFetch<ApiResponse>(SERVER_URL + Groups.Update, {
+    body: JSON.stringify(group),
+    method: 'POST',
   });
 };
 

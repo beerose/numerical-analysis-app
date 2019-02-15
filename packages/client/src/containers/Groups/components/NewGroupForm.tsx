@@ -38,7 +38,7 @@ export type NewGroupFormValues = {
 };
 
 type Props = {
-  superUsers: UserDTO[];
+  lecturers: UserDTO[];
   onSubmit: (group: NewGroupFormValues) => void;
   onCancel: () => void;
   loading: boolean;
@@ -59,7 +59,7 @@ class NewGroupForm extends React.Component<Props> {
     const {
       form: { getFieldDecorator },
       onCancel,
-      superUsers,
+      lecturers,
       loading,
     } = this.props;
 
@@ -73,7 +73,7 @@ class NewGroupForm extends React.Component<Props> {
         <FormItem label={LABELS.superUser} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('lecturer_id', {
             rules: [{ required: true, message: LABELS.nameRequired }],
-          })(<SelectSuperUser superUsers={superUsers} />)}
+          })(<SelectSuperUser lecturers={lecturers} />)}
         </FormItem>
         <FormItem label={LABELS.groupName} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('group_name', {

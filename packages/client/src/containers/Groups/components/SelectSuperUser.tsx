@@ -16,15 +16,13 @@ const filterLecturer: SelectProps['filterOption'] = (
     .toLowerCase()
     .indexOf(input.toLowerCase()) >= 0;
 
+type SelectSuperUserProps = {
+  lecturers: UserDTO[];
+} & SelectProps;
+
 export const SelectSuperUser = React.forwardRef(
   (
-    {
-      superUsers,
-      value,
-      ...rest
-    }: {
-      superUsers: UserDTO[];
-    } & SelectProps,
+    { lecturers, value, ...rest }: SelectSuperUserProps,
     ref: React.Ref<Select>
   ) => (
     <Select
@@ -40,12 +38,12 @@ export const SelectSuperUser = React.forwardRef(
       }
       ref={ref}
       filterOption={filterLecturer}
-      value={superUsers.length ? value : 'undefined'}
+      value={lecturers.length ? value : undefined}
       {...rest}
     >
-      {superUsers.map(superUser => (
-        <Select.Option key={String(superUser.id)} value={superUser.id}>
-          {superUser.user_name}
+      {lecturers.map(lecturer => (
+        <Select.Option key={String(lecturer.id)} value={lecturer.id}>
+          {lecturer.user_name}
         </Select.Option>
       ))}
     </Select>

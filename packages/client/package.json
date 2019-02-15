@@ -20,6 +20,7 @@
     "antd": "^3.11.6",
     "emotion": "^10.0.5",
     "file-saver": "^2.0.0",
+    "fp-ts": "^1.13.0",
     "install": "^0.12.1",
     "jsonwebtoken": "^8.4.0",
     "lodash.frompairs": "^4.0.1",
