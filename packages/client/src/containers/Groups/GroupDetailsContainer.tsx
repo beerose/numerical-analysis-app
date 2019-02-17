@@ -12,6 +12,7 @@ import { LocaleContext } from '../../components/locale';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
+import { NewTaskForm } from './components';
 import {
   MeetingsDetailsSections,
   MeetingsSection,
@@ -146,6 +147,9 @@ export class GroupDetailsContainer extends React.Component<
                 </Route>
                 <Route exact path={'/groups/:id/tasks'}>
                   <TasksSection {...this.context} />
+                </Route>
+                <Route exact path={'/groups/:id/tasks/new'}>
+                  <NewTaskForm onSubmit={console.log} />
                 </Route>
                 <Route exact path={'/groups/:id/tests'}>
                   <TestsSection {...this.context} />

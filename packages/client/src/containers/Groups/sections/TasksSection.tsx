@@ -1,9 +1,8 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Button, Card, List, Modal, Spin } from 'antd';
-import { Omit } from 'lodash';
-import { useEffect, useState } from 'react';
+import { Button, Card, List, Spin } from 'antd';
+import { useEffect } from 'react';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
@@ -11,7 +10,6 @@ import { DateRange } from '../../../components/DateRange';
 import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
 import { Flex } from '../../../components/Flex';
 import { Colors, LABELS, showMessage } from '../../../utils';
-import { NewTaskForm } from '../components';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
@@ -40,9 +38,6 @@ const StyledTaskCard = styled(Card)`
 type Props = GroupApiContextState;
 export const TasksSection = (props: Props) => {
   const { tasks } = props;
-  const [modalVisible, setModalVisible] = useState(false);
-  const [modalMode, setModalMode] = useState<'create' | 'edit'>('create');
-  const [editingItem, setEditingItem] = useState<TaskDTO['id'] | null>(null);
 
   useEffect(() => {
     if (!tasks) {
@@ -58,35 +53,20 @@ export const TasksSection = (props: Props) => {
     });
   };
 
-  const onItemClick = (itemId: TaskDTO['id']) => {
-    setModalMode('edit');
-    setEditingItem(itemId);
-    setModalVisible(true);
-  };
-
-  const onCreateNewTask = (values: Omit<TaskDTO, 'id'>) => {
-    console.log({ values });
+  const onItemClick = (itemName: TaskDTO['name']) => {
+    props.actions.goToTaskPage(itemName);
   };
 
   return (
     <Container>
-      <Button icon="plus" type="primary" onClick={() => setModalVisible(true)}>
+      <Button
+        icon="plus"
+        type="primary"
+        onClick={() => props.actions.goToNewTaskPage()}
+      >
         Nowe zadanie
       </Button>
-      <Modal
-        centered
-        visible={modalVisible}
-        footer={null}
-        onCancel={() => setModalVisible(false)}
-        width={800}
-      >
-        {modalMode === 'edit' && editingItem ? (
-          <div>Edit</div>
-        ) : (
-          <NewTaskForm onSubmit={onCreateNewTask} />
-        )}
-      </Modal>
-      {tasks && (
+      {tasks ? (
         <List
           itemLayout="horizontal"
           dataSource={tasks}
@@ -96,7 +76,7 @@ export const TasksSection = (props: Props) => {
           `}
           renderItem={(task: TaskDTO) => {
             return (
-              <StyledTaskCard onClick={() => onItemClick(task.id)}>
+              <StyledTaskCard onClick={() => onItemClick(task.name)}>
                 <List.Item
                   actions={[
                     <DeleteWithConfirm
@@ -121,10 +101,11 @@ export const TasksSection = (props: Props) => {
             );
           }}
         />
+      ) : (
+        <Flex justifyContent="center">
+          <Spin spinning />
+        </Flex>
       )}
-      <Flex justifyContent="center">
-        <Spin spinning={false} />
-      </Flex>
     </Container>
   );
 };
