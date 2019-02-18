@@ -1,4 +1,4 @@
-import { apiMessages } from 'common';
+import { apiMessages, ApiResponse } from 'common';
 import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
@@ -27,4 +27,8 @@ export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
       });
     }, resolve);
   });
+}
+
+export interface ServerResponse<T = ApiResponse> extends Response {
+  send: (res: T) => Response;
 }

@@ -1,5 +1,5 @@
 import { compare as comparePassword } from 'bcrypt';
-import { apiMessages, UserDTO } from 'common';
+import { apiMessages, ApiResponse, UserDTO } from 'common';
 import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
@@ -28,7 +28,10 @@ export const loginUser = (req: LoginUserRequest, res: Response) => {
       if (err) {
         return res
           .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError });
+          .send({
+            error: apiMessages.internalError,
+            errorDetails: err.message,
+          } as ApiResponse);
       }
       if (!result) {
         return res.status(codes.UNAUTHORIZED).send({

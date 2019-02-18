@@ -11,7 +11,7 @@ export const can = (what: What, where: Where) => (
   if (user_role === UserRole.admin) {
     return next();
   }
-  if (privileges) {
+  if (!privileges) {
     res.status(codes.UNAUTHORIZED).send({ error: 'Access denied' });
     return;
   }
