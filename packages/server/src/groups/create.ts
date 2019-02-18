@@ -1,9 +1,9 @@
-import { apiMessages, GroupType } from 'common';
-import { Response } from 'express';
+import { apiMessages, ApiResponse, GroupType } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { handleBadRequest, PostRequest } from '../lib/request';
+import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 
 const CreateGroupBodyV = t.type({
@@ -19,16 +19,21 @@ const CreateGroupBodyV = t.type({
 
 type CreateGroupRequest = PostRequest<typeof CreateGroupBodyV>;
 
-export const create = (req: CreateGroupRequest, res: Response) => {
+export const create = (
+  req: CreateGroupRequest,
+  res: BackendResponse<ApiResponse | { group_id: string }>
+) => {
   handleBadRequest(CreateGroupBodyV, req.body, res).then(() => {
     const group = req.body;
 
     db.addGroup(group, (err, result) => {
       if (err) {
-        console.error({ err });
         return res
           .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError });
+          .send({
+            error: apiMessages.internalError,
+            error_details: err.message,
+          });
       }
 
       return res

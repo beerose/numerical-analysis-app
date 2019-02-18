@@ -1,9 +1,10 @@
 import { apiMessages, CSV_DELIMITER, UserDTO, UserRole } from 'common';
-import { NextFunction, Response } from 'express';
+import { NextFunction } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { GetRequest } from '../lib/request';
+import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 import { connection } from '../store/connection';
 
@@ -16,7 +17,7 @@ type UploadRequest = GetRequest<typeof UploadBodyV>;
 
 export const upload = (
   req: UploadRequest,
-  res: Response,
+  res: BackendResponse,
   next: NextFunction
 ) => {
   const { users, isValid } = readCSV(req.body.data);
@@ -36,7 +37,10 @@ export const upload = (
     if (beginError) {
       res
         .status(codes.INTERNAL_SERVER_ERROR)
-        .send({ error: apiMessages.internalError });
+        .send({
+          error: apiMessages.internalError,
+          error_details: beginError.message,
+        });
       return;
     }
     users.forEach(user => {
@@ -45,7 +49,10 @@ export const upload = (
           connection.rollback(() =>
             res
               .status(codes.INTERNAL_SERVER_ERROR)
-              .send({ error: apiMessages.internalError })
+              .send({
+                error: apiMessages.internalError,
+                error_details: upsertErr.message,
+              })
           );
           return;
         }
@@ -53,11 +60,13 @@ export const upload = (
           { email: user.email, groupId: groupId },
           attachErr => {
             if (attachErr) {
-              console.error(attachErr);
               connection.rollback(() =>
                 res
                   .status(codes.INTERNAL_SERVER_ERROR)
-                  .send({ error: apiMessages.internalError })
+                  .send({
+                    error: apiMessages.internalError,
+                    error_details: attachErr.message,
+                  })
               );
               return;
             }
@@ -67,11 +76,13 @@ export const upload = (
     });
     connection.commit(commitErr => {
       if (commitErr) {
-        console.error(commitErr);
         connection.rollback(() =>
           res
             .status(codes.INTERNAL_SERVER_ERROR)
-            .send({ error: apiMessages.internalError })
+            .send({
+              error: apiMessages.internalError,
+              error_details: commitErr.message,
+            })
         );
       }
       res.status(codes.OK).send({ message: apiMessages.usersUploaded });

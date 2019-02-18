@@ -1,9 +1,9 @@
 import { apiMessages, ApiResponse, UserPrivileges } from 'common';
-import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { handleBadRequest, PostRequest } from '../lib/request';
+import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 
 const ShareForEditBodyV = t.type({
@@ -13,7 +13,7 @@ const ShareForEditBodyV = t.type({
 
 type ShareForEditRequest = PostRequest<typeof ShareForEditBodyV>;
 
-export const share = (req: ShareForEditRequest, res: Response) => {
+export const share = (req: ShareForEditRequest, res: BackendResponse) => {
   handleBadRequest(ShareForEditBodyV, req.body, res).then(() => {
     const { group_id, user_id } = req.body;
     db.getUserPrivileges({ userId: user_id }, (getErr, privileges) => {
@@ -49,7 +49,7 @@ export const share = (req: ShareForEditRequest, res: Response) => {
             return res.status(codes.INTERNAL_SERVER_ERROR).send({
               error: apiMessages.internalError,
               error_details: setErr.message,
-            } as ApiResponse);
+            });
           }
 
           return res.status(codes.OK).send({

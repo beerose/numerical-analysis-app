@@ -1,9 +1,9 @@
 import { apiMessages, GroupType } from 'common';
-import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { handleBadRequest, PostRequest } from '../lib/request';
+import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 
 const UpdateGroupBodyV = t.type({
@@ -33,16 +33,18 @@ const UpdateGroupBodyV = t.type({
 
 type UpdateGroupBody = PostRequest<typeof UpdateGroupBodyV>;
 
-export const update = (req: UpdateGroupBody, res: Response) => {
+export const update = (req: UpdateGroupBody, res: BackendResponse) => {
   handleBadRequest(UpdateGroupBodyV, req.body, res).then(() => {
     const group = req.body;
 
     db.updateGroup(group, err => {
       if (err) {
-        console.error({ err });
         return res
           .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError });
+          .send({
+            error: apiMessages.internalError,
+            error_details: err.message,
+          });
       }
 
       return res.status(codes.OK).send({ message: apiMessages.groupUpdated });

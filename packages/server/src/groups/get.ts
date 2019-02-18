@@ -1,9 +1,9 @@
 import { apiMessages, GroupDTO } from 'common';
-import { Response } from 'express';
 import codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { GetRequest, handleBadRequest } from '../lib/request';
+import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 
 const GetGroupQueryV = t.type({
@@ -12,14 +12,17 @@ const GetGroupQueryV = t.type({
 
 type GetGroupRequest = GetRequest<typeof GetGroupQueryV>;
 
-export const getGroup = (req: GetGroupRequest, res: Response) => {
+export const getGroup = (
+  req: GetGroupRequest,
+  res: BackendResponse<GroupDTO>
+) => {
   handleBadRequest(GetGroupQueryV, req.query, res).then(query => {
-    db.getGroup({ groupId: Number(query.group_id) }, (mysqlErr, results) => {
-      if (mysqlErr) {
-        console.error(mysqlErr);
-        return res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError });
+    db.getGroup({ groupId: Number(query.group_id) }, (err, results) => {
+      if (err) {
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: err.message,
+        });
       }
 
       const group = results[0];
