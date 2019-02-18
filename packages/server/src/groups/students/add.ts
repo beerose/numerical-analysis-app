@@ -25,24 +25,20 @@ export const addStudentToGroup = (
     const { user, group_id } = req.body;
     db.upsertUser({ ...user, user_role: UserRole.student }, upsertErr => {
       if (upsertErr) {
-        res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({
-            error: apiMessages.internalError,
-            errorDetails: upsertErr.message,
-          });
+        res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: upsertErr.message,
+        });
         return;
       }
       db.attachStudentToGroup(
         { email: user.email, groupId: group_id },
         attachErr => {
           if (attachErr) {
-            res
-              .status(codes.INTERNAL_SERVER_ERROR)
-              .send({
-                error: apiMessages.internalError,
-                errorDetails: attachErr.message,
-              });
+            res.status(codes.INTERNAL_SERVER_ERROR).send({
+              error: apiMessages.internalError,
+              error_details: attachErr.message,
+            });
             return;
           }
           return res

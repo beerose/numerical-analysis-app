@@ -25,23 +25,19 @@ export const getMeetingsDetails = (
     const { group_id } = req.query;
     db.getPresencesInGroup({ groupId: Number(group_id) }, (err, presences) => {
       if (err) {
-        res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({
-            error: apiMessages.internalError,
-            errorDetails: err.message,
-          });
+        res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: err.message,
+        });
       }
       db.getActivitiesInGroup(
         { groupId: Number(group_id) },
         (activitiesErr, activities) => {
           if (activitiesErr) {
-            res
-              .status(codes.INTERNAL_SERVER_ERROR)
-              .send({
-                error: apiMessages.internalError,
-                errorDetails: activitiesErr.message,
-              });
+            res.status(codes.INTERNAL_SERVER_ERROR).send({
+              error: apiMessages.internalError,
+              error_details: activitiesErr.message,
+            });
           }
           const details = presences.map(item => ({
             data: {

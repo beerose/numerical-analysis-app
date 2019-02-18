@@ -1,9 +1,9 @@
 import { apiMessages } from 'common';
-import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { handleBadRequest, PostRequest } from '../../lib/request';
+import { BackendResponse } from '../../lib/response';
 import { db } from '../../store';
 
 const DeleteTaskBodyV = t.type({
@@ -13,7 +13,10 @@ const DeleteTaskBodyV = t.type({
 
 type DeleteTaskRequest = PostRequest<typeof DeleteTaskBodyV>;
 
-export const deleteTaskFromGroup = (req: DeleteTaskRequest, res: Response) => {
+export const deleteTaskFromGroup = (
+  req: DeleteTaskRequest,
+  res: BackendResponse
+) => {
   handleBadRequest(DeleteTaskBodyV, req.body, res).then(() => {
     const { task_id: taskId, group_id: groupId } = req.body;
     return db.deleteTaskFromGroup({ groupId, taskId }, err => {

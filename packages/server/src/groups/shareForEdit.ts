@@ -20,7 +20,7 @@ export const share = (req: ShareForEditRequest, res: Response) => {
       if (getErr) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,
-          errorDetails: getErr.message,
+          error_details: getErr.message,
         } as ApiResponse);
         return;
       }
@@ -48,7 +48,7 @@ export const share = (req: ShareForEditRequest, res: Response) => {
           if (setErr) {
             return res.status(codes.INTERNAL_SERVER_ERROR).send({
               error: apiMessages.internalError,
-              errorDetails: setErr.message,
+              error_details: setErr.message,
             } as ApiResponse);
           }
 

@@ -19,12 +19,10 @@ export const deleteUserFromGroup = (
     { userId: req.body.user_id, groupId: req.body.group_id },
     err => {
       if (err) {
-        return res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({
-            error: apiMessages.internalError,
-            errorDetails: err.message,
-          });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: err.message,
+        });
       }
       return res.status(codes.OK).send({ message: apiMessages.userDeleted });
     }

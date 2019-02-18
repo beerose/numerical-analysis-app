@@ -9,7 +9,7 @@ export type ApiResponse =
     }
   | {
       error: string;
-      errorDetails?: string;
+      error_details?: string;
     };
 
 export enum UserRole {

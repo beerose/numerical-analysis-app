@@ -25,7 +25,7 @@ export const removeStudentFromGroup = (
       if (err) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,
-          errorDetails: err.message,
+          error_details: err.message,
         });
         return;
       }

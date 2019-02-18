@@ -23,7 +23,7 @@ export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
       response.status(codes.BAD_REQUEST).send({
         error: apiMessages.invalidRequest,
         // tslint:disable-next-line:object-literal-sort-keys
-        errorDetails: reporter(result).join('\n'),
+        error_details: reporter(result).join('\n'),
       });
     }, resolve);
   });

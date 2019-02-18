@@ -23,12 +23,10 @@ export const deletePresence = (
 
     db.deletePresence({ userId: student_id, meetingId: meeting_id }, err => {
       if (err) {
-        res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({
-            error: apiMessages.internalError,
-            errorDetails: err.message,
-          });
+        res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: err.message,
+        });
         return;
       }
       res.status(codes.OK).send({ message: apiMessages.presenceDeleted });

@@ -13,7 +13,7 @@ export const listStudentsWithGroups = (
     if (err) {
       return res
         .status(codes.INTERNAL_SERVER_ERROR)
-        .send({ error: apiMessages.internalError, errorDetails: err.message });
+        .send({ error: apiMessages.internalError, error_details: err.message });
     }
     return res.status(codes.OK).send({
       students: students.map(s => ({

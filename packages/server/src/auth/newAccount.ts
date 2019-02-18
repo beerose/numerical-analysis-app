@@ -49,7 +49,7 @@ export const checkNewAccountToken = (
       if (findErr) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,
-          errorDetails: findErr.message,
+          error_details: findErr.message,
         });
         return;
       }
