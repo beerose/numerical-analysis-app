@@ -1,7 +1,6 @@
 import { hash } from 'bcrypt';
 import { apiMessages } from 'common';
 import { NextFunction } from 'connect';
-import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import jwt from 'jsonwebtoken';
