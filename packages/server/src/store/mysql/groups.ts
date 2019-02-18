@@ -183,3 +183,49 @@ export const deleteTaskFromGroup = (
     },
     callback
   );
+
+export const insertTask = (
+  task: Omit<TaskDTO, 'id' | 'weight'>,
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: `
+    INSERT INTO
+      tasks(name, description, kind, max_points, verify_upload, results_date, end_upload_date, start_upload_date)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+      `,
+      values: [
+        task.name,
+        task.description,
+        task.kind,
+        task.max_points,
+        task.verify_upload,
+        task.results_date,
+        task.end_upload_date,
+        task.start_upload_date,
+      ],
+    },
+    callback
+  );
+
+export const attachTaskToGroup = (
+  {
+    taskId,
+    groupId,
+    weight,
+  }: {
+    taskId: TaskDTO['id'];
+    groupId: GroupDTO['id'];
+    weight: TaskDTO['weight'];
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql:
+        'INSERT INTO group_has_task(group_id, task_id, weight) VALUES (?, ?, ?);',
+      values: [groupId, taskId, weight],
+    },
+    callback
+  );

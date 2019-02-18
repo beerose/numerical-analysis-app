@@ -1,9 +1,9 @@
-import { apiMessages } from 'common';
-import { Response } from 'express';
+import { apiMessages, TaskDTO } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { GetRequest, handleBadRequest } from '../../lib/request';
+import { BackendResponse } from '../../lib/response';
 import { db } from '../../store';
 
 const ListTasksQueryV = t.type({
@@ -12,7 +12,10 @@ const ListTasksQueryV = t.type({
 
 type ListTasksRequest = GetRequest<typeof ListTasksQueryV>;
 
-export const listTasksForGroup = (req: ListTasksRequest, res: Response) => {
+export const listTasksForGroup = (
+  req: ListTasksRequest,
+  res: BackendResponse<{ tasks: TaskDTO[] }>
+) => {
   handleBadRequest(ListTasksQueryV, req.query, res).then(() => {
     return db.listTasksForGroup(
       { groupId: Number(req.query.group_id) },
