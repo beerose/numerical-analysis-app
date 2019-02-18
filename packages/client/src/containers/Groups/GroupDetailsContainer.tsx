@@ -21,6 +21,7 @@ import {
   TasksSection,
   TestsSection,
 } from './sections';
+import { TaskSection } from './sections/TaskSection';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 type MenuLinkProps = {
@@ -62,6 +63,7 @@ export class GroupDetailsContainer extends React.Component<
     return s;
   };
 
+  // tslint:disable-next-line:max-func-body-length
   render() {
     const {
       match: { url: matchUrl },
@@ -149,7 +151,9 @@ export class GroupDetailsContainer extends React.Component<
                   <TasksSection {...this.context} />
                 </Route>
                 <Route exact path={'/groups/:id/tasks/new'}>
-                  <NewTaskForm onSubmit={console.log} />
+                  <TaskSection>
+                    <NewTaskForm onSubmit={console.log} />
+                  </TaskSection>
                 </Route>
                 <Route exact path={'/groups/:id/tests'}>
                   <TestsSection {...this.context} />

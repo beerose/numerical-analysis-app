@@ -1,5 +1,5 @@
 import { Breadcrumb, Icon } from 'antd';
-import React from 'react';
+import * as React from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { identity } from '../utils/identity';
