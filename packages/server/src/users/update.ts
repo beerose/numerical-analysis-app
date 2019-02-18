@@ -1,9 +1,9 @@
 import { apiMessages, UserRole } from 'common';
-import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { GetRequest, handleBadRequest } from '../lib/request';
+import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 import { DUPLICATE_ENTRY_ERROR } from '../store/connection';
 
@@ -21,21 +21,25 @@ const UpdateUserBodyV = t.type({
 
 type UpdateUserRequest = GetRequest<typeof UpdateUserBodyV>;
 
-export const update = (req: UpdateUserRequest, res: Response) => {
+export const update = (req: UpdateUserRequest, res: BackendResponse) => {
   handleBadRequest(UpdateUserBodyV, req.body, res).then(() => {
     const user = req.body;
-    db.updateUser(user, error => {
-      if (error) {
-        switch (error.code) {
-          case DUPLICATE_ENTRY_ERROR:
-            return res
-              .status(codes.CONFLICT)
-              .send({ error: apiMessages.userAlreadyExists });
-          default:
-            return res
-              .status(codes.INTERNAL_SERVER_ERROR)
-              .send({ error: apiMessages.internalError });
+    db.updateUser(user, err => {
+      if (err) {
+        if (err.code === DUPLICATE_ENTRY_ERROR) {
+          return res
+            .status(codes.CONFLICT)
+            .send({
+              error: apiMessages.userAlreadyExists,
+              error_details: err.message,
+            });
         }
+        return res
+          .status(codes.INTERNAL_SERVER_ERROR)
+          .send({
+            error: apiMessages.internalError,
+            error_details: err.message,
+          });
       }
       return res.status(codes.OK).send({ message: apiMessages.userUpdated });
     });
