@@ -4,11 +4,11 @@ import {
   Student,
   StudentActivities,
 } from 'common';
-import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { GetRequest, handleBadRequest } from '../../lib/request';
+import { BackendResponse } from '../../lib/response';
 import { db } from '../../store';
 
 const GetMeetingsDetailsQueryV = t.type({
@@ -19,7 +19,7 @@ type GetMeetingsDetailsRequest = GetRequest<typeof GetMeetingsDetailsQueryV>;
 
 export const getMeetingsDetails = (
   req: GetMeetingsDetailsRequest,
-  res: Response
+  res: BackendResponse<{ details: MeetingDetailsDTO[] }>
 ) => {
   handleBadRequest(GetMeetingsDetailsQueryV, req.query, res).then(() => {
     const { group_id } = req.query;
@@ -27,7 +27,10 @@ export const getMeetingsDetails = (
       if (err) {
         res
           .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError, details: err });
+          .send({
+            error: apiMessages.internalError,
+            errorDetails: err.message,
+          });
       }
       db.getActivitiesInGroup(
         { groupId: Number(group_id) },
@@ -35,7 +38,10 @@ export const getMeetingsDetails = (
           if (activitiesErr) {
             res
               .status(codes.INTERNAL_SERVER_ERROR)
-              .send({ error: apiMessages.internalError, details: err });
+              .send({
+                error: apiMessages.internalError,
+                errorDetails: activitiesErr.message,
+              });
           }
           const details = presences.map(item => ({
             data: {

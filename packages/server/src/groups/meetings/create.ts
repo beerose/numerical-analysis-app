@@ -1,9 +1,9 @@
 import { apiMessages } from 'common';
-import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { handleBadRequest, PostRequest } from '../../lib/request';
+import { BackendResponse } from '../../lib/response';
 import { db } from '../../store';
 
 const AddMeetingBodyV = t.type({
@@ -13,7 +13,7 @@ const AddMeetingBodyV = t.type({
 
 type AddMeetingRequest = PostRequest<typeof AddMeetingBodyV>;
 
-export const addMeeting = (req: AddMeetingRequest, res: Response) => {
+export const addMeeting = (req: AddMeetingRequest, res: BackendResponse) => {
   handleBadRequest(AddMeetingBodyV, req.body, res).then(() => {
     const {
       group_id,
@@ -25,10 +25,12 @@ export const addMeeting = (req: AddMeetingRequest, res: Response) => {
       { date: parsedDate, name: meeting_name, groupId: group_id },
       err => {
         if (err) {
-          console.error(err);
           res
             .status(codes.INTERNAL_SERVER_ERROR)
-            .send({ error: apiMessages.internalError });
+            .send({
+              error: apiMessages.internalError,
+              errorDetails: err.message,
+            });
           return;
         }
         res.status(codes.OK).send({ message: apiMessages.meetingCreated });

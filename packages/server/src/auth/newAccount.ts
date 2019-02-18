@@ -7,6 +7,7 @@ import * as t from 'io-ts';
 import jwt from 'jsonwebtoken';
 
 import { GetRequest, handleBadRequest } from '../lib/request';
+import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 
 const CreateWithTokenRequestV = t.type({
@@ -16,7 +17,7 @@ const CreateWithTokenRequestV = t.type({
 
 type CreateWithTokenRequest = GetRequest<typeof CreateWithTokenRequestV>;
 
-interface CreateWithTokenResponse extends Response {
+interface CreateWithTokenResponse extends BackendResponse {
   locals: {
     email?: string;
     user?: { user_name: string; user_role: string };
@@ -46,10 +47,10 @@ export const checkNewAccountToken = (
 
     db.findUserByEmail({ email }, (findErr, userRes) => {
       if (findErr) {
-        console.error({ findErr });
-        res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError });
+        res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          errorDetails: findErr.message,
+        });
         return;
       }
       if (!userRes) {
