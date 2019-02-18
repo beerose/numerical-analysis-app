@@ -1,7 +1,8 @@
 import { apiMessages } from 'common';
-import { Request, Response } from 'express';
+import { Request } from 'express';
 import * as codes from 'http-status-codes';
 
+import { BackendResponse } from '../../lib/response';
 import { db } from '../../store';
 
 interface DeleteUserFromGroupRequest extends Request {
@@ -12,16 +13,18 @@ interface DeleteUserFromGroupRequest extends Request {
 }
 export const deleteUserFromGroup = (
   req: DeleteUserFromGroupRequest,
-  res: Response
+  res: BackendResponse
 ) => {
   return db.deleteFromGroup(
     { userId: req.body.user_id, groupId: req.body.group_id },
     err => {
       if (err) {
-        console.log(err);
         return res
           .status(codes.INTERNAL_SERVER_ERROR)
-          .send({ error: apiMessages.internalError });
+          .send({
+            error: apiMessages.internalError,
+            errorDetails: err.message,
+          });
       }
       return res.status(codes.OK).send({ message: apiMessages.userDeleted });
     }

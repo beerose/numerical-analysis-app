@@ -1,16 +1,19 @@
-import { apiMessages } from 'common';
-import { Request, Response } from 'express';
+import { apiMessages, UserWithGroups } from 'common';
+import { Request } from 'express';
 import * as codes from 'http-status-codes';
 
+import { BackendResponse } from '../../lib/response';
 import { db } from '../../store';
 
-export const listStudentsWithGroups = (_: Request, res: Response) => {
+export const listStudentsWithGroups = (
+  _: Request,
+  res: BackendResponse<{ students: UserWithGroups[] }>
+) => {
   return db.listUsersWithGroup((err, students) => {
     if (err) {
-      console.log(err);
       return res
         .status(codes.INTERNAL_SERVER_ERROR)
-        .send({ error: apiMessages.internalError });
+        .send({ error: apiMessages.internalError, errorDetails: err.message });
     }
     return res.status(codes.OK).send({
       students: students.map(s => ({
