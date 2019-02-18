@@ -98,12 +98,7 @@ class EditMeetingForm extends React.Component<Props> {
           <DateControls
             setFieldsValue={setFieldsValue}
             getFieldValue={getFieldValue}
-            config={[
-              { value: -7, decr: true },
-              { value: -1, decr: true },
-              { value: 1 },
-              { value: 7 },
-            ]}
+            config={[-7, -1, 1, 7]}
           />
         </div>
         <Button type="primary" htmlType="submit">
