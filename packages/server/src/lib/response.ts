@@ -1,5 +1,7 @@
 import { Response } from 'express';
 
-export interface BackendResponse<T> extends Response {
+import { ApiResponse } from '../../../../dist/common';
+
+export interface BackendResponse<T = ApiResponse> extends Response {
   send: (body: T) => Response;
 }

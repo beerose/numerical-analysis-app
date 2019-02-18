@@ -28,7 +28,3 @@ export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
     }, resolve);
   });
 }
-
-export interface ServerResponse<T = ApiResponse> extends Response {
-  send: (res: T) => Response;
-}
