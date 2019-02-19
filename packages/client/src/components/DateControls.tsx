@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import { css } from 'emotion';
 import moment from 'moment';
-import * as React from 'react';
+import React, { useCallback } from 'react';
 
 const dateSelectorsStyles = css`
   color: rgba(0, 0, 0, 0.5);
@@ -16,37 +16,32 @@ const containerStyles = css`
   width: 100%;
 `;
 
-type Config = {
-  value: number;
-  decr?: boolean;
-  label?: string;
-};
-
 type Props = {
   getFieldValue: (s: string) => any;
   setFieldsValue: (o: object) => void;
-  config: Config[];
+  config: number[];
 };
 
 export const DateControls = (props: Props) => {
-  const onSelectorClick = (config: Config) => {
+  const onSelectorClick = useCallback((days: number) => {
     const selectedDate = props.getFieldValue('date');
     const defaultDate = selectedDate
       ? moment(selectedDate)
       : moment(new Date());
-    props.setFieldsValue({ date: defaultDate.add(config.value, 'days') });
-  };
+    props.setFieldsValue({ date: defaultDate.add(days, 'days') });
+  }, []);
 
   return (
     <div className={containerStyles}>
-      {props.config.map(s => (
+      {props.config.map(days => (
         <Button
-          key={s.value}
+          key={days}
           shape="circle"
           onClick={() => onSelectorClick(s)}
           className={dateSelectorsStyles}
         >
-          {s.label ? s.label : s.decr ? `${s.value}` : `+${s.value}`}
+          {days > 0 && '+'}
+          {days}
         </Button>
       ))}
     </div>
