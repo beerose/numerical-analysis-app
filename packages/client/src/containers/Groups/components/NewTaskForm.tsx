@@ -7,19 +7,23 @@ import * as React from 'react';
 import { Omit } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
-import { Flex, TaskTypeRadioGroup } from '../../../components';
+import { TaskTypeRadioGroup } from '../../../components';
 import { Colors } from '../../../utils';
 
+const smallInputStyles = css`
+  width: 100px !important;
+`;
+
 const formStyles = css`
-  padding-top: 25px;
-  padding-right: 25px;
+  margin-left: 0px;
+  margin-top: 20px;
   width: 700px;
 `;
 
 const FORM_ITEM_LAYOUT = {
   labelCol: {
     sm: { span: 8 },
-    xs: { span: 16 },
+    xs: { span: 8 },
   },
   wrapperCol: {
     sm: { span: 16 },
@@ -30,6 +34,7 @@ const FORM_ITEM_LAYOUT = {
 type Props = {
   onSubmit: (values: Omit<TaskDTO, 'id'>) => void;
 } & FormComponentProps;
+// tslint:disable-next-line:max-func-body-length
 const NewTaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
 
@@ -77,6 +82,7 @@ const NewTaskForm = (props: Props) => {
         })(
           <Input
             type="number"
+            css={smallInputStyles}
             prefix={
               <Icon type="calculator" style={{ color: Colors.SemiLightGrey }} />
             }
@@ -89,6 +95,7 @@ const NewTaskForm = (props: Props) => {
         })(
           <Input
             type="number"
+            css={smallInputStyles}
             prefix={
               <Icon type="bar-chart" style={{ color: Colors.SemiLightGrey }} />
             }
@@ -97,22 +104,53 @@ const NewTaskForm = (props: Props) => {
       </Form.Item>
       <Form.Item label="Data wyników" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('task_results_date', {})(
-          <DatePicker style={{ width: 280 }} />
+          <DatePicker
+            css={css`
+              width: 180px;
+            `}
+          />
         )}
       </Form.Item>
-      <Flex flexDirection="row">
-        <Form.Item {...FORM_ITEM_LAYOUT}>
+      <Form.Item
+        label="Terminy oddawania zadania"
+        {...FORM_ITEM_LAYOUT}
+        css={css`
+          padding: 0;
+          margin: 0;
+        `}
+      >
+        <Form.Item
+          {...FORM_ITEM_LAYOUT}
+          style={{ display: 'inline-block', maxWidth: '180px' }}
+        >
           {getFieldDecorator('task_upload_start', {})(
-            <DatePicker style={{ width: 280 }} />
+            <DatePicker
+              css={css`
+                width: 180px;
+              `}
+            />
           )}
         </Form.Item>
-        <Form.Item {...FORM_ITEM_LAYOUT}>
+        <span
+          style={{
+            padding: '10px',
+            textAlign: 'center',
+            width: '24px',
+          }}
+        >
+          -
+        </span>
+        <Form.Item {...FORM_ITEM_LAYOUT} style={{ display: 'inline-block' }}>
           {getFieldDecorator('task_upload_end', {})(
-            <DatePicker style={{ width: 280 }} />
+            <DatePicker
+              css={css`
+                width: 180px;
+              `}
+            />
           )}
         </Form.Item>
-      </Flex>
-      <Form.Item label="Weryfikacja wysyłanych pilików">
+      </Form.Item>
+      <Form.Item label="Weryfikacja wysyłanych pilików" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('verify_upload', {})(<Switch defaultChecked />)}
       </Form.Item>
       <Button type="primary" htmlType="submit">

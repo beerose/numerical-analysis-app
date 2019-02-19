@@ -295,3 +295,12 @@ export const deleteTaskFromGroup = (
 
   return authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Delete, options);
 };
+
+export const createTask = (
+  task: Omit<TaskDTO, 'id'>,
+  groupId: GroupDTO['id']
+) =>
+  authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Create, {
+    body: JSON.stringify({ ...task, group_id: groupId }),
+    method: 'POST',
+  });

@@ -163,6 +163,12 @@ app.delete(
   auth.can('edit', 'groups'),
   groups.deleteTaskFromGroup
 );
+app.post(
+  Groups.Tasks.Create,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  groups.createTask
+);
 
 let server: import('http').Server;
 
