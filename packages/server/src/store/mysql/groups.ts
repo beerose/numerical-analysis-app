@@ -160,7 +160,8 @@ export const listTasksForGroup = (
   FROM tasks t
   JOIN group_has_task ght
   ON (t.id = ght.task_id)
-  WHERE ght.group_id =?`,
+  WHERE ght.group_id =?
+  ORDER BY created_at DESC`,
       values: [groupId],
     },
     callback
