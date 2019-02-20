@@ -77,7 +77,6 @@ export class GroupDetailsContainer extends React.Component<
 
   // tslint:disable-next-line:max-func-body-length
   render() {
-    console.log(this.props.location);
     const {
       match: { url: matchUrl },
     } = this.props;

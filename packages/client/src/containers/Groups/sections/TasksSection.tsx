@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Card, List, Spin } from 'antd';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -55,13 +55,18 @@ export const TasksSection = (props: Props) => {
     });
   };
 
+  const navigateTo = useCallback(
+    (path: string) => {
+      props.history.push(
+        (location.pathname.endsWith('/') ? '' : 'tasks/') + String(path)
+      );
+    },
+    [location.pathname]
+  );
+
   return (
     <Container>
-      <Button
-        icon="plus"
-        type="primary"
-        onClick={() => props.history.push('new')}
-      >
+      <Button icon="plus" type="primary" onClick={() => navigateTo('new')}>
         Nowe zadanie
       </Button>
       {tasks ? (
@@ -74,9 +79,7 @@ export const TasksSection = (props: Props) => {
           `}
           renderItem={(task: TaskDTO) => {
             return (
-              <StyledTaskCard
-                onClick={() => props.history.push(String(task.id))}
-              >
+              <StyledTaskCard onClick={() => navigateTo(String(task.id))}>
                 <List.Item
                   actions={[
                     <DeleteWithConfirm

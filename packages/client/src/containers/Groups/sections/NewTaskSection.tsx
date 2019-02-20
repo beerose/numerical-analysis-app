@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback } from 'react';
 import { Omit, RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
@@ -10,6 +10,14 @@ import { GroupApiContextState } from '../GroupApiContext';
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 export const NewTaskSection = ({ actions, history }: Props) => {
+  const navigateTo = useCallback(
+    (path: string) =>
+      history.push(
+        (location.pathname.endsWith('/') ? '' : 'tasks/') + String(path)
+      ),
+    [location.pathname]
+  );
+
   const handleSubmit = (values: Omit<TaskDTO, 'id'>) => {
     actions.createTask(values).then(res => {
       showMessage(res);
@@ -17,7 +25,7 @@ export const NewTaskSection = ({ actions, history }: Props) => {
         return;
       }
 
-      history.push(String(res.task_id));
+      navigateTo(String(res.task_id));
     });
   };
 
