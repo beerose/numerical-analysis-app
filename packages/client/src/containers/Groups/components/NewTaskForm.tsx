@@ -40,11 +40,18 @@ const NewTaskForm = (props: Props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    props.form.validateFields((err, values) => {
+    props.form.validateFields((err, values: TaskDTO) => {
       if (err) {
         return;
       }
-      props.onSubmit(values);
+      props.onSubmit({
+        ...values,
+        max_points: Number(values.max_points),
+        results_date: values.results_date
+          ? values.results_date
+          : values.end_upload_date,
+        weight: Number(values.weight),
+      });
       setTimeout(() => {
         props.form.resetFields();
       }, 1000);
@@ -54,7 +61,7 @@ const NewTaskForm = (props: Props) => {
   return (
     <Form onSubmit={handleSubmit} css={formStyles}>
       <Form.Item label="Nazwa" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('task_name', {
+        {getFieldDecorator('name', {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
           <Input
@@ -63,7 +70,7 @@ const NewTaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item label="Opis" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('task_desc')(
+        {getFieldDecorator('description')(
           <Input
             prefix={
               <Icon type="edit" style={{ color: Colors.SemiLightGrey }} />
@@ -72,12 +79,12 @@ const NewTaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item label="Rodzaj" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('task_kind', {
+        {getFieldDecorator('kind', {
           rules: [{ required: true, message: 'rodzaj jest wymagany' }],
         })(<TaskTypeRadioGroup />)}
       </Form.Item>
       <Form.Item label="Waga" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('task_weight', {
+        {getFieldDecorator('weight', {
           rules: [{ required: true, message: 'waga jest wymagana' }],
         })(
           <Input
@@ -90,7 +97,7 @@ const NewTaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item label="Max liczba punktów" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('task_max_points', {
+        {getFieldDecorator('max_points', {
           rules: [{ required: true, message: 'waga jest wymagana' }],
         })(
           <Input
@@ -103,7 +110,7 @@ const NewTaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item label="Data wyników" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('task_results_date', {})(
+        {getFieldDecorator('results_date', {})(
           <DatePicker
             css={css`
               width: 180px;
@@ -112,7 +119,18 @@ const NewTaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item
-        label="Terminy oddawania zadania"
+        label={
+          <span>
+            <span
+              css={css`
+                color: red;
+              `}
+            >
+              *
+            </span>{' '}
+            Terminy oddawania zadania
+          </span>
+        }
         {...FORM_ITEM_LAYOUT}
         css={css`
           padding: 0;
@@ -123,7 +141,9 @@ const NewTaskForm = (props: Props) => {
           {...FORM_ITEM_LAYOUT}
           style={{ display: 'inline-block', maxWidth: '180px' }}
         >
-          {getFieldDecorator('task_upload_start', {})(
+          {getFieldDecorator('start_upload_date', {
+            rules: [{ required: true, message: 'pole jest wymagane' }],
+          })(
             <DatePicker
               css={css`
                 width: 180px;
@@ -141,7 +161,9 @@ const NewTaskForm = (props: Props) => {
           -
         </span>
         <Form.Item {...FORM_ITEM_LAYOUT} style={{ display: 'inline-block' }}>
-          {getFieldDecorator('task_upload_end', {})(
+          {getFieldDecorator('end_upload_date', {
+            rules: [{ required: true, message: 'pole jest wymagane' }],
+          })(
             <DatePicker
               css={css`
                 width: 180px;
@@ -151,7 +173,9 @@ const NewTaskForm = (props: Props) => {
         </Form.Item>
       </Form.Item>
       <Form.Item label="Weryfikacja wysyłanych pilików" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('verify_upload', {})(<Switch defaultChecked />)}
+        {getFieldDecorator('verify_upload', {
+          initialValue: true,
+        })(<Switch defaultChecked={true} />)}
       </Form.Item>
       <Button type="primary" htmlType="submit">
         Dodaj

@@ -152,7 +152,7 @@ export class GroupDetailsContainer extends React.Component<
                 </Route>
                 <Route exact path={'/groups/:id/tasks/new'}>
                   <TaskSection>
-                    <NewTaskForm onSubmit={console.log} />
+                    <NewTaskForm onSubmit={this.context.actions.createTask} />
                   </TaskSection>
                 </Route>
                 <Route exact path={'/groups/:id/tests'}>

@@ -18,7 +18,7 @@ CREATE TABLE tasks (
 CREATE TABLE group_has_task (
   group_id  INT NOT NULL REFERENCES groups(id),
   task_id   INT NOT NULL REFERENCES tasks(id),
-  weigth    INT NOT NULL DEFAULT 1,
+  weight    INT NOT NULL DEFAULT 1,
   UNIQUE KEY(task_id, group_id)
 );
 
@@ -38,7 +38,7 @@ CREATE TABLE tests (
 CREATE TABLE group_has_test (
   group_id  INT NOT NULL REFERENCES `groups`(id),
   test_id   INT NOT NULL REFERENCES tests(id),
-  weigth    INT NOT NULL DEFAULT 1,
+  weight    INT NOT NULL DEFAULT 1,
   UNIQUE KEY(test_id, group_id)
 );
 

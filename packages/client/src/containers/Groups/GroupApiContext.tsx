@@ -66,6 +66,7 @@ export class GroupApiProvider extends React.Component<
         addNewStudentToGroup: this.addNewStudentToGroup,
         addPresence: this.addPresence,
         createGroup: this.createGroup,
+        createTask: this.createTask,
         deleteGroup: this.deleteGroup,
         deleteMeeting: this.deleteMeeting,
         deletePresence: this.deletePresence,
@@ -315,6 +316,18 @@ export class GroupApiProvider extends React.Component<
     );
     this.setState({ isLoading: false });
     return res;
+  };
+
+  createTask = (task: Omit<TaskDTO, 'id'>) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    console.log('TASK', task);
+    this.setState({ isLoading: true });
+    groupsService.createTask(task, this.state.currentGroup.id).then(res => {
+      this.setState({ isLoading: false });
+      return res;
+    });
   };
 
   render() {

@@ -129,7 +129,9 @@ const SettingsSectionInternal: React.FC<Props> = ({
   return (
     <SettingsForm onSubmit={handleSubmit}>
       <FormRow label={texts.groupName}>
-        {getFieldDecorator<AntFormState>('group_name')(<Input />)}
+        {getFieldDecorator<AntFormState>('group_name', {
+          rules: [{ required: true, message: 'nazwa jest wymagana' }],
+        })(<Input />)}
       </FormRow>
       <FormRow label={texts.groupType}>
         {getFieldDecorator<AntFormState>('group_type')(

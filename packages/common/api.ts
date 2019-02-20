@@ -151,11 +151,11 @@ export type TaskDTO = {
   kind: TaskKind;
   weight: number;
   max_points: number;
-  results_date?: string; // if empty then due date
+  results_date?: string | Date; // if empty then due date
   description?: string;
   verify_upload: boolean; // default true
-  start_upload_date: string;
-  end_upload_date: string; // due date of the task
+  start_upload_date: string | Date;
+  end_upload_date: string | Date; // due date of the task
 };
 
 export enum TestKind {
