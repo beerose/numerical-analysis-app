@@ -23,7 +23,10 @@ const CreateTaskBodyV = t.type({
 
 type CreateTaskRequest = PostRequest<typeof CreateTaskBodyV>;
 
-export const createTask = (req: CreateTaskRequest, res: BackendResponse) => {
+export const createTask = (
+  req: CreateTaskRequest,
+  res: BackendResponse<{ task_id: number }>
+) => {
   handleBadRequest(CreateTaskBodyV, req.body, res).then(() => {
     const task = req.body;
     db.insertTask(
@@ -56,7 +59,10 @@ export const createTask = (req: CreateTaskRequest, res: BackendResponse) => {
                 error_details: attachErr.message,
               });
             }
-            res.status(codes.OK).send({ message: apiMessages.taskCreated });
+            res.status(codes.OK).send({
+              message: apiMessages.taskCreated,
+              task_id: result.insertId,
+            });
           }
         );
       }

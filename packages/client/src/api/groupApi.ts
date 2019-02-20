@@ -300,9 +300,11 @@ export const createTask = (
   task: Omit<TaskDTO, 'id'>,
   groupId: GroupDTO['id']
 ) => {
-  console.log('create', { task });
-  return authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Create, {
-    body: JSON.stringify({ ...task, group_id: groupId }),
-    method: 'POST',
-  });
+  return authFetch<{ task_id: number } & ApiResponse>(
+    SERVER_URL + Groups.Tasks.Create,
+    {
+      body: JSON.stringify({ ...task, group_id: groupId }),
+      method: 'POST',
+    }
+  );
 };

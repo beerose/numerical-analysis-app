@@ -322,7 +322,6 @@ export class GroupApiProvider extends React.Component<
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    console.log('TASK', task);
     this.setState({ isLoading: true });
     groupsService.createTask(task, this.state.currentGroup.id).then(res => {
       this.setState({ isLoading: false });
