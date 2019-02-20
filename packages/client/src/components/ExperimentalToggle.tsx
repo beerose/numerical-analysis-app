@@ -18,6 +18,7 @@ export const ExperimentalToggle: React.FC<ExperimentalToggleProps> = ({
   ...rest
 }) => (
   <ResetButton
+    type="button"
     css={css`
       margin-left: 0.5em;
       background: transparent;

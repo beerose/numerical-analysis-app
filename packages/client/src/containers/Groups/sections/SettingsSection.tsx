@@ -74,7 +74,6 @@ const SettingsSectionInternal: React.FC<Props> = ({
   const { texts } = useContext(LocaleContext);
   const [groupDataState, mergeGroupDataState] = useMergeState<GroupDataState>(
     () => {
-      console.log('pupka', group);
       const {
         tresholds = fromPairs(
           tresholdsKeys.map(k => [k, 0] as [keyof Tresholds, number])
@@ -102,11 +101,15 @@ const SettingsSectionInternal: React.FC<Props> = ({
           return;
         }
 
-        actions.updateGroup({
-          ...antFormValues,
-          data: groupDataState,
-          id: group.id,
-        });
+        actions
+          .updateGroup({
+            ...antFormValues,
+            data: groupDataState,
+            id: group.id,
+          })
+          .then(() => {
+            actions.getGroup(group.id);
+          });
       });
     },
     [groupDataState]
@@ -129,9 +132,18 @@ const SettingsSectionInternal: React.FC<Props> = ({
   return (
     <SettingsForm onSubmit={handleSubmit}>
       <FormRow label={texts.groupName}>
-        {getFieldDecorator<AntFormState>('group_name', {
-          rules: [{ required: true, message: 'nazwa jest wymagana' }],
-        })(<Input />)}
+        <Form.Item
+          css={{
+            marginBottom: 0,
+          }}
+        >
+          {/* Form.Item is needed for validation */}
+          {getFieldDecorator<AntFormState>('group_name', {
+            rules: [
+              { required: true, message: 'Nazwa grupy nie może być pusta' },
+            ],
+          })(<Input />)}
+        </Form.Item>
       </FormRow>
       <FormRow label={texts.groupType}>
         {getFieldDecorator<AntFormState>('group_type')(
@@ -149,7 +161,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
       <FormRow label={texts.lecturer}>
         {getFieldDecorator<AntFormState>('lecturer_id')(
           <SelectSuperUser
-            lecturers={lecturers || []}
+            superUsers={lecturers || []}
             css={{
               width: '100%',
             }}

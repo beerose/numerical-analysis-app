@@ -79,7 +79,7 @@ class EditGroupForm extends React.Component<Props> {
         <FormItem label={LABELS.superUser} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('lecturer_id', {
             rules: [{ required: true, message: LABELS.nameRequired }],
-          })(<SelectSuperUser lecturers={lecturers} />)}
+          })(<SelectSuperUser superUsers={lecturers} />)}
         </FormItem>
         <FormItem label={LABELS.groupName} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('group_name', {

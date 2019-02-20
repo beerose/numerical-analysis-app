@@ -158,8 +158,11 @@ export class GroupApiProvider extends React.Component<
         return res.users;
       });
 
-  getGroup = () => {
-    const groupId = Number(this.props.location.pathname.split('/')[2]);
+  getGroup = (groupId?: GroupDTO['id']) => {
+    if (!groupId) {
+      // tslint:disable-next-line:no-parameter-reassignment // runtime default arg
+      groupId = Number(this.props.location.pathname.split('/')[2]);
+    }
     groupsService.getGroup(groupId).then(res => {
       if ('error' in res) {
         showMessage(res);
