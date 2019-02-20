@@ -47,9 +47,6 @@ const NewTaskForm = (props: Props) => {
       props.onSubmit({
         ...values,
         max_points: Number(values.max_points),
-        results_date: values.results_date
-          ? values.results_date
-          : values.end_upload_date,
         weight: Number(values.weight),
       });
       setTimeout(() => {

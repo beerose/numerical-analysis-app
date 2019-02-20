@@ -1,6 +1,7 @@
 import { apiMessages, TaskKind } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
+import { isNumber } from 'util';
 
 import { handleBadRequest, PostRequest } from '../../lib/request';
 import { BackendResponse } from '../../lib/response';
@@ -29,6 +30,7 @@ export const createTask = (req: CreateTaskRequest, res: BackendResponse) => {
       {
         ...task,
         end_upload_date: new Date(task.end_upload_date),
+        max_points: isNumber(task.max_points) ? Number(task.max_points) : 0,
         results_date: new Date(
           task.results_date ? task.results_date : task.end_upload_date
         ),
@@ -45,7 +47,7 @@ export const createTask = (req: CreateTaskRequest, res: BackendResponse) => {
           {
             groupId: task.group_id,
             taskId: result.insertId,
-            weight: task.weight,
+            weight: isNumber(task.weight) ? Number(task.weight) : 0,
           },
           attachErr => {
             if (attachErr) {
