@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Omit } from 'react-router';
+import { Omit, RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
 import { Flex } from '../../../components';
@@ -8,15 +8,16 @@ import { showMessage } from '../../../utils';
 import { NewTaskForm } from '../components';
 import { GroupApiContextState } from '../GroupApiContext';
 
-type Props = GroupApiContextState;
-export const NewTaskSection = (props: Props) => {
+type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
+export const NewTaskSection = ({ actions, history }: Props) => {
   const handleSubmit = (values: Omit<TaskDTO, 'id'>) => {
-    props.actions.createTask(values).then(res => {
+    actions.createTask(values).then(res => {
       showMessage(res);
       if ('error' in res) {
         return;
       }
-      props.actions.goToTaskPage(res.task_id);
+
+      history.push(String(res.task_id));
     });
   };
 

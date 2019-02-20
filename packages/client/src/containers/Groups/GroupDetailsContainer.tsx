@@ -77,6 +77,7 @@ export class GroupDetailsContainer extends React.Component<
 
   // tslint:disable-next-line:max-func-body-length
   render() {
+    console.log(this.props.location);
     const {
       match: { url: matchUrl },
     } = this.props;
@@ -99,7 +100,7 @@ export class GroupDetailsContainer extends React.Component<
           <Flex flex={1}>
             <Menu
               mode="inline"
-              defaultSelectedKeys={[this.getSelectedItem()]}
+              selectedKeys={[this.getSelectedItem()]}
               css={menuStyles}
             >
               <MenuLink to={matchUrl} key="settings">
@@ -160,10 +161,14 @@ export class GroupDetailsContainer extends React.Component<
                   <MeetingsSection {...this.context} />
                 </Route>
                 <Route exact path={'/groups/:id/tasks'}>
-                  <TasksSection {...this.context} />
+                  {({ history }) => (
+                    <TasksSection {...this.context} history={history} />
+                  )}
                 </Route>
                 <Route exact path={'/groups/:id/tasks/new'}>
-                  <NewTaskSection {...this.context} />
+                  {({ history }) => (
+                    <NewTaskSection {...this.context} history={history} />
+                  )}
                 </Route>
                 <Route exact path={'/groups/:id/tests'}>
                   <TestsSection {...this.context} />

@@ -3,6 +3,8 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Card, List, Spin } from 'antd';
 import { useEffect } from 'react';
+import { RouteComponentProps } from 'react-router';
+import { Link } from 'react-router-dom';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
@@ -35,7 +37,7 @@ const StyledTaskCard = styled(Card)`
   }
 `;
 
-type Props = GroupApiContextState;
+type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 export const TasksSection = (props: Props) => {
   const { tasks } = props;
 
@@ -53,16 +55,12 @@ export const TasksSection = (props: Props) => {
     });
   };
 
-  const onItemClick = (itemName: TaskDTO['name']) => {
-    props.actions.goToTaskPage(itemName);
-  };
-
   return (
     <Container>
       <Button
         icon="plus"
         type="primary"
-        onClick={() => props.actions.goToNewTaskPage()}
+        onClick={() => props.history.push('new')}
       >
         Nowe zadanie
       </Button>
@@ -76,7 +74,9 @@ export const TasksSection = (props: Props) => {
           `}
           renderItem={(task: TaskDTO) => {
             return (
-              <StyledTaskCard onClick={() => onItemClick(task.name)}>
+              <StyledTaskCard
+                onClick={() => props.history.push(String(task.id))}
+              >
                 <List.Item
                   actions={[
                     <DeleteWithConfirm

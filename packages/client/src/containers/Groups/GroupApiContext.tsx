@@ -10,7 +10,7 @@ import {
 } from 'common';
 import { Moment } from 'moment';
 import React from 'react';
-import { Omit, RouteChildrenProps } from 'react-router';
+import { Omit, RouteChildrenProps, RouteComponentProps } from 'react-router';
 
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
@@ -74,9 +74,6 @@ export class GroupApiProvider extends React.Component<
         deleteTaskFromGroup: this.deleteTaskFromGroup,
         getGroup: this.getGroup,
         getMeetingsDetails: this.getMeetingsDetails,
-        goToGroupsPage: this.goToGroupsPage,
-        goToNewTaskPage: this.goToNewTaskPage,
-        goToTaskPage: this.goToTaskPage,
         listGroups: this.listGroups,
         listLecturers: this.listLecturers,
         listMeetings: this.listMeetings,
@@ -96,30 +93,6 @@ export class GroupApiProvider extends React.Component<
 
     this.state = state as StateValues;
   }
-
-  goToGroupsPage = () => {
-    this.props.history.push('/groups');
-  };
-
-  goToNewTaskPage = () => {
-    this.props.history.push(
-      '/groups/:id/tasks/new'.replace(
-        ':id',
-        `${this.state.currentGroup && this.state.currentGroup.id}`
-      )
-    );
-  };
-
-  goToTaskPage = (taskId: TaskDTO['id']) => {
-    this.props.history.push(
-      '/groups/:id/tasks/:task_id'
-        .replace(
-          ':id',
-          `${this.state.currentGroup && this.state.currentGroup.id}`
-        )
-        .replace(':task_id', String(taskId))
-    );
-  };
 
   createGroup = ({
     academic_year,
