@@ -110,14 +110,14 @@ export class GroupApiProvider extends React.Component<
     );
   };
 
-  goToTaskPage = (itemName: TaskDTO['name']) => {
+  goToTaskPage = (taskId: TaskDTO['id']) => {
     this.props.history.push(
       '/groups/:id/tasks/:task_id'
         .replace(
           ':id',
           `${this.state.currentGroup && this.state.currentGroup.id}`
         )
-        .replace(':task_id', itemName)
+        .replace(':task_id', String(taskId))
     );
   };
 
@@ -318,15 +318,17 @@ export class GroupApiProvider extends React.Component<
     return res;
   };
 
-  createTask = (task: Omit<TaskDTO, 'id'>) => {
+  createTask = async (task: Omit<TaskDTO, 'id'>) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
     this.setState({ isLoading: true });
-    groupsService.createTask(task, this.state.currentGroup.id).then(res => {
-      this.setState({ isLoading: false });
-      return res;
-    });
+    const res = await groupsService.createTask(
+      task,
+      this.state.currentGroup.id
+    );
+    this.setState({ isLoading: false });
+    return res;
   };
 
   render() {

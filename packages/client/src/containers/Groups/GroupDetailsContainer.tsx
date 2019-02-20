@@ -12,7 +12,6 @@ import { LocaleContext } from '../../components/locale';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
-import { NewTaskForm } from './components';
 import {
   MeetingsDetailsSections,
   MeetingsSection,
@@ -21,7 +20,7 @@ import {
   TasksSection,
   TestsSection,
 } from './sections';
-import { TaskSection } from './sections/TaskSection';
+import { NewTaskSection } from './sections/NewTaskSection';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 type MenuLinkProps = {
@@ -151,9 +150,7 @@ export class GroupDetailsContainer extends React.Component<
                   <TasksSection {...this.context} />
                 </Route>
                 <Route exact path={'/groups/:id/tasks/new'}>
-                  <TaskSection>
-                    <NewTaskForm onSubmit={this.context.actions.createTask} />
-                  </TaskSection>
+                  <NewTaskSection {...this.context} />
                 </Route>
                 <Route exact path={'/groups/:id/tests'}>
                   <TestsSection {...this.context} />
