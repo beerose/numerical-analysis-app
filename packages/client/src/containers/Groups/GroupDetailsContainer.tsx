@@ -51,15 +51,28 @@ export class GroupDetailsContainer extends React.Component<
     return this.props.location.pathname.split('/')[3] || 'settings';
   }
 
-  replaceGroupIdBreadcrumb = (s: string) => {
+  replaceGroupIdBreadcrumb = (tokens: string[]) => {
     const { currentGroup } = this.context;
-    if (!currentGroup) {
-      return s;
-    }
-    if (Number(s) === currentGroup.id) {
-      return currentGroup.group_name;
-    }
-    return s;
+    return tokens.map((token, i) => {
+      const previousToken = tokens[i - 1];
+      if (
+        previousToken === 'groups' &&
+        currentGroup &&
+        Number(token) === currentGroup.id
+      ) {
+        return currentGroup.group_name;
+      }
+
+      if (
+        previousToken === 'tasks' &&
+        Number(token)
+        // Compare with current task?
+      ) {
+        return '{{ nazwa taska }}';
+      }
+
+      return token;
+    });
   };
 
   // tslint:disable-next-line:max-func-body-length
@@ -131,7 +144,7 @@ export class GroupDetailsContainer extends React.Component<
                 css={css`
                   padding: ${Theme.Padding.Half} 0 0 ${Theme.Padding.Standard};
                 `}
-                replace={this.replaceGroupIdBreadcrumb}
+                replaceTokens={this.replaceGroupIdBreadcrumb}
               />
               <Switch>
                 <Route exact path={'/groups/:id'}>

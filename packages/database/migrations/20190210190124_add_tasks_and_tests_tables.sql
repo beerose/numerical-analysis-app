@@ -12,11 +12,11 @@ CREATE TABLE tasks (
   end_upload_date     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id),
+  PRIMARY KEY (id)
 );
 
 CREATE TABLE group_has_task (
-  group_id  INT NOT NULL REFERENCES groups(id),
+  group_id  INT NOT NULL REFERENCES `groups`(id),
   task_id   INT NOT NULL REFERENCES tasks(id),
   weight    INT NOT NULL DEFAULT 1,
   UNIQUE KEY(task_id, group_id)
