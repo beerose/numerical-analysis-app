@@ -68,6 +68,14 @@ export class MeetingsSection extends React.Component<Props, State> {
     this.hideNewMeetingModal();
   };
 
+  getDefaultNewMeetingDate = () => {
+    const { meetings } = this.props;
+    if (meetings && meetings.length > 0) {
+      return new Date(meetings[0].date);
+    }
+    return undefined;
+  };
+
   render() {
     const { modalMode, editingItem } = this.state;
     const { meetings, isLoading } = this.props;
@@ -89,7 +97,10 @@ export class MeetingsSection extends React.Component<Props, State> {
               model={editingItem}
             />
           ) : (
-            <WrappedNewMeetingForm onSubmit={this.handleAddNewMeeting} />
+            <WrappedNewMeetingForm
+              onSubmit={this.handleAddNewMeeting}
+              defaultDate={this.getDefaultNewMeetingDate()}
+            />
           )}
         </Modal>
         {meetings && (

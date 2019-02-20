@@ -2,7 +2,8 @@ import { Button, DatePicker, Form, Icon, Input } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
 import { css } from 'emotion';
-import * as React from 'react';
+import moment from 'moment';
+import React, { useEffect } from 'react';
 
 import { DateControls } from '../../../components/DateControls';
 import { Colors } from '../../../utils';
@@ -16,10 +17,19 @@ const formItems = css`
 `;
 
 type Props = {
+  defaultDate?: Date;
   onSubmit: ({ name, date }: { name: string; date: any }) => void;
 } & FormComponentProps;
 const NewMeetingForm = (props: Props) => {
   const { getFieldDecorator, getFieldValue, setFieldsValue } = props.form;
+
+  useEffect(() => {
+    if (props.defaultDate) {
+      props.form.setFieldsValue({
+        date: moment(props.defaultDate).add(7, 'days'),
+      });
+    }
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
