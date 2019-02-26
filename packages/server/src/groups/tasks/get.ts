@@ -24,6 +24,11 @@ export const getTask = (
           error_details: err.message,
         });
       }
+      if (task === null) {
+        return res.status(codes.NOT_FOUND).send({
+          error: apiMessages.taskNotFound,
+        });
+      }
       return res.status(codes.OK).send({ task });
     });
   });

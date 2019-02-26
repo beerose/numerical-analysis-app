@@ -34,6 +34,7 @@ export const apiMessages = {
   presenceDeleted: 'Obecność usunięta',
   taskCreated: 'Zadanie zostało utworzone',
   taskDeleted: 'Zadanie zostało usunięte',
+  taskNotFound: 'Zadanie nie zostało znalezione',
   tokenUsed:
     'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',
   userAlreadyExists: 'Użytkownik o tym adresie email już istnieje',

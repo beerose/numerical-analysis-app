@@ -233,12 +233,20 @@ export const attachTaskToGroup = (
 
 export const getTask = (
   { taskId }: { taskId: TaskDTO['id'] },
-  callback: QueryCallback<TaskDTO>
+  callback: QueryCallback<TaskDTO | null>
 ) =>
   connection.query(
     {
       sql: 'SELECT * FROM tasks WHERE id = ?',
       values: [taskId],
     },
-    callback
+    (err, res) => {
+      if (err) {
+        return callback(err, res);
+      }
+      if (!res.length) {
+        return callback(null, null);
+      }
+      return callback(null, res[0]);
+    }
   );
