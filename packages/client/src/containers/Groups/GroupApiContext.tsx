@@ -24,6 +24,7 @@ type StateValues = {
   meetingsDetails?: MeetingDetailsModel[];
   groups?: GroupDTO[];
   currentGroup?: GroupDTO;
+  currentTask?: TaskDTO;
   isLoading: boolean;
   error: boolean;
   errorMessage?: string;

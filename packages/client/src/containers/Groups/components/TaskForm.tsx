@@ -34,7 +34,7 @@ const FORM_ITEM_LAYOUT = {
 type Props = {
   mode: 'edit' | 'create';
   model?: TaskDTO;
-  onSubmit: (values: Omit<TaskDTO, 'id'>) => void;
+  onSubmit: (values: TaskDTO) => void;
 } & FormComponentProps;
 // tslint:disable-next-line:max-func-body-length
 const TaskForm = (props: Props) => {

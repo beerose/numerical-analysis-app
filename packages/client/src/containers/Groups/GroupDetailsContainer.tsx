@@ -17,10 +17,10 @@ import {
   MeetingsSection,
   SettingsSection,
   StudentsSection,
+  TaskSection,
   TasksSection,
   TestsSection,
 } from './sections';
-import { NewTaskSection } from './sections/NewTaskSection';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 type MenuLinkProps = {
@@ -52,7 +52,7 @@ export class GroupDetailsContainer extends React.Component<
   }
 
   replaceGroupIdBreadcrumb = (tokens: string[]) => {
-    const { currentGroup } = this.context;
+    const { currentGroup, currentTask } = this.context;
     return tokens.map((token, i) => {
       const previousToken = tokens[i - 1];
       if (
@@ -63,12 +63,8 @@ export class GroupDetailsContainer extends React.Component<
         return currentGroup.group_name;
       }
 
-      if (
-        previousToken === 'tasks' &&
-        Number(token)
-        // Compare with current task?
-      ) {
-        return '{{ nazwa taska }}';
+      if (previousToken === 'tasks' && currentTask && Number(token)) {
+        return currentTask.name;
       }
 
       return token;
@@ -166,7 +162,20 @@ export class GroupDetailsContainer extends React.Component<
                 </Route>
                 <Route exact path={'/groups/:id/tasks/new'}>
                   {({ history }) => (
-                    <NewTaskSection {...this.context} history={history} />
+                    <TaskSection
+                      {...this.context}
+                      history={history}
+                      mode={'create'}
+                    />
+                  )}
+                </Route>
+                <Route exact path={'/groups/:id/tasks/:task_id'}>
+                  {({ history }) => (
+                    <TaskSection
+                      {...this.context}
+                      mode={'edit'}
+                      history={history}
+                    />
                   )}
                 </Route>
                 <Route exact path={'/groups/:id/tests'}>
