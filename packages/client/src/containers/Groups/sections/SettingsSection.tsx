@@ -18,6 +18,7 @@ import {
   tresholdsKeys,
 } from '../components/GradeTresholdsList';
 import { GroupTypeRadioGroup } from '../components/GroupTypeRadioGroup';
+import { SelectSemester } from '../components/SelectSemester';
 import { SelectSuperUser } from '../components/SelectSuperUser';
 import { GroupApiContextState } from '../GroupApiContext';
 
@@ -169,8 +170,8 @@ const SettingsSectionInternal: React.FC<Props> = ({
       <FormRow label={texts.classRoomNumber}>
         {getFieldDecorator<AntFormState>('class_number')(<Input />)}
       </FormRow>
-      <FormRow label={texts.academicYear}>
-        {getFieldDecorator<AntFormState>('academic_year')(<Input />)}
+      <FormRow label={texts.semester}>
+        {getFieldDecorator<AntFormState>('academic_year')(<SelectSemester />)}
       </FormRow>
       <GroupEquation
         value={groupDataState.grade_equation}

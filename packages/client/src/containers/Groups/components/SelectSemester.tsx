@@ -1,9 +1,10 @@
 import { Icon, Select } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { SelectValue } from 'antd/lib/select';
-import * as React from 'react';
+import React from 'react';
 
 import { Colors } from '../../../utils';
+
 export const SelectSemester = React.forwardRef(
   (
     {

@@ -21,6 +21,6 @@
   "tasks": "Listy zadań",
   "tests": "Sprawdziany",
   "gradeTresholds": "Progi punktowe",
-  "academicYear": "Rok akademicki",
+  "semester": "semestr",
   "new": "Dodaj"
 }
