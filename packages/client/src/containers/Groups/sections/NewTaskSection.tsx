@@ -31,7 +31,7 @@ export const NewTaskSection = ({ actions, history }: Props) => {
 
   return (
     <Flex alignItems="center" padding={Theme.Padding.Half}>
-      <TaskForm onSubmit={handleSubmit} />
+      <TaskForm onSubmit={handleSubmit} mode={'create'} />
     </Flex>
   );
 };
