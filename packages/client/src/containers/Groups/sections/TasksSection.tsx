@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { Button, Card, List, Spin } from 'antd';
 import { useCallback, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
-import { Link } from 'react-router-dom';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
@@ -74,8 +73,8 @@ export const TasksSection = (props: Props) => {
           itemLayout="horizontal"
           dataSource={tasks}
           css={css`
-            padding: ${Theme.Padding.Standard} 0;
-            max-height: 100vh;
+            padding-top: ${Theme.Padding.Standard};
+            height: 100%;
           `}
           renderItem={(task: TaskDTO) => {
             return (

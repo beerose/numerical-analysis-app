@@ -35,6 +35,7 @@ export const connectToDb = () => {
         console.warn('Error occurred when connecting to database:\n', err);
         setTimeout(connectToDb, 2000);
       }
+      console.log('Connected to database!');
     });
 
     connection.on('error', err => {
