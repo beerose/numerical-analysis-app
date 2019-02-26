@@ -35,7 +35,7 @@ type Props = {
   onSubmit: (values: Omit<TaskDTO, 'id'>) => void;
 } & FormComponentProps;
 // tslint:disable-next-line:max-func-body-length
-const NewTaskForm = (props: Props) => {
+const TaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -180,4 +180,4 @@ const NewTaskForm = (props: Props) => {
     </Form>
   );
 };
-export const WrappedNewTaskForm = Form.create()(NewTaskForm);
+export const WrappedTaskForm = Form.create()(TaskForm);

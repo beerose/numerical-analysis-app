@@ -5,7 +5,7 @@ import { TaskDTO } from '../../../../../../dist/common';
 import { Flex } from '../../../components';
 import { Theme } from '../../../components/theme';
 import { showMessage } from '../../../utils';
-import { NewTaskForm } from '../components';
+import { TaskForm } from '../components';
 import { GroupApiContextState } from '../GroupApiContext';
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
@@ -31,7 +31,7 @@ export const NewTaskSection = ({ actions, history }: Props) => {
 
   return (
     <Flex alignItems="center" padding={Theme.Padding.Half}>
-      <NewTaskForm onSubmit={handleSubmit} />
+      <TaskForm onSubmit={handleSubmit} />
     </Flex>
   );
 };
