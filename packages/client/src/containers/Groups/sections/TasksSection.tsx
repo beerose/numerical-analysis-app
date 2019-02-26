@@ -95,8 +95,8 @@ export const TasksSection = (props: Props) => {
                     description={task.description}
                   />
                   <DateRange
-                    start={task.start_upload_date}
-                    end={task.end_upload_date}
+                    start={task.start_upload_date as string}
+                    end={task.end_upload_date as string}
                   />
                 </List.Item>
               </StyledTaskCard>
