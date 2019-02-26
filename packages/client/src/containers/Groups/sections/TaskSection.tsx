@@ -23,9 +23,10 @@ export const TaskSection = (props: Props) => {
 
   useEffect(() => {
     if (!props.currentTask && props.mode === 'edit') {
+      props.actions.getTask().then(console.log);
       console.log('GET TASK');
     }
-  });
+  }, []);
 
   const handleSubmit = (values: TaskDTO) => {
     props.mode === 'edit'

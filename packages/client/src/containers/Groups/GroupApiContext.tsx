@@ -75,6 +75,7 @@ export class GroupApiProvider extends React.Component<
         deleteTaskFromGroup: this.deleteTaskFromGroup,
         getGroup: this.getGroup,
         getMeetingsDetails: this.getMeetingsDetails,
+        getTask: this.getTask,
         listGroups: this.listGroups,
         listLecturers: this.listLecturers,
         listMeetings: this.listMeetings,
@@ -305,6 +306,14 @@ export class GroupApiProvider extends React.Component<
       this.state.currentGroup.id
     );
     this.setState({ isLoading: false });
+    return res;
+  };
+
+  getTask = async () => {
+    const taskId = Number(this.props.location.pathname.split('/')[4]);
+    this.setState({ isLoading: true });
+    const res = await groupsService.getTask(taskId);
+    this.setState({ currentTask: res.task, isLoading: false });
     return res;
   };
 
