@@ -10,6 +10,7 @@ import { DeepRequired } from 'utility-types';
 
 import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
+import { Theme } from '../../../components/theme';
 import { LABELS } from '../../../utils';
 import { useMergeKey, useMergeState } from '../../../utils/useMergeState';
 import { GroupEquation } from '../components/GradeEquation';
@@ -23,9 +24,10 @@ import { SelectSuperUser } from '../components/SelectSuperUser';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const SettingsForm = styled.form`
-  margin-left: 40px;
-  margin-top: 20px;
-  height: 80vh;
+  margin-left: ${Theme.Padding.Standard};
+  margin-top: ${Theme.Padding.Half};
+  margin-bottom: ${Theme.Padding.Half};
+  height: auto;
   > div {
     padding-bottom: 15px;
   }

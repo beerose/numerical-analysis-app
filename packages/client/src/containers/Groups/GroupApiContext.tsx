@@ -17,6 +17,7 @@ import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
 import { showMessage } from '../../utils';
 import { ComponentCallbacks } from '../../utils/ComponentCallbacks';
+
 const noGroupError = 'No group in state.';
 
 function getOwnFunctions<T extends object>(object: T) {
