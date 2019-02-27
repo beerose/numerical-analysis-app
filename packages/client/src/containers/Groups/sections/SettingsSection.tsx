@@ -122,7 +122,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
     actions.listLecturers();
 
     const initialState: AntFormState = {
-      class_number: group.class_number,
+      academic_year: group.academic_year || '',
       group_name: group.group_name,
       group_type: group.group_type,
       lecturer_id: group.lecturer_id,
@@ -168,9 +168,6 @@ const SettingsSectionInternal: React.FC<Props> = ({
             css={{ width: '100%' }}
           />
         )}
-      </FormRow>
-      <FormRow label={texts.classRoomNumber}>
-        {getFieldDecorator<AntFormState>('class_number')(<Input />)}
       </FormRow>
       <FormRow label={texts.semester}>
         {getFieldDecorator<AntFormState>('academic_year')(<SelectSemester />)}
