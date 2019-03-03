@@ -23,8 +23,7 @@ export const TaskSection = (props: Props) => {
 
   useEffect(() => {
     if (!props.currentTask && props.mode === 'edit') {
-      props.actions.getTask().then(console.log);
-      console.log('GET TASK');
+      props.actions.getTask();
     }
   }, []);
 
@@ -43,7 +42,15 @@ export const TaskSection = (props: Props) => {
 
   return (
     <Flex alignItems="center" padding={Theme.Padding.Half}>
-      <TaskForm onSubmit={handleSubmit} mode={props.mode} />
+      {props.mode === 'create' ? (
+        <TaskForm onSubmit={handleSubmit} mode="create" />
+      ) : (
+        <TaskForm
+          onSubmit={handleSubmit}
+          mode="edit"
+          model={props.currentTask}
+        />
+      )}
     </Flex>
   );
 };

@@ -1,10 +1,10 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button, DatePicker, Form, Icon, Input, Switch } from 'antd';
+import { Button, DatePicker, Form, Icon, Input, Spin, Switch } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import * as React from 'react';
-import { Omit } from 'react-router';
+import moment from 'moment';
+import React, { useEffect } from 'react';
 
 import { TaskDTO } from '../../../../../../dist/common';
 import { TaskTypeRadioGroup } from '../../../components';
@@ -56,6 +56,29 @@ const TaskForm = (props: Props) => {
       }, 1000);
     });
   };
+
+  useEffect(() => {
+    if (props.mode === 'edit' && props.model) {
+      const task = props.model;
+      props.form.setFieldsValue({
+        description: task.description,
+        end_upload_date: moment(task.end_upload_date),
+        kind: task.kind,
+        max_points: task.max_points,
+        name: task.name,
+        results_date: moment(task.results_date),
+        start_upload_date: moment(task.start_upload_date),
+        verify_upload: task.verify_upload,
+        weight: task.weight,
+      });
+    }
+  }, [props.model]);
+
+  if (props.mode === 'edit' && !props.model) {
+    return <Spin />;
+  }
+
+  console.log('model', props.model);
 
   return (
     <Form onSubmit={handleSubmit} css={formStyles}>
