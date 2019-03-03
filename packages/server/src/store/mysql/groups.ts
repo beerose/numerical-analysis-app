@@ -288,14 +288,16 @@ export const updateTaskInGroup = (
   );
 
 export const getTask = (
-  { taskId }: { taskId: TaskDTO['id'] },
+  { taskId, groupId }: { taskId: TaskDTO['id']; groupId: GroupDTO['id'] },
   callback: QueryCallback<TaskDTO | null>
 ) =>
   connection.query(
     {
-      sql:
-        'SELECT t.*, ght.weight FROM tasks t JOIN group_has_task ght ON (t.id = ght.task_id) WHERE id = ?',
-      values: [taskId],
+      sql: `
+        SELECT t.*, ght.weight
+        FROM tasks t JOIN group_has_task ght ON (t.id = ght.task_id)
+        WHERE t.id = ? AND ght.group_id = ?`,
+      values: [taskId, groupId],
     },
     (err, res) => {
       if (err) {

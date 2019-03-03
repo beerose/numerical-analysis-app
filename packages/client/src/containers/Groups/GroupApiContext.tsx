@@ -294,9 +294,12 @@ export class GroupApiProvider extends React.Component<
   };
 
   getTask = async () => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
     const taskId = Number(this.props.location.pathname.split('/')[4]);
     this.setState({ isLoading: true });
-    const res = await groupsService.getTask(taskId);
+    const res = await groupsService.getTask(taskId, this.state.currentGroup.id);
     this.setState({ currentTask: res.task, isLoading: false });
     return res;
   };

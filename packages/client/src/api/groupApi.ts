@@ -309,9 +309,10 @@ export const createTask = (
   );
 };
 
-export const getTask = (taskId: TaskDTO['id']) =>
+export const getTask = (taskId: TaskDTO['id'], groupId: GroupDTO['id']) =>
   authFetch<{ task: TaskDTO }>(
     `${SERVER_URL + Groups.Tasks.Get}?${qs.stringify({
+      group_id: groupId,
       task_id: taskId,
     })}`
   );
