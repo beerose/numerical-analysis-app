@@ -19,6 +19,7 @@ import { showMessage } from '../../utils';
 import { ComponentCallbacks } from '../../utils/ComponentCallbacks';
 
 const noGroupError = 'No group in state.';
+const noTaskError = 'No task in state.';
 
 function getOwnFunctions<T extends object>(object: T) {
   return fromPairs(
@@ -308,9 +309,13 @@ export class GroupApiProvider extends React.Component<
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
+    if (!this.state.currentTask) {
+      throw new Error(noTaskError);
+    }
     this.setState({ isLoading: true });
     const res = await groupsService.updateTask(
-      task,
+      { ...task, id: this.state.currentTask.id },
+
       this.state.currentGroup.id
     );
     this.setState({ isLoading: false });

@@ -49,11 +49,9 @@ const TaskForm = (props: Props) => {
       props.onSubmit({
         ...values,
         max_points: Number(values.max_points),
+        verify_upload: Boolean(values.verify_upload),
         weight: Number(values.weight),
       });
-      setTimeout(() => {
-        props.form.resetFields();
-      }, 1000);
     });
   };
 
@@ -77,8 +75,6 @@ const TaskForm = (props: Props) => {
   if (props.mode === 'edit' && !props.model) {
     return <Spin />;
   }
-
-  console.log('model', props.model);
 
   return (
     <Form onSubmit={handleSubmit} css={formStyles}>

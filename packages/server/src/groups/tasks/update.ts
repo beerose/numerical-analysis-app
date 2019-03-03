@@ -40,17 +40,18 @@ export const updateTask = (
         ),
         start_upload_date: new Date(task.start_upload_date),
       },
-      (err, result) => {
+      err => {
         if (err) {
           res.status(codes.INTERNAL_SERVER_ERROR).send({
             error: apiMessages.internalError,
             error_details: err.message,
           });
+          return;
         }
         db.updateTaskInGroup(
           {
             groupId: task.group_id,
-            taskId: result.insertId,
+            taskId: task.id,
             weight: isNumber(task.weight) ? Number(task.weight) : 0,
           },
           updateWeightErr => {
@@ -62,7 +63,6 @@ export const updateTask = (
             }
             res.status(codes.OK).send({
               message: apiMessages.taskUpdated,
-              task_id: result.insertId,
             });
           }
         );

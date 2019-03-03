@@ -220,14 +220,14 @@ export const updateTask = (
       UPDATE
         tasks
       SET
-        name
-        description
-        kind
-        max_points
-        verify_upload
-        results_date
-        end_upload_date
-        start_upload_date
+        name = ?,
+        description = ?,
+        kind = ?,
+        max_points = ?,
+        verify_upload = ?,
+        results_date = ?,
+        end_upload_date = ?,
+        start_upload_date = ?
       WHERE id = ?;
         `,
       values: [

@@ -28,8 +28,9 @@ export const TaskSection = (props: Props) => {
   }, []);
 
   const handleSubmit = (values: TaskDTO) => {
+    console.log(props.mode);
     props.mode === 'edit'
-      ? console.log(values)
+      ? props.actions.updateTask(values).then(showMessage)
       : props.actions.createTask(values).then(res => {
           showMessage(res);
           if ('error' in res) {
