@@ -210,6 +210,41 @@ export const insertTask = (
     callback
   );
 
+export const updateTask = (
+  task: Omit<TaskDTO, 'weight'>,
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: `
+      UPDATE
+        tasks
+      SET
+        name
+        description
+        kind
+        max_points
+        verify_upload
+        results_date
+        end_upload_date
+        start_upload_date
+      WHERE id = ?;
+        `,
+      values: [
+        task.name,
+        task.description,
+        task.kind,
+        task.max_points,
+        task.verify_upload,
+        task.results_date,
+        task.end_upload_date,
+        task.start_upload_date,
+        task.id,
+      ],
+    },
+    callback
+  );
+
 export const attachTaskToGroup = (
   {
     taskId,
@@ -227,6 +262,27 @@ export const attachTaskToGroup = (
       sql:
         'INSERT INTO group_has_task(group_id, task_id, weight) VALUES (?, ?, ?);',
       values: [groupId, taskId, weight],
+    },
+    callback
+  );
+
+export const updateTaskInGroup = (
+  {
+    taskId,
+    groupId,
+    weight,
+  }: {
+    taskId: TaskDTO['id'];
+    groupId: GroupDTO['id'];
+    weight: TaskDTO['weight'];
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql:
+        'UPDATE group_has_task SET weight = ? WHERE task_id = ? AND group_id = ?;',
+      values: [weight, taskId, groupId],
     },
     callback
   );

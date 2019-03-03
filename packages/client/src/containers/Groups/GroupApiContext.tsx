@@ -301,6 +301,19 @@ export class GroupApiProvider extends React.Component<
     return res;
   };
 
+  updateTask = async (task: TaskDTO) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    this.setState({ isLoading: true });
+    const res = await groupsService.updateTask(
+      task,
+      this.state.currentGroup.id
+    );
+    this.setState({ isLoading: false });
+    return res;
+  };
+
   render() {
     return (
       <GroupApiContext.Provider value={this.state as GroupApiContextState}>

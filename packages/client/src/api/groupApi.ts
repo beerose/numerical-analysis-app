@@ -315,3 +315,10 @@ export const getTask = (taskId: TaskDTO['id']) =>
       task_id: taskId,
     })}`
   );
+
+export const updateTask = (task: TaskDTO, groupId: GroupDTO['id']) => {
+  return authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Create, {
+    body: JSON.stringify({ ...task, group_id: groupId }),
+    method: 'POST',
+  });
+};
