@@ -2,6 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Card, List, Spin } from 'antd';
+import { join } from 'path';
 import { useCallback, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
@@ -37,28 +38,27 @@ const StyledTaskCard = styled(Card)`
 `;
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
-export const TasksSection = (props: Props) => {
-  const { tasks } = props;
-
+export const TasksSection = ({ actions, tasks, history }: Props) => {
   useEffect(() => {
     if (!tasks) {
-      props.actions.listTasks();
+      actions.listTasks();
     }
-  }, []);
+  }, [actions]);
 
-  const deleteTask = (taskId: TaskDTO['id']) => {
-    const { deleteTaskFromGroup, listTasks } = props.actions;
-    deleteTaskFromGroup(taskId).then(res => {
-      showMessage(res);
-      listTasks();
-    });
-  };
+  const deleteTask = useCallback(
+    (taskId: TaskDTO['id']) => {
+      const { deleteTaskFromGroup, listTasks } = actions;
+      deleteTaskFromGroup(taskId).then(res => {
+        showMessage(res);
+        listTasks();
+      });
+    },
+    [actions]
+  );
 
   const navigateTo = useCallback(
     (path: string) => {
-      props.history.push(
-        (location.pathname.endsWith('/') ? '' : 'tasks/') + String(path)
-      );
+      history.push(join(location.pathname, path));
     },
     [location.pathname]
   );

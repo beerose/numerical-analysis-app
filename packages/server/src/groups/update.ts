@@ -39,12 +39,10 @@ export const update = (req: UpdateGroupBody, res: BackendResponse) => {
 
     db.updateGroup(group, err => {
       if (err) {
-        return res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({
-            error: apiMessages.internalError,
-            error_details: err.message,
-          });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: err.message,
+        });
       }
 
       return res.status(codes.OK).send({ message: apiMessages.groupUpdated });

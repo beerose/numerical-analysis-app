@@ -4,13 +4,14 @@ import {
   MeetingDetailsModel,
   MeetingDTO,
   TaskDTO,
-  TaskKind,
   UserDTO,
   UserRole,
 } from 'common';
+import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
 import React from 'react';
-import { Omit, RouteChildrenProps, RouteComponentProps } from 'react-router';
+import { Omit, RouteChildrenProps } from 'react-router';
+import { FunctionKeys } from 'utility-types';
 
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
@@ -18,6 +19,12 @@ import { showMessage } from '../../utils';
 import { ComponentCallbacks } from '../../utils/ComponentCallbacks';
 
 const noGroupError = 'No group in state.';
+
+function getOwnFunctions<T extends object>(object: T) {
+  return fromPairs(
+    Object.entries(object).filter(([_, v]) => typeof v === 'function')
+  ) as Pick<T, FunctionKeys<T>>;
+}
 
 type StateValues = {
   meetings?: MeetingDTO[];
@@ -61,37 +68,15 @@ export class GroupApiProvider extends React.Component<
     super(props);
 
     const state: GroupApiContextState = {
-      // actions won't be accessible from class body
-      actions: {
-        addMeeting: this.addMeeting,
-        addNewStudentToGroup: this.addNewStudentToGroup,
-        addPresence: this.addPresence,
-        createGroup: this.createGroup,
-        createTask: this.createTask,
-        deleteGroup: this.deleteGroup,
-        deleteMeeting: this.deleteMeeting,
-        deletePresence: this.deletePresence,
-        deleteStudentFromGroup: this.deleteStudentFromGroup,
-        deleteTaskFromGroup: this.deleteTaskFromGroup,
-        getGroup: this.getGroup,
-        getMeetingsDetails: this.getMeetingsDetails,
-        listGroups: this.listGroups,
-        listLecturers: this.listLecturers,
-        listMeetings: this.listMeetings,
-        listStudentsWithGroup: this.listStudentsWithGroup,
-        listTasks: this.listTasks,
-        setActivity: this.setActivity,
-        setStudentMeetingDetails: this.setStudentMeetingDetails,
-        updateGroup: this.updateGroup,
-        updateMeeting: this.updateMeeting,
-        updateStudentInGroup: this.updateStudentInGroup,
-        uploadUsers: this.uploadUsers,
-      },
+      actions: (getOwnFunctions(this) as unknown) as ComponentCallbacks<
+        GroupApiProvider
+      >,
       error: false,
       isLoading: false,
       lecturers: [],
     };
 
+    // this.state.actions won't be accessible from class body
     this.state = state as StateValues;
   }
 
