@@ -10,7 +10,7 @@ import { showMessage } from '../../../utils';
 const showBadTresholdsError = debounce(
   () =>
     showMessage({
-      error: 'Grade tresholds list should be non-decreasing',
+      error: 'Progi punktowe nie mogą być malejące',
     }),
   1000
 );
