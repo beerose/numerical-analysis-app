@@ -4,7 +4,7 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently -c blue,green -n s,f \"yarn workspace server dev\" \"yarn workspace client dev\"",
+    "dev": "concurrently -c blue,green,yellow -n c,s,f \"yarn workspace common tsc\" \"yarn workspace server dev\" \"yarn workspace client dev\"",
     "db:setup": "yarn workspace database setup",
     "db:grepForPassword": "yarn workspace database grepForPassword",
     "db:ports": "yarn workspace database ports",

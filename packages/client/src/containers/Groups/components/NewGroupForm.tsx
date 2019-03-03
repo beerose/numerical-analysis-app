@@ -87,9 +87,9 @@ class NewGroupForm extends React.Component<Props> {
             />
           )}
         </FormItem>
-        <FormItem label={LABELS.academicYear} {...FORM_ITEM_LAYOUT}>
+        <FormItem label={LABELS.semester} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('academic_year', {
-            rules: [{ required: true, message: LABELS.academicYearRequired }],
+            rules: [{ required: true, message: LABELS.semesterRequired }],
           })(<SelectSemester />)}
         </FormItem>
         <FormItem label={LABELS.classRoomNumber} {...FORM_ITEM_LAYOUT}>
