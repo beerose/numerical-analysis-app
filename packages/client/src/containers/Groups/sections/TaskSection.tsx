@@ -1,5 +1,6 @@
+import { Spin } from 'antd';
 import React, { useCallback, useEffect } from 'react';
-import { Omit, RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
 import { Flex } from '../../../components';
@@ -30,7 +31,10 @@ export const TaskSection = (props: Props) => {
   const handleSubmit = (values: TaskDTO) => {
     console.log(props.mode);
     props.mode === 'edit'
-      ? props.actions.updateTask(values).then(showMessage)
+      ? props.actions.updateTask(values).then(res => {
+          showMessage(res);
+          props.actions.getTask();
+        })
       : props.actions.createTask(values).then(res => {
           showMessage(res);
           if ('error' in res) {
@@ -40,6 +44,10 @@ export const TaskSection = (props: Props) => {
           navigateTo(String(res.task_id));
         });
   };
+
+  if (props.isLoading) {
+    return <Spin />;
+  }
 
   return (
     <Flex alignItems="center" padding={Theme.Padding.Half}>

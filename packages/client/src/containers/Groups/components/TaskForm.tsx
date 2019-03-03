@@ -8,7 +8,7 @@ import React, { useEffect } from 'react';
 
 import { TaskDTO } from '../../../../../../dist/common';
 import { TaskTypeRadioGroup } from '../../../components';
-import { Colors } from '../../../utils';
+import { Colors, LABELS } from '../../../utils';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -71,10 +71,6 @@ const TaskForm = (props: Props) => {
       });
     }
   }, [props.model]);
-
-  if (props.mode === 'edit' && !props.model) {
-    return <Spin />;
-  }
 
   return (
     <Form onSubmit={handleSubmit} css={formStyles}>
@@ -196,7 +192,7 @@ const TaskForm = (props: Props) => {
         })(<Switch defaultChecked={true} />)}
       </Form.Item>
       <Button type="primary" htmlType="submit">
-        Dodaj
+        Zapisz
       </Button>
     </Form>
   );
