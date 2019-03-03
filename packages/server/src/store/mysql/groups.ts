@@ -293,7 +293,8 @@ export const getTask = (
 ) =>
   connection.query(
     {
-      sql: 'SELECT * FROM tasks WHERE id = ?',
+      sql:
+        'SELECT t.*, ght.weight FROM tasks t JOIN group_has_task ght ON (t.id = ght.task_id) WHERE id = ?',
       values: [taskId],
     },
     (err, res) => {
