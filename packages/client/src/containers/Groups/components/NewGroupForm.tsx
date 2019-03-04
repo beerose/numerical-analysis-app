@@ -31,7 +31,6 @@ const formStyles = css`
 
 export type NewGroupFormValues = {
   semester: string;
-  class_room: number | string;
   group: GroupType;
   group_name: string;
   lecturer_id: UserDTO['id'];
@@ -91,16 +90,6 @@ class NewGroupForm extends React.Component<Props> {
           {getFieldDecorator('semester', {
             rules: [{ required: true, message: LABELS.semesterRequired }],
           })(<SelectSemester />)}
-        </FormItem>
-        <FormItem label={LABELS.classRoomNumber} {...FORM_ITEM_LAYOUT}>
-          {getFieldDecorator('class_room')(
-            <Input
-              prefix={
-                <Icon type="book" style={{ color: Colors.SemiLightGrey }} />
-              }
-              placeholder={LABELS.classRoomNumber}
-            />
-          )}
         </FormItem>
         <FormItem
           wrapperCol={{
