@@ -82,21 +82,21 @@ export class GroupApiProvider extends React.Component<
   }
 
   createGroup = ({
-    academic_year,
+    semester,
     group_name,
     group_type,
     lecturer_id,
   }: Pick<
     GroupDTO,
-    'academic_year' | 'group_name' | 'group_type' | 'lecturer_id'
+    'semester' | 'group_name' | 'group_type' | 'lecturer_id'
   >) => {
     this.setState({ isLoading: true });
     groupsService
       .addGroup({
-        academic_year,
         group_name,
         group_type,
         lecturer_id,
+        semester,
       })
       .then(res => {
         this.setState({ isLoading: false });

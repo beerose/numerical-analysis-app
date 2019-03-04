@@ -71,7 +71,7 @@ export type GroupDTO = {
   lecturer_id: UserDTO['id'];
   lecturer_name?: string;
   class_number?: number;
-  academic_year?: string;
+  semester?: string;
   data?: {
     tresholds?: Tresholds;
     grade_equation?: string;

@@ -7,7 +7,6 @@ import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 
 const CreateGroupBodyV = t.type({
-  academic_year: t.string,
   group_name: t.string,
   group_type: t.union([
     t.literal(GroupType.Exercise),
@@ -15,6 +14,7 @@ const CreateGroupBodyV = t.type({
     t.literal(GroupType.Lecture),
   ]),
   lecturer_id: t.number,
+  semester: t.string,
 });
 
 type CreateGroupRequest = PostRequest<typeof CreateGroupBodyV>;

@@ -16,7 +16,7 @@ export const apiMessages = {
   invalidCSV:
     'Nieprawidłowy plik CSV. Wymagany format to: imię, nazwisko, indeks, email.',
   invalidCreateGroupRequest:
-    'Pola group_type, group_name, academic_year są wymagane',
+    'Pola group_type, group_name, semester są wymagane',
   invalidDeleteStudentFromGroupReq: 'user_id jest wymagane',
   invalidEmailOrPassword: 'Nieprawidłowy email lub hasło',
   invalidJWT: 'Nieprawidłowy format JWT',

@@ -56,7 +56,7 @@ const FormRow: React.FC<FormRowProps> = ({ label, children }) => (
 
 type AntFormState = Pick<
   GroupDTO,
-  'class_number' | 'group_name' | 'group_type' | 'lecturer_id' | 'academic_year'
+  'class_number' | 'group_name' | 'group_type' | 'lecturer_id' | 'semester'
 >;
 
 type GroupDataState = DeepRequired<GroupDTO>['data'];
@@ -122,10 +122,10 @@ const SettingsSectionInternal: React.FC<Props> = ({
     actions.listLecturers();
 
     const initialState: AntFormState = {
-      academic_year: group.academic_year || '',
       group_name: group.group_name,
       group_type: group.group_type,
       lecturer_id: group.lecturer_id,
+      semester: group.semester || '',
     };
     form.setFieldsValue(initialState);
   }, [group]);
@@ -170,7 +170,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
         )}
       </FormRow>
       <FormRow label={texts.semester}>
-        {getFieldDecorator<AntFormState>('academic_year')(<SelectSemester />)}
+        {getFieldDecorator<AntFormState>('semester')(<SelectSemester />)}
       </FormRow>
       <GroupEquation
         value={groupDataState.grade_equation}

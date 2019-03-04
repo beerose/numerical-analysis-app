@@ -28,19 +28,19 @@ export const getGroup = (
 export const addGroup = (
   group: Pick<
     GroupDTO,
-    'group_name' | 'group_type' | 'academic_year' | 'lecturer_id'
+    'group_name' | 'group_type' | 'semester' | 'lecturer_id'
   >,
   callback: QueryCallback
 ) =>
   connection.query(
     {
       sql: `INSERT INTO
-        \`groups\` (group_name, group_type, academic_year, lecturer_id)
+        \`groups\` (group_name, group_type, semester, lecturer_id)
       VALUES (?, ?, ?, ?)`,
       values: [
         group.group_name,
         group.group_type,
-        group.academic_year,
+        group.semester,
         group.lecturer_id,
       ],
     },
@@ -50,12 +50,7 @@ export const addGroup = (
 export const updateGroup = (
   group: Pick<
     GroupDTO,
-    | 'group_name'
-    | 'group_type'
-    | 'academic_year'
-    | 'lecturer_id'
-    | 'id'
-    | 'data'
+    'group_name' | 'group_type' | 'semester' | 'lecturer_id' | 'id' | 'data'
   >,
   callback: QueryCallback
 ) =>
@@ -65,7 +60,7 @@ export const updateGroup = (
   UPDATE \`groups\` SET
     group_name = ?,
     group_type = ?,
-    academic_year = ?,
+    semester = ?,
     lecturer_id = ?,
     data = ?
   WHERE id = ?;
@@ -73,7 +68,7 @@ export const updateGroup = (
       values: [
         group.group_name,
         group.group_type,
-        group.academic_year,
+        group.semester,
         group.lecturer_id,
         JSON.stringify(group.data),
         group.id,

@@ -30,7 +30,7 @@ const formStyles = css`
 `;
 
 export type EditGroupFormValues = {
-  academic_year: string;
+  semester: string;
   class_room: number | string;
   group: GroupType;
   group_name: string;
@@ -94,7 +94,7 @@ class EditGroupForm extends React.Component<Props> {
           )}
         </FormItem>
         <FormItem label={LABELS.semester} {...FORM_ITEM_LAYOUT}>
-          {getFieldDecorator('academic_year', {
+          {getFieldDecorator('semester', {
             rules: [{ required: true, message: LABELS.semesterRequired }],
           })(<SelectSemester />)}
         </FormItem>
