@@ -1,4 +1,6 @@
-declare var process: NodeJS.Process;
+declare var process: NodeJS.Process & {
+  JWT_SECRET: string;
+};
 
 declare module '*.json' {
   const value: any;

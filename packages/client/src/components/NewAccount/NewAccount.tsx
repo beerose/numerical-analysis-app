@@ -60,20 +60,32 @@ export class NewAccount extends React.Component<Props, State> {
   componentWillMount() {
     const parsedHash = qs.parse(this.props.location.hash);
     if (!parsedHash.token) {
-      this.setState({ localErrorMessage: LABELS.magicLinkInvalid, localError: true });
+      this.setState({
+        localError: true,
+        localErrorMessage: LABELS.magicLinkInvalid,
+      });
+      return;
     }
     this.setState({ token: parsedHash.token });
 
     let decoded;
     try {
-      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET!) as { user_name?: string };
-    } catch {
-      this.setState({ localErrorMessage: LABELS.magicLinkInvalid, localError: true });
+      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET!) as {
+        user_name?: string;
+      };
+    } catch (err) {
+      this.setState({
+        localError: true,
+        localErrorMessage: LABELS.magicLinkInvalid,
+      });
       return;
     }
 
     if (!decoded.user_name) {
-      this.setState({ localErrorMessage: LABELS.magicLinkInvalid, localError: true });
+      this.setState({
+        localError: true,
+        localErrorMessage: LABELS.magicLinkInvalid,
+      });
       return;
     }
 
@@ -84,23 +96,40 @@ export class NewAccount extends React.Component<Props, State> {
     const { localErrorMessage, localError, userName, token } = this.state;
     return (
       <AuthConsumer>
-        {({ actions, error: authError, errorMessage: authErrorMessage, userAuth }) => {
+        {({
+          actions,
+          error: authError,
+          errorMessage: authErrorMessage,
+          userAuth,
+        }) => {
           const error = authError || localError;
-          const errorMessage = error && localError ? localErrorMessage : authErrorMessage;
+          const errorMessage =
+            error && localError ? localErrorMessage : authErrorMessage;
           return (
             <Modal
               visible={!userAuth}
               centered
-              title={error ? errorModalHeader : <NewAccountModalHeader userName={userName} />}
+              title={
+                error ? (
+                  errorModalHeader
+                ) : (
+                  <NewAccountModalHeader userName={userName} />
+                )
+              }
               footer={null}
               width={400}
               closable={false}
             >
               {error ? (
-                <ErrorContainer errorMessage={errorMessage} onClick={actions.goToMainPage} />
+                <ErrorContainer
+                  errorMessage={errorMessage}
+                  onClick={actions.goToMainPage}
+                />
               ) : (
                 <NewAccountWithTokenForm
-                  onSubmit={(password: string) => actions.createNewAccount(token, password)}
+                  onSubmit={(password: string) =>
+                    actions.createNewAccount(token, password)
+                  }
                 />
               )}
             </Modal>
