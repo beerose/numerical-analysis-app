@@ -25,14 +25,16 @@ const buttonStyles = css`
 const ErrorContainer = ({
   errorMessage,
   onClick,
+  label,
 }: {
   errorMessage?: string;
   onClick: () => void;
+  label: string;
 }) => (
   <section css={errorContainerStyles}>
     {errorMessage}
     <Button onClick={onClick} css={buttonStyles}>
-      {LABELS.goToLoginPage}
+      {label}
     </Button>
   </section>
 );
@@ -44,24 +46,21 @@ const errorModalHeader = <ModalHeader title="Wystąpił błąd" />;
 
 type State = {
   userName: string;
-  localError: boolean;
   localErrorMessage: string;
   token: string;
 };
 type Props = RouteComponentProps;
 export class NewAccount extends React.Component<Props, State> {
   state = {
-    localError: false,
     localErrorMessage: '',
     token: '',
     userName: '',
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const parsedHash = qs.parse(this.props.location.hash);
     if (!parsedHash.token) {
       this.setState({
-        localError: true,
         localErrorMessage: LABELS.magicLinkInvalid,
       });
       return;
@@ -70,12 +69,11 @@ export class NewAccount extends React.Component<Props, State> {
 
     let decoded;
     try {
-      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET!) as {
+      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET) as {
         user_name?: string;
       };
     } catch (err) {
       this.setState({
-        localError: true,
         localErrorMessage: LABELS.magicLinkInvalid,
       });
       return;
@@ -83,7 +81,6 @@ export class NewAccount extends React.Component<Props, State> {
 
     if (!decoded.user_name) {
       this.setState({
-        localError: true,
         localErrorMessage: LABELS.magicLinkInvalid,
       });
       return;
@@ -93,24 +90,24 @@ export class NewAccount extends React.Component<Props, State> {
   }
 
   render() {
-    const { localErrorMessage, localError, userName, token } = this.state;
+    const { localErrorMessage, userName, token } = this.state;
     return (
       <AuthConsumer>
-        {({
-          actions,
-          error: authError,
-          errorMessage: authErrorMessage,
-          userAuth,
-        }) => {
-          const error = authError || localError;
-          const errorMessage =
-            error && localError ? localErrorMessage : authErrorMessage;
+        {({ actions, errorMessage: authErrorMessage, userAuth }) => {
+          let errorMessage;
+          if (userAuth) {
+            errorMessage = 'Jesteś już zalogowany';
+          } else {
+            errorMessage = localErrorMessage
+              ? localErrorMessage
+              : authErrorMessage;
+          }
           return (
             <Modal
-              visible={!userAuth}
+              visible
               centered
               title={
-                error ? (
+                errorMessage ? (
                   errorModalHeader
                 ) : (
                   <NewAccountModalHeader userName={userName} />
@@ -120,10 +117,15 @@ export class NewAccount extends React.Component<Props, State> {
               width={400}
               closable={false}
             >
-              {error ? (
+              {errorMessage ? (
                 <ErrorContainer
                   errorMessage={errorMessage}
                   onClick={actions.goToMainPage}
+                  label={
+                    userAuth
+                      ? 'Przejdź do strony głównej'
+                      : LABELS.goToLoginPage
+                  }
                 />
               ) : (
                 <NewAccountWithTokenForm
