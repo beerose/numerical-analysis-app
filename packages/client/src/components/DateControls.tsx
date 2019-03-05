@@ -23,13 +23,13 @@ type Props = {
 };
 
 export const DateControls = (props: Props) => {
-  const onSelectorClick = useCallback((days: number) => {
+  const onSelectorClick = (days: number) => {
     const selectedDate = props.getFieldValue('date');
     const defaultDate = selectedDate
       ? moment(selectedDate)
       : moment(new Date());
     props.setFieldsValue({ date: defaultDate.add(days, 'days') });
-  }, []);
+  };
 
   return (
     <div className={containerStyles}>
@@ -37,7 +37,7 @@ export const DateControls = (props: Props) => {
         <Button
           key={days}
           shape="circle"
-          onClick={() => onSelectorClick(s)}
+          onClick={() => onSelectorClick(days)}
           className={dateSelectorsStyles}
         >
           {days > 0 && '+'}
