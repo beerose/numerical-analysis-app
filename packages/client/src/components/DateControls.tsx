@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import { css } from 'emotion';
 import moment from 'moment';
-import React, { useCallback } from 'react';
+import React from 'react';
 
 const dateSelectorsStyles = css`
   color: rgba(0, 0, 0, 0.5);
