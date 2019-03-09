@@ -158,7 +158,7 @@ export enum TestKind {
 export type TaskDTO = {
   id: number;
   name: string;
-  kind: TaskKind & TestKind;
+  kind: TaskKind | TestKind;
   weight: number;
   max_points: number;
   results_date?: string | Date; // if empty then due date
