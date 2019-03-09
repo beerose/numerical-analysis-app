@@ -308,3 +308,18 @@ export const createTask = (
     }
   );
 };
+
+export const getTask = (taskId: TaskDTO['id'], groupId: GroupDTO['id']) =>
+  authFetch<{ task: TaskDTO }>(
+    `${SERVER_URL + Groups.Tasks.Get}?${qs.stringify({
+      group_id: groupId,
+      task_id: taskId,
+    })}`
+  );
+
+export const updateTask = (task: TaskDTO, groupId: GroupDTO['id']) => {
+  return authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Update, {
+    body: JSON.stringify({ ...task, group_id: groupId }),
+    method: 'POST',
+  });
+};

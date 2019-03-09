@@ -6,11 +6,34 @@ import { SERVER_URL } from '.';
 
 const { Accounts } = ServerRoutes;
 
+type AuthResponse = {
+  token: string;
+  user_name: string;
+  user_role: string;
+};
+
+const handleWrongResponse = (response: ApiResponse | AuthResponse) => {
+  if ('error' in response) {
+    return response;
+  }
+  if ('token' in response && !response.user_name && response.user_role) {
+    return response;
+  }
+  return { error: 'Zła odpowiedź z serwera' };
+};
+
+const handleServerError = (err: any) => {
+  if (!err.response) {
+    return { error: LABELS.serverUnavaliable };
+  }
+  return { error: err.response.data.message };
+};
+
 export const login = (
   email: string,
   password: string
 ): Promise<
-  { token: string; user_name: string; user_role: string } & ApiResponse
+  { token: string; user_name: string; user_role: string } | ApiResponse
 > => {
   const data = new URLSearchParams();
   data.append('email', email);
@@ -23,28 +46,15 @@ export const login = (
     method: 'POST',
   })
     .then(response => response.json())
-    .then(response => {
-      if (response.error) {
-        return response;
-      }
-      if (!response.token || !response.user_name || !response.user_role) {
-        return { error: 'Zła odpowiedź z serwera' };
-      }
-      return response;
-    })
-    .catch(err => {
-      if (!err.response) {
-        return { error: LABELS.serverUnavaliable };
-      }
-      return { error: err.response.data.message };
-    });
+    .then(handleWrongResponse)
+    .catch(handleServerError);
 };
 
 export const newAccount = (
   token: string,
   password: string
 ): Promise<
-  { token: string; user_name: string; user_role: string } & ApiResponse
+  { token: string; user_name: string; user_role: string } | ApiResponse
 > => {
   const data = new URLSearchParams();
   data.append('token', token);
@@ -57,19 +67,6 @@ export const newAccount = (
     method: 'POST',
   })
     .then(response => response.json())
-    .then(response => {
-      if (response.error) {
-        return response;
-      }
-      if (!response.token || !response.user_name || !response.user_role) {
-        return { error: 'Zła odpowiedź z serwera' };
-      }
-      return response;
-    })
-    .catch(err => {
-      if (!err.response) {
-        return { error: LABELS.serverUnavaliable };
-      }
-      return { error: err.response.data.message };
-    });
+    .then(handleWrongResponse)
+    .catch(handleServerError);
 };

@@ -30,8 +30,7 @@ const formStyles = css`
 `;
 
 export type EditGroupFormValues = {
-  academic_year: string;
-  class_room: number | string;
+  semester: string;
   group: GroupType;
   group_name: string;
   lecturer_id: UserDTO['id'];
@@ -93,20 +92,10 @@ class EditGroupForm extends React.Component<Props> {
             />
           )}
         </FormItem>
-        <FormItem label={LABELS.academicYear} {...FORM_ITEM_LAYOUT}>
-          {getFieldDecorator('academic_year', {
-            rules: [{ required: true, message: LABELS.academicYearRequired }],
+        <FormItem label={LABELS.semester} {...FORM_ITEM_LAYOUT}>
+          {getFieldDecorator('semester', {
+            rules: [{ required: true, message: LABELS.semesterRequired }],
           })(<SelectSemester />)}
-        </FormItem>
-        <FormItem label={LABELS.classRoomNumber} {...FORM_ITEM_LAYOUT}>
-          {getFieldDecorator('class_room')(
-            <Input
-              prefix={
-                <Icon type="book" style={{ color: Colors.SemiLightGrey }} />
-              }
-              placeholder={LABELS.classRoomNumber}
-            />
-          )}
         </FormItem>
         <FormItem
           wrapperCol={{

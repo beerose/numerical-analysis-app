@@ -28,19 +28,19 @@ export const getGroup = (
 export const addGroup = (
   group: Pick<
     GroupDTO,
-    'group_name' | 'group_type' | 'academic_year' | 'lecturer_id'
+    'group_name' | 'group_type' | 'semester' | 'lecturer_id'
   >,
   callback: QueryCallback
 ) =>
   connection.query(
     {
       sql: `INSERT INTO
-        \`groups\` (group_name, group_type, academic_year, lecturer_id)
+        \`groups\` (group_name, group_type, semester, lecturer_id)
       VALUES (?, ?, ?, ?)`,
       values: [
         group.group_name,
         group.group_type,
-        group.academic_year,
+        group.semester,
         group.lecturer_id,
       ],
     },
@@ -50,12 +50,7 @@ export const addGroup = (
 export const updateGroup = (
   group: Pick<
     GroupDTO,
-    | 'group_name'
-    | 'group_type'
-    | 'academic_year'
-    | 'lecturer_id'
-    | 'id'
-    | 'data'
+    'group_name' | 'group_type' | 'semester' | 'lecturer_id' | 'id' | 'data'
   >,
   callback: QueryCallback
 ) =>
@@ -65,7 +60,7 @@ export const updateGroup = (
   UPDATE \`groups\` SET
     group_name = ?,
     group_type = ?,
-    academic_year = ?,
+    semester = ?,
     lecturer_id = ?,
     data = ?
   WHERE id = ?;
@@ -73,7 +68,7 @@ export const updateGroup = (
       values: [
         group.group_name,
         group.group_type,
-        group.academic_year,
+        group.semester,
         group.lecturer_id,
         JSON.stringify(group.data),
         group.id,
@@ -210,6 +205,41 @@ export const insertTask = (
     callback
   );
 
+export const updateTask = (
+  task: Omit<TaskDTO, 'weight'>,
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: `
+      UPDATE
+        tasks
+      SET
+        name = ?,
+        description = ?,
+        kind = ?,
+        max_points = ?,
+        verify_upload = ?,
+        results_date = ?,
+        end_upload_date = ?,
+        start_upload_date = ?
+      WHERE id = ?;
+        `,
+      values: [
+        task.name,
+        task.description,
+        task.kind,
+        task.max_points,
+        task.verify_upload,
+        task.results_date,
+        task.end_upload_date,
+        task.start_upload_date,
+        task.id,
+      ],
+    },
+    callback
+  );
+
 export const attachTaskToGroup = (
   {
     taskId,
@@ -231,14 +261,46 @@ export const attachTaskToGroup = (
     callback
   );
 
-export const getTask = (
-  { taskId }: { taskId: TaskDTO['id'] },
-  callback: QueryCallback<TaskDTO>
+export const updateTaskInGroup = (
+  {
+    taskId,
+    groupId,
+    weight,
+  }: {
+    taskId: TaskDTO['id'];
+    groupId: GroupDTO['id'];
+    weight: TaskDTO['weight'];
+  },
+  callback: QueryCallback
 ) =>
   connection.query(
     {
-      sql: 'SELECT * FROM tasks WHERE id = ?',
-      values: [taskId],
+      sql:
+        'UPDATE group_has_task SET weight = ? WHERE task_id = ? AND group_id = ?;',
+      values: [weight, taskId, groupId],
     },
     callback
+  );
+
+export const getTask = (
+  { taskId, groupId }: { taskId: TaskDTO['id']; groupId: GroupDTO['id'] },
+  callback: QueryCallback<TaskDTO | null>
+) =>
+  connection.query(
+    {
+      sql: `
+        SELECT t.*, ght.weight
+        FROM tasks t JOIN group_has_task ght ON (t.id = ght.task_id)
+        WHERE t.id = ? AND ght.group_id = ?`,
+      values: [taskId, groupId],
+    },
+    (err, res) => {
+      if (err) {
+        return callback(err, res);
+      }
+      if (!res.length) {
+        return callback(null, null);
+      }
+      return callback(null, res[0]);
+    }
   );

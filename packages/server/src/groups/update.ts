@@ -7,7 +7,6 @@ import { BackendResponse } from '../lib/response';
 import { db } from '../store';
 
 const UpdateGroupBodyV = t.type({
-  academic_year: t.union([t.string, t.undefined]),
   data: t.type({
     grade_equation: t.union([t.string, t.undefined]),
     tresholds: t.union([
@@ -29,6 +28,7 @@ const UpdateGroupBodyV = t.type({
   ]),
   id: t.number,
   lecturer_id: t.number,
+  semester: t.union([t.string, t.undefined]),
 });
 
 type UpdateGroupBody = PostRequest<typeof UpdateGroupBodyV>;
@@ -39,12 +39,10 @@ export const update = (req: UpdateGroupBody, res: BackendResponse) => {
 
     db.updateGroup(group, err => {
       if (err) {
-        return res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({
-            error: apiMessages.internalError,
-            error_details: err.message,
-          });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: err.message,
+        });
       }
 
       return res.status(codes.OK).send({ message: apiMessages.groupUpdated });

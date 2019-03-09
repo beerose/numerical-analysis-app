@@ -10,6 +10,7 @@ import { DeepRequired } from 'utility-types';
 
 import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
+import { Theme } from '../../../components/theme';
 import { LABELS } from '../../../utils';
 import { useMergeKey, useMergeState } from '../../../utils/useMergeState';
 import { GroupEquation } from '../components/GradeEquation';
@@ -18,13 +19,15 @@ import {
   tresholdsKeys,
 } from '../components/GradeTresholdsList';
 import { GroupTypeRadioGroup } from '../components/GroupTypeRadioGroup';
+import { SelectSemester } from '../components/SelectSemester';
 import { SelectSuperUser } from '../components/SelectSuperUser';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const SettingsForm = styled.form`
-  margin-left: 40px;
-  margin-top: 20px;
-  height: 80vh;
+  margin-left: ${Theme.Padding.Standard};
+  margin-top: ${Theme.Padding.Half};
+  margin-bottom: ${Theme.Padding.Half};
+  height: auto;
   > div {
     padding-bottom: 15px;
   }
@@ -53,7 +56,7 @@ const FormRow: React.FC<FormRowProps> = ({ label, children }) => (
 
 type AntFormState = Pick<
   GroupDTO,
-  'class_number' | 'group_name' | 'group_type' | 'lecturer_id' | 'academic_year'
+  'class_number' | 'group_name' | 'group_type' | 'lecturer_id' | 'semester'
 >;
 
 type GroupDataState = DeepRequired<GroupDTO>['data'];
@@ -119,10 +122,10 @@ const SettingsSectionInternal: React.FC<Props> = ({
     actions.listLecturers();
 
     const initialState: AntFormState = {
-      class_number: group.class_number,
       group_name: group.group_name,
       group_type: group.group_type,
       lecturer_id: group.lecturer_id,
+      semester: group.semester || '',
     };
     form.setFieldsValue(initialState);
   }, [group]);
@@ -166,11 +169,8 @@ const SettingsSectionInternal: React.FC<Props> = ({
           />
         )}
       </FormRow>
-      <FormRow label={texts.classRoomNumber}>
-        {getFieldDecorator<AntFormState>('class_number')(<Input />)}
-      </FormRow>
-      <FormRow label={texts.academicYear}>
-        {getFieldDecorator<AntFormState>('academic_year')(<Input />)}
+      <FormRow label={texts.semester}>
+        {getFieldDecorator<AntFormState>('semester')(<SelectSemester />)}
       </FormRow>
       <GroupEquation
         value={groupDataState.grade_equation}

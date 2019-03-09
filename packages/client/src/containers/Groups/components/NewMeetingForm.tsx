@@ -24,7 +24,8 @@ const NewMeetingForm = (props: Props) => {
   const { getFieldDecorator, getFieldValue, setFieldsValue } = props.form;
 
   useEffect(() => {
-    if (props.defaultDate) {
+    const currentDate = props.form.getFieldValue('date');
+    if (props.defaultDate && !currentDate) {
       props.form.setFieldsValue({
         date: moment(props.defaultDate).add(7, 'days'),
       });
