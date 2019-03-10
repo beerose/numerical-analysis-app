@@ -175,12 +175,6 @@ app.get(
   auth.can('read', 'groups'),
   groups.getTask
 );
-app.post(
-  Groups.Tasks.Update,
-  auth.authorize([UserRole.admin, UserRole.superUser]),
-  auth.can('edit', 'groups'),
-  groups.updateTask
-);
 
 let server: import('http').Server;
 

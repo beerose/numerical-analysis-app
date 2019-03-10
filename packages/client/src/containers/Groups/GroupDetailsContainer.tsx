@@ -19,6 +19,7 @@ import {
   StudentsSection,
   TaskSection,
   TasksSection,
+  TestsSection,
 } from './sections';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
@@ -176,6 +177,9 @@ export class GroupDetailsContainer extends React.Component<
                       history={history}
                     />
                   )}
+                </Route>
+                <Route exact path={'/groups/:id/tests'}>
+                  <TestsSection {...this.context} />
                 </Route>
                 <NotFoundPage />
               </Switch>

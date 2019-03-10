@@ -45,7 +45,6 @@ export const createTask = (
             error: apiMessages.internalError,
             error_details: err.message,
           });
-          return;
         }
         db.attachTaskToGroup(
           {

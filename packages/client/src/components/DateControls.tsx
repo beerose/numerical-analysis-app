@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import { css } from 'emotion';
 import moment from 'moment';
-import React from 'react';
+import React, { useCallback } from 'react';
 
 const dateSelectorsStyles = css`
   color: rgba(0, 0, 0, 0.5);
@@ -23,13 +23,13 @@ type Props = {
 };
 
 export const DateControls = (props: Props) => {
-  const onSelectorClick = (days: number) => {
+  const onSelectorClick = useCallback((days: number) => {
     const selectedDate = props.getFieldValue('date');
     const defaultDate = selectedDate
       ? moment(selectedDate)
       : moment(new Date());
     props.setFieldsValue({ date: defaultDate.add(days, 'days') });
-  };
+  }, []);
 
   return (
     <div className={containerStyles}>
@@ -37,7 +37,7 @@ export const DateControls = (props: Props) => {
         <Button
           key={days}
           shape="circle"
-          onClick={() => onSelectorClick(days)}
+          onClick={() => onSelectorClick(s)}
           className={dateSelectorsStyles}
         >
           {days > 0 && '+'}

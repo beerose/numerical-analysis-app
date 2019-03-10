@@ -4,14 +4,13 @@ import {
   MeetingDetailsModel,
   MeetingDTO,
   TaskDTO,
+  TaskKind,
   UserDTO,
   UserRole,
 } from 'common';
-import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
 import React from 'react';
-import { Omit, RouteChildrenProps } from 'react-router';
-import { FunctionKeys } from 'utility-types';
+import { Omit, RouteChildrenProps, RouteComponentProps } from 'react-router';
 
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
@@ -19,13 +18,6 @@ import { showMessage } from '../../utils';
 import { ComponentCallbacks } from '../../utils/ComponentCallbacks';
 
 const noGroupError = 'No group in state.';
-const noTaskError = 'No task in state.';
-
-function getOwnFunctions<T extends object>(object: T) {
-  return fromPairs(
-    Object.entries(object).filter(([_, v]) => typeof v === 'function')
-  ) as Pick<T, FunctionKeys<T>>;
-}
 
 type StateValues = {
   meetings?: MeetingDTO[];
@@ -69,34 +61,56 @@ export class GroupApiProvider extends React.Component<
     super(props);
 
     const state: GroupApiContextState = {
-      actions: (getOwnFunctions(this) as unknown) as ComponentCallbacks<
-        GroupApiProvider
-      >,
+      // actions won't be accessible from class body
+      actions: {
+        addMeeting: this.addMeeting,
+        addNewStudentToGroup: this.addNewStudentToGroup,
+        addPresence: this.addPresence,
+        createGroup: this.createGroup,
+        createTask: this.createTask,
+        deleteGroup: this.deleteGroup,
+        deleteMeeting: this.deleteMeeting,
+        deletePresence: this.deletePresence,
+        deleteStudentFromGroup: this.deleteStudentFromGroup,
+        deleteTaskFromGroup: this.deleteTaskFromGroup,
+        getGroup: this.getGroup,
+        getMeetingsDetails: this.getMeetingsDetails,
+        listGroups: this.listGroups,
+        listLecturers: this.listLecturers,
+        listMeetings: this.listMeetings,
+        listStudentsWithGroup: this.listStudentsWithGroup,
+        listTasks: this.listTasks,
+        setActivity: this.setActivity,
+        setStudentMeetingDetails: this.setStudentMeetingDetails,
+        updateGroup: this.updateGroup,
+        updateMeeting: this.updateMeeting,
+        updateStudentInGroup: this.updateStudentInGroup,
+        uploadUsers: this.uploadUsers,
+      },
       error: false,
       isLoading: false,
       lecturers: [],
     };
 
-    // this.state.actions won't be accessible from class body
     this.state = state as StateValues;
   }
 
   createGroup = ({
-    semester,
+    academic_year,
     group_name,
     group_type,
     lecturer_id,
   }: Pick<
     GroupDTO,
-    'semester' | 'group_name' | 'group_type' | 'lecturer_id'
+    'academic_year' | 'group_name' | 'group_type' | 'lecturer_id'
   >) => {
     this.setState({ isLoading: true });
     groupsService
       .addGroup({
+        academic_year,
         group_name,
         group_type,
         lecturer_id,
-        semester,
       })
       .then(res => {
         this.setState({ isLoading: false });
@@ -288,34 +302,6 @@ export class GroupApiProvider extends React.Component<
     this.setState({ isLoading: true });
     const res = await groupsService.createTask(
       task,
-      this.state.currentGroup.id
-    );
-    this.setState({ isLoading: false });
-    return res;
-  };
-
-  getTask = async () => {
-    if (!this.state.currentGroup) {
-      throw new Error(noGroupError);
-    }
-    const taskId = Number(this.props.location.pathname.split('/')[4]);
-    this.setState({ isLoading: true });
-    const res = await groupsService.getTask(taskId, this.state.currentGroup.id);
-    this.setState({ currentTask: res.task, isLoading: false });
-    return res;
-  };
-
-  updateTask = async (task: TaskDTO) => {
-    if (!this.state.currentGroup) {
-      throw new Error(noGroupError);
-    }
-    if (!this.state.currentTask) {
-      throw new Error(noTaskError);
-    }
-    this.setState({ isLoading: true });
-    const res = await groupsService.updateTask(
-      { ...task, id: this.state.currentTask.id },
-
       this.state.currentGroup.id
     );
     this.setState({ isLoading: false });

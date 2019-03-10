@@ -1,6 +1,7 @@
 // tslint:disable:no-hardcoded-credentials
 export const LABELS = {
-  add: 'Dodaj',
+  academicYear: 'Rok akademicki',
+  academicYearRequired: 'Rok akademicki jest wymagany',
   addNewUser: 'Nowy użytkownik',
   appName: 'Analiza Numeryczna M',
   areYouSure: 'Jesteś pewien?',

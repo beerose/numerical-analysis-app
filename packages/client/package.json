@@ -32,7 +32,6 @@
     "react-use": "^5.3.0",
     "src": "^1.1.2",
     "tagged-template-noop": "^2.1.0",
-    "ts-debounce": "^1.0.0",
     "utility-types": "^3.4.1",
     "utils": "^0.3.1"
   },

@@ -1,14 +1,14 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button, DatePicker, Form, Icon, Input, Spin, Switch } from 'antd';
+import { Button, DatePicker, Form, Icon, Input, Switch } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import moment from 'moment';
-import React, { useEffect } from 'react';
+import * as React from 'react';
+import { Omit } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
 import { TaskTypeRadioGroup } from '../../../components';
-import { Colors, LABELS } from '../../../utils';
+import { Colors } from '../../../utils';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -49,28 +49,13 @@ const TaskForm = (props: Props) => {
       props.onSubmit({
         ...values,
         max_points: Number(values.max_points),
-        verify_upload: Boolean(values.verify_upload),
         weight: Number(values.weight),
       });
+      setTimeout(() => {
+        props.form.resetFields();
+      }, 1000);
     });
   };
-
-  useEffect(() => {
-    if (props.mode === 'edit' && props.model) {
-      const task = props.model;
-      props.form.setFieldsValue({
-        description: task.description,
-        end_upload_date: moment(task.end_upload_date),
-        kind: task.kind,
-        max_points: task.max_points,
-        name: task.name,
-        results_date: moment(task.results_date),
-        start_upload_date: moment(task.start_upload_date),
-        verify_upload: task.verify_upload,
-        weight: task.weight,
-      });
-    }
-  }, [props.model]);
 
   return (
     <Form onSubmit={handleSubmit} css={formStyles}>
@@ -192,7 +177,7 @@ const TaskForm = (props: Props) => {
         })(<Switch defaultChecked={true} />)}
       </Form.Item>
       <Button type="primary" htmlType="submit">
-        Zapisz
+        Dodaj
       </Button>
     </Form>
   );

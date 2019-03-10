@@ -16,7 +16,7 @@ export const apiMessages = {
   invalidCSV:
     'Nieprawidłowy plik CSV. Wymagany format to: imię, nazwisko, indeks, email.',
   invalidCreateGroupRequest:
-    'Pola group_type, group_name, semester są wymagane',
+    'Pola group_type, group_name, academic_year są wymagane',
   invalidDeleteStudentFromGroupReq: 'user_id jest wymagane',
   invalidEmailOrPassword: 'Nieprawidłowy email lub hasło',
   invalidJWT: 'Nieprawidłowy format JWT',
@@ -34,8 +34,6 @@ export const apiMessages = {
   presenceDeleted: 'Obecność usunięta',
   taskCreated: 'Zadanie zostało utworzone',
   taskDeleted: 'Zadanie zostało usunięte',
-  taskNotFound: 'Zadanie nie zostało znalezione',
-  taskUpdated: 'Zadanie zostało zaktualizowane',
   tokenUsed:
     'Masz już konto w systemie, zaloguj się, aby korzystać z aplikacji',
   userAlreadyExists: 'Użytkownik o tym adresie email już istnieje',
