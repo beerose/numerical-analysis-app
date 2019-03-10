@@ -69,6 +69,7 @@ export const createTask = (
                 error: apiMessages.internalError,
                 error_details: attachErr.message,
               });
+              return;
             }
             res.status(codes.OK).send({
               message: apiMessages.taskCreated,

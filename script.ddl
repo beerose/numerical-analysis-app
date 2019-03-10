@@ -101,7 +101,7 @@ CREATE TABLE `user_was_active_in_meeting` (
 );
 
 CREATE TABLE `users` (
-    `id` int(11) AUTO_INCREMENT NOT NULL ,
+    `id` int(11) AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `user_name` varchar(100)  NOT NULL ,
     `email` varchar(100)  NOT NULL ,
     `student_index` varchar(20)  NULL DEFAULT '',
@@ -110,7 +110,7 @@ CREATE TABLE `users` (
     `updated_at` timestamp  NOT NULL DEFAULT current_timestamp,
     `course_group` varchar(10)  NULL ,
     `password` varchar(255)  NULL ,
-    `active_user` int(1)  NULL 
+    `active_user` int(1)  NULL
 );
 
 ALTER TABLE `group_has_task` ADD CONSTRAINT `fk_group_has_task_group_id` FOREIGN KEY(`group_id`)
