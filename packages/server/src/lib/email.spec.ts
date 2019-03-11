@@ -4,11 +4,11 @@ import { email } from './email';
 import { generateUserJwtToken } from './generateUserJwtToken';
 
 const sendMagicLinks = () => {
-  const token = generateUserJwtToken(
-    process.env.EMAIL || '',
-    'Ola',
-    UserRole.admin
-  );
+  const token = generateUserJwtToken({
+    email: process.env.EMAIL || 'hello@example.com',
+    user_name: 'Ola',
+    user_role: UserRole.admin,
+  });
   const mailOptions = {
     from: 'Analiza numeryczna',
     html: email.prepareTemplate({

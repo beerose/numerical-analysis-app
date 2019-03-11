@@ -59,7 +59,11 @@ export const loginUser = (
               .send({ error: apiMessages.invalidEmailOrPassword });
           }
 
-          const token = generateUserJwtToken(email, user_name, user_role);
+          const token = generateUserJwtToken({
+            email,
+            user_name,
+            user_role,
+          });
 
           return res.status(codes.OK).send({ token, user_name, user_role });
         }
