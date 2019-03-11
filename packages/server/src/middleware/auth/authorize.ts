@@ -7,13 +7,13 @@ import jwt from 'jsonwebtoken';
 import { db } from '../../store';
 
 const decodeJWTtoken = (
-  auth: string | undefined
+  str: string | undefined
 ): { email?: string; user_role?: string; error?: string } => {
-  if (!auth || !auth.startsWith('Bearer ')) {
+  if (!str || !str.startsWith('Bearer ')) {
     return { error: 'token is not jwt' };
   }
 
-  const token = auth.substring(7, auth.length);
+  const token = str.substring(7, str.length);
   let decoded;
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET || '');
