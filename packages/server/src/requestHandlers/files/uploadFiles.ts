@@ -41,11 +41,15 @@ export function uploadFiles(
   ) {
     return res
       .status(codes.FORBIDDEN)
-      .send({ error: "Students can't upload named files" });
+      .send({ error: "students can't upload files with file path" });
   }
   return Promise.all(
     files.map(f => fsStorage.accept(f, filePath, { overwrite }))
-  ).then(fileNames => {
-    res.status(codes.OK).send({ paths: fileNames });
-  });
+  )
+    .then(fileNames => {
+      res.status(codes.OK).send({ paths: fileNames });
+    })
+    .catch((err: Error) =>
+      res.status(codes.BAD_REQUEST).send({ error: err.message })
+    );
 }
