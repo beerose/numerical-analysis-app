@@ -2,8 +2,8 @@ import { apiMessages, UserDTO } from 'common';
 import { Request } from 'express';
 import * as codes from 'http-status-codes';
 
-import { BackendResponse } from '../lib/response';
-import { db } from '../store';
+import { BackendResponse } from '../../lib';
+import { db } from '../../store';
 
 interface ListUsersRequest extends Request {
   query: {

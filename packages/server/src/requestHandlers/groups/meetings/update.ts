@@ -2,9 +2,8 @@ import { apiMessages } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { PostRequest } from '../../lib/request';
-import { BackendResponse } from '../../lib/response';
-import { db } from '../../store';
+import { BackendResponse, PostRequest } from '../../../lib';
+import { db } from '../../../store';
 
 const UpdateMeetingBodyV = t.type({
   meeting: t.type({

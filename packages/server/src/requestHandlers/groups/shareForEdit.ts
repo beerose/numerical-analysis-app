@@ -2,9 +2,8 @@ import { apiMessages, ApiResponse, UserPrivileges } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { handleBadRequest, PostRequest } from '../lib/request';
-import { BackendResponse } from '../lib/response';
-import { db } from '../store';
+import { BackendResponse, handleBadRequest, PostRequest } from '../../lib';
+import { db } from '../../store';
 
 const ShareForEditBodyV = t.type({
   group_id: t.number,

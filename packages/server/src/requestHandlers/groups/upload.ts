@@ -3,10 +3,9 @@ import { NextFunction } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { GetRequest } from '../lib/request';
-import { BackendResponse } from '../lib/response';
-import { db } from '../store';
-import { connection } from '../store/connection';
+import { BackendResponse, GetRequest } from '../../lib';
+import { db } from '../../store';
+import { connection } from '../../store/connection';
 
 const UploadBodyV = t.type({
   data: t.string,
@@ -35,24 +34,20 @@ export const upload = (
   const groupId = req.body.group_id;
   connection.beginTransaction(beginError => {
     if (beginError) {
-      res
-        .status(codes.INTERNAL_SERVER_ERROR)
-        .send({
-          error: apiMessages.internalError,
-          error_details: beginError.message,
-        });
+      res.status(codes.INTERNAL_SERVER_ERROR).send({
+        error: apiMessages.internalError,
+        error_details: beginError.message,
+      });
       return;
     }
     users.forEach(user => {
       db.upsertUser(user, upsertErr => {
         if (upsertErr) {
           connection.rollback(() =>
-            res
-              .status(codes.INTERNAL_SERVER_ERROR)
-              .send({
-                error: apiMessages.internalError,
-                error_details: upsertErr.message,
-              })
+            res.status(codes.INTERNAL_SERVER_ERROR).send({
+              error: apiMessages.internalError,
+              error_details: upsertErr.message,
+            })
           );
           return;
         }
@@ -61,12 +56,10 @@ export const upload = (
           attachErr => {
             if (attachErr) {
               connection.rollback(() =>
-                res
-                  .status(codes.INTERNAL_SERVER_ERROR)
-                  .send({
-                    error: apiMessages.internalError,
-                    error_details: attachErr.message,
-                  })
+                res.status(codes.INTERNAL_SERVER_ERROR).send({
+                  error: apiMessages.internalError,
+                  error_details: attachErr.message,
+                })
               );
               return;
             }
@@ -77,12 +70,10 @@ export const upload = (
     connection.commit(commitErr => {
       if (commitErr) {
         connection.rollback(() =>
-          res
-            .status(codes.INTERNAL_SERVER_ERROR)
-            .send({
-              error: apiMessages.internalError,
-              error_details: commitErr.message,
-            })
+          res.status(codes.INTERNAL_SERVER_ERROR).send({
+            error: apiMessages.internalError,
+            error_details: commitErr.message,
+          })
         );
       }
       res.status(codes.OK).send({ message: apiMessages.usersUploaded });

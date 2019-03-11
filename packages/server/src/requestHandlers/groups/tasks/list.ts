@@ -2,9 +2,8 @@ import { apiMessages, TaskDTO } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { GetRequest, handleBadRequest } from '../../lib/request';
-import { BackendResponse } from '../../lib/response';
-import { db } from '../../store';
+import { BackendResponse, GetRequest, handleBadRequest } from '../../../lib';
+import { db } from '../../../store';
 
 const ListTasksQueryV = t.type({
   group_id: t.string,

@@ -95,5 +95,3 @@ export const disconnectFromDb = () => {
   });
   connection.pause();
 };
-
-export const DUPLICATE_ENTRY_ERROR = 'ER_DUP_ENTRY';

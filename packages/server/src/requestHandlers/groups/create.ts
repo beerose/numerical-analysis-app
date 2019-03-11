@@ -2,9 +2,8 @@ import { apiMessages, ApiResponse, GroupType } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { handleBadRequest, PostRequest } from '../lib/request';
-import { BackendResponse } from '../lib/response';
-import { db } from '../store';
+import { BackendResponse, handleBadRequest, PostRequest } from '../../lib';
+import { db } from '../../store';
 
 const CreateGroupBodyV = t.type({
   academic_year: t.union([t.string, t.undefined]),
@@ -28,12 +27,10 @@ export const create = (
 
     db.addGroup(group, (err, result) => {
       if (err) {
-        return res
-          .status(codes.INTERNAL_SERVER_ERROR)
-          .send({
-            error: apiMessages.internalError,
-            error_details: err.message,
-          });
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: err.message,
+        });
       }
 
       return res
