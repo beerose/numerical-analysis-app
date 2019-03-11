@@ -59,7 +59,7 @@ export const listMeetings = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
       SELECT
         id, meeting_name, group_id, date
       FROM
@@ -88,7 +88,7 @@ export const removeStudentFromGroup = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
     DELETE FROM user_belongs_to_group WHERE user_id = ? AND group_id = ?
   `,
       values: [userId, groupId],

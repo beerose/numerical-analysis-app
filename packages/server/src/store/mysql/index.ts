@@ -18,7 +18,7 @@ export const setActivity = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
         INSERT INTO
           user_was_active_in_meeting(user_id, meeting_id, points)
         VALUES
