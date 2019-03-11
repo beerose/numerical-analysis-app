@@ -156,3 +156,9 @@ router.get(
   auth.can('read', 'groups'),
   tasks.getTask
 );
+router.post(
+  Routes.Tasks.Update,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  tasks.updateTask
+);
