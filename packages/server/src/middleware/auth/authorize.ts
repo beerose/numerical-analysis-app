@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
-import { db } from '../store';
+import { db } from '../../store';
 
 const decodeJWTtoken = (
   auth: string | undefined

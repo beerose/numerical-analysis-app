@@ -38,7 +38,10 @@ function setConState<K extends keyof LocalConnectionState>(
     ...diff,
   };
 
-  if (conState.retriesLeft === 0) {
+  if (
+    conState.status !== ConnectionStatus.ShuttingDown &&
+    conState.retriesLeft === 0
+  ) {
     throw new Error(
       `Can't connect to the database. Failing after ${MAX_RETRIES} retries`
     );

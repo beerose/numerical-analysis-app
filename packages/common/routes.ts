@@ -3,6 +3,7 @@ export const ServerRoutes = {
     Login: '/accounts.login',
     New: '/accounts.new',
   },
+  Files: '/files', // Uses many HTTP methods
   Groups: {
     Create: '/groups.create',
     Delete: '/groups.delete',

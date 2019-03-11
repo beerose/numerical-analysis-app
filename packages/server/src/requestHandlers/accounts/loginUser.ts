@@ -3,11 +3,13 @@ import { apiMessages, UserDTO } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { GetRequest, handleBadRequest } from '../lib/request';
-import { BackendResponse } from '../lib/response';
-import { db } from '../store';
-
-import { generateToken } from './utils';
+import {
+  BackendResponse,
+  generateUserJwtToken,
+  GetRequest,
+  handleBadRequest,
+} from '../../lib';
+import { db } from '../../store';
 
 const LoginUserBodyV = t.type({
   email: t.string,
@@ -57,7 +59,7 @@ export const loginUser = (
               .send({ error: apiMessages.invalidEmailOrPassword });
           }
 
-          const token = generateToken(email, user_name, user_role);
+          const token = generateUserJwtToken(email, user_name, user_role);
 
           return res.status(codes.OK).send({ token, user_name, user_role });
         }
