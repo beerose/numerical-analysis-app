@@ -4,6 +4,7 @@ import express from 'express';
 import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 
+import * as requestHandlers from './requestHandlers';
 import { connectToDb, disconnectFromDb } from './store/connection';
 
 const PORT = process.env.PORT;
@@ -26,6 +27,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/', (_, res) => {
   res.send(`Hello! 👋 ${new Date().toLocaleString()}`);
 });
+
+app.use(requestHandlers.accountsRouter);
+app.use(requestHandlers.filesRouter);
+app.use(requestHandlers.groupsRouter);
+app.use(requestHandlers.usersRouter);
 
 let server: import('http').Server;
 

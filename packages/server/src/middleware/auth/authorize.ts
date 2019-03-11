@@ -1,4 +1,4 @@
-import { apiMessages, UserRole } from 'common';
+import { apiMessages, UserDTO, UserRole } from 'common';
 import { NextFunction } from 'connect';
 import { Request, Response } from 'express';
 import { Either, left, right } from 'fp-ts/lib/Either';
@@ -47,6 +47,7 @@ export const authorize = (roles: UserRole[]) => (
   res: Response,
   next: NextFunction
 ) => {
+  type x = Response['locals'];
   const decoded = decodeJwtUserToken(req.headers.authorization);
   decoded.fold(
     error => {
@@ -75,3 +76,11 @@ export const authorize = (roles: UserRole[]) => (
     }
   );
 };
+
+declare module 'express' {
+  interface Response {
+    locals: {
+      user?: UserDTO;
+    };
+  }
+}

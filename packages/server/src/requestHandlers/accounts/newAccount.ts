@@ -1,6 +1,7 @@
 import { hash } from 'bcrypt';
 import { apiMessages } from 'common';
 import { NextFunction } from 'connect';
+import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import jwt from 'jsonwebtoken';
@@ -15,15 +16,9 @@ const CreateWithTokenRequestV = t.type({
 
 type CreateWithTokenRequest = GetRequest<typeof CreateWithTokenRequestV>;
 
-interface CreateWithTokenResponse extends BackendResponse {
-  locals: {
-    email?: string;
-    user?: { user_name: string; user_role: string };
-  };
-}
 export const checkNewAccountToken = (
   req: CreateWithTokenRequest,
-  res: CreateWithTokenResponse,
+  res: BackendResponse,
   next: NextFunction
 ) => {
   handleBadRequest(CreateWithTokenRequestV, req.body, res).then(() => {
@@ -59,7 +54,6 @@ export const checkNewAccountToken = (
         res.status(codes.FORBIDDEN).send({ error: apiMessages.accountExists });
         return;
       }
-      res.locals.email = userRes.email;
       res.locals.user = userRes;
       return next();
     });
@@ -70,7 +64,7 @@ const SALT_ROUNDS = 10;
 
 export const storeUserPassword = (
   req: CreateWithTokenRequest,
-  res: CreateWithTokenResponse,
+  res: Response,
   next: NextFunction
 ) => {
   hash(req.body.password, SALT_ROUNDS, (hashingError, passwordHash) => {
@@ -83,7 +77,7 @@ export const storeUserPassword = (
     }
 
     db.setUserPassword(
-      { passwordHash, email: res.locals.email || '' },
+      { passwordHash, email: res.locals.user ? res.locals.user.email : '' },
       (error, results) => {
         if (error) {
           console.error({ error });
