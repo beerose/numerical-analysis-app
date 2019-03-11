@@ -1,4 +1,4 @@
-import { apiMessages, TaskKind } from 'common';
+import { apiMessages, TaskKind, TestKind } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { isNumber } from 'util';
@@ -11,7 +11,17 @@ const CreateTaskBodyV = t.type({
 
   // tslint:disable-next-line:object-literal-sort-keys
   end_upload_date: t.string,
-  kind: t.union([t.literal(TaskKind.Assignment), t.literal(TaskKind.Homework)]),
+  kind: t.union([
+    t.literal(TaskKind.Assignment),
+    t.literal(TaskKind.Homework),
+    t.literal(TestKind.Colloquium),
+    t.literal(TestKind.Exam),
+    t.literal(TestKind.MidtermExam),
+    t.literal(TestKind.MidtermTest),
+    t.literal(TestKind.Retake),
+    t.literal(TestKind.ShortTest),
+    t.literal(TestKind.Test),
+  ]),
   max_points: t.number,
   name: t.string,
   results_date: t.union([t.string, t.undefined]),
@@ -58,6 +68,7 @@ export const createTask = (
                 error: apiMessages.internalError,
                 error_details: attachErr.message,
               });
+              return;
             }
             res.status(codes.OK).send({
               message: apiMessages.taskCreated,
