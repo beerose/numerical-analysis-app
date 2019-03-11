@@ -8,7 +8,7 @@ import { QueryCallback } from './QueryCallback';
 export const addUser = (user: UserDTO, callback: QueryCallback) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
         INSERT INTO
           users (
             user_name,
@@ -25,7 +25,7 @@ export const addUser = (user: UserDTO, callback: QueryCallback) =>
 export const updateUser = (user: UserDTO, callback: QueryCallback) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
   UPDATE
     users
   SET
@@ -55,7 +55,7 @@ export const deleteUser = ({ id }: { id: string }, callback: QueryCallback) =>
     callback
   );
 
-const searchSubQuery = (searchParam: string) => `
+const searchSubQuery = (searchParam: string) => /* sql */ `
 (MATCH(user_name) AGAINST ("${searchParam}")
 OR MATCH(email) AGAINST ("${searchParam}")
 OR MATCH(student_index) AGAINST ("${searchParam}"))
@@ -85,7 +85,7 @@ export const listUsers = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
     SELECT
       id, user_name, email, student_index, user_role
     FROM
@@ -108,7 +108,7 @@ export const countUsers = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
       SELECT
         count(*) as total
       FROM
@@ -160,7 +160,7 @@ export const upsertUser = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
     INSERT IGNORE INTO
     users (
       user_name,
@@ -189,7 +189,7 @@ export const attachStudentToGroup = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
     INSERT IGNORE INTO user_belongs_to_group(user_id, group_id)
     VALUES ((SELECT id FROM users WHERE email = "${email}"), ${groupId})
   `,
@@ -204,7 +204,7 @@ export const setUserPrivileges = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
     UPDATE users
     SET privileges = ?
     WHERE id = ?
@@ -220,7 +220,7 @@ export const getUserPrivileges = (
 ) =>
   connection.query(
     {
-      sql: `SELECT privileges FROM users WHERE id = ?`,
+      sql: /* sql */ `SELECT privileges FROM users WHERE id = ?`,
       values: [userId],
     },
     (err, res) => {

@@ -124,6 +124,16 @@ In watch mode:
 yarn start
 ```
 
+### Text Editor
+
+#### Useful VSCode extensions
+
+Here's a list of VSCode extensions we've found useful while developing this project
+
+- Comment Tagged Templates [(link)](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates)
+
+<img style="width:400px" src="https://raw.githubusercontent.com/mjbvz/vscode-comment-tagged-templates/master/docs/example.png"/>
+
 ## API Documentation
 
 Documentation was created with [Swagger UI](https://swagger.io/) and is hosted within the app:

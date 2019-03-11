@@ -1,6 +1,8 @@
 {
   "extends": "../tsconfig.settings.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": { "*": ["types/*"] },
     "lib": ["es2017"],
     "target": "es5",
     "module": "commonjs",
@@ -8,10 +10,11 @@
     "typeRoots": [
       "./node_modules/@types",
       "../../node_modules/@types",
-      "./src/types"
+      "./types"
     ],
     "outDir": "../../dist/server",
-    "downlevelIteration": false
+    "downlevelIteration": false,
+    "noUnusedLocals": false
   },
   "include": ["src"],
   "exclude": ["**/__tests__/*.ts"],
