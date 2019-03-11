@@ -6,7 +6,6 @@ import { BackendResponse, handleBadRequest, PostRequest } from '../../lib';
 import { db } from '../../store';
 
 const UpdateGroupBodyV = t.type({
-  academic_year: t.union([t.string, t.undefined]),
   data: t.type({
     grade_equation: t.union([t.string, t.undefined]),
     tresholds: t.union([
@@ -28,6 +27,7 @@ const UpdateGroupBodyV = t.type({
   ]),
   id: t.number,
   lecturer_id: t.number,
+  semester: t.union([t.string, t.undefined]),
 });
 
 type UpdateGroupBody = PostRequest<typeof UpdateGroupBodyV>;

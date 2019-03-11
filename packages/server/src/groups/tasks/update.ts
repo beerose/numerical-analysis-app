@@ -3,14 +3,16 @@ import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { isNumber } from 'util';
 
-import { BackendResponse, handleBadRequest, PostRequest } from '../../../lib';
-import { db } from '../../../store';
+import { handleBadRequest, PostRequest } from '../../lib/request';
+import { BackendResponse } from '../../lib/response';
+import { db } from '../../store';
 
-const CreateTaskBodyV = t.type({
+const UpdateTaskBodyV = t.type({
   group_id: t.number,
 
   // tslint:disable-next-line:object-literal-sort-keys
   end_upload_date: t.string,
+  id: t.number,
   kind: t.union([t.literal(TaskKind.Assignment), t.literal(TaskKind.Homework)]),
   max_points: t.number,
   name: t.string,
@@ -20,15 +22,15 @@ const CreateTaskBodyV = t.type({
   weight: t.number,
 });
 
-type CreateTaskRequest = PostRequest<typeof CreateTaskBodyV>;
+type UpdateTaskRequest = PostRequest<typeof UpdateTaskBodyV>;
 
-export const createTask = (
-  req: CreateTaskRequest,
+export const updateTask = (
+  req: UpdateTaskRequest,
   res: BackendResponse<{ task_id: number }>
 ) => {
-  handleBadRequest(CreateTaskBodyV, req.body, res).then(() => {
+  handleBadRequest(UpdateTaskBodyV, req.body, res).then(() => {
     const task = req.body;
-    db.insertTask(
+    db.updateTask(
       {
         ...task,
         end_upload_date: new Date(task.end_upload_date),
@@ -38,7 +40,7 @@ export const createTask = (
         ),
         start_upload_date: new Date(task.start_upload_date),
       },
-      (err, result) => {
+      err => {
         if (err) {
           res.status(codes.INTERNAL_SERVER_ERROR).send({
             error: apiMessages.internalError,
@@ -46,22 +48,21 @@ export const createTask = (
           });
           return;
         }
-        db.attachTaskToGroup(
+        db.updateTaskInGroup(
           {
             groupId: task.group_id,
-            taskId: result.insertId,
+            taskId: task.id,
             weight: isNumber(task.weight) ? Number(task.weight) : 0,
           },
-          attachErr => {
-            if (attachErr) {
+          updateWeightErr => {
+            if (updateWeightErr) {
               res.status(codes.INTERNAL_SERVER_ERROR).send({
                 error: apiMessages.internalError,
-                error_details: attachErr.message,
+                error_details: updateWeightErr.message,
               });
             }
             res.status(codes.OK).send({
-              message: apiMessages.taskCreated,
-              task_id: result.insertId,
+              message: apiMessages.taskUpdated,
             });
           }
         );

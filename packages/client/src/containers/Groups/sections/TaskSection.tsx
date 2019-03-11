@@ -1,5 +1,6 @@
+import { Spin } from 'antd';
 import React, { useCallback, useEffect } from 'react';
-import { Omit, RouteComponentProps } from 'react-router';
+import { RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
 import { Flex } from '../../../components';
@@ -23,13 +24,17 @@ export const TaskSection = (props: Props) => {
 
   useEffect(() => {
     if (!props.currentTask && props.mode === 'edit') {
-      console.log('GET TASK');
+      props.actions.getTask();
     }
-  });
+  }, []);
 
   const handleSubmit = (values: TaskDTO) => {
+    console.log(props.mode);
     props.mode === 'edit'
-      ? console.log(values)
+      ? props.actions.updateTask(values).then(res => {
+          showMessage(res);
+          props.actions.getTask();
+        })
       : props.actions.createTask(values).then(res => {
           showMessage(res);
           if ('error' in res) {
@@ -40,9 +45,21 @@ export const TaskSection = (props: Props) => {
         });
   };
 
+  if (props.isLoading) {
+    return <Spin />;
+  }
+
   return (
     <Flex alignItems="center" padding={Theme.Padding.Half}>
-      <TaskForm onSubmit={handleSubmit} mode={props.mode} />
+      {props.mode === 'create' ? (
+        <TaskForm onSubmit={handleSubmit} mode="create" />
+      ) : (
+        <TaskForm
+          onSubmit={handleSubmit}
+          mode="edit"
+          model={props.currentTask}
+        />
+      )}
     </Flex>
   );
 };

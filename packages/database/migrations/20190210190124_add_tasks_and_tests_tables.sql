@@ -22,29 +22,7 @@ CREATE TABLE group_has_task (
   UNIQUE KEY(task_id, group_id)
 );
 
-CREATE TABLE tests (
-  id                  INT NOT NULL AUTO_INCREMENT,
-  name                VARCHAR(100),
-  kind                VARCHAR(20) NOT NULL,
-  max_points          INT NOT NULL,
-  results_date        TIMESTAMP NOT NULL,
-  due_date            TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  description         TEXT,
-  created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (id)
-);
-
-CREATE TABLE group_has_test (
-  group_id  INT NOT NULL REFERENCES `groups`(id),
-  test_id   INT NOT NULL REFERENCES tests(id),
-  weight    INT NOT NULL DEFAULT 1,
-  UNIQUE KEY(test_id, group_id)
-);
-
 -- migrate:down
 
 DROP TABLE IF EXISTS tasks;
-DROP TABLE IF EXISTS tests;
 DROP TABLE IF EXISTS group_has_task;
-DROP TABLE IF EXISTS group_has_test;

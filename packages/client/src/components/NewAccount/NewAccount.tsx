@@ -25,14 +25,16 @@ const buttonStyles = css`
 const ErrorContainer = ({
   errorMessage,
   onClick,
+  label,
 }: {
   errorMessage?: string;
   onClick: () => void;
+  label: string;
 }) => (
   <section css={errorContainerStyles}>
     {errorMessage}
     <Button onClick={onClick} css={buttonStyles}>
-      {LABELS.goToLoginPage}
+      {label}
     </Button>
   </section>
 );
@@ -44,36 +46,43 @@ const errorModalHeader = <ModalHeader title="Wystąpił błąd" />;
 
 type State = {
   userName: string;
-  localError: boolean;
   localErrorMessage: string;
   token: string;
 };
 type Props = RouteComponentProps;
 export class NewAccount extends React.Component<Props, State> {
   state = {
-    localError: false,
     localErrorMessage: '',
     token: '',
     userName: '',
   };
 
-  componentWillMount() {
+  componentDidMount() {
     const parsedHash = qs.parse(this.props.location.hash);
     if (!parsedHash.token) {
-      this.setState({ localErrorMessage: LABELS.magicLinkInvalid, localError: true });
+      this.setState({
+        localErrorMessage: LABELS.magicLinkInvalid,
+      });
+      return;
     }
     this.setState({ token: parsedHash.token });
 
     let decoded;
     try {
-      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET!) as { user_name?: string };
-    } catch {
-      this.setState({ localErrorMessage: LABELS.magicLinkInvalid, localError: true });
+      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET) as {
+        user_name?: string;
+      };
+    } catch (err) {
+      this.setState({
+        localErrorMessage: LABELS.magicLinkInvalid,
+      });
       return;
     }
 
     if (!decoded.user_name) {
-      this.setState({ localErrorMessage: LABELS.magicLinkInvalid, localError: true });
+      this.setState({
+        localErrorMessage: LABELS.magicLinkInvalid,
+      });
       return;
     }
 
@@ -81,26 +90,48 @@ export class NewAccount extends React.Component<Props, State> {
   }
 
   render() {
-    const { localErrorMessage, localError, userName, token } = this.state;
+    const { localErrorMessage, userName, token } = this.state;
     return (
       <AuthConsumer>
-        {({ actions, error: authError, errorMessage: authErrorMessage, userAuth }) => {
-          const error = authError || localError;
-          const errorMessage = error && localError ? localErrorMessage : authErrorMessage;
+        {({ actions, errorMessage: authErrorMessage, userAuth }) => {
+          let errorMessage;
+          if (userAuth) {
+            errorMessage = 'Jesteś już zalogowany';
+          } else {
+            errorMessage = localErrorMessage
+              ? localErrorMessage
+              : authErrorMessage;
+          }
           return (
             <Modal
-              visible={!userAuth}
+              visible
               centered
-              title={error ? errorModalHeader : <NewAccountModalHeader userName={userName} />}
+              title={
+                errorMessage ? (
+                  errorModalHeader
+                ) : (
+                  <NewAccountModalHeader userName={userName} />
+                )
+              }
               footer={null}
               width={400}
               closable={false}
             >
-              {error ? (
-                <ErrorContainer errorMessage={errorMessage} onClick={actions.goToMainPage} />
+              {errorMessage ? (
+                <ErrorContainer
+                  errorMessage={errorMessage}
+                  onClick={actions.goToMainPage}
+                  label={
+                    userAuth
+                      ? 'Przejdź do strony głównej'
+                      : LABELS.goToLoginPage
+                  }
+                />
               ) : (
                 <NewAccountWithTokenForm
-                  onSubmit={(password: string) => actions.createNewAccount(token, password)}
+                  onSubmit={(password: string) =>
+                    actions.createNewAccount(token, password)
+                  }
                 />
               )}
             </Modal>

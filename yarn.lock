@@ -10129,6 +10129,11 @@ trim-right@^1.0.1:
   dependencies:
     glob "^7.1.2"
 
+ts-debounce@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ts-debounce/-/ts-debounce-1.0.0.tgz#e433301744ba75fe25466f7f23e1382c646aae6a"
+  integrity sha512-V+IzWj418IoqqxVJD6I0zjPtgIyvAJ8VyViqzcxZ0JRiJXsi5mCmy1yUKkWd2gUygT28a8JsVFCgqdrf2pLUHQ==
+
 ts-easing@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ts-easing/-/ts-easing-0.1.1.tgz#055c68ba878ddb78d7b22ce4852557b8b8366bcd"

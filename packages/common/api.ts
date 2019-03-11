@@ -71,7 +71,7 @@ export type GroupDTO = {
   lecturer_id: UserDTO['id'];
   lecturer_name?: string;
   class_number?: number;
-  academic_year?: string;
+  semester?: string;
   data?: {
     tresholds?: Tresholds;
     grade_equation?: string;
@@ -145,19 +145,6 @@ export enum TaskKind {
   Assignment = 'assignment', // pracownia
 }
 
-export type TaskDTO = {
-  id: number;
-  name: string;
-  kind: TaskKind;
-  weight: number;
-  max_points: number;
-  results_date?: string | Date; // if empty then due date
-  description?: string;
-  verify_upload: boolean; // default true
-  start_upload_date: string | Date;
-  end_upload_date: string | Date; // due date of the task
-};
-
 export enum TestKind {
   Exam = 'exam', // egzamin
   Test = 'test', // sprawdzian
@@ -168,13 +155,15 @@ export enum TestKind {
   Colloquium = 'colloquium', // kolokwium
 }
 
-export type TestDTO = {
+export type TaskDTO = {
   id: number;
   name: string;
-  kind: TestKind;
+  kind: TaskKind & TestKind;
   weight: number;
   max_points: number;
-  due_date: string;
-  results_date?: string; // if empty then due date
+  results_date?: string | Date; // if empty then due date
   description?: string;
+  verify_upload: boolean; // default true
+  start_upload_date: string | Date;
+  end_upload_date: string | Date; // due date of the task
 };
