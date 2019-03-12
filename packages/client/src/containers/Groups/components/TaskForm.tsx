@@ -63,17 +63,22 @@ const TaskForm = (props: Props) => {
   useEffect(() => {
     if (props.mode === 'edit' && props.model) {
       const task = props.model;
+      setTaskType(task.kind);
       props.form.setFieldsValue({
         description: task.description,
-        end_upload_date: moment(task.end_upload_date),
         kind: task.kind,
         max_points: task.max_points,
         results_date: moment(task.results_date),
-        start_upload_date: moment(task.start_upload_date),
         task_name: task.name,
-        verify_upload: task.verify_upload,
         weight: task.weight,
       });
+      if ([TaskKind.Assignment, TaskKind.Homework].includes(task.kind)) {
+        props.form.setFieldsValue({
+          end_upload_date: moment(task.end_upload_date),
+          start_upload_date: moment(task.start_upload_date),
+          verify_upload: task.verify_upload,
+        });
+      }
     }
   }, [props.model]);
 
@@ -144,7 +149,7 @@ const TaskForm = (props: Props) => {
           />
         )}
       </Form.Item>
-      {(taskType === TaskKind.Assignment || taskType === TaskKind.Homework) && (
+      {[TaskKind.Assignment, TaskKind.Homework, null].includes(taskType) && (
         <section>
           <Form.Item
             label={
@@ -176,11 +181,6 @@ const TaskForm = (props: Props) => {
                   css={css`
                     width: 180px;
                   `}
-                  disabled={
-                    ![TaskKind.Assignment, TaskKind.Homework, null].includes(
-                      taskType
-                    )
-                  }
                 />
               )}
             </Form.Item>
@@ -205,11 +205,6 @@ const TaskForm = (props: Props) => {
                   css={css`
                     width: 180px;
                   `}
-                  disabled={
-                    ![TaskKind.Assignment, TaskKind.Homework, null].includes(
-                      taskType
-                    )
-                  }
                 />
               )}
             </Form.Item>
@@ -220,16 +215,7 @@ const TaskForm = (props: Props) => {
           >
             {getFieldDecorator('verify_upload', {
               initialValue: true,
-            })(
-              <Switch
-                defaultChecked={true}
-                disabled={[
-                  TaskKind.Assignment,
-                  TaskKind.Homework,
-                  null,
-                ].includes(taskType)}
-              />
-            )}
+            })(<Switch defaultChecked={true} />)}
           </Form.Item>
         </section>
       )}
