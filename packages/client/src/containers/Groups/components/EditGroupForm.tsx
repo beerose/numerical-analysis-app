@@ -1,7 +1,6 @@
-import { Button, Form, Icon, Input, Radio, Select } from 'antd';
+import { Button, Form, Icon, Input, Radio } from 'antd';
 // tslint:disable: no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import { SelectValue } from 'antd/lib/select';
 // tslint:enable: no-submodule-imports
 import { GroupType, UserDTO } from 'common';
 import { css } from 'emotion';
