@@ -4,6 +4,7 @@ export const ServerRoutes = {
     New: '/accounts.new',
   },
   Files: '/files', // Uses many HTTP methods
+  Grades: '/grades',
   Groups: {
     Create: '/groups.create',
     Delete: '/groups.delete',
