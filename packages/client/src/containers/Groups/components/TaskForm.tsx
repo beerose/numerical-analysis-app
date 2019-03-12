@@ -67,9 +67,9 @@ const TaskForm = (props: Props) => {
         end_upload_date: moment(task.end_upload_date),
         kind: task.kind,
         max_points: task.max_points,
-        name: task.name,
         results_date: moment(task.results_date),
         start_upload_date: moment(task.start_upload_date),
+        task_name: task.name,
         verify_upload: task.verify_upload,
         weight: task.weight,
       });
@@ -99,7 +99,7 @@ const TaskForm = (props: Props) => {
       <Form.Item label="Rodzaj zadania" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('kind', {
           rules: [{ required: true, message: 'rodzaj jest wymagany' }],
-        })(<TaskTypeSelect />)}
+        })(<TaskTypeSelect initialValue={props.model && props.model.kind} />)}
       </Form.Item>
       <Form.Item label="Waga" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('weight', {
