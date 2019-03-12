@@ -1,7 +1,7 @@
 import { Icon, Select } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
-import { SelectValue } from 'antd/lib/select';
-import { TaskDTO, TaskKind } from 'common';
+import { SelectProps, SelectValue } from 'antd/lib/select';
+import { TaskKind } from 'common';
 import React, { useContext } from 'react';
 
 import { Colors } from '../utils';
@@ -12,11 +12,10 @@ const taskTypeValues = Object.values(TaskKind).reverse();
 
 type Props = {
   onChange?: (value: SelectValue) => void;
-  initialValue?: TaskDTO['kind'];
-};
+} & SelectProps;
 
 export const TaskTypeSelect = React.forwardRef(
-  ({ onChange, initialValue }: Props, ref: React.Ref<Select>) => {
+  ({ onChange, value }: Props, ref: React.Ref<Select>) => {
     const { getText } = useContext(LocaleContext);
 
     return (
@@ -32,12 +31,12 @@ export const TaskTypeSelect = React.forwardRef(
         }
         onChange={onChange}
         style={{ minWidth: '120px' }}
-        value={initialValue}
+        value={value}
         ref={ref}
       >
-        {taskTypeValues.map((value: TaskKind) => (
-          <Select.Option key={value} value={value}>
-            {getText(value)}
+        {taskTypeValues.map((kind: TaskKind) => (
+          <Select.Option key={kind} value={kind}>
+            {getText(kind)}
           </Select.Option>
         ))}
       </Select>

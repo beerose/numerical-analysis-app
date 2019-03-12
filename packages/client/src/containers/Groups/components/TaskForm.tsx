@@ -99,7 +99,7 @@ const TaskForm = (props: Props) => {
       <Form.Item label="Rodzaj zadania" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('kind', {
           rules: [{ required: true, message: 'rodzaj jest wymagany' }],
-        })(<TaskTypeSelect initialValue={props.model && props.model.kind} />)}
+        })(<TaskTypeSelect />)}
       </Form.Item>
       <Form.Item label="Waga" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('weight', {
