@@ -32,6 +32,7 @@ app.use(requestHandlers.accountsRouter);
 app.use(requestHandlers.filesRouter);
 app.use(requestHandlers.groupsRouter);
 app.use(requestHandlers.usersRouter);
+app.use(requestHandlers.gradesRouter);
 
 let server: import('http').Server;
 
