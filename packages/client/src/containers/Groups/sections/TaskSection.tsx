@@ -23,7 +23,7 @@ export const TaskSection = (props: Props) => {
   );
 
   useEffect(() => {
-    if (!props.currentTask && props.mode === 'edit') {
+    if (props.mode === 'edit') {
       props.actions.getTask();
     }
   }, []);

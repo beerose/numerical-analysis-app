@@ -12,7 +12,17 @@ const UpdateTaskBodyV = t.type({
   // tslint:disable-next-line:object-literal-sort-keys
   end_upload_date: t.string,
   id: t.number,
-  kind: t.union([t.literal(TaskKind.Assignment), t.literal(TaskKind.Homework)]),
+  kind: t.union([
+    t.literal(TaskKind.Assignment),
+    t.literal(TaskKind.Homework),
+    t.literal(TaskKind.Colloquium),
+    t.literal(TaskKind.Exam),
+    t.literal(TaskKind.MidtermExam),
+    t.literal(TaskKind.MidtermTest),
+    t.literal(TaskKind.Retake),
+    t.literal(TaskKind.ShortTest),
+    t.literal(TaskKind.Test),
+  ]),
   max_points: t.number,
   name: t.string,
   results_date: t.union([t.string, t.undefined]),
