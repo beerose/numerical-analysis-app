@@ -8,30 +8,13 @@ import { RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
-import { DateRange } from '../../../components/DateRange';
-import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
 import { Flex } from '../../../components/Flex';
-import { Colors, LABELS, showMessage } from '../../../utils';
-import { TaskTitle } from '../components/TaskTitle';
+import { showMessage } from '../../../utils';
+import { TaskListItem } from '../components/TaskListItem';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
-`;
-
-const StyledTaskCard = styled(Card)`
-  .ant-card-body {
-    padding: 0 15px;
-    * {
-      padding-top: 2px;
-      padding-bottom: 0;
-    }
-  }
-  margin-bottom: 10px;
-  cursor: pointer;
-  &:hover {
-    border: 1px solid ${Colors.SemiLightGrey};
-  }
 `;
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
@@ -73,38 +56,13 @@ export const TasksSection = ({ actions, tasks, history }: Props) => {
             padding-top: ${Theme.Padding.Standard};
             height: 100%;
           `}
-          renderItem={(task: TaskDTO) => {
-            return (
-              <StyledTaskCard>
-                <List.Item
-                  actions={[
-                    <a
-                      role="button"
-                      onClick={() => navigateTo(String(task.id))}
-                    >
-                      {LABELS.edit}
-                    </a>,
-                    <DeleteWithConfirm
-                      onConfirm={() => {
-                        deleteTask(task.id);
-                      }}
-                    >
-                      <a>{LABELS.delete}</a>
-                    </DeleteWithConfirm>,
-                  ]}
-                >
-                  <List.Item.Meta
-                    title={<TaskTitle kind={task.kind} name={task.name} />}
-                    description={task.description}
-                  />
-                  <DateRange
-                    start={task.start_upload_date as string}
-                    end={task.end_upload_date as string}
-                  />
-                </List.Item>
-              </StyledTaskCard>
-            );
-          }}
+          renderItem={(task: TaskDTO) => (
+            <TaskListItem
+              navigateTo={navigateTo}
+              task={task}
+              deleteTask={deleteTask}
+            />
+          )}
         />
       ) : (
         <Flex justifyContent="center">
