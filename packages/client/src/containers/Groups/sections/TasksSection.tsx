@@ -22,6 +22,10 @@ const Container = styled.section`
 const StyledTaskCard = styled(Card)`
   .ant-card-body {
     padding: 0 15px;
+    * {
+      padding-top: 2px;
+      padding-bottom: 0;
+    }
   }
   margin-bottom: 10px;
   cursor: pointer;
