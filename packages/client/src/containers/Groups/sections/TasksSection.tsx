@@ -18,10 +18,18 @@ const Container = styled.section`
 `;
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
-export const TasksSection = ({ actions, tasks, history }: Props) => {
+export const TasksSection = ({
+  actions,
+  tasks,
+  history,
+  currentGroupStudents,
+}: Props) => {
   useEffect(() => {
     if (!tasks) {
       actions.listTasks();
+    }
+    if (!currentGroupStudents) {
+      actions.listStudentsWithGroup();
     }
   }, [actions]);
 
@@ -61,6 +69,7 @@ export const TasksSection = ({ actions, tasks, history }: Props) => {
               navigateTo={navigateTo}
               task={task}
               deleteTask={deleteTask}
+              students={currentGroupStudents}
             />
           )}
         />

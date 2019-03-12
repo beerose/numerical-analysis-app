@@ -38,6 +38,7 @@ type StateValues = {
   errorMessage?: string;
   lecturers: UserDTO[];
   tasks?: TaskDTO[];
+  currentGroupStudents?: UserDTO[];
 };
 
 export type GroupApiContextState = {
@@ -222,9 +223,17 @@ export class GroupApiProvider extends React.Component<
   };
 
   listStudentsWithGroup = async () => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
     this.setState({ isLoading: true });
     return groupsService.listStudentsWithGroup().then(res => {
       this.setState({
+        currentGroupStudents: res.students.filter(
+          s =>
+            this.state.currentGroup &&
+            s.group_ids.includes(this.state.currentGroup.id)
+        ),
         isLoading: false,
       });
       return res.students;
