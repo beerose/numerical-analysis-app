@@ -6,24 +6,18 @@ import { join } from 'path';
 import { useCallback, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { TaskDTO, TaskKind } from '../../../../../../dist/common';
+import { TaskDTO } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
 import { DateRange } from '../../../components/DateRange';
 import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
 import { Flex } from '../../../components/Flex';
 import { Colors, LABELS, showMessage } from '../../../utils';
+import { TaskTitle } from '../components/TaskTitle';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
 `;
-
-const TaskTitle = ({ kind, name }: Pick<TaskDTO, 'kind' | 'name'>) => (
-  <span>
-    <b>{kind === TaskKind.Assignment ? 'Pracownia' : 'Zadanie domowe'}</b>:{' '}
-    {name}
-  </span>
-);
 
 const StyledTaskCard = styled(Card)`
   .ant-card-body {
@@ -33,7 +27,6 @@ const StyledTaskCard = styled(Card)`
   cursor: pointer;
   &:hover {
     border: 1px solid ${Colors.SemiLightGrey};
-    background: ${Colors.PrimaryLightGrey};
   }
 `;
 
@@ -78,9 +71,15 @@ export const TasksSection = ({ actions, tasks, history }: Props) => {
           `}
           renderItem={(task: TaskDTO) => {
             return (
-              <StyledTaskCard onClick={() => navigateTo(String(task.id))}>
+              <StyledTaskCard>
                 <List.Item
                   actions={[
+                    <a
+                      role="button"
+                      onClick={() => navigateTo(String(task.id))}
+                    >
+                      {LABELS.edit}
+                    </a>,
                     <DeleteWithConfirm
                       onConfirm={() => {
                         deleteTask(task.id);
