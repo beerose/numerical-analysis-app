@@ -12,14 +12,16 @@ const taskTypeValues = Object.values(TaskKind).reverse();
 
 type Props = {
   onChange?: (value: SelectValue) => void;
+  value?: TaskKind;
 } & SelectProps;
 
 export const TaskTypeSelect = React.forwardRef(
-  ({ onChange, value }: Props, ref: React.Ref<Select>) => {
+  ({ onChange, value, ...props }: Props, ref: React.Ref<Select<TaskKind>>) => {
     const { getText } = useContext(LocaleContext);
 
     return (
-      <Select
+      <Select<TaskKind>
+        {...props}
         mode="single"
         placeholder={
           <>
@@ -30,6 +32,7 @@ export const TaskTypeSelect = React.forwardRef(
           </>
         }
         onChange={onChange}
+        defaultValue={undefined}
         style={{ minWidth: '120px' }}
         value={value}
         ref={ref}

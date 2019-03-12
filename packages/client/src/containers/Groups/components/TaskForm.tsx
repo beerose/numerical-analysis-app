@@ -4,10 +4,10 @@ import { Button, DatePicker, Form, Icon, Input, Switch } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
 import moment from 'moment';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
-import { TaskDTO } from '../../../../../../dist/common';
+import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { TaskTypeSelect } from '../../../components';
 import { Colors } from '../../../utils';
 
@@ -40,6 +40,7 @@ type Props = {
 // tslint:disable-next-line:max-func-body-length
 const TaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
+  const [taskType, setTaskType] = useState<TaskKind | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -78,6 +79,18 @@ const TaskForm = (props: Props) => {
 
   return (
     <Form onSubmit={handleSubmit} css={formStyles}>
+      <Form.Item label="Rodzaj zadania" {...FORM_ITEM_LAYOUT}>
+        {getFieldDecorator('kind', {
+          rules: [{ required: true, message: 'rodzaj jest wymagany' }],
+        })(
+          <TaskTypeSelect
+            onSelect={val => {
+              console.log(val);
+              setTaskType(val as TaskKind);
+            }}
+          />
+        )}
+      </Form.Item>
       <Form.Item label="Nazwa" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('task_name', {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
@@ -95,11 +108,6 @@ const TaskForm = (props: Props) => {
             }
           />
         )}
-      </Form.Item>
-      <Form.Item label="Rodzaj zadania" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('kind', {
-          rules: [{ required: true, message: 'rodzaj jest wymagany' }],
-        })(<TaskTypeSelect />)}
       </Form.Item>
       <Form.Item label="Waga" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('weight', {
@@ -136,65 +144,95 @@ const TaskForm = (props: Props) => {
           />
         )}
       </Form.Item>
-      <Form.Item
-        label={
-          <span>
-            <span
-              css={css`
-                color: red;
-              `}
+      {(taskType === TaskKind.Assignment || taskType === TaskKind.Homework) && (
+        <section>
+          <Form.Item
+            label={
+              <span>
+                <span
+                  css={css`
+                    color: red;
+                  `}
+                >
+                  *
+                </span>{' '}
+                Terminy oddawania zadania
+              </span>
+            }
+            {...FORM_ITEM_LAYOUT}
+            css={css`
+              padding: 0;
+              margin: 0;
+            `}
+          >
+            <Form.Item
+              {...FORM_ITEM_LAYOUT}
+              style={{ display: 'inline-block', maxWidth: '180px' }}
             >
-              *
-            </span>{' '}
-            Terminy oddawania zadania
-          </span>
-        }
-        {...FORM_ITEM_LAYOUT}
-        css={css`
-          padding: 0;
-          margin: 0;
-        `}
-      >
-        <Form.Item
-          {...FORM_ITEM_LAYOUT}
-          style={{ display: 'inline-block', maxWidth: '180px' }}
-        >
-          {getFieldDecorator('start_upload_date', {
-            rules: [{ required: true, message: 'pole jest wymagane' }],
-          })(
-            <DatePicker
-              css={css`
-                width: 180px;
-              `}
-            />
-          )}
-        </Form.Item>
-        <span
-          style={{
-            padding: '10px',
-            textAlign: 'center',
-            width: '24px',
-          }}
-        >
-          -
-        </span>
-        <Form.Item {...FORM_ITEM_LAYOUT} style={{ display: 'inline-block' }}>
-          {getFieldDecorator('end_upload_date', {
-            rules: [{ required: true, message: 'pole jest wymagane' }],
-          })(
-            <DatePicker
-              css={css`
-                width: 180px;
-              `}
-            />
-          )}
-        </Form.Item>
-      </Form.Item>
-      <Form.Item label="Weryfikacja wysyłanych pilików" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('verify_upload', {
-          initialValue: true,
-        })(<Switch defaultChecked={true} />)}
-      </Form.Item>
+              {getFieldDecorator('start_upload_date', {
+                rules: [{ required: true, message: 'pole jest wymagane' }],
+              })(
+                <DatePicker
+                  css={css`
+                    width: 180px;
+                  `}
+                  disabled={
+                    ![TaskKind.Assignment, TaskKind.Homework, null].includes(
+                      taskType
+                    )
+                  }
+                />
+              )}
+            </Form.Item>
+            <span
+              style={{
+                padding: '10px',
+                textAlign: 'center',
+                width: '24px',
+              }}
+            >
+              -
+            </span>
+
+            <Form.Item
+              {...FORM_ITEM_LAYOUT}
+              style={{ display: 'inline-block' }}
+            >
+              {getFieldDecorator('end_upload_date', {
+                rules: [{ required: true, message: 'pole jest wymagane' }],
+              })(
+                <DatePicker
+                  css={css`
+                    width: 180px;
+                  `}
+                  disabled={
+                    ![TaskKind.Assignment, TaskKind.Homework, null].includes(
+                      taskType
+                    )
+                  }
+                />
+              )}
+            </Form.Item>
+          </Form.Item>
+          <Form.Item
+            label="Weryfikacja wysyłanych pilików"
+            {...FORM_ITEM_LAYOUT}
+          >
+            {getFieldDecorator('verify_upload', {
+              initialValue: true,
+            })(
+              <Switch
+                defaultChecked={true}
+                disabled={[
+                  TaskKind.Assignment,
+                  TaskKind.Homework,
+                  null,
+                ].includes(taskType)}
+              />
+            )}
+          </Form.Item>
+        </section>
+      )}
       <Button type="primary" htmlType="submit">
         Zapisz
       </Button>
