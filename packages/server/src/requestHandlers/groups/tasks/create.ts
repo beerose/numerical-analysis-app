@@ -1,4 +1,4 @@
-import { apiMessages, TaskKind, TestKind } from 'common';
+import { apiMessages, TaskKind } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { isNumber } from 'util';
@@ -14,13 +14,13 @@ const CreateTaskBodyV = t.type({
   kind: t.union([
     t.literal(TaskKind.Assignment),
     t.literal(TaskKind.Homework),
-    t.literal(TestKind.Colloquium),
-    t.literal(TestKind.Exam),
-    t.literal(TestKind.MidtermExam),
-    t.literal(TestKind.MidtermTest),
-    t.literal(TestKind.Retake),
-    t.literal(TestKind.ShortTest),
-    t.literal(TestKind.Test),
+    t.literal(TaskKind.Colloquium),
+    t.literal(TaskKind.Exam),
+    t.literal(TaskKind.MidtermExam),
+    t.literal(TaskKind.MidtermTest),
+    t.literal(TaskKind.Retake),
+    t.literal(TaskKind.ShortTest),
+    t.literal(TaskKind.Test),
   ]),
   max_points: t.number,
   name: t.string,

@@ -5,10 +5,11 @@ import { Button, DatePicker, Form, Icon, Input, Spin, Switch } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import moment from 'moment';
 import React, { useEffect } from 'react';
+import { Omit } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
-import { TaskTypeRadioGroup } from '../../../components';
-import { Colors, LABELS } from '../../../utils';
+import { TaskTypeSelect } from '../../../components';
+import { Colors } from '../../../utils';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -42,17 +43,20 @@ const TaskForm = (props: Props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    props.form.validateFields((err, values: TaskDTO) => {
-      if (err) {
-        return;
+    props.form.validateFields(
+      (err, values: Omit<TaskDTO, 'name'> & { task_name: TaskDTO['name'] }) => {
+        if (err) {
+          return;
+        }
+        props.onSubmit({
+          ...values,
+          max_points: Number(values.max_points),
+          name: values.task_name,
+          verify_upload: Boolean(values.verify_upload),
+          weight: Number(values.weight),
+        });
       }
-      props.onSubmit({
-        ...values,
-        max_points: Number(values.max_points),
-        verify_upload: Boolean(values.verify_upload),
-        weight: Number(values.weight),
-      });
-    });
+    );
   };
 
   useEffect(() => {
@@ -75,7 +79,7 @@ const TaskForm = (props: Props) => {
   return (
     <Form onSubmit={handleSubmit} css={formStyles}>
       <Form.Item label="Nazwa" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('name', {
+        {getFieldDecorator('task_name', {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
           <Input
@@ -92,10 +96,10 @@ const TaskForm = (props: Props) => {
           />
         )}
       </Form.Item>
-      <Form.Item label="Rodzaj" {...FORM_ITEM_LAYOUT}>
+      <Form.Item label="Rodzaj zadania" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('kind', {
           rules: [{ required: true, message: 'rodzaj jest wymagany' }],
-        })(<TaskTypeRadioGroup />)}
+        })(<TaskTypeSelect />)}
       </Form.Item>
       <Form.Item label="Waga" {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator('weight', {

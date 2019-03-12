@@ -143,9 +143,6 @@ export type MeetingDetailsModel = {
 export enum TaskKind {
   Homework = 'homework', // zadanie domowe
   Assignment = 'assignment', // pracownia
-}
-
-export enum TestKind {
   Exam = 'exam', // egzamin
   Test = 'test', // sprawdzian
   MidtermTest = 'midtermTest', // sprawdzian połówkowy
@@ -158,7 +155,7 @@ export enum TestKind {
 export type TaskDTO = {
   id: number;
   name: string;
-  kind: TaskKind | TestKind;
+  kind: TaskKind;
   weight: number;
   max_points: number;
   results_date?: string | Date; // if empty then due date
