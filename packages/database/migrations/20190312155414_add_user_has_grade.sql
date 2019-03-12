@@ -3,7 +3,7 @@ CREATE TABLE user_has_points (
   user_id  INT NOT NULL REFERENCES users(id),
   task_id  INT NOT NULL REFERENCES tasks(id),
   points   INT NOT NULL DEFAULT 0,
-  UNIQUE KEY(user_id, group_id)
+  UNIQUE KEY(user_id, task_id)
 );
 
 -- migrate:down
