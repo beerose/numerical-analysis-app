@@ -7,12 +7,12 @@ import { QueryCallback } from './QueryCallback';
 
 type GetPresencesCallback = (
   err: MysqlError | null,
-  results: Array<{
+  results: {
     id: UserDTO['id'];
     user_name: UserDTO['user_name'];
     student_index: UserDTO['student_index'];
     presences: string;
-  }>
+  }[]
 ) => void;
 export const getPresencesInGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
@@ -20,7 +20,7 @@ export const getPresencesInGroup = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
         SELECT
           id,
           user_name,
@@ -42,12 +42,12 @@ export const getPresencesInGroup = (
 export const getActivitiesInGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
-    Array<{ id: UserDTO['id']; meeting_id: MeetingDTO['id']; points: string }>
+    { id: UserDTO['id']; meeting_id: MeetingDTO['id']; points: string }[]
   >
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
         SELECT
           id,
           meeting_id,
@@ -69,8 +69,7 @@ export const addPresence = (
 ) =>
   connection.query(
     {
-      sql:
-        'INSERT IGNORE INTO user_attended_in_meeting (user_id, meeting_id) VALUES (?, ?);',
+      sql: /* sql */ `INSERT IGNORE INTO user_attended_in_meeting (user_id, meeting_id) VALUES (?, ?);`,
       values: [userId, meetingId],
     },
     callback
@@ -82,8 +81,7 @@ export const deletePresence = (
 ) =>
   connection.query(
     {
-      sql:
-        'DELETE FROM user_attended_in_meeting WHERE user_id = ? AND meeting_id = ?',
+      sql: /* sql */ `DELETE FROM user_attended_in_meeting WHERE user_id = ? AND meeting_id = ?`,
       values: [userId, meetingId],
     },
     callback

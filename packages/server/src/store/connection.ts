@@ -11,37 +11,73 @@ if (!dbConfig.user) {
   throw new Error('DB_USER is not defined');
 }
 
-// Watch out! Type unsafe! We expect `connectToDb` will be called before accessing connection.
+// Watch out! We expect `connectToDb` will be called before accessing connection.
 export const connection = mysql.createConnection(dbConfig);
 
-enum ConState {
-  Disconnected = 'Disconnected',
-  Connected = 'Connected',
+enum ConnectionStatus {
+  Off = 'Off',
+  On = 'On', // Connecting or Connected
   ShuttingDown = 'ShuttingDown',
 }
 
-let state: ConState = ConState.Disconnected;
+type LocalConnectionState = {
+  // We'll abort reconnecting after few consecutive failures
+  readonly retriesLeft: number;
+  readonly status: ConnectionStatus;
+};
+const MAX_RETRIES = 5;
+let conState: LocalConnectionState = {
+  retriesLeft: MAX_RETRIES,
+  status: ConnectionStatus.Off,
+};
+function setConState<K extends keyof LocalConnectionState>(
+  diff: Pick<LocalConnectionState, K>
+) {
+  conState = {
+    ...conState,
+    ...diff,
+  };
+
+  if (
+    conState.status !== ConnectionStatus.ShuttingDown &&
+    conState.retriesLeft === 0
+  ) {
+    throw new Error(
+      `Can't connect to the database. Failing after ${MAX_RETRIES} retries`
+    );
+  }
+}
 
 export const connectToDb = () => {
   console.log(`
     Connecting to database...
-    Local ConState state is ${state}.
+    Local conState.status is ${conState.status}.
     connection.state is ${connection.state}.
   `);
   if (connection.state === 'disconnected') {
     connection.connect(err => {
-      state = ConState.Connected;
       if (err) {
-        console.warn('Error occurred when connecting to database:\n', err);
+        console.warn(
+          'Error occurred when connecting to database:\n',
+          err,
+          conState
+        );
+        setConState({ retriesLeft: conState.retriesLeft - 1 });
         setTimeout(connectToDb, 2000);
+      } else {
+        console.log('Connected to database!');
+        setConState({ status: ConnectionStatus.On, retriesLeft: MAX_RETRIES });
       }
-      console.log('Connected to database!');
     });
 
     connection.on('error', err => {
-      if (state === ConState.Connected) {
-        state = ConState.Disconnected;
+      if (conState.status === ConnectionStatus.On) {
         if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+          setConState({
+            retriesLeft: conState.retriesLeft - 1,
+            status: ConnectionStatus.Off,
+          });
+
           console.log('Connection to database lost!');
           connectToDb();
         } else {
@@ -53,8 +89,9 @@ export const connectToDb = () => {
 };
 
 export const disconnectFromDb = () => {
-  state = ConState.ShuttingDown;
+  setConState({
+    retriesLeft: 0,
+    status: ConnectionStatus.ShuttingDown,
+  });
   connection.pause();
 };
-
-export const DUPLICATE_ENTRY_ERROR = 'ER_DUP_ENTRY';

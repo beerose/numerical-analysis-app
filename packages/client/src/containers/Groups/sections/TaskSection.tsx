@@ -17,13 +17,13 @@ export const TaskSection = (props: Props) => {
   const navigateTo = useCallback(
     (path: string) =>
       props.history.push(
-        (location.pathname.endsWith('/') ? '' : 'tasks/') + String(path)
+        (location.pathname.endsWith('/new') ? '' : 'tasks/') + String(path)
       ),
     [location.pathname]
   );
 
   useEffect(() => {
-    if (!props.currentTask && props.mode === 'edit') {
+    if (props.mode === 'edit') {
       props.actions.getTask();
     }
   }, []);

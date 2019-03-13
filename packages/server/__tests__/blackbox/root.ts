@@ -1,8 +1,4 @@
-import { makeFetch } from 'supertest-fetch';
-
-import { app } from '../../src/server';
-
-const fetch = makeFetch(app);
+import { fetch } from './fetch';
 
 describe('get /', () => {
   it('responds nicely', () =>

@@ -1,6 +1,6 @@
 import { Icon, Select } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
-import { SelectProps, SelectValue } from 'antd/lib/select';
+import { SelectProps } from 'antd/lib/select';
 import { UserDTO } from 'common';
 import * as React from 'react';
 

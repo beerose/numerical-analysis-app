@@ -60,7 +60,7 @@
     "no-string-literal": false,
     "object-literal-sort-keys": [true, "shorthand-first"],
     "no-unused-expression": [true, "allow-tagged-template"],
-    "no-submodule-imports": true,
+    "no-submodule-imports": [true, "fp-ts"],
     "no-object-literal-type-assertion": false,
     "max-classes-per-file": false,
     "import-name": false,

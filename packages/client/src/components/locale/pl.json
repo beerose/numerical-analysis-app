@@ -18,9 +18,18 @@
   "classRoomNumber": "Numer sali",
   "groupName": "Nazwa grupy",
   "groupType": "Typ grupy",
-  "tasks": "Listy zadań",
+  "tasks": "Zadania",
   "tests": "Sprawdziany",
   "gradeTresholds": "Progi punktowe",
   "semester": "Semestr",
-  "new": "Dodaj"
+  "new": "Dodaj",
+  "homework": "Zadanie domowe",
+  "assignment": "Pracownia",
+  "exam": "Egzamin",
+  "test": "Sprawdzian",
+  "midtermTest": "Sprawdzian połówkowy",
+  "shortTest": "Kartkówka",
+  "retake": "Egzamin poprawkowy",
+  "midtermExam": "Egzamin połówkowy",
+  "colloquium": "Kolokwium"
 }

@@ -10,5 +10,7 @@ export * from './Breadcrumbs';
 export * from './DateControls';
 export * from './ErrorBoundary';
 export * from './PaddingContainer';
-export * from './TaskTypeRadioGroup';
+export * from './TaskTypeSelect';
 export * from './Flex';
+export * from './DateRange';
+export * from './DeleteWithConfirm';

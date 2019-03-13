@@ -7,6 +7,7 @@ export * from './users';
 export * from './meetings';
 export * from './groups';
 export * from './presences';
+export * from './grades';
 
 export const setActivity = (
   {
@@ -18,7 +19,7 @@ export const setActivity = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
         INSERT INTO
           user_was_active_in_meeting(user_id, meeting_id, points)
         VALUES
