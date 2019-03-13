@@ -3,7 +3,7 @@
     "tslint:latest",
     "tslint-config-airbnb",
     "tslint-sonarts",
-    "tslint-microsoft-contrib",
+    "tslint-microsoft-contrib/latest",
     "tslint-config-prettier"
   ],
   "rules": {
