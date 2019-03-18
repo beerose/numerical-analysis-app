@@ -127,13 +127,6 @@ export class UsersTable extends React.Component<
     },
   ];
 
-  componentWillReceiveProps(nextProps: UsersTableProps) {
-    this.setState({
-      currentPage: nextProps.currentPage || 1,
-      data: nextProps.users,
-    });
-  }
-
   isEditing = ({ email }: UserDTO) => {
     return email === this.state.editingKey;
   };
@@ -164,8 +157,9 @@ export class UsersTable extends React.Component<
       pageSize,
       total,
       className,
+      users: data,
+      currentPage,
     } = this.props;
-    const { data, currentPage } = this.state;
 
     const components = {
       body: {
