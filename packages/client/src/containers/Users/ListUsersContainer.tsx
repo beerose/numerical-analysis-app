@@ -62,7 +62,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
     users: [],
   };
 
-  componentWillMount() {
+  componentDidMount() {
     this.updateUsersList(1);
   }
 
