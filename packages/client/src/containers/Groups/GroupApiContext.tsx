@@ -6,6 +6,7 @@ import {
   TaskDTO,
   UserDTO,
   UserRole,
+  UserWithGroups,
 } from 'common';
 import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
@@ -38,7 +39,7 @@ type StateValues = {
   errorMessage?: string;
   lecturers: UserDTO[];
   tasks?: TaskDTO[];
-  currentGroupStudents?: UserDTO[];
+  currentGroupStudents?: UserWithGroups[];
 };
 
 export type GroupApiContextState = {

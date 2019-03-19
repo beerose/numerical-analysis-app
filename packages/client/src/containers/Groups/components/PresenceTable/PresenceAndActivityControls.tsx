@@ -58,7 +58,6 @@ export class PresenceAndActivityControls extends React.PureComponent<
   // todo: use bind decorator and compare performance
   handleIsPresentChanged = (event: CheckboxChangeEvent) => {
     const { meetingId, studentId, onChange } = this.props;
-    console.log(this.props);
     const { checked } = event.target;
 
     onChange({

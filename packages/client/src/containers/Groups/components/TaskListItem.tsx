@@ -2,13 +2,14 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Card, Input, List, Table } from 'antd';
-import { TaskDTO, UserDTO } from 'common';
-import { useState } from 'react';
+import { TaskDTO, UserDTO, UserWithGroups } from 'common';
+import { useState, ChangeEvent } from 'react';
 
 import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
 import { Colors, LABELS } from '../../../utils';
 
 import { TaskTitle } from './TaskTitle';
+import { ProgressPlugin } from 'webpack';
 
 const StyledTaskCard = styled(Card)`
   .ant-card-body {
@@ -32,11 +33,49 @@ const StyledTaskCard = styled(Card)`
   }
 `;
 
+type TaskPointsInputProps = {
+  taskId: TaskDTO['id'];
+  userId: UserDTO['id'];
+  onChange: (
+    taskId: TaskDTO['id'],
+    userId: UserDTO['id'],
+    points: number
+  ) => void;
+};
+
+const TaskPointsInput = (props: TaskPointsInputProps) => {
+  const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { taskId, userId, onChange } = props;
+
+    onChange(
+      taskId,
+      userId,
+      Number(event.target.value) ? Number(event.target.value) : 0
+    );
+  };
+
+  return (
+    <Input
+      css={css`
+        width: 35px;
+        border: 1 solid ${Colors.SemiLightGrey} !important;
+        margin-right: 3px;
+      `}
+      onChange={handleInputValueChange}
+    />
+  );
+};
+
 type Props = {
   navigateTo: (path: string) => void;
   task: TaskDTO;
-  deleteTask: (taskId: number) => void;
-  students?: UserDTO[];
+  deleteTask: (taskId: TaskDTO['id']) => void;
+  setGrade: (
+    taskId: TaskDTO['id'],
+    userId: UserDTO['id'],
+    points: number
+  ) => void;
+  students?: UserWithGroups[];
 };
 
 export const TaskListItem = ({
@@ -44,6 +83,7 @@ export const TaskListItem = ({
   task,
   deleteTask,
   students,
+  setGrade,
 }: Props) => {
   const [gradesVisible, setGradesVisible] = useState<boolean>(false);
 
@@ -51,30 +91,35 @@ export const TaskListItem = ({
     {
       fixed: true,
       key: 'user_name',
-      render: (user: UserDTO) => (
+      render: (user: UserWithGroups) => (
         <p>
           {user.user_name} ({user.student_index})
         </p>
       ),
-      sorter: (a: UserDTO, b: UserDTO) => Number(a.user_name < b.user_name),
+      sorter: (a: UserWithGroups, b: UserWithGroups) =>
+        Number(a.user_name < b.user_name),
       title: 'Student',
       width: '100',
     },
     {
       fixed: true,
       key: 'points',
-      render: () => (
-        <Flex justifyContent="center" alignContent="center" alignItems="center">
-          <Input
-            css={css`
-              width: 35px;
-              border: 1 solid ${Colors.SemiLightGrey} !important;
-              margin-right: 3px;
-            `}
-          />{' '}
-          / {task.max_points}
-        </Flex>
-      ),
+      render: (user: UserWithGroups) => {
+        return (
+          <Flex
+            justifyContent="center"
+            alignContent="center"
+            alignItems="center"
+          >
+            <TaskPointsInput
+              onChange={setGrade}
+              taskId={task.id}
+              userId={user.id}
+            />{' '}
+            / {task.max_points}
+          </Flex>
+        );
+      },
       title: 'Punkty',
     },
   ];
