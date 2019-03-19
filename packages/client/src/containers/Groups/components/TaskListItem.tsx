@@ -33,7 +33,7 @@ const StyledTaskCard = styled(Card)`
 `;
 
 type TaskPointsInputProps = {
-  taskId: TaskDTO['id'];
+  task: TaskDTO;
   userId: UserDTO['id'];
   onChange: (
     taskId: TaskDTO['id'],
@@ -43,19 +43,24 @@ type TaskPointsInputProps = {
 };
 
 const TaskPointsInput = (props: TaskPointsInputProps) => {
-  const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { taskId, userId, onChange } = props;
+  const { task, userId, onChange } = props;
 
-    onChange(taskId, userId, Number(event.target.value));
+  const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChange(task.id, userId, Number(event.target.value));
   };
 
   return (
     <Input
       css={css`
-        width: 35px;
+        width: ${task.max_points < 10
+          ? '45px'
+          : task.max_points < 100
+          ? '55px'
+          : '65px'};
         border: 1 solid ${Colors.SemiLightGrey} !important;
         margin-right: 3px;
       `}
+      type="number"
       onChange={handleInputValueChange}
     />
   );
@@ -115,7 +120,7 @@ export const TaskListItem = ({
         <Flex justifyContent="center" alignContent="center" alignItems="center">
           <TaskPointsInput
             onChange={handleSetGrade}
-            taskId={task.id}
+            task={task}
             userId={user.id}
           />{' '}
           / {task.max_points}
