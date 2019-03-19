@@ -7,6 +7,7 @@ import {
   UserDTO,
   UserRole,
   UserWithGroups,
+  Grade,
 } from 'common';
 import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
@@ -40,6 +41,7 @@ type StateValues = {
   lecturers: UserDTO[];
   tasks?: TaskDTO[];
   currentGroupStudents?: UserWithGroups[];
+  grades?: Grade[];
 };
 
 export type GroupApiContextState = {
@@ -338,6 +340,12 @@ export class GroupApiProvider extends React.Component<
     points: number
   ) => {
     const res = await groupsService.setGrade(taskId, userId, points);
+    return res;
+  };
+
+  getGrades = async (taskId: TaskDTO['id']) => {
+    const res = await groupsService.getGrades(taskId);
+    this.setState({ grades: res.grades });
     return res;
   };
 

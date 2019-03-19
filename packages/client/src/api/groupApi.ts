@@ -6,6 +6,7 @@ import {
   ServerRoutes,
   TaskDTO,
   UserDTO,
+  Grade,
 } from 'common';
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
@@ -332,3 +333,10 @@ export const setGrade = (
     body: JSON.stringify({ task_id: taskId, user_id: userId, points }),
     method: 'POST',
   });
+
+export const getGrades = (taskId: TaskDTO['id']) =>
+  authFetch<{ grades: Grade[] }>(
+    `${SERVER_URL + Grades}/?${qs.stringify({
+      task_id: taskId,
+    })}`
+  );
