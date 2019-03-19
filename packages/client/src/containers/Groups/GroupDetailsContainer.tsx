@@ -33,7 +33,7 @@ const MenuLink = ({ children, to, ...rest }: MenuLinkProps) => (
 );
 
 const menuStyles = css`
-  width: 200px;
+  width: 250px;
 `;
 
 export class GroupDetailsContainer extends React.Component<
@@ -122,12 +122,6 @@ export class GroupDetailsContainer extends React.Component<
                 <MenuLink to={`${matchUrl}/tasks`} key="tasks">
                   <Icon type="calculator" />
                   {texts.tasks}
-                </MenuLink>
-              )}
-              {features.hasTests && (
-                <MenuLink to={`${matchUrl}/tests`} key="tests">
-                  <Icon type="edit" />
-                  {texts.tests}
                 </MenuLink>
               )}
               <MenuLink to={`${matchUrl}/grades`} key="grades">

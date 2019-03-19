@@ -4,12 +4,11 @@ type GroupFeaturesConfig = {
   hasMeetings?: boolean;
   hasPresence?: boolean;
   hasTasks?: boolean;
-  hasTests?: boolean;
 };
 
 export const groupFeatures: Record<GroupType, GroupFeaturesConfig> = {
   [GroupType.Lecture]: {
-    hasTests: true,
+    hasTasks: true,
   },
   [GroupType.Lab]: {
     hasMeetings: true,
@@ -20,6 +19,5 @@ export const groupFeatures: Record<GroupType, GroupFeaturesConfig> = {
     hasMeetings: true,
     hasPresence: true,
     hasTasks: true,
-    hasTests: true,
   },
 };
