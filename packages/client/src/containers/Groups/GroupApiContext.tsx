@@ -344,8 +344,17 @@ export class GroupApiProvider extends React.Component<
   };
 
   getGrades = async (taskId: TaskDTO['id']) => {
+    const students = this.state.currentGroupStudents
+      ? this.state.currentGroupStudents.map(s => s.id)
+      : undefined;
+
     const res = await groupsService.getGrades(taskId);
-    this.setState({ grades: res.grades });
+    this.setState({
+      grades: students
+        ? res.grades.filter(grade => students.includes(grade.user_id))
+        : res.grades,
+    });
+
     return res;
   };
 
