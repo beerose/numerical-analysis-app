@@ -4,7 +4,7 @@ import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
 
-export const addGrade = (
+export const setGrade = (
   {
     userId,
     taskId,
@@ -21,6 +21,8 @@ export const addGrade = (
       sql: `
       INSERT INTO user_has_points(user_id, task_id, points)
       VALUES(?, ?, ?)
+      ON DUPLICATE KEY UPDATE
+      points = VALUES(points);
     `,
       values: [userId, taskId, points],
     },

@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 import { auth } from '../../middleware';
 
-import { addGrade } from './add';
+import { SetGrade } from './set';
 
 const { Grades } = ServerRoutes;
 export const router = Router();
@@ -11,5 +11,5 @@ export const router = Router();
 router.post(
   Grades,
   auth.authorize([UserRole.admin, UserRole.superUser]),
-  addGrade
+  SetGrade
 );

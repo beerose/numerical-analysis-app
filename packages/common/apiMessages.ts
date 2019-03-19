@@ -4,7 +4,7 @@ export const apiMessages = {
   cannotVerifyJWT: 'Nieprawidłowy token JWT',
   emailRequired: 'Email jest wymagany',
   emptyCSV: 'Plik CSV jest pusty lub nieprawidłowy',
-  gradeAdded: 'Ocena dodana',
+  gradeSet: 'Ocena ustawiona',
   groupCreated: 'Grupa została dodana',
   groupDeleted: 'Grupa została usunięta',
   groupIdRequired: 'group_id jest wymagane',
