@@ -16,7 +16,7 @@ import { showMessage } from '../utils/message';
 import { SERVER_URL } from '.';
 import { authFetch } from './authFetch';
 
-const { Groups } = ServerRoutes;
+const { Groups, Grades } = ServerRoutes;
 
 export const uploadUsers = async (
   fileContent: string,
@@ -317,9 +317,18 @@ export const getTask = (taskId: TaskDTO['id'], groupId: GroupDTO['id']) =>
     })}`
   );
 
-export const updateTask = (task: TaskDTO, groupId: GroupDTO['id']) => {
-  return authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Update, {
+export const updateTask = (task: TaskDTO, groupId: GroupDTO['id']) =>
+  authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Update, {
     body: JSON.stringify({ ...task, group_id: groupId }),
     method: 'POST',
   });
-};
+
+export const setGrade = (
+  taskId: TaskDTO['id'],
+  userId: UserDTO['id'],
+  points: number
+) =>
+  authFetch<ApiResponse>(SERVER_URL + Grades, {
+    body: JSON.stringify({ task_id: taskId, user_id: userId, points }),
+    method: 'POST',
+  });

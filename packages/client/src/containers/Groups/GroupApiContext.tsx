@@ -331,6 +331,15 @@ export class GroupApiProvider extends React.Component<
     return res;
   };
 
+  setGrade = async (
+    taskId: TaskDTO['id'],
+    userId: UserDTO['id'],
+    points: number
+  ) => {
+    const res = await groupsService.setGrade(taskId, userId, points);
+    return res;
+  };
+
   render() {
     return (
       <GroupApiContext.Provider value={this.state as GroupApiContextState}>
