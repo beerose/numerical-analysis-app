@@ -2,14 +2,13 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Card, Input, List, Table } from 'antd';
-import { TaskDTO, UserDTO, UserWithGroups } from 'common';
+import { TaskDTO, UserDTO, UserWithGroups, ApiResponse } from 'common';
 import { useState, ChangeEvent } from 'react';
 
 import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
-import { Colors, LABELS } from '../../../utils';
+import { Colors, LABELS, showMessage } from '../../../utils';
 
 import { TaskTitle } from './TaskTitle';
-import { ProgressPlugin } from 'webpack';
 
 const StyledTaskCard = styled(Card)`
   .ant-card-body {
@@ -47,11 +46,7 @@ const TaskPointsInput = (props: TaskPointsInputProps) => {
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { taskId, userId, onChange } = props;
 
-    onChange(
-      taskId,
-      userId,
-      Number(event.target.value) ? Number(event.target.value) : 0
-    );
+    onChange(taskId, userId, Number(event.target.value));
   };
 
   return (
@@ -74,7 +69,7 @@ type Props = {
     taskId: TaskDTO['id'],
     userId: UserDTO['id'],
     points: number
-  ) => void;
+  ) => Promise<ApiResponse>;
   students?: UserWithGroups[];
 };
 
@@ -86,6 +81,18 @@ export const TaskListItem = ({
   setGrade,
 }: Props) => {
   const [gradesVisible, setGradesVisible] = useState<boolean>(false);
+
+  const handleSetGrade = (
+    taskId: TaskDTO['id'],
+    userId: UserDTO['id'],
+    points: number
+  ) => {
+    setGrade(taskId, userId, points).then(res => {
+      if ('error' in res) {
+        showMessage(res);
+      }
+    });
+  };
 
   const columns = [
     {
@@ -104,22 +111,16 @@ export const TaskListItem = ({
     {
       fixed: true,
       key: 'points',
-      render: (user: UserWithGroups) => {
-        return (
-          <Flex
-            justifyContent="center"
-            alignContent="center"
-            alignItems="center"
-          >
-            <TaskPointsInput
-              onChange={setGrade}
-              taskId={task.id}
-              userId={user.id}
-            />{' '}
-            / {task.max_points}
-          </Flex>
-        );
-      },
+      render: (user: UserWithGroups) => (
+        <Flex justifyContent="center" alignContent="center" alignItems="center">
+          <TaskPointsInput
+            onChange={handleSetGrade}
+            taskId={task.id}
+            userId={user.id}
+          />{' '}
+          / {task.max_points}
+        </Flex>
+      ),
       title: 'Punkty',
     },
   ];
