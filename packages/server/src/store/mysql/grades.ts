@@ -1,4 +1,4 @@
-import { TaskDTO, UserDTO } from 'common';
+import { TaskDTO, UserDTO, Grade } from 'common';
 
 import { connection } from '../connection';
 
@@ -25,6 +25,18 @@ export const setGrade = (
       points = VALUES(points);
     `,
       values: [userId, taskId, points],
+    },
+    callback
+  );
+
+export const getGrades = (
+  { taskId }: { taskId: TaskDTO['id'] },
+  callback: QueryCallback<Grade[]>
+) =>
+  connection.query(
+    {
+      sql: `SELECT * FROM user_has_points WHERE task_id = ?;`,
+      values: [taskId],
     },
     callback
   );

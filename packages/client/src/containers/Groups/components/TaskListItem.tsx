@@ -158,7 +158,6 @@ export const TaskListItem = ({
       </List.Item>
       {gradesVisible && (
         <Table
-          bordered
           dataSource={students}
           pagination={false}
           columns={columns}

@@ -164,3 +164,9 @@ export type TaskDTO = {
   start_upload_date: string | Date;
   end_upload_date: string | Date; // due date of the task
 };
+
+export type Grade = {
+  user_id: UserDTO['id'];
+  task_id: TaskDTO['id'];
+  points: number;
+};
