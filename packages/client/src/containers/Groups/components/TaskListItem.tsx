@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Card, Input, List, Table } from 'antd';
+import { Card, Input, List, Table, Spin } from 'antd';
 import { TaskDTO, UserDTO, UserWithGroups, ApiResponse, Grade } from 'common';
 import { useState, ChangeEvent, useEffect } from 'react';
 
@@ -40,10 +40,11 @@ type TaskPointsInputProps = {
     userId: UserDTO['id'],
     points: number
   ) => void;
+  grade?: Grade;
 };
 
 const TaskPointsInput = (props: TaskPointsInputProps) => {
-  const { task, userId, onChange } = props;
+  const { task, userId, onChange, grade } = props;
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(task.id, userId, Number(event.target.value));
@@ -53,7 +54,7 @@ const TaskPointsInput = (props: TaskPointsInputProps) => {
     <Input
       css={css`
         width: ${task.max_points < 10
-          ? '45px'
+          ? '50px'
           : task.max_points < 100
           ? '55px'
           : '65px'};
@@ -61,6 +62,7 @@ const TaskPointsInput = (props: TaskPointsInputProps) => {
         margin-right: 3px;
       `}
       type="number"
+      defaultValue={grade && grade.points.toString()}
       onChange={handleInputValueChange}
     />
   );
@@ -88,15 +90,16 @@ export const TaskListItem = ({
   fetchGrades,
 }: Props) => {
   const [gradesVisible, setGradesVisible] = useState<boolean>(false);
-  const [grades, setGrades] = useState<Grade[]>([]);
+  const [grades, setGrades] = useState<Grade[] | undefined>(undefined);
 
   useEffect(() => {
-    if (!grades.length) {
+    if (!grades && gradesVisible) {
       fetchGrades(task.id).then(res => {
-        setGrades(res);
+        const studentIds = students ? students.map(s => s.id) : [];
+        setGrades(res.filter(grade => studentIds.includes(grade.user_id)));
       });
     }
-  }, []);
+  }, [gradesVisible, grades]);
 
   const handleSetGrade = (
     taskId: TaskDTO['id'],
@@ -132,6 +135,10 @@ export const TaskListItem = ({
           <TaskPointsInput
             onChange={handleSetGrade}
             task={task}
+            grade={
+              grades &&
+              grades.find(g => g.user_id === user.id && g.task_id === task.id)
+            }
             userId={user.id}
           />{' '}
           / {task.max_points}
@@ -167,14 +174,19 @@ export const TaskListItem = ({
           end={task.end_upload_date as string}
         />
       </List.Item>
-      {gradesVisible && (
-        <Table
-          dataSource={students}
-          pagination={false}
-          columns={columns}
-          size="small"
-        />
-      )}
+      {gradesVisible &&
+        (grades ? (
+          <Table
+            dataSource={students}
+            pagination={false}
+            columns={columns}
+            size="small"
+          />
+        ) : (
+          <Flex justifyContent="center" alignItems="center">
+            <Spin />
+          </Flex>
+        ))}
     </StyledTaskCard>
   );
 };
