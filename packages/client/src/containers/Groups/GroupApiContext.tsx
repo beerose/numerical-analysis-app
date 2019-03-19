@@ -41,7 +41,6 @@ type StateValues = {
   lecturers: UserDTO[];
   tasks?: TaskDTO[];
   currentGroupStudents?: UserWithGroups[];
-  grades?: Grade[];
 };
 
 export type GroupApiContextState = {
@@ -344,18 +343,8 @@ export class GroupApiProvider extends React.Component<
   };
 
   getGrades = async (taskId: TaskDTO['id']) => {
-    const students = this.state.currentGroupStudents
-      ? this.state.currentGroupStudents.map(s => s.id)
-      : undefined;
-
     const res = await groupsService.getGrades(taskId);
-    this.setState({
-      grades: students
-        ? res.grades.filter(grade => students.includes(grade.user_id))
-        : res.grades,
-    });
-
-    return res;
+    return res.grades;
   };
 
   render() {
