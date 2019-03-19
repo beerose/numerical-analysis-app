@@ -6,7 +6,7 @@ import { BackendResponse, handleBadRequest, PostRequest } from '../../lib';
 import { db } from '../../store';
 
 const GetGradesQueryV = t.type({
-  task_id: t.number,
+  task_id: t.string,
 });
 
 type GetGradesRequest = PostRequest<typeof GetGradesQueryV>;
@@ -15,9 +15,9 @@ export const GetGrades = (
   req: GetGradesRequest,
   res: BackendResponse<{ grades: Grade[] }>
 ) => {
-  handleBadRequest(GetGradesQueryV, req.body, res).then(() => {
-    const { task_id: taskId } = req.body;
-    return db.getGrades({ taskId }, (err, grades) => {
+  handleBadRequest(GetGradesQueryV, req.query, res).then(() => {
+    const { task_id } = req.query;
+    return db.getGrades({ taskId: Number(task_id) }, (err, grades) => {
       if (err) {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,

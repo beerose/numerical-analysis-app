@@ -2,8 +2,8 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Card, Input, List, Table } from 'antd';
-import { TaskDTO, UserDTO, UserWithGroups, ApiResponse } from 'common';
-import { useState, ChangeEvent } from 'react';
+import { TaskDTO, UserDTO, UserWithGroups, ApiResponse, Grade } from 'common';
+import { useState, ChangeEvent, useEffect } from 'react';
 
 import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
 import { Colors, LABELS, showMessage } from '../../../utils';
@@ -76,6 +76,7 @@ type Props = {
     points: number
   ) => Promise<ApiResponse>;
   students?: UserWithGroups[];
+  fetchGrades: (taskId: TaskDTO['id']) => Promise<Grade[]>;
 };
 
 export const TaskListItem = ({
@@ -84,8 +85,18 @@ export const TaskListItem = ({
   deleteTask,
   students,
   setGrade,
+  fetchGrades,
 }: Props) => {
   const [gradesVisible, setGradesVisible] = useState<boolean>(false);
+  const [grades, setGrades] = useState<Grade[]>([]);
+
+  useEffect(() => {
+    if (!grades.length) {
+      fetchGrades(task.id).then(res => {
+        setGrades(res);
+      });
+    }
+  }, []);
 
   const handleSetGrade = (
     taskId: TaskDTO['id'],

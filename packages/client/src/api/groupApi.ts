@@ -336,7 +336,7 @@ export const setGrade = (
 
 export const getGrades = (taskId: TaskDTO['id']) =>
   authFetch<{ grades: Grade[] }>(
-    `${SERVER_URL + Grades}/?${qs.stringify({
+    `${SERVER_URL + Grades}?${qs.stringify({
       task_id: taskId,
     })}`
   );

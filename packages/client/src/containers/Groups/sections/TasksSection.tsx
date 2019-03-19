@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Button, Card, List, Spin } from 'antd';
+import { Button, List, Spin } from 'antd';
 import { join } from 'path';
 import { useCallback, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
@@ -71,6 +71,7 @@ export const TasksSection = ({
               deleteTask={deleteTask}
               students={currentGroupStudents}
               setGrade={actions.setGrade}
+              fetchGrades={actions.getGrades}
             />
           )}
         />
