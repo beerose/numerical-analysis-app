@@ -1,4 +1,4 @@
-import { TaskDTO, UserDTO, Grade } from 'common';
+import { TaskDTO, UserDTO, Grade, GroupDTO } from 'common';
 
 import { connection } from '../connection';
 
@@ -37,6 +37,27 @@ export const getGrades = (
     {
       sql: `SELECT * FROM user_has_points WHERE task_id = ?;`,
       values: [taskId],
+    },
+    callback
+  );
+
+export const getUsersResults = (
+  { groupId }: { groupId: GroupDTO['id'] },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: /* sql */ `
+    SELECT
+	    uhp.user_id, sum(uhp.points * ght.weight) AS result
+    FROM
+	    group_has_task ght
+	    JOIN user_has_points uhp ON (ght.task_id = uhp.task_id)
+    WHERE
+      ght.group_id="54"
+    GROUP BY
+      uhp.user_id;`,
+      values: [groupId],
     },
     callback
   );
