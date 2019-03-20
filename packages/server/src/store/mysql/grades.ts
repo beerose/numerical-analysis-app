@@ -43,7 +43,7 @@ export const getGrades = (
 
 export const getUsersResults = (
   { groupId }: { groupId: GroupDTO['id'] },
-  callback: QueryCallback
+  callback: QueryCallback<{ user_id: UserDTO['id']; result: number }[]>
 ) =>
   connection.query(
     {
@@ -57,6 +57,25 @@ export const getUsersResults = (
       ght.group_id=?
     GROUP BY
       uhp.user_id;`,
+      values: [groupId],
+    },
+    callback
+  );
+
+export const getTasksMaxPointsPerGroup = (
+  { groupId }: { groupId: GroupDTO['id'] },
+  callback: QueryCallback<{ max: number }>
+) =>
+  connection.query(
+    {
+      sql: /* sql */ `
+    SELECT
+	    sum(max_points * weight) as max
+    FROM
+	    group_has_task ght
+	    JOIN tasks ON (ght.task_id = tasks.id)
+    WHERE
+      group_id = ?;`,
       values: [groupId],
     },
     callback
