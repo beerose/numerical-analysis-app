@@ -87,46 +87,37 @@ export const deletePresence = (
     callback
   );
 
-export const getUsersPresences = (
+export const getUsersAttendancePoints = (
   { groupId }: { groupId: GroupDTO['id'] },
-  callback: QueryCallback
+  callback: QueryCallback<
+    {
+      user_id: UserDTO['id'];
+      activity_points: number;
+      sum_presences: number;
+    }[]
+  >
 ) =>
   connection.query(
     {
       sql: /* sql */ `
         SELECT
-          user_id,
-          count(meeting_id) AS presences
+	        uam.user_id,
+	        count(uam.meeting_id) AS sum_presences,
+	        sum(uwa.points) AS activity_points
         FROM
-          user_attended_in_meeting uam
-          LEFT JOIN meetings m ON (uam.meeting_id = m.id)
+        	user_attended_in_meeting uam
+        	JOIN user_was_active_in_meeting uwa ON (uam.user_id = uwa.user_id
+        		AND uam.meeting_id = uwa.meeting_id)
         WHERE
-          m.group_id = ?
-        GROUP BY
-          user_id;
-        `,
-      values: [groupId],
-    },
-    callback
-  );
-
-export const getUsersActivities = (
-  { groupId }: { groupId: GroupDTO['id'] },
-  callback: QueryCallback
-) =>
-  connection.query(
-    {
-      sql: /* sql */ `
-        SELECT
-        	user_id,
-        	sum(points)
-        FROM
-        	user_was_active_in_meeting uwa
-        	JOIN meetings m ON (uwa.meeting_id = m.id)
-        WHERE
-        	m.group_id = ?
-        GROUP BY
-        	user_id;
+        	uwa.meeting_id IN (
+        		SELECT
+        			id
+        		FROM
+        			meetings
+        		WHERE
+        			group_id = "54")
+        	GROUP BY
+        		uam.user_id;
           `,
       values: [groupId],
     },
