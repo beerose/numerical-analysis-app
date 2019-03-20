@@ -54,7 +54,7 @@ export const getUsersResults = (
 	    group_has_task ght
 	    JOIN user_has_points uhp ON (ght.task_id = uhp.task_id)
     WHERE
-      ght.group_id="54"
+      ght.group_id=?
     GROUP BY
       uhp.user_id;`,
       values: [groupId],
