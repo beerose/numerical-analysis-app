@@ -86,3 +86,49 @@ export const deletePresence = (
     },
     callback
   );
+
+export const getUsersPresences = (
+  { groupId }: { groupId: GroupDTO['id'] },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: /* sql */ `
+        SELECT
+          user_id,
+          count(meeting_id) AS presences
+        FROM
+          user_attended_in_meeting uam
+          LEFT JOIN meetings m ON (uam.meeting_id = m.id)
+        WHERE
+          m.group_id = ?
+        GROUP BY
+          user_id;
+        `,
+      values: [groupId],
+    },
+    callback
+  );
+
+export const getUsersActivities = (
+  { groupId }: { groupId: GroupDTO['id'] },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: /* sql */ `
+        SELECT
+        	user_id,
+        	sum(points)
+        FROM
+        	user_was_active_in_meeting uwa
+        	JOIN meetings m ON (uwa.meeting_id = m.id)
+        WHERE
+        	m.group_id = ?
+        GROUP BY
+        	user_id;
+          `,
+      values: [groupId],
+    },
+    callback
+  );
