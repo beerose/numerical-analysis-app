@@ -15,7 +15,7 @@ const Container = styled(Flex)`
 
     font-size: 25vw;
     font-weight: 700;
-    margin-bottom: 0.1em;
+    margin-bottom: 0.02em;
 
     user-select: none;
   }
@@ -31,7 +31,7 @@ export const NotFoundPage = ({ children }: NotFoundPageProps) => (
   <Container flex={1}>
     <h1>404</h1>
     {children}
-    <Spacer height={100} />
+    <Spacer />
   </Container>
 );
 
