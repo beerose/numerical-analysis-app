@@ -4,3 +4,4 @@ export * from './MeetingsDetailsSection';
 export * from './SettingsSection';
 export * from './TasksSection';
 export * from './TaskSection';
+export * from './GradesSection';

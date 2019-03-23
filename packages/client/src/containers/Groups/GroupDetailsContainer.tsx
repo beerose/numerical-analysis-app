@@ -19,6 +19,7 @@ import {
   StudentsSection,
   TaskSection,
   TasksSection,
+  GradesSection,
 } from './sections';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
@@ -170,6 +171,11 @@ export class GroupDetailsContainer extends React.Component<
                       mode={'edit'}
                       history={history}
                     />
+                  )}
+                </Route>
+                <Route exact path={'/groups/:id/grades'}>
+                  {({ history }) => (
+                    <GradesSection {...this.context} history={history} />
                   )}
                 </Route>
                 <NotFoundPage />

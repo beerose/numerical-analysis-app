@@ -14,3 +14,5 @@ export * from './TaskTypeSelect';
 export * from './Flex';
 export * from './DateRange';
 export * from './DeleteWithConfirm';
+export * from './Table';
+export * from './theme';
