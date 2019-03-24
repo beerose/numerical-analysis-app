@@ -5,7 +5,6 @@ import { GroupApiContextState } from '../GroupApiContext';
 import { Flex, Table, Theme } from '../../../components';
 import { Input } from 'antd';
 import { UserDTO } from '../../../../../../dist/common';
-import { none } from 'fp-ts/lib/Option';
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 export const GradesSection = (_props: Props) => {
