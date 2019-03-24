@@ -20,6 +20,10 @@ export const ServerRoutes = {
       SetActivity: '/groups/meetings.setActivity',
       Update: '/groups/meetings.update',
     },
+    Results: {
+      Get: '/groups/results',
+      SetFinal: 'groups/results.set',
+    },
     ShareForEdit: '/groups/shareForEdit',
     Students: {
       AddToGroup: '/groups/students.add',
