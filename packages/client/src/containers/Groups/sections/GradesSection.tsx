@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { GroupApiContextState } from '../GroupApiContext';
 import { Flex, Table, Theme } from '../../../components';
+import { Input } from 'antd';
+import { UserDTO } from '../../../../../../dist/common';
+import { none } from 'fp-ts/lib/Option';
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
-export const GradesSection = (props: Props) => {
+export const GradesSection = (_props: Props) => {
+  const [editingItem, setEditingItem] = useState<UserDTO['id'] | null>(null);
+
   const columns = [
     { title: 'Imię i nazwisko', dataIndex: 'student_name', key: 'name' },
     { title: 'Index', dataIndex: 'student_index', key: 'index' },
@@ -43,13 +48,52 @@ export const GradesSection = (props: Props) => {
       ),
     },
     {
+      title: `Wystawiona ocena`,
+      key: 'set_grade',
+      render: (item: any) => (
+        <span
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            fontWeight: 'bold',
+            height: '30px',
+          }}
+        >
+          {editingItem === item.id ? (
+            <Input
+              style={{
+                width: '60px',
+                height: '30px',
+              }}
+              type="number"
+              defaultValue={item.set_grade}
+            />
+          ) : (
+            item.suggested_grade
+          )}
+        </span>
+      ),
+    },
+    {
       key: 'x',
-      render: () => <a href="javascript:;">Edytuj ocenę</a>,
+      width: '130px',
+      render: (item: any) => (
+        <a
+          role="button"
+          onClick={() =>
+            setEditingItem(editingItem === item.id ? null : item.id)
+          }
+        >
+          {editingItem === item.id ? 'Zapisz ocenę' : 'Edytuj ocenę'}
+        </a>
+      ),
     },
   ];
 
   const data = [
     {
+      //id
       student_name: 'Jan Kowalski',
       student_index: '123456',
       tasks_grade: 120,
@@ -57,6 +101,7 @@ export const GradesSection = (props: Props) => {
       meetings_grade: 0,
       max_meetings_grade: 0,
       suggested_grade: 4.0,
+      // set_grade?:
     },
   ];
 
