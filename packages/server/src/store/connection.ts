@@ -1,4 +1,4 @@
-import mysql from 'mysql';
+import mysql, { createConnection } from 'mysql';
 
 const dbConfig = {
   database: process.env.DB_NAME,
@@ -10,9 +10,6 @@ const dbConfig = {
 if (!dbConfig.user) {
   throw new Error('DB_USER is not defined');
 }
-
-// Watch out! We expect `connectToDb` will be called before accessing connection.
-export const connection = mysql.createConnection(dbConfig);
 
 enum ConnectionStatus {
   Off = 'Off',
@@ -48,6 +45,10 @@ function setConState<K extends keyof LocalConnectionState>(
   }
 }
 
+// Watch out! We expect `connectToDb` will be called before accessing connection.
+let connection = mysql.createConnection(dbConfig);
+export { connection };
+
 export const connectToDb = () => {
   console.log(`
     Connecting to database...
@@ -59,6 +60,7 @@ export const connectToDb = () => {
     connection.state == 'protocol_error'
   ) {
     connection.connect(err => {
+      connection = createConnection(dbConfig);
       if (err) {
         console.warn(
           'Error occurred when connecting to database:\n',
