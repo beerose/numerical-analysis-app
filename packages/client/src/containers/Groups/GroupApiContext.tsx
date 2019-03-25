@@ -347,6 +347,14 @@ export class GroupApiProvider extends React.Component<
     return res.grades;
   };
 
+  getResults = async () => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    const res = await groupsService.getResults(this.state.currentGroup.id);
+    return res;
+  };
+
   render() {
     return (
       <GroupApiContext.Provider value={this.state as GroupApiContextState}>
