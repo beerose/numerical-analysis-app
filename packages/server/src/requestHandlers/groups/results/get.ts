@@ -13,10 +13,7 @@ type GetResultsRequest = GetRequest<typeof GetResultsQueryV>;
 
 export const getResults = (
   req: GetResultsRequest,
-  res: BackendResponse<{
-    max: number;
-    user_results: UserResultsDTO[];
-  }>
+  res: BackendResponse<UserResultsDTO[]>
 ) => {
   handleBadRequest(GetResultsQueryV, req.query, res).then(query => {
     const groupId = Number(query.group_id);
@@ -59,9 +56,10 @@ export const getResults = (
                 sum_activity: meetingsResult
                   ? meetingsResult.activity_points
                   : 0,
+                max_tasks_grade: max,
               };
             });
-            res.status(codes.OK).send({ max, user_results: mergedResults });
+            res.status(codes.OK).send(mergedResults);
           }
         );
       });
