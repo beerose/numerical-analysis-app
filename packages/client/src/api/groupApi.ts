@@ -7,6 +7,7 @@ import {
   TaskDTO,
   UserDTO,
   Grade,
+  UserResultsDTO,
 } from 'common';
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
@@ -338,5 +339,12 @@ export const getGrades = (taskId: TaskDTO['id']) =>
   authFetch<{ grades: Grade[] }>(
     `${SERVER_URL + Grades}?${qs.stringify({
       task_id: taskId,
+    })}`
+  );
+
+export const getResults = (groupId: GroupDTO['id']) =>
+  authFetch<UserResultsDTO[]>(
+    `${SERVER_URL + Groups.Results.Get}?${qs.stringify({
+      group_id: groupId,
     })}`
   );
