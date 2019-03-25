@@ -10,4 +10,6 @@ CREATE TABLE user_attended_meeting (
   UNIQUE KEY(user_id, meeting_id)
 );
 
+ALTER TABLE user_belongs_to_group
+	ADD COLUMN grade INT;
 -- migrate:down
