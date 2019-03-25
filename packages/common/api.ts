@@ -174,9 +174,7 @@ export type Grade = {
 export type UserResultsDTO = {
   user_id: UserDTO['id'];
   tasks_grade: number;
-  max_tasks_grade: number;
   meetings_grade: number; // presences and activity
-  max_meetings_grade: number;
   suggested_grade: number;
   set_grade?: number; // grade that was set manually
 };

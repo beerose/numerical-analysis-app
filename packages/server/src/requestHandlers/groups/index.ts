@@ -11,6 +11,7 @@ import * as meetings from './meetings';
 import { share } from './shareForEdit';
 import * as students from './students';
 import * as tasks from './tasks';
+import * as results from './results';
 import { update } from './update';
 import { upload } from './upload';
 
@@ -161,4 +162,19 @@ router.post(
   auth.authorize([UserRole.admin, UserRole.superUser]),
   auth.can('edit', 'groups'),
   tasks.updateTask
+);
+
+// results
+router.get(
+  Routes.Results.Get,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('read', 'groups'),
+  results.getResults
+);
+
+router.post(
+  Routes.Results.SetFinal,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  results.setFinal
 );

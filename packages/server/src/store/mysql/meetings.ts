@@ -108,7 +108,7 @@ export const setActivity = (
     {
       sql: /* sql */ `
           INSERT INTO
-            user_was_active_in_meeting(user_id, meeting_id, points)
+            user_attended_meeting(user_id, meeting_id, points)
           VALUES
             (?, ?, ?)
           ON DUPLICATE KEY UPDATE

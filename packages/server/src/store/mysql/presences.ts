@@ -5,62 +5,53 @@ import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
 
-type GetPresencesCallback = (
-  err: MysqlError | null,
-  results: {
-    id: UserDTO['id'];
-    user_name: UserDTO['user_name'];
-    student_index: UserDTO['student_index'];
-    presences: string;
-  }[]
-) => void;
 export const getPresencesInGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
-  callback: GetPresencesCallback
-) =>
-  connection.query(
-    {
-      sql: /* sql */ `
-        SELECT
-          id,
-          user_name,
-          student_index,
-          GROUP_CONCAT(user_attended_in_meeting.meeting_id) AS presences
-        FROM
-          users
-          LEFT JOIN user_attended_in_meeting ON (users.id = user_attended_in_meeting.user_id)
-        WHERE
-          id IN (SELECT user_id from user_belongs_to_group where group_id = ?)
-        GROUP BY
-          id;
-      `,
-      values: [groupId],
-    },
-    callback
-  );
-
-export const getActivitiesInGroup = (
-  { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
-    { id: UserDTO['id']; meeting_id: MeetingDTO['id']; points: string }[]
+    {
+      id: UserDTO['id'];
+      user_name: UserDTO['user_name'];
+      student_index: UserDTO['student_index'];
+      meetings_data: { meeting_id: MeetingDTO['id']; points: number }[];
+    }[]
   >
 ) =>
   connection.query(
     {
       sql: /* sql */ `
-        SELECT
-          id,
-          meeting_id,
-          points
-        FROM
-          users
-          LEFT JOIN user_was_active_in_meeting ON (users.id = user_was_active_in_meeting.user_id)
-        WHERE
-          id IN (SELECT user_id FROM user_belongs_to_group where group_id = ?);
+      SELECT
+      	id,
+      	user_name,
+      	student_index,
+      	concat('[', GROUP_CONCAT(JSON_OBJECT('meeting_id', user_attended_meeting.meeting_id, 'points', user_attended_meeting.points) SEPARATOR ','), ']') AS meetings_data
+      FROM
+      	users
+      	LEFT JOIN user_attended_meeting ON (users.id = user_attended_meeting.user_id)
+      WHERE
+      	id IN (
+      		SELECT
+      			user_id
+      		FROM
+      			user_belongs_to_group
+      		WHERE
+      			group_id = ?)
+      	GROUP BY
+      		id;
       `,
       values: [groupId],
     },
-    callback
+    (err, res) => {
+      if (err) {
+        return callback(err, res);
+      }
+      Object.keys(res).forEach(i => {
+        res[i] = {
+          ...res[i],
+          meetings_data: JSON.parse(res[i].meetings_data),
+        };
+      });
+      return callback(err, res);
+    }
   );
 
 export const addPresence = (
@@ -69,7 +60,7 @@ export const addPresence = (
 ) =>
   connection.query(
     {
-      sql: /* sql */ `INSERT IGNORE INTO user_attended_in_meeting (user_id, meeting_id) VALUES (?, ?);`,
+      sql: /* sql */ `INSERT IGNORE INTO user_attended_meeting (user_id, meeting_id) VALUES (?, ?);`,
       values: [userId, meetingId],
     },
     callback
@@ -81,7 +72,7 @@ export const deletePresence = (
 ) =>
   connection.query(
     {
-      sql: /* sql */ `DELETE FROM user_attended_in_meeting WHERE user_id = ? AND meeting_id = ?`,
+      sql: /* sql */ `DELETE FROM user_attended_meeting WHERE user_id = ? AND meeting_id = ?`,
       values: [userId, meetingId],
     },
     callback
@@ -101,13 +92,11 @@ export const getUsersAttendancePoints = (
     {
       sql: /* sql */ `
         SELECT
-	        uam.user_id,
-	        count(uam.meeting_id) AS sum_presences,
-	        sum(uwa.points) AS activity_points
+	        user_id,
+	        count(meeting_id) AS sum_presences,
+	        sum(points) AS activity_points
         FROM
-        	user_attended_in_meeting uam
-        	JOIN user_was_active_in_meeting uwa ON (uam.user_id = uwa.user_id
-        		AND uam.meeting_id = uwa.meeting_id)
+        	user_attended_meeting
         WHERE
         	uwa.meeting_id IN (
         		SELECT
@@ -115,9 +104,9 @@ export const getUsersAttendancePoints = (
         		FROM
         			meetings
         		WHERE
-        			group_id = "54")
+        			group_id = ?)
         	GROUP BY
-        		uam.user_id;
+        		user_id;
           `,
       values: [groupId],
     },
