@@ -78,7 +78,7 @@ export const deletePresence = (
     callback
   );
 
-export const getUsersAttendancePoints = (
+export const getUsersMeetingsPoints = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
     {

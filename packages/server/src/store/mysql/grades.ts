@@ -56,7 +56,8 @@ export const getUsersResults = (
     WHERE
       ght.group_id=?
     GROUP BY
-      uhp.user_id;`,
+      uhp.user_id;
+    `,
       values: [groupId],
     },
     callback
