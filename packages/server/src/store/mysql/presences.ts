@@ -5,7 +5,7 @@ import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
 
-export const getPresencesInGroup = (
+export const getMeetingsData = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
     {

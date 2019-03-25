@@ -22,7 +22,7 @@ export const getMeetingsDetails = (
 ) => {
   handleBadRequest(GetMeetingsDetailsQueryV, req.query, res).then(() => {
     const { group_id } = req.query;
-    db.getPresencesInGroup({ groupId: Number(group_id) }, (err, data) => {
+    db.getMeetingsData({ groupId: Number(group_id) }, (err, data) => {
       if (err) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,
