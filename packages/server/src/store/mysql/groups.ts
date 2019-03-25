@@ -90,13 +90,16 @@ export const deleteGroup = (
   );
 
 export const listUsersWithGroup = (
-  callback: QueryCallback<(UserDTO & { group_ids: string })[]>
+  callback: QueryCallback<
+    (UserDTO & { group_ids: string; group_grades: string })[]
+  >
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /* sql */ `
       SELECT
-        DISTINCT id, user_name, email, student_index, GROUP_CONCAT(group_id) as group_ids
+        DISTINCT id, user_name, email, student_index, GROUP_CONCAT(group_id) as group_ids,
+        concat('[', GROUP_CONCAT(JSON_OBJECT('group_id', group_id, 'grade', grade) SEPARATOR ','), ']') AS groups_grades
       FROM
         users AS u
       LEFT JOIN user_belongs_to_group AS ug
