@@ -1,4 +1,10 @@
-import { GroupDTO, GroupWithLecturer, TaskDTO, UserDTO } from 'common';
+import {
+  GroupDTO,
+  GroupWithLecturer,
+  TaskDTO,
+  UserDTO,
+  UserWithGroups,
+} from 'common';
 import { Omit } from 'lodash';
 
 import { connection } from '../connection';
@@ -91,7 +97,7 @@ export const deleteGroup = (
 
 export const listUsersWithGroup = (
   callback: QueryCallback<
-    (UserDTO & { group_ids: string; group_grades: string })[]
+    (UserDTO & { group_ids: string; groups_grades: string })[]
   >
 ) =>
   connection.query(
