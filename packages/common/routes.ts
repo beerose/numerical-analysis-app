@@ -22,7 +22,7 @@ export const ServerRoutes = {
     },
     Results: {
       Get: '/groups/results',
-      SetFinal: 'groups/results.set',
+      SetFinal: '/groups/results.set',
     },
     ShareForEdit: '/groups/shareForEdit',
     Students: {
