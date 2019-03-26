@@ -98,7 +98,7 @@ export const getUsersMeetingsPoints = (
         FROM
         	user_attended_meeting
         WHERE
-        	uwa.meeting_id IN (
+        	meeting_id IN (
         		SELECT
         			id
         		FROM

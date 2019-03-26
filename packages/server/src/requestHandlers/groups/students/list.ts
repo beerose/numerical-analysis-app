@@ -19,6 +19,7 @@ export const listStudentsWithGroups = (
       students: students.map(s => ({
         ...s,
         group_ids: s.group_ids ? s.group_ids.split(',').map(Number) : [],
+        groups_grades: s.group_grades && JSON.parse(s.group_grades),
       })),
     });
   });
