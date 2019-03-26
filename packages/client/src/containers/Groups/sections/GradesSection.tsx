@@ -3,12 +3,13 @@ import { RouteComponentProps } from 'react-router';
 
 import { GroupApiContextState } from '../GroupApiContext';
 import { Flex, Table, Theme } from '../../../components';
-import { Input } from 'antd';
+import { Input, Select } from 'antd';
 import {
   UserDTO,
   UserResultsDTO,
   ApiResponse,
 } from '../../../../../../dist/common';
+import { tresholdsKeys } from '../components/GradeTresholdsList';
 
 type TableDataItem = {
   userId: UserDTO['id'];
@@ -29,11 +30,16 @@ const SetGrade = ({
   setFinalGrade: (userId: UserDTO['id'], grade: number) => Promise<ApiResponse>;
 }) => {
   const [isEditing, setEditing] = useState<boolean>(false);
-  const [gradeValue, setGradeValue] = useState<number>(item.finalGrade || 0);
+  const [gradeValue, setGradeValue] = useState<number | undefined>(
+    item.finalGrade
+  );
 
   const handleClick = () => {
     if (isEditing) {
-      setFinalGrade(item.userId, gradeValue);
+      if (!gradeValue) {
+        setGradeValue(2);
+      }
+      setFinalGrade(item.userId, gradeValue || 2);
       setEditing(false);
     } else {
       setEditing(true);
@@ -42,21 +48,22 @@ const SetGrade = ({
 
   return (
     <Flex justifyContent="center" alignItems="center">
-      <Flex flexDirection="row" alignItems="flex-between" fontWeight="bold">
-        {isEditing ? (
-          <Input
-            style={{
-              width: 60,
-              height: 30,
-            }}
-            type="number"
-            value={gradeValue}
-            onChange={e => setGradeValue(Number(e.target.value))}
-          />
-        ) : (
-          (item.finalGrade && item.finalGrade) || '-'
-        )}
-      </Flex>
+      {isEditing ? (
+        <Select
+          mode="single"
+          showArrow
+          defaultValue={gradeValue || 2}
+          onChange={e => setGradeValue(e)}
+        >
+          {['2', ...tresholdsKeys].map(t => (
+            <Select.Option key={t} value={Number(t)}>
+              {t}
+            </Select.Option>
+          ))}
+        </Select>
+      ) : (
+        <b>{(gradeValue && gradeValue) || '-'}</b>
+      )}
       <a role="button" style={{ paddingLeft: 20 }} onClick={handleClick}>
         {isEditing ? 'zapisz' : 'edytuj'}
       </a>
