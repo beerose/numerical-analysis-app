@@ -57,6 +57,7 @@ export const getResults = (
                 sum_activity: meetingsResult
                   ? meetingsResult.activity_points
                   : 0,
+                tasks_grade: tu.tasks_grade ? tu.tasks_grade : 0,
                 max_tasks_grade: max,
               };
             });
