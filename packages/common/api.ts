@@ -43,7 +43,10 @@ export const userIdRuntimeType = new t.Type(
   t.identity
 );
 
-export type UserWithGroups = UserDTO & { group_ids: GroupDTO['id'][] };
+export type UserWithGroups = UserDTO & {
+  group_ids: GroupDTO['id'][];
+  groups_grades: { group_id: GroupDTO['id']; grade: number }[];
+};
 
 export type Pagination = {
   offset: number;
