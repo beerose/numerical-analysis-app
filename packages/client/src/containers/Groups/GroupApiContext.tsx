@@ -355,6 +355,18 @@ export class GroupApiProvider extends React.Component<
     return res;
   };
 
+  setFinalGrade = async (userId: UserDTO['id'], grade: number) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    const res = await groupsService.setFinalGrade(
+      this.state.currentGroup.id,
+      userId,
+      grade
+    );
+    return res;
+  };
+
   render() {
     return (
       <GroupApiContext.Provider value={this.state as GroupApiContextState}>
