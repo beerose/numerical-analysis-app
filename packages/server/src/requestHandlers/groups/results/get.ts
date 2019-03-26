@@ -48,8 +48,9 @@ export const getResults = (
 
             const mergedResults = tasksResults.map(tu => {
               const meetingsResult = meetingsResults.find(
-                mu => mu.user_id === mu.user_id
+                mu => mu.user_id === tu.user_id
               );
+
               return {
                 ...tu,
                 presences: meetingsResult ? meetingsResult.sum_presences : 0,

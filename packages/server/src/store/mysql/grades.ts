@@ -48,15 +48,24 @@ export const getUsersResults = (
   connection.query(
     {
       sql: /* sql */ `
-    SELECT
-	    uhp.user_id, sum(uhp.points * ght.weight) AS tasks_grade
-    FROM
-	    group_has_task ght
-	    JOIN user_has_points uhp ON (ght.task_id = uhp.task_id)
-    WHERE
-      ght.group_id=?
-    GROUP BY
-      uhp.user_id;
+      SELECT
+      	ubg.user_id,
+      	res.points as tasks_grade
+      FROM
+      	user_belongs_to_group ubg
+      	LEFT JOIN (
+      		SELECT
+      			sum(uhp.points * ght.weight) AS points,
+      			uhp.user_id AS user_id
+      		FROM
+      			group_has_task ght
+      			JOIN user_has_points uhp ON (ght.task_id = uhp.task_id)
+      		GROUP BY
+      			uhp.user_id) res ON (res.user_id = ubg.user_id)
+      	WHERE
+      		ubg.group_id = ?
+      	GROUP BY
+	    	  user_id;
     `,
       values: [groupId],
     },
