@@ -7,7 +7,6 @@ import {
   UserDTO,
   UserRole,
   UserWithGroups,
-  Grade,
 } from 'common';
 import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
