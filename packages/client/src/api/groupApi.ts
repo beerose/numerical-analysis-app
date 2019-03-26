@@ -8,6 +8,7 @@ import {
   UserDTO,
   Grade,
   UserResultsDTO,
+  UserWithGroups,
 } from 'common';
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
@@ -49,13 +50,13 @@ export const getGroup = async (groupId: GroupDTO['id']): Promise<GroupDTO> =>
   );
 
 export const listStudentsWithGroup = async (): Promise<{
-  students: (UserDTO & { group_ids: GroupDTO['id'][] })[];
+  students: UserWithGroups[];
 }> => {
   const options = {
     method: 'GET',
   };
 
-  return authFetch<{ students: (UserDTO & { group_ids: GroupDTO['id'][] })[] }>(
+  return authFetch<{ students: UserWithGroups[] }>(
     SERVER_URL + Groups.Students.List,
     options
   );
@@ -354,7 +355,7 @@ export const setFinalGrade = (
   userId: UserDTO['id'],
   grade: number
 ) =>
-  authFetch(SERVER_URL + Groups.Results.SetFinal, {
+  authFetch<ApiResponse>(SERVER_URL + Groups.Results.SetFinal, {
     body: JSON.stringify({ group_id: groupId, user_id: userId, grade }),
     method: 'POST',
   });
