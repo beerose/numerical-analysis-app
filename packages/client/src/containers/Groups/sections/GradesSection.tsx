@@ -117,8 +117,9 @@ export const GradesSection = (props: Props) => {
       key: 'tasks_grade',
       width: 120,
       render: (item: TableDataItem) => (
-        <Flex justifyContent="center">
-          {item.tasksPoints} / <b>{item.maxTasksPoints}</b>
+        <Flex justifyContent="center" flexDirection="row">
+          {item.tasksPoints} /
+          <b style={{ paddingLeft: 5 }}>{item.maxTasksPoints}</b>
         </Flex>
       ),
     },
