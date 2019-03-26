@@ -4,7 +4,7 @@ import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
 
-export const setGrade = (
+export const setTaskPoints = (
   {
     userId,
     taskId,

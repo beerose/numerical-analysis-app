@@ -325,7 +325,7 @@ export const updateTask = (task: TaskDTO, groupId: GroupDTO['id']) =>
     method: 'POST',
   });
 
-export const setGrade = (
+export const setTaskPoints = (
   taskId: TaskDTO['id'],
   userId: UserDTO['id'],
   points: number

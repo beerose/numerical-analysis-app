@@ -72,7 +72,7 @@ type Props = {
   navigateTo: (path: string) => void;
   task: TaskDTO;
   deleteTask: (taskId: TaskDTO['id']) => void;
-  setGrade: (
+  setTaskPoints: (
     taskId: TaskDTO['id'],
     userId: UserDTO['id'],
     points: number
@@ -86,7 +86,7 @@ export const TaskListItem = ({
   task,
   deleteTask,
   students,
-  setGrade,
+  setTaskPoints,
   fetchGrades,
 }: Props) => {
   const [gradesVisible, setGradesVisible] = useState<boolean>(false);
@@ -101,12 +101,12 @@ export const TaskListItem = ({
     }
   }, [gradesVisible, grades]);
 
-  const handleSetGrade = (
+  const handleSetTaskPoints = (
     taskId: TaskDTO['id'],
     userId: UserDTO['id'],
     points: number
   ) => {
-    setGrade(taskId, userId, points).then(res => {
+    setTaskPoints(taskId, userId, points).then(res => {
       if ('error' in res) {
         showMessage(res);
       }
@@ -133,7 +133,7 @@ export const TaskListItem = ({
       render: (user: UserWithGroups) => (
         <Flex justifyContent="center" alignContent="center" alignItems="center">
           <TaskPointsInput
-            onChange={handleSetGrade}
+            onChange={handleSetTaskPoints}
             task={task}
             grade={
               grades &&

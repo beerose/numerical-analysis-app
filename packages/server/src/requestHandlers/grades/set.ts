@@ -5,18 +5,21 @@ import * as t from 'io-ts';
 import { BackendResponse, handleBadRequest, PostRequest } from '../../lib';
 import { db } from '../../store';
 
-const SetGradeBodyV = t.type({
+const SetTaskGradeBodyV = t.type({
   points: t.number,
   task_id: t.number,
   user_id: t.number,
 });
 
-type SetGradeRequest = PostRequest<typeof SetGradeBodyV>;
+type SetTaskPointsRequest = PostRequest<typeof SetTaskGradeBodyV>;
 
-export const SetGrade = (req: SetGradeRequest, res: BackendResponse) => {
-  handleBadRequest(SetGradeBodyV, req.body, res).then(() => {
+export const SetTaskPoints = (
+  req: SetTaskPointsRequest,
+  res: BackendResponse
+) => {
+  handleBadRequest(SetTaskGradeBodyV, req.body, res).then(() => {
     const { task_id: taskId, user_id: userId, points } = req.body;
-    return db.setGrade({ userId, taskId, points }, err => {
+    return db.setTaskPoints({ userId, taskId, points }, err => {
       if (err) {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,

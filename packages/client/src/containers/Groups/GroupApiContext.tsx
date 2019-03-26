@@ -333,12 +333,12 @@ export class GroupApiProvider extends React.Component<
     return res;
   };
 
-  setGrade = async (
+  setTaskPoints = async (
     taskId: TaskDTO['id'],
     userId: UserDTO['id'],
     points: number
   ) => {
-    const res = await groupsService.setGrade(taskId, userId, points);
+    const res = await groupsService.setTaskPoints(taskId, userId, points);
     return res;
   };
 

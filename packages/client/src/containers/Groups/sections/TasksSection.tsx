@@ -70,7 +70,7 @@ export const TasksSection = ({
               task={task}
               deleteTask={deleteTask}
               students={currentGroupStudents}
-              setGrade={actions.setGrade}
+              setTaskPoints={actions.setTaskPoints}
               fetchGrades={actions.getGrades}
             />
           )}
