@@ -348,3 +348,13 @@ export const getResults = (groupId: GroupDTO['id']) =>
       group_id: groupId,
     })}`
   );
+
+export const setFinalGrade = (
+  groupId: GroupDTO['id'],
+  userId: UserDTO['id'],
+  grade: number
+) =>
+  authFetch(SERVER_URL + Groups.Results.SetFinal, {
+    body: JSON.stringify({ group_id: groupId, user_id: userId, grade }),
+    method: 'POST',
+  });
