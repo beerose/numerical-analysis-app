@@ -176,5 +176,5 @@ router.post(
   Routes.Results.SetFinal,
   auth.authorize([UserRole.admin, UserRole.superUser]),
   auth.can('edit', 'groups'),
-  results.setFinal
+  results.setFinalGrade
 );

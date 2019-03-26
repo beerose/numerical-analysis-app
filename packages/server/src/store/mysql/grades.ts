@@ -81,3 +81,27 @@ export const getTasksMaxPointsPerGroup = (
     },
     callback
   );
+
+export const setFinalGrade = (
+  {
+    groupId,
+    userId,
+    grade,
+  }: {
+    groupId: GroupDTO['id'];
+    userId: UserDTO['id'];
+    grade: number;
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: /* sql */ `
+    UPDATE user_belongs_to_group
+    SET grade = ?
+    WHERE group_id = ?
+    AND user_id = ?`,
+      values: [grade, groupId, userId],
+    },
+    callback
+  );

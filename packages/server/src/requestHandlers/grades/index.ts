@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 import { auth } from '../../middleware';
 
-import { SetTaskPoints } from './set';
+import { setTaskPoints } from './set';
 import { GetGrades } from './get';
 
 const { Grades } = ServerRoutes;
@@ -12,7 +12,7 @@ export const router = Router();
 router.post(
   Grades,
   auth.authorize([UserRole.admin, UserRole.superUser]),
-  SetTaskPoints
+  setTaskPoints
 );
 
 router.get(

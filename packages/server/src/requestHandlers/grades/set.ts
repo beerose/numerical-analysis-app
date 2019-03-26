@@ -13,7 +13,7 @@ const SetTaskGradeBodyV = t.type({
 
 type SetTaskPointsRequest = PostRequest<typeof SetTaskGradeBodyV>;
 
-export const SetTaskPoints = (
+export const setTaskPoints = (
   req: SetTaskPointsRequest,
   res: BackendResponse
 ) => {
