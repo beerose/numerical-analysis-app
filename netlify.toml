@@ -1,4 +1,4 @@
 [build]
   base = "packages/client/"
-  command = "yarn build"
+  command = "npm i yarn && yarn && yarn build"
   publish = "dist/client"
