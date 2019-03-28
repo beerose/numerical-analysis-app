@@ -10,7 +10,7 @@ import { ModalHeader } from '../../components/ModalHeader';
 import { LABELS } from '../../utils/labels';
 import { AuthConsumer } from '../../AuthContext';
 
-import { NewAccountWithTokenForm } from './NewAccountForm';
+import { NewPasswordForm } from '../';
 
 const errorContainerStyles = css`
   display: flex;
@@ -69,7 +69,7 @@ export class NewAccount extends React.Component<Props, State> {
 
     let decoded;
     try {
-      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET) as {
+      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET || '') as {
         user_name?: string;
       };
     } catch (err) {
@@ -128,7 +128,7 @@ export class NewAccount extends React.Component<Props, State> {
                   }
                 />
               ) : (
-                <NewAccountWithTokenForm
+                <NewPasswordForm
                   onSubmit={(password: string) =>
                     actions.createNewAccount(token, password)
                   }
