@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 
 import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
 import { db } from '../../store';
+import { storePassword } from './storePassword';
 
 const CreateWithTokenRequestV = t.type({
   password: t.string,
@@ -60,38 +61,25 @@ export const checkNewAccountToken = (
   });
 };
 
-const SALT_ROUNDS = 10;
-
 export const storeUserPassword = (
   req: CreateWithTokenRequest,
-  res: Response,
+  res: BackendResponse,
   next: NextFunction
 ) => {
-  hash(req.body.password, SALT_ROUNDS, (hashingError, passwordHash) => {
-    if (hashingError) {
-      console.error({ hashingError });
-      res.status(codes.INTERNAL_SERVER_ERROR).send({
-        error: apiMessages.internalError,
-      });
+  if (!res.locals.user) {
+    res
+      .status(codes.INTERNAL_SERVER_ERROR)
+      .send({ error: apiMessages.internalError });
+    return;
+  }
+
+  storePassword(req.body.password, res.locals.user, result => {
+    if ('error' in result) {
+      res
+        .status(result.code)
+        .send({ error: result.error, error_details: result.error_details });
       return;
     }
-
-    db.setUserPassword(
-      { passwordHash, email: res.locals.user ? res.locals.user.email : '' },
-      (error, results) => {
-        if (error) {
-          console.error({ error });
-          return res
-            .status(codes.INTERNAL_SERVER_ERROR)
-            .send({ error: apiMessages.internalError });
-        }
-        if (!results.affectedRows) {
-          return res
-            .status(codes.NOT_FOUND)
-            .send({ error: apiMessages.userNotFound });
-        }
-        return next();
-      }
-    );
+    return next();
   });
 };

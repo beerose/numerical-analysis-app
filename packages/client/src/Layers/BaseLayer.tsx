@@ -13,6 +13,7 @@ import {
 import { Groups, Home, ListUsersContainer } from '../containers';
 import { LABELS } from '../utils/labels';
 import { AuthConsumer } from '../AuthContext';
+import { SettingsContainer } from 'src/containers/Settings';
 
 const { Content, Header } = Layout;
 
@@ -89,6 +90,10 @@ export class BaseLayer extends React.Component<Props> {
                         <Route
                           path="/groups"
                           render={routeContext => <Groups {...routeContext} />}
+                        />
+                        <Route
+                          path="/settings"
+                          render={() => <SettingsContainer />}
                         />
                       </>
                     ) : (

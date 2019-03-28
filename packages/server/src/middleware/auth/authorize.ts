@@ -47,7 +47,6 @@ export const authorize = (roles: UserRole[]) => (
   res: Response,
   next: NextFunction
 ) => {
-  type x = Response['locals'];
   const decoded = decodeJwtUserToken(req.headers.authorization);
   decoded.fold(
     error => {

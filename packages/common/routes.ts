@@ -1,7 +1,8 @@
 export const ServerRoutes = {
   Accounts: {
-    Login: '/accounts.login',
-    New: '/accounts.new',
+    Login: '/accounts/login',
+    New: '/accounts/new',
+    ChangePassword: '/accounts/change_password',
   },
   Files: '/files', // Uses many HTTP methods
   Grades: '/grades',
