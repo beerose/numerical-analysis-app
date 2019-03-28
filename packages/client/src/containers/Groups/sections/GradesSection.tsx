@@ -10,7 +10,7 @@ import {
   ApiResponse,
   UserWithGroups,
   GroupDTO,
-} from '../../../../../../dist/common';
+} from 'common';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
 
 type TableDataItem = {
