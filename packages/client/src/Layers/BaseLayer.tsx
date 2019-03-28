@@ -12,8 +12,8 @@ import {
 } from '../components';
 import { Groups, Home, ListUsersContainer } from '../containers';
 import { LABELS } from '../utils/labels';
-import { AuthConsumer } from '../AuthContext';
-import { SettingsContainer } from 'src/containers/Settings';
+import { AuthContext } from '../AuthContext';
+import { SettingsContainer } from '../containers/Settings';
 
 const { Content, Header } = Layout;
 
@@ -53,7 +53,7 @@ type Props = RouteChildrenProps;
 export class BaseLayer extends React.Component<Props> {
   render() {
     return (
-      <AuthConsumer>
+      <AuthContext.Consumer>
         {({ userRole, userAuth, actions, errorMessage, userName }) => {
           return (
             <StyledLayout>
@@ -109,7 +109,7 @@ export class BaseLayer extends React.Component<Props> {
             </StyledLayout>
           );
         }}
-      </AuthConsumer>
+      </AuthContext.Consumer>
     );
   }
 }

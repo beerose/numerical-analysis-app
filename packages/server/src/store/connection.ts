@@ -55,10 +55,7 @@ export const connectToDb = () => {
     Local conState.status is ${conState.status}.
     connection.state is ${connection.state}.
   `);
-  if (
-    connection.state === 'disconnected' ||
-    connection.state == 'protocol_error'
-  ) {
+  if (connection.state !== 'connected') {
     connection.connect(err => {
       connection = createConnection(dbConfig);
       if (err) {

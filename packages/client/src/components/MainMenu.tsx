@@ -23,7 +23,7 @@ const MENU_ITEMS: Record<string, MenuItem> = {
     icon: 'setting',
     key: 'settings',
     label: 'Ustawienia',
-    path: 'settings',
+    path: '/settings',
   },
   users: {
     icon: 'user',
