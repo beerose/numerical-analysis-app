@@ -31,6 +31,7 @@ export const apiMessages = {
   meetingDeleted: 'Spotkanie zostało usunięte',
   meetingIdRequired: 'meeting_id jest wymagane',
   meetingUpdated: 'Spotkanie zostało zaktualizowane',
+  passwordChanged: 'Hasło zostało zmienione',
   presenceAdded: 'Obecność dodana',
   presenceDeleted: 'Obecność usunięta',
   taskCreated: 'Zadanie zostało utworzone',
