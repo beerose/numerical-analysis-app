@@ -32,7 +32,10 @@
     "max-union-size": false,
     // "We recommend that you run this rule before each release as a quality checkpoint."
     "no-suspicious-comment": false,
-    "no-console": false,
+    "no-console": {
+      "options": ["debug", "info", "log", "time", "timeEnd", "trace"],
+      "severity": "warn"
+    },
     "prefer-template": true,
     "align": [true, "parameters", "statements", "members", "elements"],
     "variable-name": [

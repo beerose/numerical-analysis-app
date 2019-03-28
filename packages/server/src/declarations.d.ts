@@ -1,6 +1,8 @@
-declare var process: NodeJS.Process & {
-  JWT_SECRET: string;
-};
+declare namespace NodeJS {
+  interface Process {
+    JWT_SECRET: string;
+  }
+}
 
 declare module '*.json' {
   const value: any;
@@ -14,3 +16,5 @@ declare module 'campaign';
 declare module 'campaign-terminal';
 
 declare module 'xxhash';
+
+type Blob = unknown;

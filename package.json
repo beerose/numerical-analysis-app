@@ -11,7 +11,9 @@
     "db:interactive": "yarn workspace database interactive",
     "db:start": "yarn workspace database start",
     "db:stop": "yarn workspace database stop",
-    "db:remove": "yarn workspace database remove"
+    "db:remove": "yarn workspace database remove",
+    "prod:ssh": "ssh anumuser@rno.ii.uni.wroc.pl",
+    "prod:mysql": "mysql -u root -h rno.ii.uni.wroc.pl -u anumuser"
   },
   "devDependencies": {
     "tslint": "^5.12.0",

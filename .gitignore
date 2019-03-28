@@ -13,3 +13,5 @@
 
 # migration tool data
 server/db/
+
+_prod
