@@ -8,8 +8,9 @@ import React, { useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
-import { TaskTypeSelect, Flex } from '../../../components';
+import { TaskTypeSelect } from '../../../components';
 import { Colors } from '../../../utils';
+import { DynamicChoosableTasksForm } from '.';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -18,7 +19,8 @@ const smallInputStyles = css`
 const formStyles = css`
   margin-left: 0px;
   margin-top: 20px;
-  width: 700px;
+  min-width: 700px;
+  margin-bottom: 50px;
 `;
 
 const FORM_ITEM_LAYOUT = {
@@ -41,12 +43,12 @@ type Props = {
 const TaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
   const [taskType, setTaskType] = useState<TaskKind | null>(null);
-  const [choosableTasksNumber, setChoosableTasksNumber] = useState(1);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     props.form.validateFields(
       (err, values: Omit<TaskDTO, 'name'> & { task_name: TaskDTO['name'] }) => {
+        console.log({ values });
         if (err) {
           return;
         }
@@ -218,38 +220,11 @@ const TaskForm = (props: Props) => {
             })(<Switch defaultChecked={true} />)}
           </Form.Item>
           <Form.Item label="Wybieralne zadania" {...FORM_ITEM_LAYOUT}>
-            {Array.from(new Array(choosableTasksNumber)).map((_v, i) => (
-              <Form.Item key={i}>
-                <Flex
-                  border={`1px solid ${Colors.SemiLightGrey}`}
-                  padding="10px 0px 0px 10px"
-                  width={400}
-                >
-                  <p>Numer zadania:</p>
-                  <Input
-                    style={{ width: '80px', margin: '5px 10px 0px 10px' }}
-                  />
-                  <p>Liczba osób:</p>
-                  <Input
-                    style={{ width: '80px', margin: '5px 0px 0px 10px' }}
-                  />
-                </Flex>
-              </Form.Item>
-            ))}
-            <Button
-              type="dashed"
-              onClick={() => {
-                console.log({ choosableTasksNumber });
-                return setChoosableTasksNumber(prev => prev + 1);
-              }}
-              style={{ width: '60%' }}
-            >
-              <Icon type="plus" /> Dodaj nowe
-            </Button>
+            <DynamicChoosableTasksForm {...props} />
           </Form.Item>
         </section>
       )}
-      <Button type="primary" htmlType="submit">
+      <Button type="primary" htmlType="submit" style={{ width: '100px' }}>
         Zapisz
       </Button>
     </Form>
