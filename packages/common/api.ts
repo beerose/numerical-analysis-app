@@ -155,6 +155,12 @@ export enum TaskKind {
   Colloquium = 'colloquium', // kolokwium
 }
 
+export type ChoosableSubtask = {
+  id: number;
+  group_capacity: number;
+  max_groups: number;
+};
+
 export type TaskDTO = {
   id: number;
   name: string;
@@ -166,6 +172,7 @@ export type TaskDTO = {
   verify_upload: boolean; // default true
   start_upload_date: string | Date;
   end_upload_date: string | Date; // due date of the task
+  choosable_subtasks?: ChoosableSubtask[];
 };
 
 export type Grade = {
