@@ -2,9 +2,7 @@ import Cookies from 'js-cookie';
 import React from 'react';
 import { RouteChildrenProps } from 'react-router';
 
-import { ApiResponse } from '../../../dist/common';
-
-import { login, newAccount } from './api/authApi';
+import * as authService from './api/authApi';
 import { AuthContext, AuthContextState } from './AuthContext';
 
 const getUserFromLocalStorage = () => {
@@ -19,13 +17,6 @@ const getUserFromLocalStorage = () => {
   return { userRole, userName, userAuth: true };
 };
 
-function handleApiError<R = {}>(res: ApiResponse & R) {
-  if ('error' in res) {
-    throw new Error(res.error);
-  }
-  return res;
-}
-
 export class AuthProvider extends React.Component<
   RouteChildrenProps,
   AuthContextState
@@ -37,6 +28,7 @@ export class AuthProvider extends React.Component<
         createNewAccount: this.createNewAccount,
         goToMainPage: this.goToMainPage,
         login: this.loginUser,
+        changePassword: this.changePassword,
       },
       error: false,
       userAuth: false,
@@ -73,24 +65,25 @@ export class AuthProvider extends React.Component<
   };
 
   loginUser = (email: string, password: string, remember: boolean) => {
-    login(email, password)
-      .then(handleApiError)
+    authService
+      .login(email, password)
       .then(res => {
+        if ('error' in res) {
+          throw new Error(res.error);
+        }
         this.saveCookiesState(
           res.user_name,
           res.user_role,
           res.token,
           remember
         );
-        return res;
-      })
-      .then(res => {
         this.setState({
           token: res.token,
           userAuth: true,
           userName: res.user_name,
           userRole: res.user_role,
         });
+        return res;
       })
       .catch((err: Error) => {
         this.setState({ error: true, errorMessage: err.message });
@@ -98,23 +91,29 @@ export class AuthProvider extends React.Component<
   };
 
   createNewAccount = (token: string, password: string) => {
-    newAccount(token, password)
-      .then(handleApiError)
+    authService
+      .newAccount(token, password)
       .then(res => {
+        if ('error' in res) {
+          throw new Error(res.error);
+        }
         this.saveCookiesState(res.user_name, res.user_role, res.token);
-        return res;
-      })
-      .then(res =>
         this.setState({
           token: res.token,
           userAuth: true,
           userName: res.user_name,
           userRole: res.user_role,
-        })
-      )
+        });
+        return res;
+      })
       .catch(err => {
         this.setState({ error: true, errorMessage: err.message });
       });
+  };
+
+  changePassword = async (newPassword: string) => {
+    const res = await authService.changePassword(newPassword);
+    return res;
   };
 
   render() {

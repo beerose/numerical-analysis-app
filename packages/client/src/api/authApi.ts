@@ -3,6 +3,7 @@ import { ApiResponse, ServerRoutes } from 'common';
 import { LABELS } from '../utils/labels';
 
 import { SERVER_URL } from '.';
+import { authFetch } from './authFetch';
 
 const { Accounts } = ServerRoutes;
 
@@ -33,7 +34,7 @@ export const login = (
   email: string,
   password: string
 ): Promise<
-  { token: string; user_name: string; user_role: string } | ApiResponse
+  { token: string; user_name: string; user_role: string } | { error: string }
 > => {
   const data = new URLSearchParams();
   data.append('email', email);
@@ -54,7 +55,7 @@ export const newAccount = (
   token: string,
   password: string
 ): Promise<
-  { token: string; user_name: string; user_role: string } | ApiResponse
+  { token: string; user_name: string; user_role: string } | { error: string }
 > => {
   const data = new URLSearchParams();
   data.append('token', token);
@@ -69,4 +70,11 @@ export const newAccount = (
     .then(response => response.json())
     .then(handleWrongResponse)
     .catch(handleServerError);
+};
+
+export const changePassword = (newPassword: string) => {
+  return authFetch(SERVER_URL + Accounts.ChangePassword, {
+    body: JSON.stringify({ new_password: newPassword }),
+    method: 'POST',
+  });
 };
