@@ -21,7 +21,7 @@ export const NewPasswordForm = (props: Props) => {
       if (err) {
         return;
       }
-      if (values._password !== values.password_confirm_) {
+      if (values.password_ !== values.password_confirm_) {
         setError('Hasła nie są takie same');
         return;
       }

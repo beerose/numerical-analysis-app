@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
+import { ApiResponse } from '../../../../dist/common';
 
-export function authFetch<T>(
+export function authFetch<T = ApiResponse>(
   url: string,
   options: RequestInit = {}
 ): Promise<T> {
