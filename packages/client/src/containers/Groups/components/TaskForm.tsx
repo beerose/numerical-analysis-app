@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
-import { TaskTypeSelect } from '../../../components';
+import { TaskTypeSelect, Flex } from '../../../components';
 import { Colors } from '../../../utils';
 
 const smallInputStyles = css`
@@ -41,6 +41,7 @@ type Props = {
 const TaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
   const [taskType, setTaskType] = useState<TaskKind | null>(null);
+  const [choosableTasksNumber, setChoosableTasksNumber] = useState(1);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,7 +91,6 @@ const TaskForm = (props: Props) => {
         })(
           <TaskTypeSelect
             onSelect={val => {
-              console.log(val);
               setTaskType(val as TaskKind);
             }}
           />
@@ -149,7 +149,7 @@ const TaskForm = (props: Props) => {
           />
         )}
       </Form.Item>
-      {[TaskKind.Assignment, TaskKind.Homework, null].includes(taskType) && (
+      {[TaskKind.Assignment, null].includes(taskType) && (
         <section>
           <Form.Item
             label={
@@ -216,6 +216,36 @@ const TaskForm = (props: Props) => {
             {getFieldDecorator('verify_upload', {
               initialValue: true,
             })(<Switch defaultChecked={true} />)}
+          </Form.Item>
+          <Form.Item label="Wybieralne zadania" {...FORM_ITEM_LAYOUT}>
+            {Array.from(new Array(choosableTasksNumber)).map((_v, i) => (
+              <Form.Item key={i}>
+                <Flex
+                  border={`1px solid ${Colors.SemiLightGrey}`}
+                  padding="10px 0px 0px 10px"
+                  width={400}
+                >
+                  <p>Numer zadania:</p>
+                  <Input
+                    style={{ width: '80px', margin: '5px 10px 0px 10px' }}
+                  />
+                  <p>Liczba osób:</p>
+                  <Input
+                    style={{ width: '80px', margin: '5px 0px 0px 10px' }}
+                  />
+                </Flex>
+              </Form.Item>
+            ))}
+            <Button
+              type="dashed"
+              onClick={() => {
+                console.log({ choosableTasksNumber });
+                return setChoosableTasksNumber(prev => prev + 1);
+              }}
+              style={{ width: '60%' }}
+            >
+              <Icon type="plus" /> Dodaj nowe
+            </Button>
           </Form.Item>
         </section>
       )}
