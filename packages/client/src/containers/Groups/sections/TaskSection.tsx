@@ -50,15 +50,11 @@ export const TaskSection = (props: Props) => {
 
   return (
     <Flex alignItems="center" padding={Theme.Padding.Half}>
-      {props.mode === 'create' ? (
-        <TaskForm onSubmit={handleSubmit} mode="create" />
-      ) : (
-        <TaskForm
-          onSubmit={handleSubmit}
-          mode="edit"
-          model={props.currentTask}
-        />
-      )}
+      <TaskForm
+        onSubmit={handleSubmit}
+        mode={props.mode}
+        model={props.currentTask}
+      />
     </Flex>
   );
 };
