@@ -26,13 +26,12 @@ export const TaskSection = (props: Props) => {
     if (props.mode === 'edit') {
       props.actions.getTask();
     }
-  }, []);
+  }, [props.mode]);
 
   const handleSubmit = (values: TaskDTO) => {
     props.mode === 'edit'
       ? props.actions.updateTask(values).then(res => {
           showMessage(res);
-          props.actions.getTask();
         })
       : props.actions.createTask(values).then(res => {
           showMessage(res);

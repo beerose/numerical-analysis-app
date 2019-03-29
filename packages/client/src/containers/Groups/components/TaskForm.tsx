@@ -11,6 +11,7 @@ import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { TaskTypeSelect } from '../../../components';
 import { Colors, showMessage } from '../../../utils';
 import { DynamicChoosableTasksForm } from '.';
+import { ChoosableFormFiels } from './DynamicChoosableTasksForm';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -47,7 +48,12 @@ const TaskForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     props.form.validateFields(
-      (err, values: Omit<TaskDTO, 'name'> & { task_name: TaskDTO['name'] }) => {
+      (
+        err,
+        values: Omit<TaskDTO, 'name'> & {
+          task_name: TaskDTO['name'];
+        } & ChoosableFormFiels
+      ) => {
         if (err) {
           showMessage({ error: 'Wypełnij wszystkie pola' });
           return;

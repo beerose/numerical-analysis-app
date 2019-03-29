@@ -35,6 +35,12 @@ const ChoosableTaskContainer = styled(Flex)`
   overflow-x: scroll;
 `;
 
+export type ChoosableFormFiels = {
+  subtask_id: number[];
+  subtask_group_capacity: number[];
+  subtask_max_groups: number[];
+};
+
 let id = 0;
 type Props = FormComponentProps;
 export const DynamicChoosableTasksForm = (props: Props) => {
@@ -78,7 +84,7 @@ export const DynamicChoosableTasksForm = (props: Props) => {
               message: ' ',
             },
           ],
-        })(<StyledInput />)}
+        })(<StyledInput type="number" />)}
       </Form.Item>
       Liczność grupy:
       <Form.Item style={{ margin: 0, padding: 0 }}>
@@ -89,7 +95,7 @@ export const DynamicChoosableTasksForm = (props: Props) => {
               message: emptyMessage,
             },
           ],
-        })(<StyledInput />)}
+        })(<StyledInput type="number" />)}
       </Form.Item>
       Ilość grup:
       <Form.Item style={{ margin: 0, padding: 0 }}>
@@ -100,7 +106,7 @@ export const DynamicChoosableTasksForm = (props: Props) => {
               message: emptyMessage,
             },
           ],
-        })(<StyledInput />)}
+        })(<StyledInput type="number" />)}
       </Form.Item>
       <StyledDeleteIcon type="minus-circle-o" onClick={() => remove(k)} />
     </ChoosableTaskContainer>
