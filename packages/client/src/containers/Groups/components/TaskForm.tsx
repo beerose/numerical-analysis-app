@@ -9,7 +9,7 @@ import { Omit } from 'react-router';
 
 import { TaskDTO, TaskKind } from '../../../../../../dist/common';
 import { TaskTypeSelect } from '../../../components';
-import { Colors } from '../../../utils';
+import { Colors, showMessage } from '../../../utils';
 import { DynamicChoosableTasksForm } from '.';
 
 const smallInputStyles = css`
@@ -48,8 +48,8 @@ const TaskForm = (props: Props) => {
     e.preventDefault();
     props.form.validateFields(
       (err, values: Omit<TaskDTO, 'name'> & { task_name: TaskDTO['name'] }) => {
-        console.log({ values });
         if (err) {
+          showMessage({ error: 'Wypełnij wszystkie pola' });
           return;
         }
         props.onSubmit({
