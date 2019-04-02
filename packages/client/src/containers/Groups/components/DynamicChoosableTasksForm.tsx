@@ -12,7 +12,7 @@ const emptyMessage = ' ';
 const StyledDeleteIcon = styled(Icon)`
   cursor: pointer;
   position: absolute;
-  left: 490px;
+  left: 500px;
   margin-top: 10px;
   font-size: 24px;
   color: ${Colors.SemiLightGrey};
@@ -24,7 +24,7 @@ const StyledDeleteIcon = styled(Icon)`
 `;
 
 const StyledInput = styled(Input)`
-  width: 50px;
+  width: 55px;
   margin: 5px 10px 0px 5px;
 `;
 
@@ -32,7 +32,7 @@ const ChoosableTaskContainer = styled(Flex)`
   padding: 6px 0px 8px 6px;
   margin-bottom: 10px;
   border: 1px solid ${Colors.SemiLightGrey};
-  width: 480px;
+  width: 490px;
   overflow-x: scroll;
 `;
 
