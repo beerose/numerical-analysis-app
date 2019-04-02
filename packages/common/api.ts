@@ -172,7 +172,9 @@ export type TaskDTO = {
   verify_upload: boolean; // default true
   start_upload_date: string | Date;
   end_upload_date: string | Date; // due date of the task
-  choosable_subtasks?: ChoosableSubtask[];
+  data?: {
+    choosable_subtasks: ChoosableSubtask[];
+  };
 };
 
 export type Grade = {
