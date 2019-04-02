@@ -7,7 +7,11 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
-import { TaskDTO, TaskKind } from '../../../../../../dist/common';
+import {
+  TaskDTO,
+  TaskKind,
+  ChoosableSubtask,
+} from '../../../../../../dist/common';
 import { TaskTypeSelect } from '../../../components';
 import { Colors, showMessage } from '../../../utils';
 import { DynamicChoosableTasksForm } from '.';
@@ -50,7 +54,7 @@ const TaskForm = (props: Props) => {
     props.form.validateFields(
       (
         err,
-        values: Omit<TaskDTO, 'name'> & {
+        values: Omit<TaskDTO, 'name' | 'data'> & {
           task_name: TaskDTO['name'];
         } & ChoosableFormFiels
       ) => {
@@ -58,12 +62,28 @@ const TaskForm = (props: Props) => {
           showMessage({ error: 'Wypełnij wszystkie pola' });
           return;
         }
+        const choosable: ChoosableSubtask[] = [];
+        if (values.subtask_id) {
+          values.subtask_id.map((v, i) => {
+            choosable.push({
+              id: v,
+              group_capacity: values.subtask_group_capacity[i],
+              max_groups: values.subtask_max_groups[i],
+            });
+          });
+        }
         props.onSubmit({
-          ...values,
+          id: values.id,
+          kind: values.kind,
+          results_date: values.results_date,
+          description: values.description,
+          start_upload_date: values.start_upload_date,
+          end_upload_date: values.end_upload_date,
           max_points: Number(values.max_points),
           name: values.task_name,
           verify_upload: Boolean(values.verify_upload),
           weight: Number(values.weight),
+          data: { choosable_subtasks: choosable },
         });
       }
     );
