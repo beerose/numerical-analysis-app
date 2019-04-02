@@ -43,8 +43,8 @@ export type ChoosableFormFiels = {
 };
 
 let id = 0;
-type Props = FormComponentProps & { model?: TaskDTO };
-export const DynamicChoosableTasksForm = ({ model, form }: Props) => {
+type Props = FormComponentProps & { model?: TaskDTO; mode: 'create' | 'edit' };
+export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
   const [keys, setKeys] = useState<number[]>([]);
   const [subtasks, setSubtasks] = useState<
     (
@@ -58,7 +58,7 @@ export const DynamicChoosableTasksForm = ({ model, form }: Props) => {
   const { getFieldDecorator } = form;
 
   useEffect(() => {
-    if (model && model.data) {
+    if (model && model.data && mode === 'edit') {
       id = subtasks ? model.data.choosable_subtasks.length : 0;
       setSubtasks(model.data.choosable_subtasks);
       setKeys(
