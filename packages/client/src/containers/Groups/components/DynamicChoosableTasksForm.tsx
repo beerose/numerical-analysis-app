@@ -1,10 +1,11 @@
 import { Form, Icon, Input, Button } from 'antd';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Flex } from '../../../components';
 import { Colors } from '../../../utils';
 import { FormComponentProps } from 'antd/lib/form';
+import { TaskDTO, ChoosableSubtask } from '../../../../../../dist/common';
 
 const emptyMessage = ' ';
 
@@ -42,42 +43,51 @@ export type ChoosableFormFiels = {
 };
 
 let id = 0;
-type Props = FormComponentProps;
-export const DynamicChoosableTasksForm = (props: Props) => {
+type Props = FormComponentProps & { model?: TaskDTO };
+export const DynamicChoosableTasksForm = ({ model, form }: Props) => {
+  const [keys, setKeys] = useState<number[]>([]);
+  const [subtasks, setSubtasks] = useState<
+    (
+      | ChoosableSubtask
+      | {
+          id?: number;
+          group_capacity?: number;
+          max_groups?: number;
+        })[]
+  >([]);
+  const { getFieldDecorator } = form;
+
+  useEffect(() => {
+    if (model && model.data) {
+      id = subtasks ? model.data.choosable_subtasks.length : 0;
+      setSubtasks(model.data.choosable_subtasks);
+      setKeys(
+        Array.from(new Array(model.data.choosable_subtasks.length).keys())
+      );
+    }
+  }, [model]);
+
   const add = () => {
-    const { form } = props;
-
-    const keys = form.getFieldValue('keys');
-    const nextKeys = keys.concat(id++);
-
-    form.setFieldsValue({
-      keys: nextKeys,
-    });
-
+    setSubtasks(prev => prev.concat([{}]));
+    setKeys(prev => prev.concat(id++));
     window.scrollTo(0, document.body.scrollHeight);
   };
 
   const remove = (k: number) => {
-    const { form } = props;
-    const keys = form.getFieldValue('keys');
-
     if (keys.length === 0) {
       return;
     }
 
-    form.setFieldsValue({
-      keys: keys.filter((key: number) => key !== k),
-    });
+    setSubtasks(prev => prev.filter((_t, i) => i !== k));
+    setKeys(prev => prev.filter((key: number) => key !== k));
   };
 
-  const { getFieldDecorator, getFieldValue } = props.form;
-  getFieldDecorator('keys', { initialValue: [] });
-  const keys = getFieldValue('keys');
   const formItems = keys.map((k: number) => (
     <ChoosableTaskContainer key={k}>
       Numer zadania:
       <Form.Item style={{ margin: 0, padding: 0 }}>
         {getFieldDecorator(`subtask_id[${k}]`, {
+          initialValue: subtasks[k] && subtasks[k].id,
           rules: [
             {
               required: true,
@@ -89,6 +99,7 @@ export const DynamicChoosableTasksForm = (props: Props) => {
       Liczność grupy:
       <Form.Item style={{ margin: 0, padding: 0 }}>
         {getFieldDecorator(`subtask_group_capacity[${k}]`, {
+          initialValue: subtasks[k] && subtasks[k].group_capacity,
           rules: [
             {
               required: true,
@@ -100,6 +111,7 @@ export const DynamicChoosableTasksForm = (props: Props) => {
       Ilość grup:
       <Form.Item style={{ margin: 0, padding: 0 }}>
         {getFieldDecorator(`subtask_max_groups[${k}]`, {
+          initialValue: subtasks[k] && subtasks[k].max_groups,
           rules: [
             {
               required: true,
