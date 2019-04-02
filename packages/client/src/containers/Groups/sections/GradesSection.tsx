@@ -3,26 +3,18 @@ import { RouteComponentProps } from 'react-router';
 
 import { GroupApiContextState } from '../GroupApiContext';
 import { Flex, Table, Theme } from '../../../components';
-import { Select, Spin } from 'antd';
+import { Select, Spin, Button } from 'antd';
 import {
   UserDTO,
   UserResultsDTO,
   ApiResponse,
   UserWithGroups,
   GroupDTO,
+  UserResultsModel,
 } from 'common';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
-
-type TableDataItem = {
-  userId: UserDTO['id'];
-  userName: UserDTO['user_name'];
-  index: UserDTO['student_index'];
-  finalGrade?: number;
-  tasksPoints: number;
-  maxTasksPoints: number;
-  presences: number;
-  activity: number;
-};
+import { isSafari, gradesToCsv } from '../../../utils/';
+import { LocaleContext } from '../../../components/locale';
 
 const mergedResultsToTableItem = (
   groupId: GroupDTO['id'],
@@ -48,7 +40,7 @@ const SetGrade = ({
   item,
   setFinalGrade,
 }: {
-  item: TableDataItem;
+  item: UserResultsModel;
   setFinalGrade: (userId: UserDTO['id'], grade: number) => Promise<ApiResponse>;
 }) => {
   const [isEditing, setEditing] = useState<boolean>(false);
@@ -98,7 +90,7 @@ export const GradesSection = (props: Props) => {
   const [usersResults, setUsersResults] = useState<UserResultsDTO[] | null>(
     null
   );
-  const [tableData, setTableData] = useState<TableDataItem[]>([]);
+  const [tableData, setTableData] = useState<UserResultsModel[]>([]);
 
   useEffect(() => {
     const { currentGroupStudents, currentGroup } = props;
@@ -119,6 +111,13 @@ export const GradesSection = (props: Props) => {
       setTableData(data);
     }
   }, [usersResults, props.currentGroupStudents]);
+
+  const handleGradesCsvDownload = () => {
+    const mimeType = isSafari() ? 'application/csv' : 'text/csv';
+    const blob = new Blob([gradesToCsv(tableData)], { type: mimeType });
+
+    saveAs(blob, `students-results-group-${props.currentGroup!.id}.csv`);
+  };
 
   const getSuggestedGrade = (
     tasksPoints: number,
@@ -160,7 +159,7 @@ export const GradesSection = (props: Props) => {
       title: `Testy i zadania`,
       key: 'tasks_grade',
       width: 120,
-      render: (item: TableDataItem) => (
+      render: (item: UserResultsModel) => (
         <Flex justifyContent="center" flexDirection="row">
           {item.tasksPoints} /
           <b style={{ paddingLeft: 5 }}>{item.maxTasksPoints}</b>
@@ -171,7 +170,7 @@ export const GradesSection = (props: Props) => {
       title: 'Obecnośći i aktywnośći',
       key: 'meetings_grade',
       width: 120,
-      render: (item: TableDataItem) => (
+      render: (item: UserResultsModel) => (
         <Flex justifyContent="center">{item.presences + item.activity}</Flex>
       ),
     },
@@ -179,7 +178,7 @@ export const GradesSection = (props: Props) => {
       title: `Proponowana ocena`,
       key: 'suggested_grade',
       width: 100,
-      render: (item: TableDataItem) => (
+      render: (item: UserResultsModel) => (
         <Flex justifyContent="center" fontWeight="bold">
           {getSuggestedGrade(
             item.tasksPoints,
@@ -194,21 +193,34 @@ export const GradesSection = (props: Props) => {
       title: `Wystawiona ocena`,
       key: 'set_grade',
       width: 150,
-      render: (item: TableDataItem) => (
+      render: (item: UserResultsModel) => (
         <SetGrade item={item} setFinalGrade={props.actions.setFinalGrade} />
       ),
     },
   ];
 
   return (
-    <Flex padding={Theme.Padding.Half}>
-      <Table
-        rowKey={(i: TableDataItem) => i.userId.toString()}
-        columns={columns}
-        dataSource={tableData}
-        pagination={false}
-        bordered
-      />
-    </Flex>
+    <LocaleContext.Consumer>
+      {({ texts }) => (
+        <Flex padding={Theme.Padding.Standard} flexDirection="column">
+          <Button
+            type="primary"
+            icon="download"
+            onClick={handleGradesCsvDownload}
+            aria-label={texts.exportCsv}
+            style={{ width: 200, marginBottom: '10px' }}
+          >
+            {texts.exportCsv}
+          </Button>
+          <Table
+            rowKey={(i: UserResultsModel) => i.userId.toString()}
+            columns={columns}
+            dataSource={tableData}
+            pagination={false}
+            bordered
+          />
+        </Flex>
+      )}
+    </LocaleContext.Consumer>
   );
 };
