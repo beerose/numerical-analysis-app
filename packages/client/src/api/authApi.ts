@@ -17,7 +17,7 @@ const handleWrongResponse = (response: ApiResponse | AuthResponse) => {
   if ('error' in response) {
     return response;
   }
-  if ('token' in response && !response.user_name && response.user_role) {
+  if ('token' in response && response.user_name && response.user_role) {
     return response;
   }
   return { error: 'Zła odpowiedź z serwera' };
