@@ -22,7 +22,7 @@ export const getGroup = (
       sql: `
       SELECT g.*, u.user_name as lecturer_name
       FROM \`groups\` g
-      JOIN
+      LEFT JOIN
         users u ON (g.lecturer_id = u.id)
       WHERE
         g.id = ?;`,
