@@ -1,5 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { Flex, NewPasswordForm, Theme } from '../../components';
+import {
+  Flex,
+  NewPasswordForm,
+  Breadcrumbs,
+  PaddingContainer,
+} from '../../components';
 import { Modal, Button } from 'antd';
 import { AuthContext } from '../../AuthContext';
 import { showMessage } from '../../utils';
@@ -16,7 +21,8 @@ export const SettingsContainer = () => {
   };
 
   return (
-    <Flex padding={Theme.Padding.Standard} flexDirection="column">
+    <PaddingContainer>
+      <Breadcrumbs />
       <Flex paddingBottom={10}>
         <b style={{ paddingRight: 5 }}>Imię i nazwisko:</b>{' '}
         {authContext.userName}
@@ -35,6 +41,6 @@ export const SettingsContainer = () => {
       >
         <NewPasswordForm onSubmit={handleSubmit} />
       </Modal>
-    </Flex>
+    </PaddingContainer>
   );
 };

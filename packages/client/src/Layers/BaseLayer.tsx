@@ -91,10 +91,7 @@ export class BaseLayer extends React.Component<Props> {
                           path="/groups"
                           render={routeContext => <Groups {...routeContext} />}
                         />
-                        <Route
-                          path="/settings"
-                          render={() => <SettingsContainer />}
-                        />
+                        <Route path="/settings" component={SettingsContainer} />
                       </>
                     ) : (
                       <LoginForm
