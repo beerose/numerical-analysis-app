@@ -2,7 +2,14 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Card, Input, List, Table, Spin } from 'antd';
-import { TaskDTO, UserDTO, UserWithGroups, ApiResponse, Grade } from 'common';
+import {
+  TaskDTO,
+  UserDTO,
+  UserWithGroups,
+  ApiResponse,
+  Grade,
+  Student,
+} from 'common';
 import { useState, ChangeEvent, useEffect } from 'react';
 
 import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
@@ -67,6 +74,8 @@ const TaskPointsInput = (props: TaskPointsInputProps) => {
     />
   );
 };
+
+const makeStudentsTableRowKey = (item: UserWithGroups) => item.id.toString();
 
 type Props = {
   navigateTo: (path: string) => void;
@@ -177,6 +186,7 @@ export const TaskListItem = ({
       {gradesVisible &&
         (grades ? (
           <Table
+            rowKey={makeStudentsTableRowKey}
             dataSource={students}
             pagination={false}
             columns={columns}
