@@ -29,6 +29,7 @@ const UpdateTaskBodyV = t.type({
   start_upload_date: t.string,
   verify_upload: t.boolean,
   weight: t.number,
+  data: t.union([t.undefined, t.any]),
 });
 
 type UpdateTaskRequest = PostRequest<typeof UpdateTaskBodyV>;
@@ -39,6 +40,7 @@ export const updateTask = (
 ) => {
   handleBadRequest(UpdateTaskBodyV, req.body, res).then(() => {
     const task = req.body;
+    console.log({ d: task.data });
     db.updateTask(
       {
         ...task,

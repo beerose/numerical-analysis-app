@@ -197,8 +197,8 @@ export const insertTask = (
     {
       sql: `
     INSERT INTO
-      tasks(name, description, kind, max_points, verify_upload, results_date, end_upload_date, start_upload_date)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+      tasks(name, description, kind, max_points, verify_upload, results_date, end_upload_date, start_upload_date, data)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
       `,
       values: [
         task.name,
@@ -209,6 +209,7 @@ export const insertTask = (
         task.results_date,
         task.end_upload_date,
         task.start_upload_date,
+        JSON.stringify(task.data),
       ],
     },
     callback
@@ -231,7 +232,8 @@ export const updateTask = (
         verify_upload = ?,
         results_date = ?,
         end_upload_date = ?,
-        start_upload_date = ?
+        start_upload_date = ?,
+        data = ?
       WHERE id = ?;
         `,
       values: [
@@ -243,6 +245,7 @@ export const updateTask = (
         task.results_date,
         task.end_upload_date,
         task.start_upload_date,
+        JSON.stringify(task.data),
         task.id,
       ],
     },
