@@ -34,6 +34,9 @@ export const getTask = (
             error: apiMessages.taskNotFound,
           });
         }
+
+        (task as TaskDTO).data = JSON.parse(task.data);
+
         return res.status(codes.OK).send({ task });
       }
     );

@@ -12,6 +12,7 @@ import { connection } from '../connection';
 import { QueryCallback } from './QueryCallback';
 
 type DbExtractedGroup = Omit<GroupWithLecturer, 'data'> & { data: string };
+type DbExtractedTask = Omit<TaskDTO, 'data'> & { data: string };
 
 export const getGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
@@ -296,7 +297,7 @@ export const updateTaskInGroup = (
 
 export const getTask = (
   { taskId, groupId }: { taskId: TaskDTO['id']; groupId: GroupDTO['id'] },
-  callback: QueryCallback<TaskDTO | null>
+  callback: QueryCallback<DbExtractedTask | null>
 ) =>
   connection.query(
     {
