@@ -190,3 +190,14 @@ export type UserResultsDTO = {
   presences: number; // presences and activity
   sum_activity: number;
 };
+
+export type UserResultsModel = {
+  userId: UserDTO['id'];
+  userName: UserDTO['user_name'];
+  index: UserDTO['student_index'];
+  finalGrade?: number;
+  tasksPoints: number;
+  maxTasksPoints: number;
+  presences: number;
+  activity: number;
+};
