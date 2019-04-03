@@ -24,6 +24,7 @@
     "jsonwebtoken": "^8.4.0",
     "lodash.frompairs": "^4.0.1",
     "node-sass": "^4.9.3",
+    "query-string": "^6.4.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
     "react-emotion": "^10.0.0",

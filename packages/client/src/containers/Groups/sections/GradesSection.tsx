@@ -1,20 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { RouteComponentProps } from 'react-router';
-import { Select, Spin, Button } from 'antd';
-
-import { GroupApiContextState } from '../GroupApiContext';
-import { Flex, Table, Theme } from '../../../components';
+/** @jsx jsx */
+import { css, jsx, keyframes } from '@emotion/core';
+import VisuallyHidden from '@reach/visually-hidden';
+import { Button, Icon, Select, Spin } from 'antd';
 import {
+  ApiResponse,
+  GroupDTO,
   UserDTO,
   UserResultsDTO,
-  ApiResponse,
-  UserWithGroups,
-  GroupDTO,
   UserResultsModel,
+  UserWithGroups,
 } from 'common';
-import { tresholdsKeys } from '../components/GradeTresholdsList';
-import { isSafari, gradesToCsv } from '../../../utils/';
+import { useEffect, useState } from 'react';
+import { RouteComponentProps } from 'react-router';
+
+import { Flex, Table, Theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
+import { ResetButton } from '../../../components/ResetButton';
+import { gradesToCsv, isSafari } from '../../../utils/';
+import { tresholdsKeys } from '../components/GradeTresholdsList';
+import { GroupApiContextState } from '../GroupApiContext';
+
+const pointRight = keyframes`
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
 
 const mergedResultsToTableItem = (
   groupId: GroupDTO['id'],
@@ -25,14 +41,14 @@ const mergedResultsToTableItem = (
     ? student.groups_grades.find(g => g.group_id === groupId)
     : undefined;
   return {
-    userId: student.id,
-    userName: student.user_name,
-    index: student.student_index,
+    activity: results ? results.sum_activity : 0,
     finalGrade: final && final.grade,
-    tasksPoints: results ? results.tasks_grade : 0,
+    index: student.student_index,
     maxTasksPoints: results ? results.max_tasks_grade : 0,
     presences: results ? results.presences : 0,
-    activity: results ? results.sum_activity : 0,
+    tasksPoints: results ? results.tasks_grade : 0,
+    userId: student.id,
+    userName: student.user_name,
   };
 };
 
@@ -76,7 +92,7 @@ const SetGrade = ({
           ))}
         </Select>
       ) : (
-        <b>{(gradeValue && gradeValue) || '-'}</b>
+        <b>{gradeValue || '-'}</b>
       )}
       <a role="button" style={{ paddingLeft: 20 }} onClick={handleClick}>
         {isEditing ? 'zapisz' : 'edytuj'}
@@ -86,6 +102,9 @@ const SetGrade = ({
 };
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
+
+// TODO FIXME
+// tslint:disable-next-line:max-func-body-length
 export const GradesSection = (props: Props) => {
   const [usersResults, setUsersResults] = useState<UserResultsDTO[] | null>(
     null
@@ -167,7 +186,7 @@ export const GradesSection = (props: Props) => {
       ),
     },
     {
-      title: 'Obecnośći i aktywnośći',
+      title: 'Obecności i aktywności',
       key: 'meetings_grade',
       width: 120,
       render: (item: UserResultsModel) => (
@@ -187,6 +206,43 @@ export const GradesSection = (props: Props) => {
             item.activity
           )}
         </Flex>
+      ),
+    },
+    {
+      title: (
+        <p
+          css={css`
+            text-align: center;
+            margin: 0;
+          `}
+        >
+          Zatwierdź
+          <br />
+          <a role="button" onClick={() => console.log('wszystkie')}>
+            (wszystkie)
+          </a>
+        </p>
+      ),
+      key: 'confirm_grade',
+      width: 50,
+      render: () => (
+        <ResetButton
+          css={css`
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            border: 1px solid transparent;
+            &:hover {
+              animation: ${pointRight} 0.5s infinite;
+            }
+            &:focus-visible {
+              border-color: currentColor;
+            }
+          `}
+        >
+          <VisuallyHidden>Zatwierdź</VisuallyHidden>
+          <Icon aria-hidden type="right" />
+        </ResetButton>
       ),
     },
     {
