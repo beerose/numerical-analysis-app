@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { Select, Spin, Button } from 'antd';
 
 import { GroupApiContextState } from '../GroupApiContext';
 import { Flex, Table, Theme } from '../../../components';
-import { Select, Spin, Button } from 'antd';
 import {
   UserDTO,
   UserResultsDTO,
