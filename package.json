@@ -5,6 +5,7 @@
   ],
   "scripts": {
     "dev": "concurrently -c blue,green,yellow -n c,s,f \"yarn workspace common tsc\" \"yarn workspace server dev\" \"yarn workspace client dev\"",
+    "lint": "tslint -p ./packages/client && tslint -p ./packages/server",
     "db:setup": "yarn workspace database setup",
     "db:grepForPassword": "yarn workspace database grepForPassword",
     "db:ports": "yarn workspace database ports",
