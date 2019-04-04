@@ -317,3 +317,19 @@ export const getTask = (
       return callback(null, res[0]);
     }
   );
+
+export const getAttachedGroups = (
+  {
+    groupId,
+  }: {
+    groupId: GroupDTO['id'];
+  },
+  callback: QueryCallback<GroupDTO[]>
+) =>
+  connection.query(
+    {
+      sql: 'SELECT * FROM `groups` WHERE parent_group = ?;',
+      values: [groupId],
+    },
+    callback
+  );
