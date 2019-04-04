@@ -2,7 +2,7 @@
 export const LABELS = {
   add: 'Dodaj',
   addNewUser: 'Nowy użytkownik',
-  appName: 'Analiza Numeryczna M',
+  appName: 'Lagrange',
   areYouSure: 'Jesteś pewien?',
   assignment: 'Pracownia',
   cancel: 'cofnij',
