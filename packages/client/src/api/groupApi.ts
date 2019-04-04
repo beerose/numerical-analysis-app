@@ -359,3 +359,10 @@ export const setFinalGrade = (
     body: JSON.stringify({ group_id: groupId, user_id: userId, grade }),
     method: 'POST',
   });
+
+export const getAttached = (groupId: GroupDTO['id']) =>
+  authFetch<{ groups: GroupDTO[] }>(
+    `${SERVER_URL + Groups.GetAttached}?${qs.stringify({
+      group_id: groupId,
+    })}`
+  );
