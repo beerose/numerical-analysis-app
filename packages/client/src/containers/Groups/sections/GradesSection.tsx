@@ -184,7 +184,7 @@ export const GradesSection = ({
       width: 100,
       render: (item: UserResultsModel) => (
         <Flex justifyContent="center" fontWeight="bold">
-          <SuggestedGrade userResults={item} curren />
+          <SuggestedGrade userResults={item} currentGroup={currentGroup} />
         </Flex>
       ),
     },
