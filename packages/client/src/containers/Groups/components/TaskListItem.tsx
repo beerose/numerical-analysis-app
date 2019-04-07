@@ -8,7 +8,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
 import { Colors, LABELS, showMessage, useToggle } from '../../../utils';
 
-import { TaskTitle } from './TaskTitle';
+import { TaskMeta } from './TaskMeta';
 
 const StyledTaskCard = styled(Card)`
   .ant-card-body {
@@ -158,20 +158,13 @@ export const TaskListItem = ({
           <a role="button" onClick={() => navigateTo(String(task.id))}>
             {LABELS.edit}
           </a>,
-          <DeleteWithConfirm
-            onConfirm={() => {
-              deleteTask(task.id);
-            }}
-          >
+          <DeleteWithConfirm onConfirm={() => deleteTask(task.id)}>
             <a>{LABELS.delete}</a>
           </DeleteWithConfirm>,
         ]}
         onClick={toggleGradesVisible}
       >
-        <List.Item.Meta
-          title={<TaskTitle kind={task.kind} name={task.name} />}
-          description={task.description}
-        />
+        <TaskMeta task={task} />
         <DateRange
           start={task.start_upload_date as string}
           end={task.end_upload_date as string}
