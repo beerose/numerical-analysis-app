@@ -2,7 +2,13 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Card, Input, List, Spin, Table } from 'antd';
-import { ApiResponse, Grade, TaskDTO, UserDTO, UserWithGroups } from 'common';
+import {
+  ApiResponse,
+  TaskDTO,
+  UserDTO,
+  UserTaskPoints,
+  UserWithGroups,
+} from 'common';
 import { ChangeEvent, useEffect, useState } from 'react';
 
 import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
@@ -155,7 +161,8 @@ export const TaskListItem = ({
     <StyledTaskCard>
       <List.Item
         actions={[
-          <a role="button" onClick={() => navigateTo(String(task.id))}>
+          // TODO: react-router Link?
+          <a role="link" onClick={() => navigateTo(String(task.id))}>
             {LABELS.edit}
           </a>,
           <DeleteWithConfirm onConfirm={() => deleteTask(task.id)}>
