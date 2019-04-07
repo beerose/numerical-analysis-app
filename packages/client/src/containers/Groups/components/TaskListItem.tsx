@@ -1,19 +1,12 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Card, Input, List, Table, Spin } from 'antd';
-import {
-  TaskDTO,
-  UserDTO,
-  UserWithGroups,
-  ApiResponse,
-  Grade,
-  Student,
-} from 'common';
-import { useState, ChangeEvent, useEffect } from 'react';
+import { Card, Input, List, Spin, Table } from 'antd';
+import { ApiResponse, Grade, TaskDTO, UserDTO, UserWithGroups } from 'common';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
-import { Colors, LABELS, showMessage } from '../../../utils';
+import { Colors, LABELS, showMessage, useToggle } from '../../../utils';
 
 import { TaskTitle } from './TaskTitle';
 
@@ -90,6 +83,7 @@ type Props = {
   fetchGrades: (taskId: TaskDTO['id']) => Promise<Grade[]>;
 };
 
+// tslint:disable-next-line:max-func-body-length
 export const TaskListItem = ({
   navigateTo,
   task,
@@ -98,7 +92,7 @@ export const TaskListItem = ({
   setTaskPoints,
   fetchGrades,
 }: Props) => {
-  const [gradesVisible, setGradesVisible] = useState<boolean>(false);
+  const [gradesVisible, toggleGradesVisible] = useToggle(false);
   const [grades, setGrades] = useState<Grade[] | undefined>(undefined);
 
   useEffect(() => {
@@ -172,7 +166,7 @@ export const TaskListItem = ({
             <a>{LABELS.delete}</a>
           </DeleteWithConfirm>,
         ]}
-        onClick={() => setGradesVisible(!gradesVisible)}
+        onClick={toggleGradesVisible}
       >
         <List.Item.Meta
           title={<TaskTitle kind={task.kind} name={task.name} />}
