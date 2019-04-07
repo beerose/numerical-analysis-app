@@ -152,8 +152,13 @@ export const GradesSection = ({
   }, [tableData, currentGroup]);
 
   const columns = [
-    { title: 'Imię i nazwisko', dataIndex: 'userName', key: 'name' },
-    { title: 'Index', dataIndex: 'index', key: 'index' },
+    {
+      title: 'Imię i nazwisko',
+      dataIndex: 'userName',
+      key: 'name',
+      width: 200,
+    },
+    { title: 'Index', dataIndex: 'index', key: 'index', width: 100 },
     {
       title: `Testy i zadania`,
       key: 'tasks_grade',
