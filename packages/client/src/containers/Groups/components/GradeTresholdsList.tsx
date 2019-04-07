@@ -15,7 +15,13 @@ const showBadTresholdsError = debounce(
   1000
 );
 
-export const tresholdsKeys: (keyof Tresholds)[] = ['3', '3.5', '4', '4.5', '5'];
+export const tresholdsKeys: Array<keyof Tresholds> = [
+  '3',
+  '3.5',
+  '4',
+  '4.5',
+  '5',
+];
 
 type GradeTresholdsListProps = {
   onChange: (value: Tresholds) => void;
