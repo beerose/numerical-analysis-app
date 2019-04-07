@@ -1,36 +1,46 @@
 /** @jsx jsx */
-import { css, jsx, keyframes } from '@emotion/core';
-import VisuallyHidden from '@reach/visually-hidden';
-import { Button, Icon, Select, Spin } from 'antd';
+import { css, jsx } from '@emotion/core';
+import { Button, Select, Spin } from 'antd';
 import {
   ApiResponse,
+  getGradeFromTresholds,
   GroupDTO,
   UserDTO,
   UserResultsDTO,
   UserResultsModel,
   UserWithGroups,
 } from 'common';
-import { useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Flex, Table, Theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
-import { ResetButton } from '../../../components/ResetButton';
+import { ArrowRightButton } from '../../../components/ArrowRightButton';
 import { gradesToCsv, isSafari } from '../../../utils/';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
 import { GroupApiContextState } from '../GroupApiContext';
 
-const pointRight = keyframes`
-  0% {
-    transform: translateX(0);
+const SuggestedGrade: React.FC<{
+  userResults: UserResultsModel;
+  currentGroup?: GroupDTO;
+}> = ({ userResults, currentGroup }) => {
+  if (!currentGroup || !currentGroup.data) {
+    return <Spin />;
   }
-  50% {
-    transform: translateX(5px);
+  const tresholds = currentGroup.data.tresholds;
+  if (!tresholds) {
+    return <Fragment>'Brak odpowiednich ustawień'</Fragment>;
   }
-  100% {
-    transform: translateX(0);
-  }
-`;
+
+  const { tasksPoints, maxTasksPoints } = userResults;
+
+  // TO DO: add meetings points
+  const pointsPercentage = (tasksPoints / maxTasksPoints) * 100;
+
+  return (
+    <Fragment>{getGradeFromTresholds(pointsPercentage, tresholds)}</Fragment>
+  );
+};
 
 const mergedResultsToTableItem = (
   groupId: GroupDTO['id'],
@@ -105,19 +115,22 @@ type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 
 // TODO FIXME
 // tslint:disable-next-line:max-func-body-length
-export const GradesSection = (props: Props) => {
+export const GradesSection = ({
+  actions,
+  currentGroup,
+  currentGroupStudents,
+}: Props) => {
   const [usersResults, setUsersResults] = useState<UserResultsDTO[] | null>(
     null
   );
   const [tableData, setTableData] = useState<UserResultsModel[]>([]);
 
   useEffect(() => {
-    const { currentGroupStudents, currentGroup } = props;
     if (!currentGroupStudents) {
-      props.actions.listStudentsWithGroup();
+      actions.listStudentsWithGroup();
     }
     if (!usersResults) {
-      props.actions.getResults().then(res => {
+      actions.getResults().then(res => {
         setUsersResults(res);
       });
     }
@@ -129,47 +142,14 @@ export const GradesSection = (props: Props) => {
       });
       setTableData(data);
     }
-  }, [usersResults, props.currentGroupStudents]);
+  }, [usersResults, currentGroupStudents]);
 
-  const handleGradesCsvDownload = () => {
+  const handleGradesCsvDownload = useCallback(() => {
     const mimeType = isSafari() ? 'application/csv' : 'text/csv';
     const blob = new Blob([gradesToCsv(tableData)], { type: mimeType });
 
-    saveAs(blob, `students-results-group-${props.currentGroup!.id}.csv`);
-  };
-
-  const getSuggestedGrade = (
-    tasksPoints: number,
-    maxTasksPoints: number,
-    _presences: number,
-    _activity: number
-  ) => {
-    if (!props.currentGroup || !props.currentGroup.data) {
-      return <Spin />;
-    }
-    const tresholds = props.currentGroup.data.tresholds;
-    if (!tresholds) {
-      return 'Brak odpowiednich ustawień';
-    }
-
-    // TO DO: add meetings points
-    const pointsPercentage = (tasksPoints / maxTasksPoints) * 100;
-
-    switch (true) {
-      case pointsPercentage >= tresholds[5]:
-        return 5;
-      case pointsPercentage >= tresholds['4.5']:
-        return 4.5;
-      case pointsPercentage >= tresholds[4]:
-        return 4;
-      case pointsPercentage >= tresholds['3.5']:
-        return 3.5;
-      case pointsPercentage >= tresholds[3]:
-        return 3;
-      default:
-        return 2;
-    }
-  };
+    saveAs(blob, `students-results-group-${currentGroup!.id}.csv`);
+  }, [tableData, currentGroup]);
 
   const columns = [
     { title: 'Imię i nazwisko', dataIndex: 'userName', key: 'name' },
@@ -199,12 +179,7 @@ export const GradesSection = (props: Props) => {
       width: 100,
       render: (item: UserResultsModel) => (
         <Flex justifyContent="center" fontWeight="bold">
-          {getSuggestedGrade(
-            item.tasksPoints,
-            item.maxTasksPoints,
-            item.presences,
-            item.activity
-          )}
+          <SuggestedGrade userResults={item} curren />
         </Flex>
       ),
     },
@@ -226,23 +201,10 @@ export const GradesSection = (props: Props) => {
       key: 'confirm_grade',
       width: 50,
       render: () => (
-        <ResetButton
-          css={css`
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            border: 1px solid transparent;
-            &:hover {
-              animation: ${pointRight} 0.5s infinite;
-            }
-            &:focus-visible {
-              border-color: currentColor;
-            }
-          `}
-        >
-          <VisuallyHidden>Zatwierdź</VisuallyHidden>
-          <Icon aria-hidden type="right" />
-        </ResetButton>
+        <ArrowRightButton
+          alt="Zatwierdź"
+          onClick={() => console.log('zatwierdz')}
+        />
       ),
     },
     {
@@ -250,7 +212,7 @@ export const GradesSection = (props: Props) => {
       key: 'set_grade',
       width: 150,
       render: (item: UserResultsModel) => (
-        <SetGrade item={item} setFinalGrade={props.actions.setFinalGrade} />
+        <SetGrade item={item} setFinalGrade={actions.setFinalGrade} />
       ),
     },
   ];

@@ -61,7 +61,11 @@
       "check-typecast"
     ],
     "no-string-literal": false,
-    "object-literal-sort-keys": [true, "shorthand-first"],
+    "object-literal-sort-keys": [
+      true,
+      "shorthand-first",
+      "match-declaration-order"
+    ],
     "no-unused-expression": [true, "allow-tagged-template"],
     "no-submodule-imports": [true, "fp-ts"],
     "no-object-literal-type-assertion": false,
