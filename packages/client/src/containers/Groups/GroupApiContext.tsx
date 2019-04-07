@@ -12,7 +12,7 @@ import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
 import React from 'react';
 import { Omit, RouteChildrenProps } from 'react-router';
-import { FunctionKeys } from 'utility-types';
+import { DeepReadonly, FunctionKeys } from 'utility-types';
 
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';

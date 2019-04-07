@@ -1,4 +1,4 @@
-import { TaskDTO, UserDTO, Grade, GroupDTO } from 'common';
+import { GroupDTO, TaskDTO, UserDTO, UserTaskPoints } from 'common';
 
 import { connection } from '../connection';
 
@@ -31,7 +31,7 @@ export const setTaskPoints = (
 
 export const getGrades = (
   { taskId }: { taskId: TaskDTO['id'] },
-  callback: QueryCallback<Grade[]>
+  callback: QueryCallback<UserTaskPoints[]>
 ) =>
   connection.query(
     {
@@ -43,7 +43,9 @@ export const getGrades = (
 
 export const getUsersResults = (
   { groupId }: { groupId: GroupDTO['id'] },
-  callback: QueryCallback<{ user_id: UserDTO['id']; tasks_grade: number }[]>
+  callback: QueryCallback<
+    Array<{ user_id: UserDTO['id']; tasks_grade: number }>
+  >
 ) =>
   connection.query(
     {
@@ -74,7 +76,7 @@ export const getUsersResults = (
 
 export const getTasksMaxPointsPerGroup = (
   { groupId }: { groupId: GroupDTO['id'] },
-  callback: QueryCallback<{ max: number }[]>
+  callback: QueryCallback<Array<{ max: number }>>
 ) =>
   connection.query(
     {

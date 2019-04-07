@@ -1,4 +1,5 @@
-import { css, keyframes } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx, keyframes } from '@emotion/core';
 import VisuallyHidden from '@reach/visually-hidden';
 import { Icon } from 'antd';
 import React from 'react';
@@ -19,7 +20,7 @@ const pointRight = keyframes`
 
 type Props = { alt: string } & React.ComponentProps<typeof ResetButton>;
 
-export const ArrowRightButton: React.FC<Props> = ({ alt }) => (
+export const ArrowRightButton: React.FC<Props> = ({ alt, ...rest }) => (
   <ResetButton
     css={css`
       width: 100%;
@@ -27,12 +28,20 @@ export const ArrowRightButton: React.FC<Props> = ({ alt }) => (
       background: inherit;
       border: 1px solid transparent;
       &:hover {
-        animation: ${pointRight} 0.5s infinite;
+        :not(:disabled) {
+          animation: ${pointRight} 0.5s infinite;
+        }
       }
       &:focus-visible {
         border-color: currentColor;
       }
+
+      :disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
     `}
+    {...rest}
   >
     <VisuallyHidden>{alt}</VisuallyHidden>
     <Icon aria-hidden type="right" />

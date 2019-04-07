@@ -170,7 +170,7 @@ export type TaskDTO = {
   };
 };
 
-export type Grade = {
+export type UserTaskPoints = {
   user_id: UserDTO['id'];
   task_id: TaskDTO['id'];
   points: number;

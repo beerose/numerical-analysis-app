@@ -40,7 +40,7 @@ type TaskPointsInputProps = {
     userId: UserDTO['id'],
     points: number
   ) => void;
-  grade?: Grade;
+  grade?: UserTaskPoints;
 };
 
 const TaskPointsInput = (props: TaskPointsInputProps) => {
@@ -80,7 +80,7 @@ type Props = {
     points: number
   ) => Promise<ApiResponse>;
   students?: UserWithGroups[];
-  fetchGrades: (taskId: TaskDTO['id']) => Promise<Grade[]>;
+  fetchGrades: (taskId: TaskDTO['id']) => Promise<UserTaskPoints[]>;
 };
 
 // tslint:disable-next-line:max-func-body-length
@@ -93,7 +93,7 @@ export const TaskListItem = ({
   fetchGrades,
 }: Props) => {
   const [gradesVisible, toggleGradesVisible] = useToggle(false);
-  const [grades, setGrades] = useState<Grade[] | undefined>(undefined);
+  const [grades, setGrades] = useState<UserTaskPoints[] | undefined>(undefined);
 
   useEffect(() => {
     if (!grades && gradesVisible) {

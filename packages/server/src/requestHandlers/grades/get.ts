@@ -13,7 +13,7 @@ type GetGradesRequest = PostRequest<typeof GetGradesQueryV>;
 
 export const GetGrades = (
   req: GetGradesRequest,
-  res: BackendResponse<{ grades: Grade[] }>
+  res: BackendResponse<{ grades: UserTaskPoints[] }>
 ) => {
   handleBadRequest(GetGradesQueryV, req.query, res).then(() => {
     const { task_id } = req.query;
