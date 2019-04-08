@@ -1,36 +1,52 @@
 /** @jsx jsx */
-import { css, jsx, keyframes } from '@emotion/core';
-import VisuallyHidden from '@reach/visually-hidden';
-import { Button, Icon, Select, Spin } from 'antd';
+import { css, jsx } from '@emotion/core';
+import { Button, Select, Spin } from 'antd';
 import {
   ApiResponse,
+  getGradeFromTresholds,
+  Grade,
   GroupDTO,
+  Tresholds,
   UserDTO,
   UserResultsDTO,
   UserResultsModel,
   UserWithGroups,
 } from 'common';
-import { useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Flex, Table, Theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
-import { ResetButton } from '../../../components/ResetButton';
+import { ArrowRightButton } from '../../../components/ArrowRightButton';
 import { gradesToCsv, isSafari } from '../../../utils/';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
 import { GroupApiContextState } from '../GroupApiContext';
 
-const pointRight = keyframes`
-  0% {
-    transform: translateX(0);
+// TODO Use Grade Equation, add meetings points
+function computeGradeFromResults(
+  studentResults: UserResultsModel,
+  tresholds: Tresholds
+) {
+  const { tasksPoints, maxTasksPoints } = studentResults;
+
+  const pointsPercentage = (tasksPoints / maxTasksPoints) * 100;
+  return getGradeFromTresholds(pointsPercentage, tresholds);
+}
+
+const SuggestedGrade: React.FC<{
+  userResults: UserResultsModel;
+  currentGroup?: GroupDTO;
+}> = ({ userResults, currentGroup }) => {
+  if (!currentGroup || !currentGroup.data) {
+    return <Spin />;
   }
-  50% {
-    transform: translateX(5px);
+  const tresholds = currentGroup.data.tresholds;
+  if (!tresholds) {
+    return <Fragment>Brak odpowiednich ustawień</Fragment>;
   }
-  100% {
-    transform: translateX(0);
-  }
-`;
+
+  return <Fragment>{computeGradeFromResults(userResults, tresholds)}</Fragment>;
+};
 
 const mergedResultsToTableItem = (
   groupId: GroupDTO['id'],
@@ -53,123 +69,114 @@ const mergedResultsToTableItem = (
 };
 
 const SetGrade = ({
-  item,
-  setFinalGrade,
+  value,
+  onChange,
 }: {
-  item: UserResultsModel;
-  setFinalGrade: (userId: UserDTO['id'], grade: number) => Promise<ApiResponse>;
-}) => {
-  const [isEditing, setEditing] = useState<boolean>(false);
-  const [gradeValue, setGradeValue] = useState<number | undefined>(
-    item.finalGrade
-  );
-
-  const handleClick = () => {
-    if (isEditing) {
-      if (!gradeValue) {
-        setGradeValue(2);
-      }
-      setFinalGrade(item.userId, gradeValue || 2);
-      setEditing(false);
-    } else {
-      setEditing(true);
+  value?: UserResultsModel['finalGrade'];
+  onChange: (grade: number) => void;
+}) => (
+  <Select
+    mode="single"
+    showSearch
+    filterOption={(input, option) =>
+      String(option.props.children).startsWith(input)
     }
-  };
-
-  return (
-    <Flex justifyContent="center" alignItems="center">
-      {isEditing ? (
-        <Select
-          mode="single"
-          showArrow
-          defaultValue={gradeValue || 2}
-          onChange={e => setGradeValue(e)}
-        >
-          {['2', ...tresholdsKeys].map(t => (
-            <Select.Option key={t} value={Number(t)}>
-              {t}
-            </Select.Option>
-          ))}
-        </Select>
-      ) : (
-        <b>{gradeValue || '-'}</b>
-      )}
-      <a role="button" style={{ paddingLeft: 20 }} onClick={handleClick}>
-        {isEditing ? 'zapisz' : 'edytuj'}
-      </a>
-    </Flex>
-  );
-};
+    value={value}
+    onChange={onChange}
+    css={css`
+      width: 8em;
+      max-width: 100%;
+    `}
+  >
+    {['2', ...tresholdsKeys].map(t => (
+      <Select.Option key={t} value={Number(t)}>
+        {t}
+      </Select.Option>
+    ))}
+  </Select>
+);
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 
 // TODO FIXME
 // tslint:disable-next-line:max-func-body-length
-export const GradesSection = (props: Props) => {
-  const [usersResults, setUsersResults] = useState<UserResultsDTO[] | null>(
-    null
-  );
+export const GradesSection = ({
+  actions,
+  currentGroup,
+  currentGroupStudents,
+}: Props) => {
   const [tableData, setTableData] = useState<UserResultsModel[]>([]);
+  const tresholds =
+    currentGroup && currentGroup.data && currentGroup.data.tresholds;
 
   useEffect(() => {
-    const { currentGroupStudents, currentGroup } = props;
     if (!currentGroupStudents) {
-      props.actions.listStudentsWithGroup();
-    }
-    if (!usersResults) {
-      props.actions.getResults().then(res => {
-        setUsersResults(res);
+      actions.listStudentsWithGroup();
+    } else if (currentGroup) {
+      actions.getResults().then(usersResults => {
+        const data = currentGroupStudents.map(s => {
+          const results = usersResults.find(r => r.user_id === s.id);
+          return mergedResultsToTableItem(currentGroup.id, s, results);
+        });
+        setTableData(data);
       });
     }
+  }, [currentGroup, currentGroupStudents]);
 
-    if (currentGroupStudents && currentGroup && usersResults) {
-      const data = currentGroupStudents.map(s => {
-        const results = usersResults.find(r => r.user_id === s.id);
-        return mergedResultsToTableItem(currentGroup.id, s, results);
-      });
-      setTableData(data);
-    }
-  }, [usersResults, props.currentGroupStudents]);
+  const setGrade = useCallback((studentId: UserDTO['id'], grade: Grade) => {
+    // TODO: Handle error, revert state change.
+    actions.setFinalGrade(studentId, grade);
 
-  const handleGradesCsvDownload = () => {
+    setTableData(tData =>
+      tData.map(results => {
+        if (results.userId === studentId) {
+          return {
+            ...results,
+            finalGrade: grade,
+          };
+        }
+        return results;
+      })
+    );
+  }, []);
+
+  const confirmGrade = useMemo(
+    () =>
+      tresholds &&
+      ((studentResults: UserResultsModel) => {
+        const grade = computeGradeFromResults(studentResults, tresholds!);
+        const studentId = studentResults.userId;
+        setGrade(studentId, grade);
+      }),
+    [tresholds]
+  );
+
+  const confirmAllGrades = useMemo(
+    () =>
+      tresholds &&
+      (() => {
+        setTableData(tData =>
+          tData.map(studentResults => {
+            // TODO: Optimize this into one call with array studentIds?
+            const grade = computeGradeFromResults(studentResults, tresholds!);
+            const studentId = studentResults.userId;
+            actions.setFinalGrade(studentId, grade);
+            return {
+              ...studentResults,
+              finalGrade: grade,
+            };
+          })
+        );
+      }),
+    [tresholds]
+  );
+
+  const handleGradesCsvDownload = useCallback(() => {
     const mimeType = isSafari() ? 'application/csv' : 'text/csv';
     const blob = new Blob([gradesToCsv(tableData)], { type: mimeType });
 
-    saveAs(blob, `students-results-group-${props.currentGroup!.id}.csv`);
-  };
-
-  const getSuggestedGrade = (
-    tasksPoints: number,
-    maxTasksPoints: number,
-    _presences: number,
-    _activity: number
-  ) => {
-    if (!props.currentGroup || !props.currentGroup.data) {
-      return <Spin />;
-    }
-    const tresholds = props.currentGroup.data.tresholds;
-    if (!tresholds) {
-      return 'Brak odpowiednich ustawień';
-    }
-
-    // TO DO: add meetings points
-    const pointsPercentage = (tasksPoints / maxTasksPoints) * 100;
-
-    switch (true) {
-      case pointsPercentage >= tresholds[5]:
-        return 5;
-      case pointsPercentage >= tresholds['4.5']:
-        return 4.5;
-      case pointsPercentage >= tresholds[4]:
-        return 4;
-      case pointsPercentage >= tresholds['3.5']:
-        return 3.5;
-      case pointsPercentage >= tresholds[3]:
-        return 3;
-      default:
-        return 2;
-    }
-  };
+    saveAs(blob, `students-results-group-${currentGroup!.id}.csv`);
+  }, [tableData, currentGroup]);
 
   const columns = [
     {
@@ -204,12 +211,7 @@ export const GradesSection = (props: Props) => {
       width: 100,
       render: (item: UserResultsModel) => (
         <Flex justifyContent="center" fontWeight="bold">
-          {getSuggestedGrade(
-            item.tasksPoints,
-            item.maxTasksPoints,
-            item.presences,
-            item.activity
-          )}
+          <SuggestedGrade userResults={item} currentGroup={currentGroup} />
         </Flex>
       ),
     },
@@ -223,39 +225,31 @@ export const GradesSection = (props: Props) => {
         >
           Zatwierdź
           <br />
-          <a role="button" onClick={() => console.log('wszystkie')}>
+          <a role="button" onClick={confirmAllGrades}>
             (wszystkie)
           </a>
         </p>
       ),
       key: 'confirm_grade',
       width: 50,
-      render: () => (
-        <ResetButton
-          css={css`
-            width: 100%;
-            height: 100%;
-            background: inherit;
-            border: 1px solid transparent;
-            &:hover {
-              animation: ${pointRight} 0.5s infinite;
-            }
-            &:focus-visible {
-              border-color: currentColor;
-            }
-          `}
-        >
-          <VisuallyHidden>Zatwierdź</VisuallyHidden>
-          <Icon aria-hidden type="right" />
-        </ResetButton>
+      render: (studentResults: UserResultsModel) => (
+        <ArrowRightButton
+          title="Zatwierdź ocenę"
+          alt="Zatwierdź ocenę"
+          disabled={!confirmGrade}
+          onClick={confirmGrade && (() => confirmGrade(studentResults))}
+        />
       ),
     },
     {
       title: `Wystawiona ocena`,
       key: 'set_grade',
       width: 150,
-      render: (item: UserResultsModel) => (
-        <SetGrade item={item} setFinalGrade={props.actions.setFinalGrade} />
+      render: (studentResults: UserResultsModel) => (
+        <SetGrade
+          value={studentResults.finalGrade}
+          onChange={grade => setGrade(studentResults.userId, grade)}
+        />
       ),
     },
   ];

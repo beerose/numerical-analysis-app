@@ -6,8 +6,8 @@ import {
   ServerRoutes,
   TaskDTO,
   UserDTO,
-  Grade,
   UserResultsDTO,
+  UserTaskPoints,
   UserWithGroups,
 } from 'common';
 import * as qs from 'query-string';
@@ -337,7 +337,7 @@ export const setTaskPoints = (
   });
 
 export const getGrades = (taskId: TaskDTO['id']) =>
-  authFetch<{ grades: Grade[] }>(
+  authFetch<{ grades: UserTaskPoints[] }>(
     `${SERVER_URL + Grades}?${qs.stringify({
       task_id: taskId,
     })}`

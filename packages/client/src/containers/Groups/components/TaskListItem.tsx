@@ -1,21 +1,20 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Card, Input, List, Table, Spin } from 'antd';
+import { Card, Input, List, Spin, Table } from 'antd';
 import {
+  ApiResponse,
   TaskDTO,
   UserDTO,
+  UserTaskPoints,
   UserWithGroups,
-  ApiResponse,
-  Grade,
-  Student,
 } from 'common';
-import { useState, ChangeEvent, useEffect } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
-import { Colors, LABELS, showMessage } from '../../../utils';
+import { Colors, LABELS, showMessage, useToggle } from '../../../utils';
 
-import { TaskTitle } from './TaskTitle';
+import { TaskMeta } from './TaskMeta';
 
 const StyledTaskCard = styled(Card)`
   .ant-card-body {
@@ -47,7 +46,7 @@ type TaskPointsInputProps = {
     userId: UserDTO['id'],
     points: number
   ) => void;
-  grade?: Grade;
+  grade?: UserTaskPoints;
 };
 
 const TaskPointsInput = (props: TaskPointsInputProps) => {
@@ -87,9 +86,10 @@ type Props = {
     points: number
   ) => Promise<ApiResponse>;
   students?: UserWithGroups[];
-  fetchGrades: (taskId: TaskDTO['id']) => Promise<Grade[]>;
+  fetchGrades: (taskId: TaskDTO['id']) => Promise<UserTaskPoints[]>;
 };
 
+// tslint:disable-next-line:max-func-body-length
 export const TaskListItem = ({
   navigateTo,
   task,
@@ -98,8 +98,8 @@ export const TaskListItem = ({
   setTaskPoints,
   fetchGrades,
 }: Props) => {
-  const [gradesVisible, setGradesVisible] = useState<boolean>(false);
-  const [grades, setGrades] = useState<Grade[] | undefined>(undefined);
+  const [gradesVisible, toggleGradesVisible] = useToggle(false);
+  const [grades, setGrades] = useState<UserTaskPoints[] | undefined>(undefined);
 
   useEffect(() => {
     if (!grades && gradesVisible) {
@@ -161,23 +161,17 @@ export const TaskListItem = ({
     <StyledTaskCard>
       <List.Item
         actions={[
-          <a role="button" onClick={() => navigateTo(String(task.id))}>
+          // TODO: react-router Link?
+          <a role="link" onClick={() => navigateTo(String(task.id))}>
             {LABELS.edit}
           </a>,
-          <DeleteWithConfirm
-            onConfirm={() => {
-              deleteTask(task.id);
-            }}
-          >
+          <DeleteWithConfirm onConfirm={() => deleteTask(task.id)}>
             <a>{LABELS.delete}</a>
           </DeleteWithConfirm>,
         ]}
-        onClick={() => setGradesVisible(!gradesVisible)}
+        onClick={toggleGradesVisible}
       >
-        <List.Item.Meta
-          title={<TaskTitle kind={task.kind} name={task.name} />}
-          description={task.description}
-        />
+        <TaskMeta task={task} />
         <DateRange
           start={task.start_upload_date as string}
           end={task.end_upload_date as string}

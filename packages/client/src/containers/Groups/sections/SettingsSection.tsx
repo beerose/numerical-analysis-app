@@ -11,8 +11,7 @@ import { DeepRequired } from 'utility-types';
 import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
 import { Theme } from '../../../components/theme';
-import { LABELS } from '../../../utils';
-import { useMergeKey, useMergeState } from '../../../utils/useMergeState';
+import { LABELS, useMergeKey, useMergeState } from '../../../utils';
 import { GroupEquation } from '../components/GradeEquation';
 import {
   GradeTresholdsList,

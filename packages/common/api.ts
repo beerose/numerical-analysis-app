@@ -2,6 +2,7 @@ import * as t from 'io-ts';
 import { isNumber, isString } from 'util';
 
 import { isGroupKind, Typeguard } from './utils';
+import { Tresholds } from './domain/Tresholds';
 
 export type ApiResponse =
   | {
@@ -44,8 +45,8 @@ export const userIdRuntimeType = new t.Type(
 );
 
 export type UserWithGroups = UserDTO & {
-  group_ids: GroupDTO['id'][];
-  groups_grades?: { group_id: GroupDTO['id']; grade: number }[];
+  group_ids: Array<GroupDTO['id']>;
+  groups_grades?: Array<{ group_id: GroupDTO['id']; grade: number }>;
 };
 
 export type Pagination = {
@@ -97,14 +98,6 @@ export const groupNameRuntimeType = new t.Type(
   t.identity
 );
 
-export type Tresholds = {
-  '3': number;
-  '3.5': number;
-  '4': number;
-  '4.5': number;
-  '5': number;
-};
-
 export type GroupWithLecturer = GroupDTO & {
   lecturer_name: UserDTO['user_name'];
 };
@@ -129,7 +122,7 @@ export type StudentActivities = Record<MeetingId, number>;
 
 export type MeetingDetailsDTO = {
   data: {
-    presences: MeetingDTO['id'][];
+    presences: Array<MeetingDTO['id']>;
     activities: StudentActivities;
   };
   student: Student;
@@ -177,7 +170,7 @@ export type TaskDTO = {
   };
 };
 
-export type Grade = {
+export type UserTaskPoints = {
   user_id: UserDTO['id'];
   task_id: TaskDTO['id'];
   points: number;
