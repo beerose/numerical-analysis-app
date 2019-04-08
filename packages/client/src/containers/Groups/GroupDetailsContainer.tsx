@@ -126,9 +126,9 @@ export class GroupDetailsContainer extends React.Component<
                 </MenuLink>
               )}
               {features.hasAttachedGroups && (
-                <MenuLink to={`${matchUrl}/attached`} key="tasks">
+                <MenuLink to={`${matchUrl}/attached`} key="attached">
                   <Icon type="pushpin" />
-                  {texts.attachedGroups}
+                  {texts.attached}
                 </MenuLink>
               )}
               <MenuLink to={`${matchUrl}/grades`} key="grades">
@@ -184,8 +184,8 @@ export class GroupDetailsContainer extends React.Component<
                     <GradesSection {...this.context} history={history} />
                   )}
                 </Route>
-                <Route exact path={'groups/:id/attached'}>
-                  {({ history }) => <div>{texts.attachedGroups}</div>}
+                <Route exact path={'/groups/:id/attached'}>
+                  {({ history }) => <div>{texts.attached}</div>}
                 </Route>
                 <NotFoundPage />
               </Switch>
