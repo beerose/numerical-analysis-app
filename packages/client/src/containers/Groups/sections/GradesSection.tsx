@@ -254,7 +254,6 @@ export const GradesSection = ({
     },
   ];
 
-  console.log({ tableData });
   return (
     <LocaleContext.Consumer>
       {({ texts }) => (
