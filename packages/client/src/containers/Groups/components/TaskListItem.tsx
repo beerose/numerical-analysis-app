@@ -59,11 +59,7 @@ const TaskPointsInput = (props: TaskPointsInputProps) => {
   return (
     <Input
       css={css`
-        width: ${task.max_points < 10
-          ? '50px'
-          : task.max_points < 100
-          ? '55px'
-          : '65px'};
+        width: ${task.max_points < 100 ? '65px' : '75px'};
         border: 1 solid ${Colors.SemiLightGrey} !important;
         margin-right: 3px;
       `}
