@@ -12,7 +12,7 @@ import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
 import React from 'react';
 import { Omit, RouteChildrenProps } from 'react-router';
-import { DeepReadonly, FunctionKeys } from 'utility-types';
+import { FunctionKeys } from 'utility-types';
 
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
@@ -332,13 +332,12 @@ export class GroupApiProvider extends React.Component<
     return res;
   };
 
-  setTaskPoints = async (
+  setTaskPoints = (
     taskId: TaskDTO['id'],
     userId: UserDTO['id'],
     points: number
   ) => {
-    const res = await groupsService.setTaskPoints(taskId, userId, points);
-    return res;
+    return groupsService.setTaskPoints(taskId, userId, points);
   };
 
   getGrades = async (taskId: TaskDTO['id']) => {
@@ -346,24 +345,22 @@ export class GroupApiProvider extends React.Component<
     return res.grades;
   };
 
-  getResults = async () => {
+  getResults = () => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.getResults(this.state.currentGroup.id);
-    return res;
+    return groupsService.getResults(this.state.currentGroup.id);
   };
 
-  setFinalGrade = async (userId: UserDTO['id'], grade: number) => {
+  setFinalGrade = (userId: UserDTO['id'], grade: number) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.setFinalGrade(
+    return groupsService.setFinalGrade(
       this.state.currentGroup.id,
       userId,
       grade
     );
-    return res;
   };
 
   render() {

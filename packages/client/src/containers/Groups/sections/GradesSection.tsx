@@ -106,6 +106,8 @@ export const GradesSection = ({
   currentGroupStudents,
 }: Props) => {
   const [tableData, setTableData] = useState<UserResultsModel[]>([]);
+  const tresholds =
+    currentGroup && currentGroup.data && currentGroup.data.tresholds;
 
   useEffect(() => {
     if (!currentGroupStudents) {
@@ -140,18 +142,33 @@ export const GradesSection = ({
 
   const confirmGrade = useMemo(
     () =>
-      currentGroup &&
-      currentGroup.data &&
-      currentGroup.data.tresholds &&
+      tresholds &&
       ((studentResults: UserResultsModel) => {
-        const grade = computeGradeFromResults(
-          studentResults,
-          currentGroup!.data!.tresholds!
-        );
+        const grade = computeGradeFromResults(studentResults, tresholds!);
         const studentId = studentResults.userId;
         setGrade(studentId, grade);
       }),
-    [currentGroup]
+    [tresholds]
+  );
+
+  const confirmAllGrades = useMemo(
+    () =>
+      tresholds &&
+      (() => {
+        setTableData(tData =>
+          tData.map(studentResults => {
+            // TODO: Optimize this into one call with array studentIds?
+            const grade = computeGradeFromResults(studentResults, tresholds!);
+            const studentId = studentResults.userId;
+            actions.setFinalGrade(studentId, grade);
+            return {
+              ...studentResults,
+              finalGrade: grade,
+            };
+          })
+        );
+      }),
+    [tresholds]
   );
 
   const handleGradesCsvDownload = useCallback(() => {
@@ -208,7 +225,7 @@ export const GradesSection = ({
         >
           Zatwierdź
           <br />
-          <a role="button" onClick={() => console.log('wszystkie')}>
+          <a role="button" onClick={confirmAllGrades}>
             (wszystkie)
           </a>
         </p>
@@ -217,7 +234,8 @@ export const GradesSection = ({
       width: 50,
       render: (studentResults: UserResultsModel) => (
         <ArrowRightButton
-          alt="Zatwierdź"
+          title="Zatwierdź ocenę"
+          alt="Zatwierdź ocenę"
           disabled={!confirmGrade}
           onClick={confirmGrade && (() => confirmGrade(studentResults))}
         />

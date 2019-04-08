@@ -6,8 +6,8 @@ import {
   ServerRoutes,
   TaskDTO,
   UserDTO,
-  Grade,
   UserResultsDTO,
+  UserTaskPoints,
   UserWithGroups,
 } from 'common';
 import * as qs from 'query-string';

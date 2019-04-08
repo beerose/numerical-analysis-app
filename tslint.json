@@ -61,6 +61,7 @@
       "check-typecast"
     ],
     "no-string-literal": false,
+    "object-shorthand-properties-first": false, // Duplicate?
     "object-literal-sort-keys": [
       true,
       "shorthand-first",
