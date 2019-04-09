@@ -14,6 +14,7 @@ import * as tasks from './tasks';
 import * as results from './results';
 import { update } from './update';
 import { upload } from './upload';
+import { getAttached } from './getAttached';
 
 export const router = Router();
 
@@ -62,6 +63,12 @@ router.post(
   auth.authorize([UserRole.admin, UserRole.superUser]),
   auth.can('edit', 'groups'),
   share
+);
+router.get(
+  Routes.GetAttached,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('read', 'groups'),
+  getAttached
 );
 
 router.get(
