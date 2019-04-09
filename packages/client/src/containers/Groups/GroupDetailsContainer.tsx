@@ -20,6 +20,7 @@ import {
   TaskSection,
   TasksSection,
   GradesSection,
+  AttachedSection,
 } from './sections';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
@@ -52,7 +53,7 @@ export class GroupDetailsContainer extends React.Component<
   }
 
   replaceGroupIdBreadcrumb = (tokens: string[]) => {
-    const { currentGroup, currentTask } = this.context;
+    const { currentGroup } = this.context;
     return tokens.map((token, i) => {
       const previousToken = tokens[i - 1];
       if (
@@ -185,7 +186,9 @@ export class GroupDetailsContainer extends React.Component<
                   )}
                 </Route>
                 <Route exact path={'/groups/:id/attached'}>
-                  {({ history }) => <div>{texts.attached}</div>}
+                  {({ history }) => (
+                    <AttachedSection {...this.context} history={history} />
+                  )}
                 </Route>
                 <NotFoundPage />
               </Switch>
