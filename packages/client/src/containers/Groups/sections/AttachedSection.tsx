@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { GroupApiContextState } from '../GroupApiContext';
-import { Flex, DeleteWithConfirm } from '../../../components';
+import { Flex, DeleteWithConfirm, Theme } from '../../../components';
 import { List } from 'antd';
 import { GroupDTO } from 'common';
-import { Link } from 'react-router-dom';
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 export const AttachedSection = (props: Props) => {
@@ -17,20 +16,25 @@ export const AttachedSection = (props: Props) => {
   }, [props.actions]);
 
   return (
-    <Flex justifyContent="center">
+    <Flex padding={Theme.Padding.Standard}>
       <List
         itemLayout="horizontal"
         dataSource={attached}
         renderItem={(item: GroupDTO) => (
           <List.Item
             actions={[
-              <DeleteWithConfirm onConfirm={console.log}>
-                <a>Odepnij grupę</a>
-              </DeleteWithConfirm>,
+              <DeleteWithConfirm
+                onConfirm={console.log}
+                label="Odepnij grupę"
+              />,
             ]}
           >
             <List.Item.Meta
-              title={<Link to={`/groups/${item.id}`}>{item.group_name}</Link>}
+              title={
+                <a onClick={() => props.history.push(`/groups/${item.id}`)}>
+                  {item.group_name}
+                </a>
+              }
             />
           </List.Item>
         )}

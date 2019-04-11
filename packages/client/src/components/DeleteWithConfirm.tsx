@@ -5,7 +5,8 @@ import { LABELS } from '../utils/labels';
 
 export const DeleteWithConfirm: React.FC<{
   onConfirm: (e?: React.MouseEvent<any>) => void;
-}> = ({ onConfirm }) => (
+  label?: React.ReactNode;
+}> = ({ onConfirm, label }) => (
   <Popconfirm
     title={LABELS.areYouSure}
     onConfirm={onConfirm}
@@ -15,7 +16,7 @@ export const DeleteWithConfirm: React.FC<{
     cancelText={LABELS.no}
   >
     <a role="button" onClick={e => e.stopPropagation()}>
-      {LABELS.delete}
+      {label ? label : LABELS.delete}
     </a>
   </Popconfirm>
 );
