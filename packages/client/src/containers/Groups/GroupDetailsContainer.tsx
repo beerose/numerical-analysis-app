@@ -48,6 +48,16 @@ export class GroupDetailsContainer extends React.Component<
     this.context.actions.getGroup();
   }
 
+  componentDidUpdate() {
+    const groupId = Number(this.props.location.pathname.split('/')[2]);
+    if (
+      !this.context.currentGroup ||
+      this.context.currentGroup.id !== groupId
+    ) {
+      this.context.actions.getGroup();
+    }
+  }
+
   getSelectedItem() {
     return this.props.location.pathname.split('/')[3] || 'settings';
   }
