@@ -1,4 +1,4 @@
-import { Spin, Button, Modal } from 'antd';
+import { Spin } from 'antd';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
@@ -14,8 +14,6 @@ type Props = GroupApiContextState &
     mode: 'edit' | 'create';
   };
 export const TaskSection = (props: Props) => {
-  const [modalVisible, setModalVisible] = useState(false);
-
   const navigateTo = useCallback(
     (path: string) =>
       props.history.push(
@@ -46,15 +44,6 @@ export const TaskSection = (props: Props) => {
         });
   };
 
-  const handleOpenModal = () => {
-    setModalVisible(true);
-    // TO DO: fetch ALL tasks - requires backend
-  };
-
-  const handleAddExistingTask = () => {
-    // ..actions.attachTaskToGroup...
-  };
-
   if (props.isLoading) {
     return <Spin />;
   }
@@ -65,12 +54,6 @@ export const TaskSection = (props: Props) => {
       padding={Theme.Padding.Half}
       flexDirection="column"
     >
-      <Modal
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        cancelText="Anuluj"
-        okText="Dodaj zadanie"
-      />
       <TaskForm
         onSubmit={handleSubmit}
         mode={props.mode}
