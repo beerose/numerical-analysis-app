@@ -65,13 +65,6 @@ export const TaskSection = (props: Props) => {
       padding={Theme.Padding.Half}
       flexDirection="column"
     >
-      <Button
-        style={{ alignSelf: 'center' }}
-        type="primary"
-        onClick={handleOpenModal}
-      >
-        Wybierz z istniejących
-      </Button>
       <Modal
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}
