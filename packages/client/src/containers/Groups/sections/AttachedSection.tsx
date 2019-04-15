@@ -9,6 +9,7 @@ import { LABELS, showMessage } from '../../../utils';
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 export const AttachedSection = (props: Props) => {
+  const [loading, setLoading] = useState(false);
   const [attached, setAttached] = useState<GroupDTO[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedGroup, setSelectedGroup] = useState<number | undefined>(
@@ -16,9 +17,12 @@ export const AttachedSection = (props: Props) => {
   );
 
   useEffect(() => {
+    setLoading(true);
     props.actions.getAttached().then(res => {
       setAttached(res.groups);
+      setLoading(false);
     });
+
     if (!props.groups) {
       props.actions.listGroups();
     }
@@ -35,8 +39,22 @@ export const AttachedSection = (props: Props) => {
 
       showMessage(res);
 
+      setLoading(true);
       props.actions.getAttached().then(res => {
         setAttached(res.groups);
+        setLoading(false);
+      });
+    });
+  };
+
+  const handleDetachGroup = (groupId: GroupDTO['id']) => {
+    props.actions.detach(groupId).then(res => {
+      showMessage(res);
+
+      setLoading(true);
+      props.actions.getAttached().then(res => {
+        setAttached(res.groups);
+        setLoading(false);
       });
     });
   };
@@ -78,28 +96,32 @@ export const AttachedSection = (props: Props) => {
           )}
         </Select>
       </Modal>
-      <List
-        itemLayout="horizontal"
-        dataSource={attached}
-        renderItem={(item: GroupDTO) => (
-          <List.Item
-            actions={[
-              <DeleteWithConfirm
-                onConfirm={console.log}
-                label="Odepnij grupę"
-              />,
-            ]}
-          >
-            <List.Item.Meta
-              title={
-                <a onClick={() => props.history.push(`/groups/${item.id}`)}>
-                  {item.group_name}
-                </a>
-              }
-            />
-          </List.Item>
-        )}
-      />
+      {loading ? (
+        <Spin />
+      ) : (
+        <List
+          itemLayout="horizontal"
+          dataSource={attached}
+          renderItem={(item: GroupDTO) => (
+            <List.Item
+              actions={[
+                <DeleteWithConfirm
+                  onConfirm={() => handleDetachGroup(item.id)}
+                  label="Odepnij grupę"
+                />,
+              ]}
+            >
+              <List.Item.Meta
+                title={
+                  <a onClick={() => props.history.push(`/groups/${item.id}`)}>
+                    {item.group_name}
+                  </a>
+                }
+              />
+            </List.Item>
+          )}
+        />
+      )}
     </Flex>
   );
 };
