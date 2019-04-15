@@ -382,6 +382,14 @@ export class GroupApiProvider extends React.Component<
     return res;
   };
 
+  detach = async (groupId: GroupDTO['id']) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    const res = await groupsService.detach(groupId);
+    return res;
+  };
+
   render() {
     return (
       <GroupApiContext.Provider value={this.state as GroupApiContextState}>

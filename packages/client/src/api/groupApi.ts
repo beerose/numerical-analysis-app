@@ -375,3 +375,9 @@ export const attach = (
     body: JSON.stringify({ group_id: groupId, parent_group_id: parentGroupId }),
     method: 'POST',
   });
+
+export const detach = (groupId: GroupDTO['id']) =>
+  authFetch(SERVER_URL + Groups.Detach, {
+    body: JSON.stringify({ group_id: groupId }),
+    method: 'POST',
+  });
