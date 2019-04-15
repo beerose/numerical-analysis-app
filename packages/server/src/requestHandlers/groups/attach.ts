@@ -16,7 +16,7 @@ export const attach = (req: AttachRequest, res: BackendResponse) =>
     db.attachGroup(
       {
         groupId: req.body.group_id,
-        parentGroupId: req.body.group_id,
+        parentGroupId: req.body.parent_group_id,
       },
       err => {
         if (err) {
