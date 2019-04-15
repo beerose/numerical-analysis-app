@@ -10,6 +10,7 @@ export const ServerRoutes = {
     Attach: '/groups/attach',
     Create: '/groups.create',
     Delete: '/groups.delete',
+    Detach: '/groups/detach',
     Get: '/groups.get',
     GetAttached: '/groups/attached',
     List: '/groups',
