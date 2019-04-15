@@ -366,3 +366,12 @@ export const getAttached = (groupId: GroupDTO['id']) =>
       group_id: groupId,
     })}`
   );
+
+export const attach = (
+  groupId: GroupDTO['id'],
+  parentGroupId: GroupDTO['id']
+) =>
+  authFetch(SERVER_URL + Groups.Attach, {
+    body: JSON.stringify({ group_id: groupId, parent_group_id: parentGroupId }),
+    method: 'POST',
+  });
