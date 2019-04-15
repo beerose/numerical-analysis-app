@@ -16,6 +16,7 @@ import { update } from './update';
 import { upload } from './upload';
 import { getAttached } from './getAttached';
 import { attach } from './attach';
+import { detach } from './detach';
 
 export const router = Router();
 
@@ -76,6 +77,12 @@ router.post(
   auth.authorize([UserRole.admin, UserRole.superUser]),
   auth.can('edit', 'groups'),
   attach
+);
+router.post(
+  Routes.Detach,
+  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.can('edit', 'groups'),
+  detach
 );
 
 router.get(

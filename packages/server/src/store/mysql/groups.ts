@@ -351,3 +351,19 @@ export const attachGroup = (
     },
     callback
   );
+
+export const detachGroup = (
+  {
+    groupId,
+  }: {
+    groupId: GroupDTO['id'];
+  },
+  callback: QueryCallback
+) =>
+  connection.query(
+    {
+      sql: 'UPDATE `groups` SET parent_group = NULL WHERE id = ?',
+      values: [groupId],
+    },
+    callback
+  );

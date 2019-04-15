@@ -5,6 +5,7 @@ export const apiMessages = {
   emailRequired: 'Email jest wymagany',
   emptyCSV: 'Plik CSV jest pusty lub nieprawidłowy',
   groupAttached: 'Grupa została podpięta',
+  groupDetached: 'Grupa została odpięta',
   gradeSet: 'Ocena ustawiona',
   groupCreated: 'Grupa została dodana',
   groupDeleted: 'Grupa została usunięta',
