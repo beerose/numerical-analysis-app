@@ -6,6 +6,7 @@ import { List, Modal, Select, Spin } from 'antd';
 import { GroupDTO } from 'common';
 import { Button } from 'antd';
 import { LABELS, showMessage } from '../../../utils';
+import { async } from 'q';
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 export const AttachedSection = (props: Props) => {
@@ -16,12 +17,16 @@ export const AttachedSection = (props: Props) => {
     undefined
   );
 
-  useEffect(() => {
+  const getAttachedGroups = async () => {
     setLoading(true);
     props.actions.getAttached().then(res => {
       setAttached(res.groups);
       setLoading(false);
     });
+  };
+
+  useEffect(() => {
+    getAttachedGroups();
 
     if (!props.groups) {
       props.actions.listGroups();
@@ -39,11 +44,7 @@ export const AttachedSection = (props: Props) => {
 
       showMessage(res);
 
-      setLoading(true);
-      props.actions.getAttached().then(res => {
-        setAttached(res.groups);
-        setLoading(false);
-      });
+      getAttachedGroups();
     });
   };
 
@@ -51,11 +52,7 @@ export const AttachedSection = (props: Props) => {
     props.actions.detach(groupId).then(res => {
       showMessage(res);
 
-      setLoading(true);
-      props.actions.getAttached().then(res => {
-        setAttached(res.groups);
-        setLoading(false);
-      });
+      getAttachedGroups();
     });
   };
 
