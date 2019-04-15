@@ -7,6 +7,7 @@ export const ServerRoutes = {
   Files: '/files', // Uses many HTTP methods
   Grades: '/grades',
   Groups: {
+    Attach: '/groups/attach',
     Create: '/groups.create',
     Delete: '/groups.delete',
     Get: '/groups.get',
