@@ -95,5 +95,7 @@ export const disconnectFromDb = () => {
     retriesLeft: 0,
     status: ConnectionStatus.ShuttingDown,
   });
-  connection.pause();
+  if (connection !== undefined) {
+    connection.pause();
+  }
 };

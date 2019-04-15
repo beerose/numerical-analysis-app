@@ -1,28 +1,19 @@
 import { ServerRoutes } from 'common';
 
-import { fetch } from './fetch';
+import { fetch, authFetchAdmin } from './fetch';
 
-// describe('post /files', () => {
-//   it('uploads many files', () => {
-//     const formData = new FormData();
-
-//     return fetch(ServerRoutes.Files, {
-//       headers = {
-//         // 'Accept': 'application/json',
-//         'Authorization':
-//       }
-//       body: formData as any, //FIXME?
-//       method: 'POST',
-//     }).expectStatus(200);
-//     // .then(
-//     //   res => expect(2).toBe(2),
-//     //   // res
-//     //   //   .json()
-//     //   //   .then(text => expect(text.startsWith('Hello!')).toBeTruthy()),
-//     //   fail
-//     // );
-//   });
-// });
+describe('post /files', () => {
+  it('uploads many files', () => {
+    return authFetchAdmin(ServerRoutes.Files).expectStatus(200);
+    // .then(
+    //   res => expect(2).toBe(2),
+    //   // res
+    //   //   .json()
+    //   //   .then(text => expect(text.startsWith('Hello!')).toBeTruthy()),
+    //   fail
+    // );
+  });
+});
 
 /**
  * TODO: test cases
