@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router';
 import { TaskDTO } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
 import { Flex } from '../../../components/Flex';
-import { showMessage } from '../../../utils';
+import { showMessage, LABELS } from '../../../utils';
 import { TaskListItem } from '../components/TaskListItem';
 import { GroupApiContextState } from '../GroupApiContext';
 import { ProgressPlugin } from 'webpack';
@@ -27,6 +27,9 @@ export const TasksSection = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [tasks, setTasks] = useState<TaskDTO[]>([]);
   const [allTasks, setAllTasks] = useState<TaskDTO[]>([]);
+  const [selectedTask, setSelectedTask] = useState<TaskDTO['id'] | undefined>(
+    undefined
+  );
 
   useEffect(() => {
     if (!tasks.length) {
@@ -60,6 +63,11 @@ export const TasksSection = ({
     actions.listTasks({ all: true }).then(res => setAllTasks(res.tasks));
   };
 
+  const handleAttachTask = () => {
+    console.log({ selectedTask });
+    setModalVisible(false);
+  };
+
   return (
     <Container>
       <Button icon="plus" type="primary" onClick={() => navigateTo('new')}>
@@ -73,8 +81,18 @@ export const TasksSection = ({
       >
         Dodaj istniejące zadanie
       </Button>
-      <Modal visible={modalVisible} onCancel={() => setModalVisible(false)}>
-        <Select style={{ width: 400, margin: Theme.Padding.Half }}>
+      <Modal
+        visible={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        cancelText="Cofnij"
+        onOk={handleAttachTask}
+        okText={LABELS.save}
+      >
+        <Select
+          style={{ width: 400, margin: Theme.Padding.Half }}
+          onChange={(value: number) => setSelectedTask(value)}
+          placeholder="Wybierz zadanie"
+        >
           {allTasks.map(task => (
             <Select.Option key={task.id.toString()} value={task.id}>
               {task.name}
