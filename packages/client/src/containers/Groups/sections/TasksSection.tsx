@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Button, List, Spin, Modal } from 'antd';
+import { Button, List, Spin, Modal, Select } from 'antd';
 import { join } from 'path';
 import { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
@@ -12,6 +12,7 @@ import { Flex } from '../../../components/Flex';
 import { showMessage } from '../../../utils';
 import { TaskListItem } from '../components/TaskListItem';
 import { GroupApiContextState } from '../GroupApiContext';
+import { ProgressPlugin } from 'webpack';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
@@ -20,15 +21,16 @@ const Container = styled.section`
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 export const TasksSection = ({
   actions,
-  tasks,
   history,
   currentGroupStudents,
 }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [tasks, setTasks] = useState<TaskDTO[]>([]);
+  const [allTasks, setAllTasks] = useState<TaskDTO[]>([]);
 
   useEffect(() => {
-    if (!tasks) {
-      actions.listTasks({ all: false });
+    if (!tasks.length) {
+      actions.listTasks({ all: false }).then(res => setTasks(res.tasks));
     }
     if (!currentGroupStudents) {
       actions.listStudentsWithGroup();
@@ -40,7 +42,7 @@ export const TasksSection = ({
       const { deleteTaskFromGroup, listTasks } = actions;
       deleteTaskFromGroup(taskId).then(res => {
         showMessage(res);
-        listTasks({ all: false });
+        listTasks({ all: false }).then(res => setTasks(res.tasks));
       });
     },
     [actions]
@@ -53,8 +55,9 @@ export const TasksSection = ({
     [location.pathname]
   );
 
-  const hadleOpenModal = () => {
+  const handleOpenModal = () => {
     setModalVisible(true);
+    actions.listTasks({ all: true }).then(res => setAllTasks(res.tasks));
   };
 
   return (
@@ -65,12 +68,20 @@ export const TasksSection = ({
       <Button
         icon="plus"
         type="primary"
-        onClick={() => setModalVisible(true)}
+        onClick={handleOpenModal}
         style={{ marginLeft: 20 }}
       >
         Dodaj istniejące zadanie
       </Button>
-      <Modal visible={modalVisible} onCancel={() => setModalVisible(false)} />
+      <Modal visible={modalVisible} onCancel={() => setModalVisible(false)}>
+        <Select style={{ width: 400, margin: Theme.Padding.Half }}>
+          {allTasks.map(task => (
+            <Select.Option key={task.id.toString()} value={task.id}>
+              {task.name}
+            </Select.Option>
+          ))}
+        </Select>
+      </Modal>
       {tasks ? (
         <List
           itemLayout="horizontal"

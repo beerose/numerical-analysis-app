@@ -38,7 +38,6 @@ type StateValues = {
   error: boolean;
   errorMessage?: string;
   lecturers: UserDTO[];
-  tasks?: TaskDTO[];
   currentGroupStudents?: UserWithGroups[];
 };
 
@@ -272,11 +271,9 @@ export class GroupApiProvider extends React.Component<
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    this.setState({ isLoading: true });
     const res = await groupsService.listTasks(
       all ? undefined : this.state.currentGroup.id
     );
-    this.setState({ tasks: res.tasks, isLoading: false });
     return res;
   };
 
