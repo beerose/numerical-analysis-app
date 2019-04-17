@@ -22,7 +22,6 @@ export const SettingsContainer = () => {
 
   return (
     <PaddingContainer>
-      <Breadcrumbs />
       <Flex paddingBottom={10}>
         <b style={{ paddingRight: 5 }}>Imię i nazwisko:</b>{' '}
         {authContext.userName}
