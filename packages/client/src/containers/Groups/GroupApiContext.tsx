@@ -268,12 +268,14 @@ export class GroupApiProvider extends React.Component<
     return groupsService.uploadUsers(payload, this.state.currentGroup.id);
   };
 
-  listTasks = async () => {
+  listTasks = async ({ all }: { all?: boolean }) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
     this.setState({ isLoading: true });
-    const res = await groupsService.listTasks(this.state.currentGroup.id);
+    const res = await groupsService.listTasks(
+      all ? this.state.currentGroup.id : undefined
+    );
     this.setState({ tasks: res.tasks, isLoading: false });
     return res;
   };

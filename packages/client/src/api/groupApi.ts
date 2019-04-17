@@ -280,11 +280,12 @@ export const setActivity = (
   });
 };
 
-export const listTasks = (groupId: GroupDTO['id']) =>
+export const listTasks = (groupId?: GroupDTO['id']) =>
   authFetch<{ tasks: TaskDTO[] }>(
-    `${SERVER_URL + Groups.Tasks.List}?${qs.stringify({
-      group_id: groupId,
-    })}`
+    `${SERVER_URL + Groups.Tasks.List}?${groupId &&
+      qs.stringify({
+        group_id: groupId,
+      })}`
   );
 
 export const deleteTaskFromGroup = (

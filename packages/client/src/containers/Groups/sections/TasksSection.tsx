@@ -28,7 +28,7 @@ export const TasksSection = ({
 
   useEffect(() => {
     if (!tasks) {
-      actions.listTasks();
+      actions.listTasks({ all: true });
     }
     if (!currentGroupStudents) {
       actions.listStudentsWithGroup();
@@ -40,7 +40,7 @@ export const TasksSection = ({
       const { deleteTaskFromGroup, listTasks } = actions;
       deleteTaskFromGroup(taskId).then(res => {
         showMessage(res);
-        listTasks();
+        listTasks({ all: true });
       });
     },
     [actions]
