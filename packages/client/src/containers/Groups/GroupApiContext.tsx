@@ -274,7 +274,7 @@ export class GroupApiProvider extends React.Component<
     }
     this.setState({ isLoading: true });
     const res = await groupsService.listTasks(
-      all ? this.state.currentGroup.id : undefined
+      all ? undefined : this.state.currentGroup.id
     );
     this.setState({ tasks: res.tasks, isLoading: false });
     return res;

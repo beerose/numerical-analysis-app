@@ -28,7 +28,7 @@ export const TasksSection = ({
 
   useEffect(() => {
     if (!tasks) {
-      actions.listTasks({ all: true });
+      actions.listTasks({ all: false });
     }
     if (!currentGroupStudents) {
       actions.listStudentsWithGroup();
@@ -40,7 +40,7 @@ export const TasksSection = ({
       const { deleteTaskFromGroup, listTasks } = actions;
       deleteTaskFromGroup(taskId).then(res => {
         showMessage(res);
-        listTasks({ all: true });
+        listTasks({ all: false });
       });
     },
     [actions]
@@ -52,6 +52,10 @@ export const TasksSection = ({
     },
     [location.pathname]
   );
+
+  const hadleOpenModal = () => {
+    setModalVisible(true);
+  };
 
   return (
     <Container>
