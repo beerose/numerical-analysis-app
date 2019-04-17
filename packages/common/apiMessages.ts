@@ -36,7 +36,7 @@ export const apiMessages = {
   passwordChanged: 'Hasło zostało zmienione',
   presenceAdded: 'Obecność dodana',
   presenceDeleted: 'Obecność usunięta',
-  taskCreated: 'Zadanie zostało utworzone',
+  taskCreated: 'Zadanie zostało dodane',
   taskDeleted: 'Zadanie zostało usunięte',
   taskNotFound: 'Zadanie nie zostało znalezione',
   taskUpdated: 'Zadanie zostało zaktualizowane',
