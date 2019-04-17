@@ -383,4 +383,12 @@ export const detachGroup = (groupId: GroupDTO['id']) =>
     method: 'POST',
   });
 
-export const attachTask = () => {};
+export const attachTask = (
+  groupId: GroupDTO['id'],
+  taskId: TaskDTO['id'],
+  weight: number
+) =>
+  authFetch(SERVER_URL + Groups.Tasks.Attach, {
+    body: JSON.stringify({ group_id: groupId, task_id: taskId, weight }),
+    method: 'POST',
+  });

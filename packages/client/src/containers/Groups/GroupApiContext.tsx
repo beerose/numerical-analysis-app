@@ -374,7 +374,7 @@ export class GroupApiProvider extends React.Component<
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.attach(
+    const res = await groupsService.attachGroup(
       attachedGroupId,
       this.state.currentGroup.id
     );
@@ -385,7 +385,19 @@ export class GroupApiProvider extends React.Component<
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.detach(groupId);
+    const res = await groupsService.detachGroup(groupId);
+    return res;
+  };
+
+  attachTask = async (taskId: TaskDTO['id'], weight: number) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    const res = await groupsService.attachTask(
+      this.state.currentGroup.id,
+      taskId,
+      weight
+    );
     return res;
   };
 
