@@ -6,7 +6,7 @@ import { BackendResponse, GetRequest, handleBadRequest } from '../../../lib';
 import { db } from '../../../store';
 
 const ListTasksQueryV = t.type({
-  group_id: t.string,
+  group_id: t.union([t.string, t.undefined]),
 });
 
 type ListTasksRequest = GetRequest<typeof ListTasksQueryV>;
@@ -17,7 +17,7 @@ export const listTasksForGroup = (
 ) => {
   handleBadRequest(ListTasksQueryV, req.query, res).then(() => {
     return db.listTasksForGroup(
-      { groupId: Number(req.query.group_id) },
+      { groupId: req.query.group_id ? Number(req.query.group_id) : undefined },
       (err, tasks) => {
         if (err) {
           return res.status(codes.INTERNAL_SERVER_ERROR).send({

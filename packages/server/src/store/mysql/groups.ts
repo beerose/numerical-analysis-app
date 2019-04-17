@@ -154,7 +154,7 @@ export const listTasksForGroup = (
   {
     groupId,
   }: {
-    groupId: GroupDTO['id'];
+    groupId?: GroupDTO['id'];
   },
   callback: QueryCallback<TaskDTO[]>
 ) =>
@@ -163,11 +163,17 @@ export const listTasksForGroup = (
       sql: `
   SELECT t.*
   FROM tasks t
+  ${
+    groupId
+      ? `
   JOIN group_has_task ght
-  ON (t.id = ght.task_id)
-  WHERE ght.group_id =?
+    ON (t.id = ght.task_id)
+    WHERE ght.group_id =?
+  `
+      : ''
+  }
   ORDER BY created_at DESC`,
-      values: [groupId],
+      values: groupId ? [groupId] : [],
     },
     callback
   );
