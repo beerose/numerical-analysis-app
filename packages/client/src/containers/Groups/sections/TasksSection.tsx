@@ -1,9 +1,9 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Button, List, Spin } from 'antd';
+import { Button, List, Spin, Modal } from 'antd';
 import { join } from 'path';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
@@ -24,6 +24,8 @@ export const TasksSection = ({
   history,
   currentGroupStudents,
 }: Props) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
     if (!tasks) {
       actions.listTasks();
@@ -56,6 +58,15 @@ export const TasksSection = ({
       <Button icon="plus" type="primary" onClick={() => navigateTo('new')}>
         Nowe zadanie
       </Button>
+      <Button
+        icon="plus"
+        type="primary"
+        onClick={() => setModalVisible(true)}
+        style={{ marginLeft: 20 }}
+      >
+        Dodaj istniejące zadanie
+      </Button>
+      <Modal visible={modalVisible} onCancel={() => setModalVisible(false)} />
       {tasks ? (
         <List
           itemLayout="horizontal"
