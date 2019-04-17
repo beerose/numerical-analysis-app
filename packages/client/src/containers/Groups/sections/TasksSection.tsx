@@ -64,7 +64,7 @@ export const TasksSection = ({
   };
 
   const handleAttachTask = () => {
-    console.log({ selectedTask });
+    actions.attachTask(selectedTask!, 0).then(showMessage);
     setModalVisible(false);
   };
 
@@ -87,6 +87,7 @@ export const TasksSection = ({
         cancelText="Cofnij"
         onOk={handleAttachTask}
         okText={LABELS.save}
+        okButtonDisabled={!selectedTask}
       >
         <Select
           style={{ width: 400, margin: Theme.Padding.Half }}
