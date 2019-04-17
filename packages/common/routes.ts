@@ -35,6 +35,7 @@ export const ServerRoutes = {
       RemoveFromGroup: '/groups/students.delete',
     },
     Tasks: {
+      Attach: '/groups/tasks.attach',
       Create: '/groups/tasks.create',
       Delete: '/groups/tasks.delete',
       Get: '/groups/tasks.get',
