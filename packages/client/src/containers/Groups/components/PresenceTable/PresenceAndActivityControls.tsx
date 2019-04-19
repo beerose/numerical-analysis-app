@@ -20,8 +20,8 @@ const Checkbox = styled(AntCheckbox)`
     height: 20px;
     width: 20px;
     &::after {
-      left: 6px;
-      top: 2px;
+      left: 4px;
+      top: 8px;
       width: 6px;
       height: 12px;
     }

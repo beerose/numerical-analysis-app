@@ -1,8 +1,8 @@
 import * as t from 'io-ts';
 import { isNumber, isString } from 'util';
 
+import { Grade, GroupGradeSettings } from './domain';
 import { isGroupKind, Typeguard } from './utils';
-import { Tresholds } from './domain/Tresholds';
 
 export type ApiResponse =
   | {
@@ -76,10 +76,7 @@ export type GroupDTO = {
   lecturer_name?: string;
   class_number?: number;
   semester?: string;
-  data?: {
-    tresholds?: Tresholds;
-    grade_equation?: string;
-  };
+  data?: GroupGradeSettings;
 };
 
 const isGroupId: Typeguard<GroupDTO['id']> = isNumber;
@@ -188,7 +185,7 @@ export type UserResultsModel = {
   userId: UserDTO['id'];
   userName: UserDTO['user_name'];
   index: UserDTO['student_index'];
-  finalGrade?: number;
+  finalGrade?: Grade;
   tasksPoints: number;
   maxTasksPoints: number;
   presences: number;

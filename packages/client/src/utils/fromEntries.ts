@@ -37,9 +37,10 @@ export function fromEntries<
   V extends Narrowable
 >(entries: Iterable<T>): FromEntries<T, K, V> {
   return [...entries].reduce(
-    (accumulator, [key, value]) =>
-      ({...accumulator, 
-        [key.toString()]: value}),
+    (accumulator, [key, value]) => ({
+      ...accumulator,
+      [key.toString()]: value,
+    }),
     {} as FromEntries<T, K, V>
   );
 }

@@ -7,6 +7,7 @@
     "tslint-config-prettier"
   ],
   "rules": {
+    "max-func-body-length": false, // We're using React hooks and these long functions are easy to read
     "mocha-no-side-effect-code": false, // We're not using mocha
     "chai-vague-errors": false, // nor chai
     "no-backbone-get-set-outside-model": false, // We're not using Backbone!
