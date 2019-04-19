@@ -2,9 +2,10 @@
 import { css, jsx } from '@emotion/core';
 import { Col, Input, Row } from 'antd';
 import { Tresholds } from 'common';
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { debounce } from 'ts-debounce';
 
+import { LocaleContext } from '../../../components/locale';
 import { showMessage } from '../../../utils';
 
 const showBadTresholdsError = debounce(
@@ -32,6 +33,8 @@ export const GradeTresholdsList: React.FC<GradeTresholdsListProps> = ({
   onChange,
   value: tresholds,
 }) => {
+  const { texts } = useContext(LocaleContext);
+
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { key } = event.target.dataset;
@@ -84,7 +87,6 @@ export const GradeTresholdsList: React.FC<GradeTresholdsListProps> = ({
                 value={tresholds[key]}
                 onChange={handleChange}
                 min={0}
-                max={100}
               />
             </Col>
             <Col span={4}>
@@ -95,7 +97,7 @@ export const GradeTresholdsList: React.FC<GradeTresholdsListProps> = ({
                   align-items: center;
                 `}
               >
-                %
+                {texts.pts}
               </span>
             </Col>
           </Row>

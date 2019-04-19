@@ -4,7 +4,7 @@ CREATE TABLE `groups` (
   group_name      VARCHAR(200) NOT NULL,
   group_type      VARCHAR(50) NOT NULL,
   parent_group    INT,
-  semester   VARCHAR(100),
+  semester        VARCHAR(100),
   data            JSON,
   created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

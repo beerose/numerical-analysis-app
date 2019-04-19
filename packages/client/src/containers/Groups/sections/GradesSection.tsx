@@ -2,11 +2,10 @@
 import { css, jsx } from '@emotion/core';
 import { Button, Select, Spin } from 'antd';
 import {
-  ApiResponse,
   getGradeFromTresholds,
   Grade,
   GroupDTO,
-  Tresholds,
+  GroupGradeSettings,
   UserDTO,
   UserResultsDTO,
   UserResultsModel,
@@ -14,6 +13,7 @@ import {
 } from 'common';
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
+import { DeepRequired } from 'utility-types';
 
 import { Flex, Table, Theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
@@ -25,11 +25,20 @@ import { GroupApiContextState } from '../GroupApiContext';
 // TODO Use Grade Equation, add meetings points
 function computeGradeFromResults(
   studentResults: UserResultsModel,
-  tresholds: Tresholds
+  { tresholds, grade_equation: gradeEquation }: DeepRequired<GroupDTO>['data']
 ) {
-  const { tasksPoints, maxTasksPoints } = studentResults;
+  const { tasksPoints, maxTasksPoints, presences, activity } = studentResults;
 
+  console.warn('TODO unused', { presences, activity, gradeEquation });
+
+  /**
+   * `maxTasksPoints` is probably a bug
+   * we've spoken with a shareholder, that he'd like to set
+   * tresholds for points, not percentage
+   * and we don't actually have maxPresences or maxActivity
+   */
   const pointsPercentage = (tasksPoints / maxTasksPoints) * 100;
+
   return getGradeFromTresholds(pointsPercentage, tresholds);
 }
 
@@ -40,12 +49,17 @@ const SuggestedGrade: React.FC<{
   if (!currentGroup || !currentGroup.data) {
     return <Spin />;
   }
-  const tresholds = currentGroup.data.tresholds;
-  if (!tresholds) {
+  if (!currentGroup.data.tresholds || !currentGroup.data.grade_equation) {
     return <Fragment>Brak odpowiednich ustawień</Fragment>;
   }
 
-  return <Fragment>{computeGradeFromResults(userResults, tresholds)}</Fragment>;
+  return (
+    <Fragment>
+      {computeGradeFromResults(userResults, currentGroup.data! as Required<
+        GroupGradeSettings
+      >)}
+    </Fragment>
+  );
 };
 
 const mergedResultsToTableItem = (
@@ -58,7 +72,7 @@ const mergedResultsToTableItem = (
     : undefined;
   return {
     activity: results ? results.sum_activity : 0,
-    finalGrade: final && final.grade,
+    finalGrade: final && Grade(final.grade),
     index: student.student_index,
     maxTasksPoints: results ? results.max_tasks_grade : 0,
     presences: results ? results.presences : 0,
@@ -72,8 +86,8 @@ const SetGrade = ({
   value,
   onChange,
 }: {
-  value?: UserResultsModel['finalGrade'];
-  onChange: (grade: number) => void;
+  value?: Grade;
+  onChange: (grade: Grade) => void;
 }) => (
   <Select
     mode="single"
@@ -89,7 +103,7 @@ const SetGrade = ({
     `}
   >
     {['2', ...tresholdsKeys].map(t => (
-      <Select.Option key={t} value={Number(t)}>
+      <Select.Option key={t} value={Grade(Number(t))}>
         {t}
       </Select.Option>
     ))}
@@ -98,16 +112,13 @@ const SetGrade = ({
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
 
-// TODO FIXME
-// tslint:disable-next-line:max-func-body-length
 export const GradesSection = ({
   actions,
   currentGroup,
   currentGroupStudents,
 }: Props) => {
   const [tableData, setTableData] = useState<UserResultsModel[]>([]);
-  const tresholds =
-    currentGroup && currentGroup.data && currentGroup.data.tresholds;
+  const gradeSettings = currentGroup && currentGroup.data;
 
   useEffect(() => {
     if (!currentGroupStudents) {
@@ -142,23 +153,29 @@ export const GradesSection = ({
 
   const confirmGrade = useMemo(
     () =>
-      tresholds &&
+      gradeSettings &&
       ((studentResults: UserResultsModel) => {
-        const grade = computeGradeFromResults(studentResults, tresholds!);
+        const grade = computeGradeFromResults(
+          studentResults,
+          gradeSettings as Required<GroupGradeSettings>
+        );
         const studentId = studentResults.userId;
         setGrade(studentId, grade);
       }),
-    [tresholds]
+    [gradeSettings]
   );
 
   const confirmAllGrades = useMemo(
     () =>
-      tresholds &&
+      gradeSettings &&
       (() => {
         setTableData(tData =>
           tData.map(studentResults => {
             // TODO: Optimize this into one call with array studentIds?
-            const grade = computeGradeFromResults(studentResults, tresholds!);
+            const grade = computeGradeFromResults(
+              studentResults,
+              gradeSettings as Required<GroupGradeSettings>
+            );
             const studentId = studentResults.userId;
             actions.setFinalGrade(studentId, grade);
             return {
@@ -168,7 +185,7 @@ export const GradesSection = ({
           })
         );
       }),
-    [tresholds]
+    [gradeSettings]
   );
 
   const handleGradesCsvDownload = useCallback(() => {

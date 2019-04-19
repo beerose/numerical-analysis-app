@@ -33,7 +33,7 @@
     "@types/webpack": "^4.4.24",
     "@types/webpack-env": "^1.13.7",
     "atob": "^2.1.2",
-    "bcrypt": "^3.0.3",
+    "bcrypt": "^3.0.6",
     "chokidar": "^2.0.4",
     "cors": "^2.8.4",
     "dotenv": "^6.1.0",
