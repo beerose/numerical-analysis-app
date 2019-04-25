@@ -36,6 +36,7 @@ export const apiMessages = {
   passwordChanged: 'Hasło zostało zmienione',
   presenceAdded: 'Obecność dodana',
   presenceDeleted: 'Obecność usunięta',
+  taskAlreadyExistsInGroup: 'Zadanie jest już podpięte do tej grupy',
   taskCreated: 'Zadanie zostało dodane',
   taskDeleted: 'Zadanie zostało usunięte',
   taskNotFound: 'Zadanie nie zostało znalezione',

@@ -4,7 +4,7 @@ import * as t from 'io-ts';
 import { isNumber } from 'util';
 
 import { BackendResponse, handleBadRequest, PostRequest } from '../../../lib';
-import { db } from '../../../store';
+import { db, DUPLICATE_ENTRY_ERROR } from '../../../store';
 
 const AttachTaskBodyV = t.type({
   group_id: t.number,
@@ -27,6 +27,13 @@ export const attachTask = (
       },
       attachErr => {
         if (attachErr) {
+          if (attachErr.code === DUPLICATE_ENTRY_ERROR) {
+            res.status(codes.CONFLICT).send({
+              error: apiMessages.taskAlreadyExistsInGroup,
+              error_details: attachErr.message,
+            });
+            return;
+          }
           res.status(codes.INTERNAL_SERVER_ERROR).send({
             error: apiMessages.internalError,
             error_details: attachErr.message,

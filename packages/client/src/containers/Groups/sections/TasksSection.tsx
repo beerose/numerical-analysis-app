@@ -59,13 +59,23 @@ export const TasksSection = ({
   );
 
   const handleOpenModal = () => {
+    const groupTasksIds = tasks.map(t => t.id);
     setModalVisible(true);
-    actions.listTasks({ all: true }).then(res => setAllTasks(res.tasks));
+    if (!allTasks.length) {
+      actions
+        .listTasks({ all: true })
+        .then(res =>
+          setAllTasks(res.tasks.filter(t => !groupTasksIds.includes(t.id)))
+        );
+    }
   };
 
   const handleAttachTask = () => {
-    actions.attachTask(selectedTask!, 0).then(showMessage);
-    setModalVisible(false);
+    actions.attachTask(selectedTask!, 0).then(res => {
+      setModalVisible(false);
+      showMessage(res);
+      actions.listTasks({ all: false }).then(res => setTasks(res.tasks));
+    });
   };
 
   return (
