@@ -1,18 +1,17 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import React from 'react';
 import styled from '@emotion/styled';
-import { Button, List, Spin, Modal, Select } from 'antd';
-import { join } from 'path';
-import { useCallback, useEffect, useState } from 'react';
-import { RouteComponentProps } from 'react-router';
-
-import { TaskDTO } from '../../../../../../dist/common';
-import { Theme } from '../../../components/theme';
+import { Button, Input, List, Modal, Select, Spin } from 'antd';
+import { css } from '@emotion/core';
 import { Flex } from '../../../components/Flex';
-import { showMessage, LABELS } from '../../../utils';
-import { TaskListItem } from '../components/TaskListItem';
 import { GroupApiContextState } from '../GroupApiContext';
-import { ProgressPlugin } from 'webpack';
+import { isNumber } from 'util';
+import { join } from 'path';
+import { LABELS, showMessage } from '../../../utils';
+import { RouteComponentProps } from 'react-router';
+import { TaskDTO } from '../../../../../../dist/common';
+import { TaskListItem } from '../components/TaskListItem';
+import { Theme } from '../../../components/theme';
+import { useCallback, useEffect, useState } from 'react';
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
@@ -27,9 +26,10 @@ export const TasksSection = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [tasks, setTasks] = useState<TaskDTO[]>([]);
   const [allTasks, setAllTasks] = useState<TaskDTO[]>([]);
-  const [selectedTask, setSelectedTask] = useState<TaskDTO['id'] | undefined>(
-    undefined
-  );
+  const [selectedTask, setSelectedTask] = useState<{
+    id?: TaskDTO['id'];
+    weight?: number;
+  }>({});
 
   useEffect(() => {
     if (!tasks.length) {
@@ -71,12 +71,23 @@ export const TasksSection = ({
   };
 
   const handleAttachTask = () => {
-    actions.attachTask(selectedTask!, 0).then(res => {
+    actions.attachTask(selectedTask!.id!, selectedTask!.weight!).then(res => {
       setModalVisible(false);
       showMessage(res);
       actions.listTasks({ all: false }).then(res => setTasks(res.tasks));
     });
   };
+
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      event.persist();
+      setSelectedTask(prev => ({
+        id: prev.id,
+        weight: isNumber(event.target.value) ? Number(event.target.value) : 0,
+      }));
+    },
+    []
+  );
 
   return (
     <Container>
@@ -101,7 +112,9 @@ export const TasksSection = ({
       >
         <Select
           style={{ width: 400, margin: Theme.Padding.Half }}
-          onChange={(value: number) => setSelectedTask(value)}
+          onChange={(value: number) =>
+            setSelectedTask(prev => ({ weight: prev.weight, id: value }))
+          }
           placeholder="Wybierz zadanie"
         >
           {allTasks.map(task => (
@@ -110,6 +123,12 @@ export const TasksSection = ({
             </Select.Option>
           ))}
         </Select>
+        <Input
+          style={{ width: 400, margin: Theme.Padding.Half }}
+          type="number"
+          placeholder="Podaj wagę zadania"
+          onChange={handleInputChange}
+        />
       </Modal>
       {tasks ? (
         <List
