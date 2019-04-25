@@ -44,7 +44,7 @@ export const TasksSection = ({
       const { deleteTaskFromGroup, listTasks } = actions;
       deleteTaskFromGroup(taskId).then(res => {
         showMessage(res);
-        listTasks({ all: false }).then(res => setTasks(res.tasks));
+        listTasks({ all: false }).then(listRes => setTasks(listRes.tasks));
       });
     },
     [actions]
