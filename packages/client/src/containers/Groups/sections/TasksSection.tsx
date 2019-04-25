@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { Button, Input, List, Modal, Select, Spin } from 'antd';
 import { css } from '@emotion/core';
 import { Flex } from '../../../components/Flex';
 import { GroupApiContextState } from '../GroupApiContext';
-import { isNumber } from 'util';
 import { join } from 'path';
 import { LABELS, showMessage } from '../../../utils';
 import { RouteComponentProps } from 'react-router';
 import { TaskDTO } from '../../../../../../dist/common';
 import { TaskListItem } from '../components/TaskListItem';
 import { Theme } from '../../../components/theme';
-import { useCallback, useEffect, useState } from 'react';
+
 
 const Container = styled.section`
   padding: ${Theme.Padding.Standard};
@@ -74,7 +73,9 @@ export const TasksSection = ({
     actions.attachTask(selectedTask!.id!, selectedTask!.weight!).then(res => {
       setModalVisible(false);
       showMessage(res);
-      actions.listTasks({ all: false }).then(res => setTasks(res.tasks));
+      actions
+        .listTasks({ all: false })
+        .then(listRes => setTasks(listRes.tasks));
     });
   };
 
@@ -83,7 +84,7 @@ export const TasksSection = ({
       event.persist();
       setSelectedTask(prev => ({
         id: prev.id,
-        weight: isNumber(event.target.value) ? Number(event.target.value) : 0,
+        weight: Number(event.target.value),
       }));
     },
     []
@@ -103,15 +104,18 @@ export const TasksSection = ({
         Dodaj istniejące zadanie
       </Button>
       <Modal
+        footer={null}
         visible={modalVisible}
         onCancel={() => setModalVisible(false)}
         cancelText="Cofnij"
         onOk={handleAttachTask}
         okText={LABELS.save}
-        okButtonDisabled={!selectedTask}
       >
         <Select
-          style={{ width: 400, margin: Theme.Padding.Half }}
+          style={{
+            width: 400,
+            margin: `${Theme.Padding.Half} 0 0 ${Theme.Padding.Half}`,
+          }}
           onChange={(value: number) =>
             setSelectedTask(prev => ({ weight: prev.weight, id: value }))
           }
@@ -129,6 +133,14 @@ export const TasksSection = ({
           placeholder="Podaj wagę zadania"
           onChange={handleInputChange}
         />
+        <Button
+          style={{ marginLeft: Theme.Padding.Half }}
+          type="primary"
+          onClick={handleAttachTask}
+          disabled={!selectedTask.weight || !selectedTask.id}
+        >
+          Zapisz
+        </Button>
       </Modal>
       {tasks ? (
         <List
