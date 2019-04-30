@@ -134,7 +134,7 @@ export class StudentsSection extends React.Component<Props, State> {
             onClick={this.showAddStudentModal}
             css={addUserButtonStyles}
           >
-            {LABELS.addNewUser}
+            Dodaj studenta
           </Button>
           <CsvControls
             onDownloadClick={this.handleStudentsCsvDownload}
