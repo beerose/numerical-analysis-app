@@ -1,13 +1,13 @@
+import { UserRole } from 'common';
 import {
-  makeFetch,
   FetchFunction,
+  makeFetch,
   Request,
   RequestInit,
 } from 'supertest-fetch';
 
-import { app } from '../../src/server';
 import { generateUserJwtToken } from '../../src/lib';
-import { UserRole } from 'common';
+import { app } from '../../src/server';
 
 export const fetch = makeFetch(app);
 
@@ -19,6 +19,7 @@ export const authFetchAdmin: FetchFunction = (
     ...init,
     headers: {
       Authorization:
+        // tslint:disable-next-line:prefer-template
         'Bearer ' +
         generateUserJwtToken({
           email: 'admin@test.com',
