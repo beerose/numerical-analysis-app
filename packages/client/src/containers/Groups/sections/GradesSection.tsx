@@ -70,6 +70,9 @@ const mergedResultsToTableItem = (
   const final = student.groups_grades
     ? student.groups_grades.find(g => g.group_id === groupId)
     : undefined;
+
+  console.log(results);
+
   return {
     activity: results ? results.sum_activity : 0,
     finalGrade: final && Grade(final.grade),
@@ -126,7 +129,7 @@ export const GradesSection = ({
     } else if (currentGroup) {
       actions.getResults().then(usersResults => {
         const data = currentGroupStudents.map(s => {
-          const results = usersResults.find(r => r.user_id === s.id);
+          const results = usersResults.find(r => Number(r.user_id) === s.id);
           return mergedResultsToTableItem(currentGroup.id, s, results);
         });
         setTableData(data);
