@@ -1,8 +1,8 @@
 // tslint:disable:no-var-requires
 const faker = require('faker');
 const fs = require('fs');
-// Users
 
+// Users
 enum Role {
   Admin = 'admin',
   SuperUser = 'superUser',
@@ -19,9 +19,9 @@ type User = {
 
 const users: User[] = [];
 // Admin
-let i = 0;
+let i = 1;
 
-while (i < 5) {
+while (i <= 5) {
   const user = {
     email: faker.internet.email(),
     id: i,
@@ -32,7 +32,7 @@ while (i < 5) {
   i += 1;
 }
 
-while (i < 155) {
+while (i <= 155) {
   const user = {
     email: faker.internet.email(),
     id: i,
@@ -44,7 +44,7 @@ while (i < 155) {
   i += 1;
 }
 
-while (i < 210) {
+while (i <= 210) {
   const user = {
     email: faker.internet.email(),
     id: i,
