@@ -13,7 +13,7 @@ const RemoveSelectedStudent = styled(Icon)`
   padding: 5px;
   cursor: pointer;
   * {
-    fill: red;
+    fill: ${Colors.Blackish};
   }
 `;
 
