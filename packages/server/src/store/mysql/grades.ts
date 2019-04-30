@@ -18,7 +18,7 @@ export const setTaskPoints = (
 ) =>
   connection.query(
     {
-      sql: `
+      sql: /*sql*/ `
       INSERT INTO user_has_points(user_id, task_id, points)
       VALUES(?, ?, ?)
       ON DUPLICATE KEY UPDATE
@@ -61,9 +61,9 @@ export const getUsersResults = (
       			uhp.user_id AS user_id
       		FROM
       			group_has_task ght
-      			JOIN user_has_points uhp ON (ght.task_id = uhp.task_id)
+      			JOIN user_has_points uhp USING (task_id)
       		GROUP BY
-      			uhp.user_id) res ON (res.user_id = ubg.user_id)
+      			uhp.user_id) res USING (user_id)
       	WHERE
       		ubg.group_id = ?
       	GROUP BY

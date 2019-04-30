@@ -17,6 +17,7 @@
     "prod:mysql": "mysql -u root -h rno.ii.uni.wroc.pl -u anumuser"
   },
   "devDependencies": {
+    "@hasparus/tslint-config": "hasparus/tslint-config-hasparus",
     "tslint": "^5.12.0",
     "tslint-config-airbnb": "^5.8.0",
     "tslint-config-prettier": "^1.17.0",

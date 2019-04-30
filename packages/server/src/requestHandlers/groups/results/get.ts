@@ -34,7 +34,6 @@ export const getResults = (
           });
           return;
         }
-
         db.getUsersMeetingsPoints(
           { groupId },
           (meetingsErr, meetingsResults) => {
@@ -53,12 +52,12 @@ export const getResults = (
 
               return {
                 ...tu,
+                max_tasks_grade: max,
                 presences: meetingsResult ? meetingsResult.sum_presences : 0,
                 sum_activity: meetingsResult
                   ? meetingsResult.activity_points
                   : 0,
                 tasks_grade: tu.tasks_grade ? tu.tasks_grade : 0,
-                max_tasks_grade: max,
               };
             });
             res.status(codes.OK).send(mergedResults);
