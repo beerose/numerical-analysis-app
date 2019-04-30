@@ -96,7 +96,7 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
           ],
         })(<StyledInput type="number" />)}
       </Form.Item>
-      Liczność grupy:
+      Rozmiar zespołu:
       <Form.Item style={{ margin: 0, padding: 0 }}>
         {getFieldDecorator(`subtask_group_capacity[${k}]`, {
           initialValue: subtasks[k] && subtasks[k].group_capacity,
@@ -108,7 +108,7 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
           ],
         })(<StyledInput type="number" />)}
       </Form.Item>
-      Ilość grup:
+      Liczba zespołów:
       <Form.Item style={{ margin: 0, padding: 0 }}>
         {getFieldDecorator(`subtask_max_groups[${k}]`, {
           initialValue: subtasks[k] && subtasks[k].max_groups,
