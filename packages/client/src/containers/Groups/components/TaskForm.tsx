@@ -15,7 +15,7 @@ import {
 import { TaskTypeSelect } from '../../../components';
 import { Colors, showMessage } from '../../../utils';
 import { DynamicChoosableTasksForm } from '.';
-import { ChoosableFormFiels } from './DynamicChoosableTasksForm';
+import { ChoosableFormFields } from './DynamicChoosableTasksForm';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -56,7 +56,7 @@ const TaskForm = (props: Props) => {
         err,
         values: Omit<TaskDTO, 'name' | 'data'> & {
           task_name: TaskDTO['name'];
-        } & ChoosableFormFiels
+        } & ChoosableFormFields
       ) => {
         if (err) {
           showMessage({ error: 'Wypełnij wszystkie pola' });

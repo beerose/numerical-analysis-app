@@ -36,7 +36,7 @@ const ChoosableTaskContainer = styled(Flex)`
   overflow-x: scroll;
 `;
 
-export type ChoosableFormFiels = {
+export type ChoosableFormFields = {
   subtask_id: number[];
   subtask_group_capacity: number[];
   subtask_max_groups: number[];
@@ -87,7 +87,7 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
       Numer zadania:
       <Form.Item style={{ margin: 0, padding: 0 }}>
         {getFieldDecorator(`subtask_id[${k}]`, {
-          initialValue: subtasks[k] && subtasks[k].id,
+          initialValue: (subtasks[k] && subtasks[k].id) || k,
           rules: [
             {
               required: true,
@@ -99,7 +99,7 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
       Rozmiar zespołu:
       <Form.Item style={{ margin: 0, padding: 0 }}>
         {getFieldDecorator(`subtask_group_capacity[${k}]`, {
-          initialValue: subtasks[k] && subtasks[k].group_capacity,
+          initialValue: (subtasks[k] && subtasks[k].group_capacity) || 1,
           rules: [
             {
               required: true,
@@ -111,7 +111,7 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
       Liczba zespołów:
       <Form.Item style={{ margin: 0, padding: 0 }}>
         {getFieldDecorator(`subtask_max_groups[${k}]`, {
-          initialValue: subtasks[k] && subtasks[k].max_groups,
+          initialValue: (subtasks[k] && subtasks[k].max_groups) || 1,
           rules: [
             {
               required: true,
