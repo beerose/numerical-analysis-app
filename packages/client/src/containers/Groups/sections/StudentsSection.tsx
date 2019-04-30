@@ -10,7 +10,6 @@ import { UsersTable } from '../../../components';
 import { Theme } from '../../../components/theme';
 import { Flex } from '../../../components/Flex';
 import { isSafari } from '../../../utils/isSafari';
-import { LABELS } from '../../../utils/labels';
 import { studentsToCsv } from '../../../utils/studentsToCsv';
 import { WrappedNewStudentModalForm } from '../components/AddStudentForm';
 import { CsvControls } from '../components/CsvControls';
