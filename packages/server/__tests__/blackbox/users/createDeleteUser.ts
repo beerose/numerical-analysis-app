@@ -3,11 +3,11 @@ import { ServerRoutes } from 'common';
 import { UserDTO, UserRole } from '../../../../../dist/common';
 import { fetch } from '../../../__testUtils__/fetch';
 
-describe('USERS', async () => {
-  await it('GET: should respond with users list', () =>
+describe('USERS', () => {
+  it('GET: should respond with users list', () =>
     fetch.asAdmin('/users').expectStatus(200));
 
-  await it('can create a new admin', () => {
+  it('can create a new admin', () => {
     return fetch
       .asAdmin(ServerRoutes.Users.Create, {
         body: JSON.stringify({
@@ -31,7 +31,7 @@ describe('USERS', async () => {
           (u: UserDTO) =>
             u.user_name === 'Jon Doe' && u.user_role === UserRole.admin
         );
-        userId = user.id;
+        userId = user ? user.id : 0;
         expect(user).toBeTruthy();
       }, fail));
 
