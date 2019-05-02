@@ -70,3 +70,46 @@ fs.writeFile('./sql-scripts/users.sql', usersSql.join(''), (err: any) => {
     console.error(err);
   }
 });
+
+// Groups
+
+enum GroupType {
+  Lab = 'lab',
+  Ex = 'exercise',
+  Lecture = 'lecture',
+}
+
+type Group = {
+  id: number;
+  groupName: string;
+  groupType: string;
+  lecturerId: number;
+};
+
+let groups: Group[] = [];
+for (let j = 0; j < 50; j += 1) {
+  groups.push({
+    groupName: faker.commerce.productName(),
+    // tslint:disable-next-line:insecure-random
+    groupType: ['lab', 'exercise', 'lecture'][Math.floor(Math.random() * 3)],
+    id: j,
+    lecturerId: users.filter(u => u.userRole === Role.SuperUser)[
+      // tslint:disable-next-line:insecure-random
+      Math.floor(Math.random() * 50)
+    ].id,
+  });
+}
+
+const groupToQuery = (group: Group) => `
+  INSERT INTO groups(id, group_name, group_type, lecturer_id)
+  VALUES (${group.id}, ${group.groupName}, ${group.groupType}, ${
+  group.lecturerId
+});
+`;
+
+let groupsSql: string[] = [];
+groups.forEach(g => groupsSql.push(groupToQuery(g)));
+
+fs.writeFile('./sql-scripts/groups.sql', groupsSql.join(''), err => {
+  console.error(err);
+});
