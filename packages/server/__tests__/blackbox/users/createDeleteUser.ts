@@ -1,7 +1,7 @@
 import { ServerRoutes } from 'common';
 
 import { UserDTO, UserRole } from '../../../../../dist/common';
-import { fetch } from '../../../__testUtils__/fetch';
+import { fetch } from '../../fetch';
 
 describe('USERS', () => {
   it('GET: should respond with users list', () =>

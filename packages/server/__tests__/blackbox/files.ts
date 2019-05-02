@@ -1,7 +1,7 @@
 import { ServerRoutes } from 'common';
 
 import { DirectoryListingDTO } from '../../src/requestHandlers/files';
-import { fetch } from '../../__testUtils__/fetch';
+import { fetch } from '../fetch';
 
 describe('get /files', () => {
   it('admin can list files', () => {
@@ -10,7 +10,6 @@ describe('get /files', () => {
       .expectStatus(200)
       .then(res => res.json())
       .then((listing: DirectoryListingDTO) => {
-        console.warn(listing);
         expect(Array.isArray(listing)).toBe(true);
       });
   });

@@ -3,5 +3,5 @@ module.exports = {
   testEnvironment: 'node',
   globalSetup: '<rootDir>/scripts/tests/setup.ts',
   globalTeardown: '<rootDir>/scripts/tests/teardown.ts',
-  testPathIgnorePatterns: ['/node_modules/', '__tests__/blackbox/fetch.ts'],
+  testPathIgnorePatterns: ['/node_modules/', '__tests__/fetch.ts'],
 };
