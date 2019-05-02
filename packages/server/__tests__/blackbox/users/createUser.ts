@@ -1,21 +1,23 @@
 import { ServerRoutes } from 'common';
 
 import { UserDTO, UserRole } from '../../../../../dist/common';
-import { authFetchAdmin, fetch } from '../fetch';
+import { fetch } from '../fetch';
 
 describe('USERS', async () => {
   await it('GET: should respond with users list', () =>
-    authFetchAdmin('/users').expectStatus(200));
+    fetch.asAdmin('/users').expectStatus(200));
 
   await it('can create a new admin', () => {
-    return authFetchAdmin(ServerRoutes.Users.Create, {
-      body: JSON.stringify({
-        email: 'jon@doe.com',
-        user_name: 'Jon Doe',
-        user_role: UserRole.admin,
-      } as UserDTO),
-      method: 'POST',
-    }).expectStatus(200);
+    return fetch
+      .asAdmin(ServerRoutes.Users.Create, {
+        body: JSON.stringify({
+          email: 'jon@doe.com',
+          user_name: 'Jon Doe',
+          user_role: UserRole.admin,
+        } as UserDTO),
+        method: 'POST',
+      })
+      .expectStatus(200);
   });
 
   // await it('should respond with newly created admin', () =>

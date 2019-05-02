@@ -9,12 +9,13 @@ import {
 import { generateUserJwtToken } from '../../src/lib';
 import { app } from '../../src/server';
 
-export const fetch = makeFetch(app);
+interface TestFetchFunc extends FetchFunction {
+  asAdmin: FetchFunction;
+}
 
-export const authFetchAdmin: FetchFunction = (
-  url: string | Request,
-  init?: RequestInit
-) =>
+export const fetch: TestFetchFunc = makeFetch(app) as TestFetchFunc;
+
+fetch.asAdmin = (url: string | Request, init?: RequestInit) =>
   fetch(url, {
     ...init,
     headers: {
