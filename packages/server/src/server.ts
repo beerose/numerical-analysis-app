@@ -5,7 +5,7 @@ import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 
 import * as requestHandlers from './requestHandlers';
-import { connectToDb, disconnectFromDb } from './store/connection';
+import { connection, connectToDb, disconnectFromDb } from './store/connection';
 
 const PORT = process.env.PORT;
 
