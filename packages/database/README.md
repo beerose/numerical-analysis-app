@@ -4,25 +4,53 @@ We're deploying the database on heroku as https://numerical-db.herokuapp.com/
 
 # 🔌 How to setup a database?
 
-```sh
-yarn db:setup
+Add following varaibles to .env file:
+
+```
+DB_NAME=
+MYSQL_ROOT_PASSWORD=
 ```
 
-```sh
-yarn db:ports # check ports
-```
-
-wait a minute
+In `./sql-scripts` there are some sql files that initialize database and will be
+executed right after container is created.
 
 ```sh
-yarn db:grepForPassword
+yarn init
 ```
 
-copy the temporary password and use it to log in
+Check ports:
 
 ```sh
-yarn db:interactive
+yarn db:ports
 ```
+
+Use container's MySQL console:
+
+```sh
+yarn docker:mysql
+```
+
+Use container's bash console:
+
+```sh
+yarn docker:bash
+```
+
+Logs from the docker container:
+
+```sh
+yarn docker:logs
+```
+
+To seed the database while creating the container run:
+
+```sh
+yarn seed
+```
+
+before running `yarn setup`.
+
+# DEPRECATED BELOW
 
 set root password
 

@@ -100,15 +100,12 @@ CREATE TABLE `user_belongs_to_group` (
 --
 
 DROP TABLE IF EXISTS `user_has_points`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_has_points` (
   `user_id` int(11) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  `task_id` int(11) NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,,
+  `task_id` int(11) NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
   `points` decimal(16,1) DEFAULT NULL,
   UNIQUE KEY `user_id` (`user_id`,`task_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `users`

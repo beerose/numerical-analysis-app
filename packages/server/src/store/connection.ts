@@ -1,11 +1,20 @@
 import mysql, { createConnection } from 'mysql';
 
-const dbConfig = {
+let dbConfig = {
   database: process.env.DB_NAME,
   host: process.env.DB_HOST,
   password: process.env.DB_PASSWORD,
   user: process.env.DB_USER,
 };
+
+if (process.env.NODE_ENV === 'test') {
+  dbConfig = {
+    database: process.env.TEST_DB_NAME,
+    host: process.env.TEST_DB_HOST,
+    password: process.env.TEST_DB_PASSWORD,
+    user: process.env.TEST_DB_USER,
+  };
+}
 
 if (!dbConfig.user) {
   throw new Error('DB_USER is not defined');
