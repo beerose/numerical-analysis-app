@@ -8,6 +8,7 @@
     "setup": "ts-node scripts/init.ts",
     "docker:bash": "docker exec -it my-mysql bash",
     "docker:mysql": "docker exec -it numerical-mysql mysql -uroot -p",
+    "docker:logs": "docker logs -f numerical-mysql",
     "ports": "docker port numerical-mysql",
     "start": "docker start numerical-mysql",
     "stop": "docker stop numerical-mysql",
