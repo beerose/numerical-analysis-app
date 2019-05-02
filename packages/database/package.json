@@ -5,6 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "seed": "ts-node scripts/generateSeed.ts",
     "setup": "ts-node scripts/init.ts",
     "docker:bash": "docker exec -it my-mysql bash",
     "docker:mysql": "docker exec -it numerical-mysql mysql -uroot -p",
@@ -12,7 +13,7 @@
     "ports": "docker port numerical-mysql",
     "start": "docker start numerical-mysql",
     "stop": "docker stop numerical-mysql",
-    "remove": "docker rm numerical-mysql"
+    "rm": "docker stop numerical-mysql && docker rm numerical-mysql"
   },
   "dependencies": {
     "@types/dotenv": "^6.1.1",

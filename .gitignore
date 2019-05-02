@@ -15,3 +15,6 @@
 server/db/
 
 _prod
+
+# databse seed data
+*.seed.sql

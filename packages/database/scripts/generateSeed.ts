@@ -25,7 +25,7 @@ while (i <= 5) {
   const user = {
     email: faker.internet.email(),
     id: i,
-    userName: faker.name.findName(),
+    userName: faker.name.findName().replace("'", ''),
     userRole: Role.Admin,
   };
   users.push(user);
@@ -37,7 +37,7 @@ while (i <= 155) {
     email: faker.internet.email(),
     id: i,
     studentIndex: faker.random.number(),
-    userName: faker.name.findName(),
+    userName: faker.name.findName().replace("'", ''),
     userRole: Role.Student,
   };
   users.push(user);
@@ -48,7 +48,7 @@ while (i <= 210) {
   const user = {
     email: faker.internet.email(),
     id: i,
-    userName: faker.name.findName(),
+    userName: faker.name.findName().replace("'", ''),
     userRole: Role.SuperUser,
   };
   users.push(user);
@@ -57,15 +57,15 @@ while (i <= 210) {
 
 const userToQuery = (user: User) => `
   INSERT INTO users(id, user_name, email, student_index, user_role)
-  VALUES (${user.id}, ${user.userName}, ${user.email}, ${
-  user.studentIndex ? user.studentIndex : ''
-}, ${user.userRole});
+  VALUES (${user.id}, '${user.userName}', '${user.email}', '${
+  user.studentIndex ? user.studentIndex : ' '
+}', '${user.userRole}');
 `;
 
 let usersSql: string[] = [];
 users.forEach(u => usersSql.push(userToQuery(u)));
 
-fs.writeFile('./sql-scripts/users.sql', usersSql.join(''), (err: any) => {
+fs.writeFile('./sql-scripts/users.seed.sql', usersSql.join(''), (err: any) => {
   if (err) {
     console.error(err);
   }
@@ -87,7 +87,7 @@ type Group = {
 };
 
 let groups: Group[] = [];
-for (let j = 0; j < 50; j += 1) {
+for (let j = 1; j < 50; j += 1) {
   groups.push({
     groupName: faker.commerce.productName(),
     // tslint:disable-next-line:insecure-random
@@ -101,8 +101,8 @@ for (let j = 0; j < 50; j += 1) {
 }
 
 const groupToQuery = (group: Group) => `
-  INSERT INTO groups(id, group_name, group_type, lecturer_id)
-  VALUES (${group.id}, ${group.groupName}, ${group.groupType}, ${
+  INSERT INTO \`groups\`(id, group_name, group_type, lecturer_id)
+  VALUES (${group.id}, '${group.groupName}', '${group.groupType}', ${
   group.lecturerId
 });
 `;
@@ -110,6 +110,6 @@ const groupToQuery = (group: Group) => `
 let groupsSql: string[] = [];
 groups.forEach(g => groupsSql.push(groupToQuery(g)));
 
-fs.writeFile('./sql-scripts/groups.sql', groupsSql.join(''), err => {
+fs.writeFile('./sql-scripts/groups.seed.sql', groupsSql.join(''), err => {
   console.error(err);
 });

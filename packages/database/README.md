@@ -36,6 +36,12 @@ Use container's bash console:
 yarn docker:bash
 ```
 
+Logs from the docker container:
+
+```sh
+yarn docker:logs
+```
+
 # DEPRECATED BELOW
 
 set root password
