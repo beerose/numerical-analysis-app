@@ -5,7 +5,6 @@ import { Col, Input, Row } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { ColProps } from 'antd/lib/col';
 import React, { useCallback, useState } from 'react';
-import html from 'tagged-template-noop';
 import { inspect } from 'util';
 
 import { Code } from '../../../components/Code';
@@ -17,7 +16,8 @@ import { usePostMessageHandler } from '../../../utils/usePostMessageHandler';
 
 const PostMessageConnectedSandbox = ({ result }: { result: string }) => (
   <Sandbox
-    srcDoc={html`
+    srcDoc={
+      /* html */ `
       <script>
         window.onerror = err => {
           window.parent.postMessage(
@@ -39,7 +39,8 @@ const PostMessageConnectedSandbox = ({ result }: { result: string }) => (
           '*'
         );
       </script>
-    `}
+    `
+    }
   />
 );
 
