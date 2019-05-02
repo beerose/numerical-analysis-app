@@ -117,7 +117,7 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active_user` int(1) GENERATED ALWAYS AS (if(isnull(`password`),0,1)) VIRTUAL,
   `privileges` json DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
   `user_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `student_index` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `user_role` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
