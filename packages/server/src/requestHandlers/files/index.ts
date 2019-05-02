@@ -16,10 +16,10 @@ export type FilePathsDTO = {
   paths: string[];
 };
 
-export type DirectoryListingDTO = {
+export type DirectoryListingDTO = Array<{
   name: string;
   is_directory?: boolean;
-}[];
+}>;
 
 router.get(
   ServerRoutes.Files,

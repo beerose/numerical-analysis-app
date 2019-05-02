@@ -3,11 +3,11 @@ import { ServerRoutes } from 'common';
 import { UserDTO, UserRole } from '../../../../../dist/common';
 import { fetch } from '../fetch';
 
-describe('USERS', async () => {
-  await it('GET: should respond with users list', () =>
+describe('USERS', () => {
+  it('GET: should respond with users list', async () =>
     fetch.asAdmin('/users').expectStatus(200));
 
-  await it('can create a new admin', () => {
+  it('can create a new admin', async () => {
     return fetch
       .asAdmin(ServerRoutes.Users.Create, {
         body: JSON.stringify({

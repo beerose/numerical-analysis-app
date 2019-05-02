@@ -19,6 +19,7 @@ fetch.asAdmin = (url: string | Request, init?: RequestInit) =>
   fetch(url, {
     ...init,
     headers: {
+      Accept: 'application/json, text/plain, */*',
       Authorization:
         // tslint:disable-next-line:prefer-template
         'Bearer ' +
@@ -27,5 +28,6 @@ fetch.asAdmin = (url: string | Request, init?: RequestInit) =>
           user_name: 'Test Admin User',
           user_role: UserRole.admin,
         }),
+      'Content-Type': 'application/json',
     },
   });

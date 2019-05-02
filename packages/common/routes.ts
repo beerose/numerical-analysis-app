@@ -1,8 +1,8 @@
 export const ServerRoutes = {
   Accounts: {
+    ChangePassword: '/accounts/change_password',
     Login: '/accounts/login',
     New: '/accounts/new',
-    ChangePassword: '/accounts/change_password',
   },
   Files: '/files', // Uses many HTTP methods
   Grades: '/grades',
@@ -51,4 +51,4 @@ export const ServerRoutes = {
     List: '/users',
     Update: '/users/update',
   },
-};
+} as const;

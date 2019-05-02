@@ -1,25 +1,27 @@
 import { ServerRoutes } from 'common';
 
+import { DirectoryListingDTO } from '../../src/requestHandlers/files';
+
 import { fetch } from './fetch';
 
-describe('post /files', () => {
-  it('uploads many files', () => {
-    return fetch.asAdmin(ServerRoutes.Files).expectStatus(200);
-    // .then(
-    //   res => expect(2).toBe(2),
-    //   // res
-    //   //   .json()
-    //   //   .then(text => expect(text.startsWith('Hello!')).toBeTruthy()),
-    //   fail
-    // );
+describe('get /files', () => {
+  it('admin can list files', () => {
+    return fetch
+      .asAdmin(ServerRoutes.Files)
+      .expectStatus(200)
+      .then(res => res.json())
+      .then((listing: DirectoryListingDTO) => {
+        console.warn(listing);
+        expect(Array.isArray(listing)).toBe(true);
+      });
   });
 });
 
 /**
  * TODO: test cases
  * # files
- * - lecturer can list files
- * - student can list files which he uploaded
+ * - lecturer can list files ✔
+ * - student can list files he uploaded
  * # upload
  * - student can upload a file
  * - student can't upload files with filePath
