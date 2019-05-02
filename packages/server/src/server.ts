@@ -17,7 +17,7 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // tslint:disable-next-line:no-commented-code, We're not generating swagger :c
 // import swaggerUi from 'swagger-ui-express';

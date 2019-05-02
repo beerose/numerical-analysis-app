@@ -6,18 +6,18 @@ import {
   RequestInit,
 } from 'supertest-fetch';
 
-import { generateUserJwtToken } from '../../src/lib';
-import { app } from '../../src/server';
+import { generateUserJwtToken } from '../src/lib';
+import { app } from '../src/server';
 
 export const fetch = makeFetch(app);
 
 export const authFetchAdmin: FetchFunction = (
   url: string | Request,
   init?: RequestInit
-) =>
-  fetch(url, {
-    ...init,
+) => {
+  return fetch(url, {
     headers: {
+      Accept: 'application/json, text/plain, */*',
       Authorization:
         // tslint:disable-next-line:prefer-template
         'Bearer ' +
@@ -26,5 +26,8 @@ export const authFetchAdmin: FetchFunction = (
           user_name: 'Test Admin User',
           user_role: UserRole.admin,
         }),
+      'Content-Type': 'application/json',
     },
+    ...init,
   });
+};

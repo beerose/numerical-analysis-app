@@ -1,4 +1,4 @@
-import { fetch } from './fetch';
+import { fetch } from '../../__testUtils__/fetch';
 
 describe('get /', () => {
   it('responds nicely', () =>

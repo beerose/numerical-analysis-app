@@ -1,6 +1,6 @@
 import { ServerRoutes } from 'common';
 
-import { authFetchAdmin, fetch } from './fetch';
+import { authFetchAdmin, fetch } from '../../__testUtils__/fetch';
 
 describe('post /files', () => {
   it('uploads many files', () => {
