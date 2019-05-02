@@ -42,6 +42,14 @@ Logs from the docker container:
 yarn docker:logs
 ```
 
+To seed the database while creating the container run:
+
+```sh
+yarn seed
+```
+
+before running `yarn setup`.
+
 # DEPRECATED BELOW
 
 set root password
