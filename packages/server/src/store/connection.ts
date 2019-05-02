@@ -7,7 +7,7 @@ let dbConfig = {
   user: process.env.DB_USER,
 };
 
-if (process.env.NODE_ENV === 'TEST') {
+if (process.env.NODE_ENV === 'test') {
   dbConfig = {
     database: process.env.TEST_DB_NAME,
     host: process.env.TEST_DB_HOST,
