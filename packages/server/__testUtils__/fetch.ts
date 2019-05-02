@@ -9,13 +9,15 @@ import {
 import { generateUserJwtToken } from '../src/lib';
 import { app } from '../src/server';
 
-export const fetch = makeFetch(app);
+interface TestFetchFunc extends FetchFunction {
+  asAdmin: FetchFunction;
+}
 
-export const authFetchAdmin: FetchFunction = (
-  url: string | Request,
-  init?: RequestInit
-) => {
-  return fetch(url, {
+export const fetch: TestFetchFunc = makeFetch(app) as TestFetchFunc;
+
+fetch.asAdmin = (url: string | Request, init?: RequestInit) =>
+  fetch(url, {
+    ...init,
     headers: {
       Accept: 'application/json, text/plain, */*',
       Authorization:
@@ -30,4 +32,3 @@ export const authFetchAdmin: FetchFunction = (
     },
     ...init,
   });
-};

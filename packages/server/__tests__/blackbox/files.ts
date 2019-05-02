@@ -1,10 +1,10 @@
 import { ServerRoutes } from 'common';
 
-import { authFetchAdmin, fetch } from '../../__testUtils__/fetch';
+import { fetch } from '../../__testUtils__/fetch';
 
 describe('post /files', () => {
   it('uploads many files', () => {
-    return authFetchAdmin(ServerRoutes.Files).expectStatus(200);
+    return fetch.asAdmin(ServerRoutes.Files).expectStatus(200);
     // .then(
     //   res => expect(2).toBe(2),
     //   // res
