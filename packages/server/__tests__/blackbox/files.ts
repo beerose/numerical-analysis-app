@@ -1,8 +1,7 @@
 import { ServerRoutes } from 'common';
 
 import { DirectoryListingDTO } from '../../src/requestHandlers/files';
-
-import { fetch } from './fetch';
+import { fetch } from '../../__testUtils__/fetch';
 
 describe('get /files', () => {
   it('admin can list files', () => {

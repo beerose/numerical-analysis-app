@@ -6,8 +6,8 @@ import {
   RequestInit,
 } from 'supertest-fetch';
 
-import { generateUserJwtToken } from '../../src/lib';
-import { app } from '../../src/server';
+import { generateUserJwtToken } from '../src/lib';
+import { app } from '../src/server';
 
 interface TestFetchFunc extends FetchFunction {
   asAdmin: FetchFunction;
@@ -30,4 +30,5 @@ fetch.asAdmin = (url: string | Request, init?: RequestInit) =>
         }),
       'Content-Type': 'application/json',
     },
+    ...init,
   });
