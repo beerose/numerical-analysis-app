@@ -1,7 +1,7 @@
 import { ApiResponse } from 'common';
 import * as React from 'react';
 
-import { PresenceTable } from '../components';
+import { PresenceTable } from '../components/PresenceTable';
 import { GroupApiContextState } from '../GroupApiContext';
 
 type Props = GroupApiContextState;
