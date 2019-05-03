@@ -27,7 +27,7 @@ function computeGradeFromResults(
   studentResults: UserResultsModel,
   { tresholds, grade_equation: gradeEquation }: DeepRequired<GroupDTO>['data']
 ) {
-  const { tasksPoints, maxTasksPoints, presences, activity } = studentResults;
+  const { tasksPoints, presences, activity } = studentResults;
 
   console.warn('TODO unused', { presences, activity, gradeEquation });
 

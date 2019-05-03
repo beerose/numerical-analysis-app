@@ -5,7 +5,6 @@ import { Col, Input, Row } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { ColProps } from 'antd/lib/col';
 import React, { useCallback, useState } from 'react';
-import html from 'tagged-template-noop';
 import { inspect } from 'util';
 
 import { Code } from '../../../components/Code';
@@ -15,33 +14,63 @@ import { Colors, LABELS } from '../../../utils';
 import { Fonts } from '../../../utils/fonts';
 import { usePostMessageHandler } from '../../../utils/usePostMessageHandler';
 
-const PostMessageConnectedSandbox = ({ result }: { result: string }) => (
-  <Sandbox
-    srcDoc={html`
-      <script>
-        window.onerror = err => {
+type EquationEvalSandboxProps = {
+  equationString: string;
+  setError: (_: string) => void;
+  setResult: (_: EquationResult) => void;
+};
+
+const EquationEvalSandbox = ({
+  equationString,
+  setError,
+  setResult,
+}: EquationEvalSandboxProps) => {
+  usePostMessageHandler(e => {
+    if (e.data.type === 'result') {
+      const { value } = e.data;
+      if (!isNaN(Number(value))) {
+        setError('');
+        setResult(Number(value));
+      }
+    }
+    if (e.data.type === 'error') {
+      const { value } = e.data;
+      if (typeof value === 'string') {
+        setError(value);
+      }
+    }
+  }, []);
+
+  return (
+    <Sandbox
+      srcDoc={
+        /* html */ `
+        <script>
+          window.onerror = err => {
+            window.parent.postMessage(
+              {
+                type: 'error',
+                value: err,
+              },
+              '*'
+            );
+          };
+        </script>
+        <script>
+          const result = ${equationString};
           window.parent.postMessage(
             {
-              type: 'error',
-              value: err,
+              type: 'result',
+              value: result,
             },
             '*'
           );
-        };
-      </script>
-      <script>
-        const result = ${result};
-        window.parent.postMessage(
-          {
-            type: 'result',
-            value: result,
-          },
-          '*'
-        );
-      </script>
-    `}
-  />
-);
+        </script>
+      `
+      }
+    />
+  );
+};
 
 const TextArea = styled(Input.TextArea)`
   box-sizing: content-box;
@@ -66,7 +95,7 @@ type GroupEquationProps = {
   error: ErrorMessage;
 };
 // tslint:disable-next-line:max-func-body-length
-export const GroupEquation: React.FC<GroupEquationProps> = ({
+export const GradeEquationInput: React.FC<GroupEquationProps> = ({
   value: equation,
   onChange: setEquation,
   onErrorChange: setError,
@@ -85,6 +114,7 @@ export const GroupEquation: React.FC<GroupEquationProps> = ({
   const [kvargs, _setKvargs] = useState({
     activity: 1,
     presence: 1,
+    tasks: 1,
   });
   const setKvargs = useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -103,22 +133,6 @@ export const GroupEquation: React.FC<GroupEquationProps> = ({
 
   const kvargsString = inspect(kvargs);
   const argumentKeys = `(${kvargsString.replace(/\: [\d]+/g, '')})`;
-
-  usePostMessageHandler(e => {
-    if (e.data.type === 'result') {
-      const { value } = e.data;
-      if (!isNaN(Number(value))) {
-        setError('');
-        setResult(Number(value));
-      }
-    }
-    if (e.data.type === 'error') {
-      const { value } = e.data;
-      if (typeof value === 'string') {
-        setError(value);
-      }
-    }
-  }, []);
 
   return (
     <section>
@@ -139,16 +153,13 @@ export const GroupEquation: React.FC<GroupEquationProps> = ({
           </Code>
         </LeftColumn>
         <RightColumn>
-          <TextArea
-            rows={1}
-            value={equation}
-            placeholder="0.6 * activity + 0.3 * presence"
-            onChange={handleEquationChange}
-          />
+          <TextArea rows={1} value={equation} onChange={handleEquationChange} />
         </RightColumn>
       </Row>
-      <PostMessageConnectedSandbox
-        result={`(${argumentKeys} => ${equation})(${kvargsString})`}
+      <EquationEvalSandbox
+        equationString={`(${argumentKeys} => ${equation})(${kvargsString})`}
+        setResult={setResult}
+        setError={setError}
       />
       <Row gutter={8}>
         <LeftColumn>{testMode && <b>Wynik</b>}</LeftColumn>

@@ -12,7 +12,7 @@ import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
 import { Theme } from '../../../components/theme';
 import { LABELS, useMergeKey, useMergeState } from '../../../utils';
-import { GroupEquation } from '../components/GradeEquation';
+import { GradeEquationInput } from '../components/GradeEquationInput';
 import {
   GradeTresholdsList,
   tresholdsKeys,
@@ -80,7 +80,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
         tresholds = fromPairs(
           tresholdsKeys.map(k => [k, 0] as [keyof Tresholds, number])
         ),
-        grade_equation = '',
+        grade_equation = '1 * presence + 1 * activity + 1 * tasks',
       } = group.data || {};
 
       return {
@@ -171,7 +171,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
       <FormRow label={texts.semester}>
         {getFieldDecorator<AntFormState>('semester')(<SelectSemester />)}
       </FormRow>
-      <GroupEquation
+      <GradeEquationInput
         value={groupDataState.grade_equation}
         onChange={setEquation}
         error={equationErrorMsg}
