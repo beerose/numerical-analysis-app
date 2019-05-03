@@ -9,7 +9,7 @@ import { RouteComponentProps } from 'react-router';
 import { TaskDTO } from '../../../../../../dist/common';
 import { Theme } from '../../../components/theme';
 import { Flex } from '../../../components/Flex';
-import { LABELS, showMessage } from '../../../utils';
+import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { TaskListItem } from '../components/TaskListItem';
 import { GroupApiContextState } from '../GroupApiContext';
 
@@ -113,6 +113,8 @@ export const TasksSection = ({
         okText={LABELS.save}
       >
         <Select
+          showSearch
+          filterOption={findStringifiedLowercase}
           style={{
             margin: `${Theme.Padding.Half} 0 0 ${Theme.Padding.Half}`,
             width: 400,
