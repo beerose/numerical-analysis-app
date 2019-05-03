@@ -8,3 +8,4 @@ export * from './useMergeState';
 export * from './usePostMessageHandler';
 export * from './useToggle';
 export * from './usePromise';
+export * from './findStringifiedLowercase';

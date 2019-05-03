@@ -18,8 +18,8 @@ import {
   tresholdsKeys,
 } from '../components/GradeTresholdsList';
 import { GroupTypeRadioGroup } from '../components/GroupTypeRadioGroup';
+import { SelectLecturer } from '../components/SelectLecturer';
 import { SelectSemester } from '../components/SelectSemester';
-import { SelectSuperUser } from '../components/SelectSuperUser';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const SettingsForm = styled.form`
@@ -162,10 +162,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
       </FormRow>
       <FormRow label={texts.lecturer}>
         {getFieldDecorator<AntFormState>('lecturer_id')(
-          <SelectSuperUser
-            superUsers={lecturers || []}
-            css={{ width: '100%' }}
-          />
+          <SelectLecturer lecturers={lecturers || []} css={{ width: '100%' }} />
         )}
       </FormRow>
       <FormRow label={texts.semester}>
@@ -194,4 +191,4 @@ const SettingsSectionInternal: React.FC<Props> = ({
   );
 };
 
-export const SettingsSection = Form.create()(SettingsSectionInternal);
+export const SettingsSection = Form.create<Props>()(SettingsSectionInternal);

@@ -4,25 +4,15 @@ import { SelectProps } from 'antd/lib/select';
 import { UserDTO } from 'common';
 import * as React from 'react';
 
-import { Colors, LABELS } from '../../../utils';
-
-const filterLecturer: SelectProps['filterOption'] = (
-  input,
-  { props: { children } }
-) =>
-  children &&
-  children
-    .toString()
-    .toLowerCase()
-    .indexOf(input.toLowerCase()) >= 0;
+import { Colors, findStringifiedLowercase, LABELS } from '../../../utils';
 
 type SelectSuperUserProps = {
-  superUsers: UserDTO[];
+  lecturers: UserDTO[];
 } & SelectProps;
 
-export const SelectSuperUser = React.forwardRef(
+export const SelectLecturer = React.forwardRef(
   (
-    { superUsers, value, ...rest }: SelectSuperUserProps,
+    { lecturers, value, ...rest }: SelectSuperUserProps,
     ref: React.Ref<Select>
   ) => (
     <Select
@@ -37,11 +27,11 @@ export const SelectSuperUser = React.forwardRef(
         </>
       }
       ref={ref}
-      filterOption={filterLecturer}
-      value={superUsers.length ? value : undefined}
+      filterOption={findStringifiedLowercase}
+      value={lecturers.length ? value : undefined}
       {...rest}
     >
-      {superUsers.map(lecturer => (
+      {lecturers.map(lecturer => (
         <Select.Option key={String(lecturer.id)} value={lecturer.id}>
           {lecturer.user_name}
         </Select.Option>

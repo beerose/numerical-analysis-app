@@ -1,15 +1,15 @@
+import { Button, List, Modal, Select, Spin } from 'antd';
+import { GroupDTO } from 'common';
+import { async } from 'q';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
+
+import { DeleteWithConfirm, Flex, Theme } from '../../../components';
+import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { GroupApiContextState } from '../GroupApiContext';
-import { Flex, DeleteWithConfirm, Theme } from '../../../components';
-import { List, Modal, Select, Spin } from 'antd';
-import { GroupDTO } from 'common';
-import { Button } from 'antd';
-import { LABELS, showMessage } from '../../../utils';
-import { async } from 'q';
 
 type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
-export const AttachedSection = (props: Props) => {
+export const AttachedGroupsSection = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [attached, setAttached] = useState<GroupDTO[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -76,6 +76,8 @@ export const AttachedSection = (props: Props) => {
       >
         Wybierz grupę:
         <Select
+          showSearch
+          filterOption={findStringifiedLowercase}
           style={{ width: '300px', margin: Theme.Padding.Half }}
           onChange={(value: GroupDTO['id']) => setSelectedGroup(value)}
           defaultValue={undefined}
@@ -110,7 +112,10 @@ export const AttachedSection = (props: Props) => {
             >
               <List.Item.Meta
                 title={
-                  <a onClick={() => props.history.push(`/groups/${item.id}`)}>
+                  <a
+                    role="link"
+                    onClick={() => props.history.push(`/groups/${item.id}`)}
+                  >
                     {item.group_name}
                   </a>
                 }
