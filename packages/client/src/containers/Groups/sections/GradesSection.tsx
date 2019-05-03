@@ -26,7 +26,7 @@ import { GroupApiContextState } from '../GroupApiContext';
 async function computeGradeFromResults(
   studentResults: UserResultsModel,
   { tresholds, grade_equation: gradeEquation }: DeepRequired<GroupDTO>['data']
-) {
+): Promise<[Grade, number]> {
   const { tasksPoints, presences, activity } = studentResults;
 
   const points = await evalEquation(
@@ -207,7 +207,7 @@ export const GradesSection = ({
 
         setTableData(newTableData);
       }),
-    [gradeSettings]
+    [gradeSettings, tableData]
   );
 
   const handleGradesCsvDownload = useCallback(() => {
@@ -253,7 +253,7 @@ export const GradesSection = ({
       width: 100,
     },
     {
-      align: 'center'
+      align: 'center',
       key: 'confirm_grade',
       render: (studentResults: UserResultsModel) => (
         <ArrowRightButton
@@ -264,7 +264,11 @@ export const GradesSection = ({
         />
       ),
       title: (
-        <p css={css` margin: 0; `}>
+        <p
+          css={css`
+            margin: 0;
+          `}
+        >
           Zatwierdź
           <br />
           <a role="button" onClick={confirmAllGrades}>
