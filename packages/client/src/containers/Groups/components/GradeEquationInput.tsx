@@ -9,68 +9,10 @@ import { inspect } from 'util';
 
 import { Code } from '../../../components/Code';
 import { ExperimentalToggle } from '../../../components/ExperimentalToggle';
-import { Sandbox } from '../../../components/Sandbox';
 import { Colors, LABELS } from '../../../utils';
 import { Fonts } from '../../../utils/fonts';
-import { usePostMessageHandler } from '../../../utils/usePostMessageHandler';
 
-type EquationEvalSandboxProps = {
-  equationString: string;
-  setError: (_: string) => void;
-  setResult: (_: EquationResult) => void;
-};
-
-const EquationEvalSandbox = ({
-  equationString,
-  setError,
-  setResult,
-}: EquationEvalSandboxProps) => {
-  usePostMessageHandler(e => {
-    if (e.data.type === 'result') {
-      const { value } = e.data;
-      if (!isNaN(Number(value))) {
-        setError('');
-        setResult(Number(value));
-      }
-    }
-    if (e.data.type === 'error') {
-      const { value } = e.data;
-      if (typeof value === 'string') {
-        setError(value);
-      }
-    }
-  }, []);
-
-  return (
-    <Sandbox
-      srcDoc={
-        /* html */ `
-        <script>
-          window.onerror = err => {
-            window.parent.postMessage(
-              {
-                type: 'error',
-                value: err,
-              },
-              '*'
-            );
-          };
-        </script>
-        <script>
-          const result = ${equationString};
-          window.parent.postMessage(
-            {
-              type: 'result',
-              value: result,
-            },
-            '*'
-          );
-        </script>
-      `
-      }
-    />
-  );
-};
+import { EquationEvalSandbox } from './EquationEvalSandbox';
 
 const TextArea = styled(Input.TextArea)`
   box-sizing: content-box;
@@ -85,7 +27,6 @@ const LeftColumn = (props: ColProps) => (
 );
 const RightColumn = (props: ColProps) => <Col md={19} xxl={16} {...props} />;
 
-type EquationResult = number;
 type ErrorMessage = string; // '' means no error
 
 type GroupEquationProps = {
@@ -101,7 +42,7 @@ export const GradeEquationInput: React.FC<GroupEquationProps> = ({
   onErrorChange: setError,
   error,
 }) => {
-  const [result, setResult] = useState<EquationResult | null>(null);
+  const [result, setResult] = useState<number | null>(null);
   const [testMode, setTestMode] = useState(false);
 
   const toggleTestMode = useCallback(() => setTestMode(!testMode), [testMode]);

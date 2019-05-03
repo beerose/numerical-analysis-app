@@ -31,15 +31,10 @@ function computeGradeFromResults(
 
   console.warn('TODO unused', { presences, activity, gradeEquation });
 
-  /**
-   * `maxTasksPoints` is probably a bug
-   * we've spoken with a shareholder, that he'd like to set
-   * tresholds for points, not percentage
-   * and we don't actually have maxPresences or maxActivity
-   */
-  const pointsPercentage = (tasksPoints / maxTasksPoints) * 100;
 
-  return getGradeFromTresholds(pointsPercentage, tresholds);
+  const points =  100;
+
+  return getGradeFromTresholds(points, tresholds);
 }
 
 const SuggestedGrade: React.FC<{
