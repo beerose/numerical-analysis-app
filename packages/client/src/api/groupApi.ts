@@ -14,7 +14,7 @@ import * as qs from 'query-string';
 import { Omit } from 'react-router';
 import { DeepRequired } from 'utility-types';
 
-import { showMessage } from '../utils/message';
+import { showMessage } from '../utils/showMessage';
 
 import { SERVER_URL } from '.';
 import { authFetch } from './authFetch';

@@ -1,6 +1,8 @@
 import { message } from 'antd';
 import { ApiResponse } from 'common';
 
+message.config({ maxCount: 3, duration: 2 });
+
 export const showMessage = (
   res: ApiResponse,
   opts: { showSuccess?: boolean; showError?: boolean } = {
