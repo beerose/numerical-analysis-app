@@ -3,10 +3,10 @@ import 'antd/dist/antd.css';
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-import { BaseLayer } from './layers/';
 // tslint:disable-next-line:no-import-side-effect
 import './styles.css';
 import { AuthProvider } from './AuthProvider';
+import { Main } from './Main';
 
 export class App extends React.Component {
   render() {
@@ -15,7 +15,7 @@ export class App extends React.Component {
         <Route>
           {routeContext => (
             <AuthProvider {...routeContext}>
-              <BaseLayer {...routeContext} />
+              <Main {...routeContext} />
             </AuthProvider>
           )}
         </Route>
