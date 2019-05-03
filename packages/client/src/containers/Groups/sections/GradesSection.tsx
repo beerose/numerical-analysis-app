@@ -37,8 +37,9 @@ async function computeGradeFromResults(
     },
     gradeEquation
   );
+  const grade = getGradeFromTresholds(points, tresholds);
 
-  return getGradeFromTresholds(points, tresholds);
+  return [grade, points];
 }
 
 type GradeDisplayProps = {
@@ -50,7 +51,7 @@ const ComputedGrade: React.FC<Required<GradeDisplayProps>> = ({
   userResults,
   currentGroup,
 }) => {
-  const grade = usePromise(
+  const [grade, points] = usePromise(
     () =>
       computeGradeFromResults(userResults, currentGroup.data as DeepRequired<
         GroupDTO
@@ -59,7 +60,7 @@ const ComputedGrade: React.FC<Required<GradeDisplayProps>> = ({
     []
   );
 
-  return <Fragment>{grade}</Fragment>;
+  return <span title={`${points} pkt.`}>{grade}</span>;
 };
 
 const SuggestedGrade: React.FC<GradeDisplayProps> = ({
@@ -172,7 +173,7 @@ export const GradesSection = ({
     () =>
       gradeSettings &&
       (async (studentResults: UserResultsModel) => {
-        const grade = await computeGradeFromResults(
+        const [grade] = await computeGradeFromResults(
           studentResults,
           gradeSettings as Required<GroupGradeSettings>
         );
@@ -188,7 +189,7 @@ export const GradesSection = ({
       (async () => {
         const newTableData = await Promise.all(
           tableData.map(async studentResults => {
-            const grade = await computeGradeFromResults(
+            const [grade] = await computeGradeFromResults(
               studentResults,
               gradeSettings as Required<GroupGradeSettings>
             );
@@ -236,14 +237,14 @@ export const GradesSection = ({
       width: 120,
     },
     {
+      align: 'center',
       key: 'meetings_grade',
-      render: (item: UserResultsModel) => (
-        <Flex justifyContent="center">{item.presences + item.activity}</Flex>
-      ),
+      render: (item: UserResultsModel) => item.presences + item.activity,
       title: 'Obecności i aktywności',
       width: 120,
     },
     {
+      align: 'center',
       key: 'suggested_grade',
       render: (item: UserResultsModel) => (
         <Flex justifyContent="center" fontWeight="bold">

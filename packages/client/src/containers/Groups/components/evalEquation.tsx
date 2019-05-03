@@ -4,24 +4,27 @@ import { inspect } from 'util';
 
 import { EquationEvalSandbox } from './EquationEvalSandbox';
 
-export function evalEquation<PointCategories extends string>(
+export async function evalEquation<PointCategories extends string>(
   pointsInAllCategories: Record<PointCategories, number>,
   equation: string
-): Promise<number> {
+) {
   const temporaryRoot = document.createElement('div');
+  document.body.appendChild(temporaryRoot);
 
   const kvargsString = inspect(pointsInAllCategories);
   const argumentKeys = `(${kvargsString.replace(/\: [\d]+/g, '')})`;
 
-  return new Promise((resolve, reject) => {
+  const promise = new Promise<number>((resolve, reject) => {
     let settled = false;
 
     render(
       <EquationEvalSandbox
         equationEvaluationString={`(${argumentKeys} => ${equation})(${kvargsString})`}
         setError={error => {
-          settled = true;
-          reject(error);
+          if (error) {
+            settled = true;
+            reject(error);
+          }
         }}
         setResult={result => {
           settled = true;
@@ -38,4 +41,9 @@ export function evalEquation<PointCategories extends string>(
       }
     );
   });
+
+  const res = await promise;
+
+  document.body.removeChild(temporaryRoot);
+  return res;
 }
