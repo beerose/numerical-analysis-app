@@ -60,7 +60,7 @@ const ComputedGrade: React.FC<Required<GradeDisplayProps>> = ({
     []
   );
 
-  return <span title={`${points} pkt.`}>{grade}</span>;
+  return <b title={`${points} pkt.`}>{grade}</b>;
 };
 
 const SuggestedGrade: React.FC<GradeDisplayProps> = ({
@@ -247,14 +247,13 @@ export const GradesSection = ({
       align: 'center',
       key: 'suggested_grade',
       render: (item: UserResultsModel) => (
-        <Flex justifyContent="center" fontWeight="bold">
-          <SuggestedGrade userResults={item} currentGroup={currentGroup} />
-        </Flex>
+        <SuggestedGrade userResults={item} currentGroup={currentGroup} />
       ),
       title: `Proponowana ocena`,
       width: 100,
     },
     {
+      align: 'center'
       key: 'confirm_grade',
       render: (studentResults: UserResultsModel) => (
         <ArrowRightButton
@@ -265,12 +264,7 @@ export const GradesSection = ({
         />
       ),
       title: (
-        <p
-          css={css`
-            text-align: center;
-            margin: 0;
-          `}
-        >
+        <p css={css` margin: 0; `}>
           Zatwierdź
           <br />
           <a role="button" onClick={confirmAllGrades}>
