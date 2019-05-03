@@ -31,8 +31,7 @@ function computeGradeFromResults(
 
   console.warn('TODO unused', { presences, activity, gradeEquation });
 
-
-  const points =  100;
+  const points = 100;
 
   return getGradeFromTresholds(points, tresholds);
 }
@@ -65,8 +64,6 @@ const mergedResultsToTableItem = (
   const final = student.groups_grades
     ? student.groups_grades.find(g => g.group_id === groupId)
     : undefined;
-
-  console.log(results);
 
   return {
     activity: results ? results.sum_activity : 0,
@@ -195,42 +192,51 @@ export const GradesSection = ({
 
   const columns = [
     {
-      title: 'Imię i nazwisko',
       dataIndex: 'userName',
       key: 'name',
+      title: 'Imię i nazwisko',
       width: 200,
     },
     { title: 'Index', dataIndex: 'index', key: 'index', width: 100 },
     {
-      title: `Testy i zadania`,
       key: 'tasks_grade',
-      width: 120,
       render: (item: UserResultsModel) => (
         <Flex justifyContent="center" flexDirection="row">
           {item.tasksPoints} /
           <b style={{ paddingLeft: 5 }}>{item.maxTasksPoints}</b>
         </Flex>
       ),
+      title: `Testy i zadania`,
+      width: 120,
     },
     {
-      title: 'Obecności i aktywności',
       key: 'meetings_grade',
-      width: 120,
       render: (item: UserResultsModel) => (
         <Flex justifyContent="center">{item.presences + item.activity}</Flex>
       ),
+      title: 'Obecności i aktywności',
+      width: 120,
     },
     {
-      title: `Proponowana ocena`,
       key: 'suggested_grade',
-      width: 100,
       render: (item: UserResultsModel) => (
         <Flex justifyContent="center" fontWeight="bold">
           <SuggestedGrade userResults={item} currentGroup={currentGroup} />
         </Flex>
       ),
+      title: `Proponowana ocena`,
+      width: 100,
     },
     {
+      key: 'confirm_grade',
+      render: (studentResults: UserResultsModel) => (
+        <ArrowRightButton
+          title="Zatwierdź ocenę"
+          alt="Zatwierdź ocenę"
+          disabled={!confirmGrade}
+          onClick={confirmGrade && (() => confirmGrade(studentResults))}
+        />
+      ),
       title: (
         <p
           css={css`
@@ -245,27 +251,18 @@ export const GradesSection = ({
           </a>
         </p>
       ),
-      key: 'confirm_grade',
       width: 50,
-      render: (studentResults: UserResultsModel) => (
-        <ArrowRightButton
-          title="Zatwierdź ocenę"
-          alt="Zatwierdź ocenę"
-          disabled={!confirmGrade}
-          onClick={confirmGrade && (() => confirmGrade(studentResults))}
-        />
-      ),
     },
     {
-      title: `Wystawiona ocena`,
       key: 'set_grade',
-      width: 150,
       render: (studentResults: UserResultsModel) => (
         <SetGrade
           value={studentResults.finalGrade}
           onChange={grade => setGrade(studentResults.userId, grade)}
         />
       ),
+      title: `Wystawiona ocena`,
+      width: 150,
     },
   ];
 
