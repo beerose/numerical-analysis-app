@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 
 console.log('Loading process.env with contents of .env');
-dotenv.load();
+dotenv.config();
 
 console.log('Starting server', {
   env: process.env.NODE_ENV,

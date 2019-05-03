@@ -18,28 +18,54 @@ import { DeepRequired } from 'utility-types';
 import { Flex, Table, Theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
-import { gradesToCsv, isSafari } from '../../../utils/';
+import { gradesToCsv, isSafari, usePromise } from '../../../utils/';
+import { evalEquation } from '../components/evalEquation';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
 import { GroupApiContextState } from '../GroupApiContext';
 
-// TODO Use Grade Equation, add meetings points
-function computeGradeFromResults(
+async function computeGradeFromResults(
   studentResults: UserResultsModel,
   { tresholds, grade_equation: gradeEquation }: DeepRequired<GroupDTO>['data']
 ) {
   const { tasksPoints, presences, activity } = studentResults;
 
-  console.warn('TODO unused', { presences, activity, gradeEquation });
-
-  const points = 100;
+  const points = await evalEquation(
+    {
+      activity,
+      presence: presences,
+      tasks: tasksPoints,
+    },
+    gradeEquation
+  );
 
   return getGradeFromTresholds(points, tresholds);
 }
 
-const SuggestedGrade: React.FC<{
+type GradeDisplayProps = {
   userResults: UserResultsModel;
   currentGroup?: GroupDTO;
-}> = ({ userResults, currentGroup }) => {
+};
+
+const ComputedGrade: React.FC<Required<GradeDisplayProps>> = ({
+  userResults,
+  currentGroup,
+}) => {
+  const grade = usePromise(
+    () =>
+      computeGradeFromResults(userResults, currentGroup.data as DeepRequired<
+        GroupDTO
+      >['data']),
+    '',
+    []
+  );
+
+  return <Fragment>{grade}</Fragment>;
+};
+
+const SuggestedGrade: React.FC<GradeDisplayProps> = ({
+  userResults,
+  currentGroup,
+}) => {
   if (!currentGroup || !currentGroup.data) {
     return <Spin />;
   }
@@ -48,11 +74,7 @@ const SuggestedGrade: React.FC<{
   }
 
   return (
-    <Fragment>
-      {computeGradeFromResults(userResults, currentGroup.data! as Required<
-        GroupGradeSettings
-      >)}
-    </Fragment>
+    <ComputedGrade userResults={userResults} currentGroup={currentGroup} />
   );
 };
 
@@ -149,8 +171,8 @@ export const GradesSection = ({
   const confirmGrade = useMemo(
     () =>
       gradeSettings &&
-      ((studentResults: UserResultsModel) => {
-        const grade = computeGradeFromResults(
+      (async (studentResults: UserResultsModel) => {
+        const grade = await computeGradeFromResults(
           studentResults,
           gradeSettings as Required<GroupGradeSettings>
         );
@@ -163,22 +185,26 @@ export const GradesSection = ({
   const confirmAllGrades = useMemo(
     () =>
       gradeSettings &&
-      (() => {
-        setTableData(tData =>
-          tData.map(studentResults => {
-            // TODO: Optimize this into one call with array studentIds?
-            const grade = computeGradeFromResults(
+      (async () => {
+        const newTableData = await Promise.all(
+          tableData.map(async studentResults => {
+            const grade = await computeGradeFromResults(
               studentResults,
               gradeSettings as Required<GroupGradeSettings>
             );
-            const studentId = studentResults.userId;
-            actions.setFinalGrade(studentId, grade);
+
             return {
               ...studentResults,
               finalGrade: grade,
             };
           })
         );
+
+        newTableData.forEach(({ userId, finalGrade }) =>
+          actions.setFinalGrade(userId, finalGrade)
+        );
+
+        setTableData(newTableData);
       }),
     [gradeSettings]
   );

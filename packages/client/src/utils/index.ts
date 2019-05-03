@@ -7,3 +7,4 @@ export * from './gradesToCsv';
 export * from './useMergeState';
 export * from './usePostMessageHandler';
 export * from './useToggle';
+export * from './usePromise';

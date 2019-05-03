@@ -41,6 +41,7 @@ export class MeetingsDetailsSections extends React.Component<Props> {
       meetingsDetails,
       actions: { setStudentMeetingDetails },
     } = this.props;
+
     return (
       <PresenceTable
         meetings={meetings}

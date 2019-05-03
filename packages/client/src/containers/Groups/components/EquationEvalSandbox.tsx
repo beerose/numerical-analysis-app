@@ -4,13 +4,13 @@ import { Sandbox } from '../../../components/Sandbox';
 import { usePostMessageHandler } from '../../../utils/usePostMessageHandler';
 
 export type EquationEvalSandboxProps = {
-  equationString: string;
+  equationEvaluationString: string;
   setError: (_: string) => void;
   setResult: (_: number) => void;
 };
 
 export const EquationEvalSandbox = ({
-  equationString,
+  equationEvaluationString: equationString,
   setError,
   setResult,
 }: EquationEvalSandboxProps) => {

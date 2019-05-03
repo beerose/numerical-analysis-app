@@ -2,7 +2,6 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Col, Input, Row } from 'antd';
-// tslint:disable-next-line:no-submodule-imports
 import { ColProps } from 'antd/lib/col';
 import React, { useCallback, useState } from 'react';
 import { inspect } from 'util';
@@ -66,7 +65,7 @@ export const GradeEquationInput: React.FC<GroupEquationProps> = ({
           _setKvargs(parsed);
         }
       } catch {
-        // We can totally ignore error here.
+        // We can totally ignore the error here.
       }
     },
     []
@@ -98,7 +97,7 @@ export const GradeEquationInput: React.FC<GroupEquationProps> = ({
         </RightColumn>
       </Row>
       <EquationEvalSandbox
-        equationString={`(${argumentKeys} => ${equation})(${kvargsString})`}
+        equationEvaluationString={`(${argumentKeys} => ${equation})(${kvargsString})`}
         setResult={setResult}
         setError={setError}
       />
