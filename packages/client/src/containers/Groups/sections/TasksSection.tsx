@@ -114,8 +114,8 @@ export const TasksSection = ({
       >
         <Select
           style={{
-            width: 400,
             margin: `${Theme.Padding.Half} 0 0 ${Theme.Padding.Half}`,
+            width: 400,
           }}
           onChange={(value: number) =>
             setSelectedTask(prev => ({ weight: prev.weight, id: value }))

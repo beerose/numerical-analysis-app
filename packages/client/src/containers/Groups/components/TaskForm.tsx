@@ -8,14 +8,17 @@ import React, { useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
 import {
+  ChoosableSubtask,
   TaskDTO,
   TaskKind,
-  ChoosableSubtask,
 } from '../../../../../../dist/common';
 import { TaskTypeSelect } from '../../../components';
 import { Colors, showMessage } from '../../../utils';
-import { DynamicChoosableTasksForm } from '.';
-import { ChoosableFormFields } from './DynamicChoosableTasksForm';
+
+import {
+  ChoosableFormFields,
+  DynamicChoosableTasksForm,
+} from './DynamicChoosableTasksForm';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -44,7 +47,6 @@ type Props = {
   model?: TaskDTO;
   onSubmit: (values: TaskDTO) => void;
 } & FormComponentProps;
-// tslint:disable-next-line:max-func-body-length
 const TaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
   const [taskType, setTaskType] = useState<TaskKind | null>(null);
@@ -66,24 +68,24 @@ const TaskForm = (props: Props) => {
         if (values.subtask_id) {
           values.subtask_id.map((v, i) => {
             choosable.push({
-              id: v,
               group_capacity: values.subtask_group_capacity[i],
+              id: v,
               max_groups: values.subtask_max_groups[i],
             });
           });
         }
         props.onSubmit({
+          data: { choosable_subtasks: choosable },
+          description: values.description,
+          end_upload_date: values.end_upload_date,
           id: values.id,
           kind: values.kind,
-          results_date: values.results_date,
-          description: values.description,
-          start_upload_date: values.start_upload_date,
-          end_upload_date: values.end_upload_date,
           max_points: Number(values.max_points),
           name: values.task_name,
+          results_date: values.results_date,
+          start_upload_date: values.start_upload_date,
           verify_upload: Boolean(values.verify_upload),
           weight: Number(values.weight),
-          data: { choosable_subtasks: choosable },
         });
       }
     );
@@ -256,4 +258,4 @@ const TaskForm = (props: Props) => {
     </Form>
   );
 };
-export const WrappedTaskForm = Form.create()(TaskForm);
+export const WrappedTaskForm = Form.create<Props>()(TaskForm);

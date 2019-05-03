@@ -1,12 +1,12 @@
 import { Spin } from 'antd';
+import { TaskDTO } from 'common';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { TaskDTO } from 'common';
 import { Flex } from '../../../components';
 import { Theme } from '../../../components/theme';
 import { showMessage } from '../../../utils';
-import { TaskForm } from '../components';
+import { WrappedTaskForm as TaskForm } from '../components/TaskForm';
 import { GroupApiContextState } from '../GroupApiContext';
 
 type Props = GroupApiContextState &
