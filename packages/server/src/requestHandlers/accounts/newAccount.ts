@@ -8,6 +8,7 @@ import jwt from 'jsonwebtoken';
 
 import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
 import { db } from '../../store';
+
 import { storePassword } from './storePassword';
 
 const CreateWithTokenRequestV = t.type({
