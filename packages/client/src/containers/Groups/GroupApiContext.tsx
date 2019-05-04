@@ -133,10 +133,10 @@ export class GroupApiProvider extends React.Component<
     });
   };
 
-  listGroups = () => {
+  listGroups = (query?: Parameters<typeof groupsService.listGroups>[0]) => {
     this.setState({ isLoading: true });
     groupsService
-      .listGroups()
+      .listGroups(query)
       .then(res => {
         this.setState({ groups: res.groups, isLoading: false });
       })

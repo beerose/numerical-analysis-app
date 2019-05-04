@@ -137,16 +137,14 @@ export const listGroups = (
   callback: QueryCallback<GroupDTO[]>
 ) =>
   connection.query(
-    {
-      sql: `
-        SELECT
-          *
-        FROM
-          \`groups\`
-        ${lecturerId ? sql`WHERE lecturer_id = ${lecturerId}` : ''}
-        ORDER BY created_at DESC
-      `,
-    },
+    sql`
+      SELECT
+        *
+      FROM
+        \`groups\`
+      ${lecturerId ? sql`WHERE lecturer_id = ${lecturerId}` : sql.empty}
+      ORDER BY created_at DESC
+    `,
     callback
   );
 
