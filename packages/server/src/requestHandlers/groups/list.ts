@@ -1,20 +1,31 @@
 import { apiMessages, GroupDTO } from 'common';
-import { Request } from 'express';
 import * as codes from 'http-status-codes';
+import * as t from 'io-ts';
 
-import { BackendResponse } from '../../lib';
+import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
 import { db } from '../../store';
 
+const ListGroupsQueryV = t.partial({
+  lecturer_id: t.number,
+});
+
+type ListGroupsRequest = GetRequest<typeof ListGroupsQueryV>;
+
 export const list = (
-  _req: Request,
+  req: ListGroupsRequest,
   res: BackendResponse<{ groups: GroupDTO[] }>
-) => {
-  return db.listGroups((err, groups) => {
-    if (err) {
-      return res
-        .status(codes.INTERNAL_SERVER_ERROR)
-        .send({ error: apiMessages.internalError, error_details: err.message });
-    }
-    return res.status(codes.OK).send({ groups });
+) =>
+  handleBadRequest(ListGroupsQueryV, req.query, res).then(() => {
+    return db.listGroups(
+      { lecturerId: req.query.lecturer_id },
+      (err, groups) => {
+        if (err) {
+          return res.status(codes.INTERNAL_SERVER_ERROR).send({
+            error: apiMessages.internalError,
+            error_details: err.message,
+          });
+        }
+        return res.status(codes.OK).send({ groups });
+      }
+    );
   });
-};

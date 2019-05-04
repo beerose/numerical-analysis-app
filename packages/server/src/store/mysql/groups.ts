@@ -1,12 +1,7 @@
-import {
-  GroupDTO,
-  GroupWithLecturer,
-  TaskDTO,
-  UserDTO,
-  UserWithGroups,
-} from 'common';
+import { GroupDTO, GroupWithLecturer, TaskDTO, UserDTO } from 'common';
 import { Omit } from 'lodash';
 
+import { sql } from '../../lib';
 import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
@@ -98,7 +93,7 @@ export const deleteGroup = (
 
 export const listUsersWithGroup = (
   callback: QueryCallback<
-    (UserDTO & { group_ids: string; groups_grades: string })[]
+    Array<UserDTO & { group_ids: string; groups_grades: string }>
   >
 ) =>
   connection.query(
@@ -137,15 +132,20 @@ export const deleteFromGroup = (
     callback
   );
 
-export const listGroups = (callback: QueryCallback<GroupDTO[]>) =>
+export const listGroups = (
+  { lecturerId }: { lecturerId?: GroupDTO['lecturer_id'] },
+  callback: QueryCallback<GroupDTO[]>
+) =>
   connection.query(
     {
       sql: `
-  SELECT
-    *
-  FROM
-    \`groups\`
-  ORDER BY created_at DESC`,
+        SELECT
+          *
+        FROM
+          \`groups\`
+        ${lecturerId ? sql`WHERE lecturer_id = ${lecturerId}` : ''}
+        ORDER BY created_at DESC
+      `,
     },
     callback
   );
@@ -157,26 +157,25 @@ export const listTasksForGroup = (
     groupId?: GroupDTO['id'];
   },
   callback: QueryCallback<TaskDTO[]>
-) =>
-  connection.query(
+) => {
+  const joinWithTasks = /* sql */ `
+    JOIN group_has_task ght
+      ON (t.id = ght.task_id)
+      WHERE ght.group_id =?
+    `;
+
+  return connection.query(
     {
-      sql: `
-  SELECT t.*
-  FROM tasks t
-  ${
-    groupId
-      ? `
-  JOIN group_has_task ght
-    ON (t.id = ght.task_id)
-    WHERE ght.group_id =?
-  `
-      : ''
-  }
-  ORDER BY created_at DESC`,
+      sql: /* sql */ `
+    SELECT t.*
+    FROM tasks t
+    ${groupId ? joinWithTasks : ''}
+    ORDER BY created_at DESC`,
       values: groupId ? [groupId] : [],
     },
     callback
   );
+};
 
 export const deleteTaskFromGroup = (
   {

@@ -2,6 +2,8 @@
   "extends": ["@hasparus/tslint-config"],
   "rules": {
     "max-func-body-length": false, // duplicate of no-big-function
-    "no-submodule-imports": [true, "fp-ts", "react-dom", "antd"]
+    "no-submodule-imports": [true, "fp-ts", "react-dom", "antd"],
+    "prefer-template": false,
+    "no-nested-template-literals": false
   }
 }
