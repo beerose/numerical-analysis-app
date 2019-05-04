@@ -1,7 +1,7 @@
 import { ApiResponse, ServerRoutes, UserDTO } from 'common';
 import * as qs from 'query-string';
 
-import { showMessage } from '../utils/message';
+import { showMessage } from '../utils/showMessage';
 
 import { SERVER_URL } from './';
 import { authFetch } from './authFetch';

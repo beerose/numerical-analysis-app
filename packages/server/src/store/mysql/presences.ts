@@ -8,12 +8,12 @@ import { QueryCallback } from './QueryCallback';
 export const getMeetingsData = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
-    {
+    Array<{
       id: UserDTO['id'];
       user_name: UserDTO['user_name'];
       student_index: UserDTO['student_index'];
-      meetings_data: { meeting_id: MeetingDTO['id']; points: number }[];
-    }[]
+      meetings_data: Array<{ meeting_id: MeetingDTO['id']; points: number }>;
+    }>
   >
 ) =>
   connection.query(
@@ -81,11 +81,11 @@ export const deletePresence = (
 export const getUsersMeetingsPoints = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
-    {
+    Array<{
       user_id: UserDTO['id'];
       activity_points: number;
       sum_presences: number;
-    }[]
+    }>
   >
 ) =>
   connection.query(

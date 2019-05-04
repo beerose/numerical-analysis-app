@@ -1,8 +1,9 @@
-import * as t from 'io-ts';
-import { GroupDTO, apiMessages } from '../../../../../dist/common';
-import { handleBadRequest, GetRequest, BackendResponse } from '../../lib';
-import { db } from '../../store';
 import * as codes from 'http-status-codes';
+import * as t from 'io-ts';
+
+import { apiMessages, GroupDTO } from '../../../../../dist/common';
+import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
+import { db } from '../../store';
 
 const GetAttachedQueryV = t.type({
   group_id: t.string,

@@ -14,7 +14,7 @@ import * as qs from 'query-string';
 import { Omit } from 'react-router';
 import { DeepRequired } from 'utility-types';
 
-import { showMessage } from '../utils/message';
+import { showMessage } from '../utils/showMessage';
 
 import { SERVER_URL } from '.';
 import { authFetch } from './authFetch';
@@ -36,17 +36,22 @@ export const uploadUsers = async (
   ).then(showMessage);
 };
 
-export const listGroups = async (): Promise<{ groups: GroupDTO[] }> => {
+export const listGroups = async (
+  query?: Partial<Pick<GroupDTO, 'lecturer_id'>>
+): Promise<{ groups: GroupDTO[] }> => {
   const options = {
     method: 'GET',
   };
 
-  return authFetch<{ groups: GroupDTO[] }>(SERVER_URL + Groups.List, options);
+  return authFetch<{ groups: GroupDTO[] }>(
+    `${SERVER_URL}${Groups.List}?${query ? qs.stringify(query) : ''}`,
+    options
+  );
 };
 
 export const getGroup = async (groupId: GroupDTO['id']): Promise<GroupDTO> =>
   authFetch(
-    `${SERVER_URL + Groups.Get}?${qs.stringify({ group_id: groupId })}`
+    `${SERVER_URL}${Groups.Get}?${qs.stringify({ group_id: groupId })}`
   );
 
 export const listStudentsWithGroup = async (): Promise<{

@@ -25,10 +25,10 @@ export class AuthProvider extends React.Component<
     super(props);
     this.state = {
       actions: {
+        changePassword: this.changePassword,
         createNewAccount: this.createNewAccount,
         goToMainPage: this.goToMainPage,
         login: this.loginUser,
-        changePassword: this.changePassword,
       },
       error: false,
       userAuth: false,

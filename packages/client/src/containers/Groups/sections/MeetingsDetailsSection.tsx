@@ -1,7 +1,7 @@
 import { ApiResponse } from 'common';
 import * as React from 'react';
 
-import { PresenceTable } from '../components';
+import { PresenceTable } from '../components/PresenceTable';
 import { GroupApiContextState } from '../GroupApiContext';
 
 type Props = GroupApiContextState;
@@ -41,6 +41,7 @@ export class MeetingsDetailsSections extends React.Component<Props> {
       meetingsDetails,
       actions: { setStudentMeetingDetails },
     } = this.props;
+
     return (
       <PresenceTable
         meetings={meetings}

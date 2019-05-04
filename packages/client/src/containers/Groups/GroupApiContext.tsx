@@ -133,10 +133,10 @@ export class GroupApiProvider extends React.Component<
     });
   };
 
-  listGroups = () => {
+  listGroups = (query?: Parameters<typeof groupsService.listGroups>[0]) => {
     this.setState({ isLoading: true });
     groupsService
-      .listGroups()
+      .listGroups(query)
       .then(res => {
         this.setState({ groups: res.groups, isLoading: false });
       })
@@ -267,14 +267,13 @@ export class GroupApiProvider extends React.Component<
     return groupsService.uploadUsers(payload, this.state.currentGroup.id);
   };
 
-  listTasks = async ({ all }: { all?: boolean }) => {
+  listTasks = ({ all }: { all?: boolean }) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.listTasks(
+    return groupsService.listTasks(
       all ? undefined : this.state.currentGroup.id
     );
-    return res;
   };
 
   deleteTaskFromGroup = async (taskId: TaskDTO['id']) => {
@@ -362,43 +361,35 @@ export class GroupApiProvider extends React.Component<
     );
   };
 
-  getAttached = async () => {
+  getAttached = () => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.getAttached(this.state.currentGroup.id);
-    return res;
+    return groupsService.getAttached(this.state.currentGroup.id);
   };
 
-  attach = async (attachedGroupId: GroupDTO['id']) => {
+  attach = (attachedGroupId: GroupDTO['id']) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.attachGroup(
+    return groupsService.attachGroup(
       attachedGroupId,
       this.state.currentGroup.id
     );
-    return res;
   };
 
-  detach = async (groupId: GroupDTO['id']) => {
+  detach = (groupId: GroupDTO['id']) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.detachGroup(groupId);
-    return res;
+    return groupsService.detachGroup(groupId);
   };
 
   attachTask = async (taskId: TaskDTO['id'], weight: number) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    const res = await groupsService.attachTask(
-      this.state.currentGroup.id,
-      taskId,
-      weight
-    );
-    return res;
+    return groupsService.attachTask(this.state.currentGroup.id, taskId, weight);
   };
 
   render() {

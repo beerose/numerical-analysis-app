@@ -3,20 +3,20 @@ import { Router } from 'express';
 
 import { auth } from '../../middleware';
 
+import { attach } from './attach';
 import { create } from './create';
 import { deleteGroup } from './delete';
+import { detach } from './detach';
 import { getGroup } from './get';
+import { getAttached } from './getAttached';
 import { list } from './list';
 import * as meetings from './meetings';
+import * as results from './results';
 import { share } from './shareForEdit';
 import * as students from './students';
 import * as tasks from './tasks';
-import * as results from './results';
 import { update } from './update';
 import { upload } from './upload';
-import { getAttached } from './getAttached';
-import { attach } from './attach';
-import { detach } from './detach';
 
 export const router = Router();
 
@@ -85,6 +85,7 @@ router.post(
   detach
 );
 
+// Students
 router.get(
   Routes.Students.List,
   auth.authorize([UserRole.admin, UserRole.superUser]),
@@ -104,6 +105,7 @@ router.delete(
   students.removeStudentFromGroup
 );
 
+// Meetings
 router.get(
   Routes.Meetings.List,
   auth.authorize([UserRole.admin, UserRole.superUser]),

@@ -12,14 +12,14 @@ import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
 import { Theme } from '../../../components/theme';
 import { LABELS, useMergeKey, useMergeState } from '../../../utils';
-import { GroupEquation } from '../components/GradeEquation';
+import { GradeEquationInput } from '../components/GradeEquationInput';
 import {
   GradeTresholdsList,
   tresholdsKeys,
 } from '../components/GradeTresholdsList';
 import { GroupTypeRadioGroup } from '../components/GroupTypeRadioGroup';
+import { SelectLecturer } from '../components/SelectLecturer';
 import { SelectSemester } from '../components/SelectSemester';
-import { SelectSuperUser } from '../components/SelectSuperUser';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const SettingsForm = styled.form`
@@ -80,7 +80,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
         tresholds = fromPairs(
           tresholdsKeys.map(k => [k, 0] as [keyof Tresholds, number])
         ),
-        grade_equation = '',
+        grade_equation = '1 * presence + 1 * activity + 1 * tasks',
       } = group.data || {};
 
       return {
@@ -162,16 +162,13 @@ const SettingsSectionInternal: React.FC<Props> = ({
       </FormRow>
       <FormRow label={texts.lecturer}>
         {getFieldDecorator<AntFormState>('lecturer_id')(
-          <SelectSuperUser
-            superUsers={lecturers || []}
-            css={{ width: '100%' }}
-          />
+          <SelectLecturer lecturers={lecturers || []} css={{ width: '100%' }} />
         )}
       </FormRow>
       <FormRow label={texts.semester}>
         {getFieldDecorator<AntFormState>('semester')(<SelectSemester />)}
       </FormRow>
-      <GroupEquation
+      <GradeEquationInput
         value={groupDataState.grade_equation}
         onChange={setEquation}
         error={equationErrorMsg}
@@ -194,4 +191,4 @@ const SettingsSectionInternal: React.FC<Props> = ({
   );
 };
 
-export const SettingsSection = Form.create()(SettingsSectionInternal);
+export const SettingsSection = Form.create<Props>()(SettingsSectionInternal);

@@ -18,34 +18,55 @@ import { DeepRequired } from 'utility-types';
 import { Flex, Table, Theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
-import { gradesToCsv, isSafari } from '../../../utils/';
+import { gradesToCsv, isSafari, usePromise } from '../../../utils/';
+import { evalEquation } from '../components/evalEquation';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
 import { GroupApiContextState } from '../GroupApiContext';
 
-// TODO Use Grade Equation, add meetings points
-function computeGradeFromResults(
+async function computeGradeFromResults(
   studentResults: UserResultsModel,
   { tresholds, grade_equation: gradeEquation }: DeepRequired<GroupDTO>['data']
-) {
-  const { tasksPoints, maxTasksPoints, presences, activity } = studentResults;
+): Promise<[Grade, number]> {
+  const { tasksPoints, presences, activity } = studentResults;
 
-  console.warn('TODO unused', { presences, activity, gradeEquation });
+  const points = await evalEquation(
+    {
+      activity,
+      presence: presences,
+      tasks: tasksPoints,
+    },
+    gradeEquation
+  );
+  const grade = getGradeFromTresholds(points, tresholds);
 
-  /**
-   * `maxTasksPoints` is probably a bug
-   * we've spoken with a shareholder, that he'd like to set
-   * tresholds for points, not percentage
-   * and we don't actually have maxPresences or maxActivity
-   */
-  const pointsPercentage = (tasksPoints / maxTasksPoints) * 100;
-
-  return getGradeFromTresholds(pointsPercentage, tresholds);
+  return [grade, points];
 }
 
-const SuggestedGrade: React.FC<{
+type GradeDisplayProps = {
   userResults: UserResultsModel;
   currentGroup?: GroupDTO;
-}> = ({ userResults, currentGroup }) => {
+};
+
+const ComputedGrade: React.FC<Required<GradeDisplayProps>> = ({
+  userResults,
+  currentGroup,
+}) => {
+  const [grade, points] = usePromise(
+    () =>
+      computeGradeFromResults(userResults, currentGroup.data as DeepRequired<
+        GroupDTO
+      >['data']),
+    '',
+    []
+  );
+
+  return <b title={`${points} pkt.`}>{grade}</b>;
+};
+
+const SuggestedGrade: React.FC<GradeDisplayProps> = ({
+  userResults,
+  currentGroup,
+}) => {
   if (!currentGroup || !currentGroup.data) {
     return <Spin />;
   }
@@ -54,11 +75,7 @@ const SuggestedGrade: React.FC<{
   }
 
   return (
-    <Fragment>
-      {computeGradeFromResults(userResults, currentGroup.data! as Required<
-        GroupGradeSettings
-      >)}
-    </Fragment>
+    <ComputedGrade userResults={userResults} currentGroup={currentGroup} />
   );
 };
 
@@ -70,8 +87,6 @@ const mergedResultsToTableItem = (
   const final = student.groups_grades
     ? student.groups_grades.find(g => g.group_id === groupId)
     : undefined;
-
-  console.log(results);
 
   return {
     activity: results ? results.sum_activity : 0,
@@ -157,8 +172,8 @@ export const GradesSection = ({
   const confirmGrade = useMemo(
     () =>
       gradeSettings &&
-      ((studentResults: UserResultsModel) => {
-        const grade = computeGradeFromResults(
+      (async (studentResults: UserResultsModel) => {
+        const [grade] = await computeGradeFromResults(
           studentResults,
           gradeSettings as Required<GroupGradeSettings>
         );
@@ -171,24 +186,28 @@ export const GradesSection = ({
   const confirmAllGrades = useMemo(
     () =>
       gradeSettings &&
-      (() => {
-        setTableData(tData =>
-          tData.map(studentResults => {
-            // TODO: Optimize this into one call with array studentIds?
-            const grade = computeGradeFromResults(
+      (async () => {
+        const newTableData = await Promise.all(
+          tableData.map(async studentResults => {
+            const [grade] = await computeGradeFromResults(
               studentResults,
               gradeSettings as Required<GroupGradeSettings>
             );
-            const studentId = studentResults.userId;
-            actions.setFinalGrade(studentId, grade);
+
             return {
               ...studentResults,
               finalGrade: grade,
             };
           })
         );
+
+        newTableData.forEach(({ userId, finalGrade }) =>
+          actions.setFinalGrade(userId, finalGrade)
+        );
+
+        setTableData(newTableData);
       }),
-    [gradeSettings]
+    [gradeSettings, tableData]
   );
 
   const handleGradesCsvDownload = useCallback(() => {
@@ -200,46 +219,53 @@ export const GradesSection = ({
 
   const columns = [
     {
-      title: 'Imię i nazwisko',
       dataIndex: 'userName',
       key: 'name',
+      title: 'Imię i nazwisko',
       width: 200,
     },
     { title: 'Index', dataIndex: 'index', key: 'index', width: 100 },
     {
-      title: `Testy i zadania`,
       key: 'tasks_grade',
-      width: 120,
       render: (item: UserResultsModel) => (
         <Flex justifyContent="center" flexDirection="row">
           {item.tasksPoints} /
           <b style={{ paddingLeft: 5 }}>{item.maxTasksPoints}</b>
         </Flex>
       ),
-    },
-    {
-      title: 'Obecności i aktywności',
-      key: 'meetings_grade',
+      title: `Testy i zadania`,
       width: 120,
-      render: (item: UserResultsModel) => (
-        <Flex justifyContent="center">{item.presences + item.activity}</Flex>
-      ),
     },
     {
-      title: `Proponowana ocena`,
+      align: 'center',
+      key: 'meetings_grade',
+      render: (item: UserResultsModel) => item.presences + item.activity,
+      title: 'Obecności i aktywności',
+      width: 120,
+    },
+    {
+      align: 'center',
       key: 'suggested_grade',
-      width: 100,
       render: (item: UserResultsModel) => (
-        <Flex justifyContent="center" fontWeight="bold">
-          <SuggestedGrade userResults={item} currentGroup={currentGroup} />
-        </Flex>
+        <SuggestedGrade userResults={item} currentGroup={currentGroup} />
       ),
+      title: `Proponowana ocena`,
+      width: 100,
     },
     {
+      align: 'center',
+      key: 'confirm_grade',
+      render: (studentResults: UserResultsModel) => (
+        <ArrowRightButton
+          title="Zatwierdź ocenę"
+          alt="Zatwierdź ocenę"
+          disabled={!confirmGrade}
+          onClick={confirmGrade && (() => confirmGrade(studentResults))}
+        />
+      ),
       title: (
         <p
           css={css`
-            text-align: center;
             margin: 0;
           `}
         >
@@ -250,27 +276,18 @@ export const GradesSection = ({
           </a>
         </p>
       ),
-      key: 'confirm_grade',
       width: 50,
-      render: (studentResults: UserResultsModel) => (
-        <ArrowRightButton
-          title="Zatwierdź ocenę"
-          alt="Zatwierdź ocenę"
-          disabled={!confirmGrade}
-          onClick={confirmGrade && (() => confirmGrade(studentResults))}
-        />
-      ),
     },
     {
-      title: `Wystawiona ocena`,
       key: 'set_grade',
-      width: 150,
       render: (studentResults: UserResultsModel) => (
         <SetGrade
           value={studentResults.finalGrade}
           onChange={grade => setGrade(studentResults.userId, grade)}
         />
       ),
+      title: `Wystawiona ocena`,
+      width: 150,
     },
   ];
 

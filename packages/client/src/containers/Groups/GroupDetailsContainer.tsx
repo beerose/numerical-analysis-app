@@ -13,14 +13,14 @@ import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
 import {
+  AttachedGroupsSection,
+  GradesSection,
   MeetingsDetailsSections,
   MeetingsSection,
   SettingsSection,
   StudentsSection,
   TaskSection,
   TasksSection,
-  GradesSection,
-  AttachedSection,
 } from './sections';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
@@ -197,7 +197,10 @@ export class GroupDetailsContainer extends React.Component<
                 </Route>
                 <Route exact path={'/groups/:id/attached'}>
                   {({ history }) => (
-                    <AttachedSection {...this.context} history={history} />
+                    <AttachedGroupsSection
+                      {...this.context}
+                      history={history}
+                    />
                   )}
                 </Route>
                 <NotFoundPage />

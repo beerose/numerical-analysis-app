@@ -5,4 +5,4 @@ export * from './SettingsSection';
 export * from './TasksSection';
 export * from './TaskSection';
 export * from './GradesSection';
-export * from './AttachedSection';
+export * from './AttachedGroupsSection';

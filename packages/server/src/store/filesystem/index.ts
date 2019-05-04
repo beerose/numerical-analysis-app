@@ -30,7 +30,7 @@ function makeTemporaryName(file: File) {
   return [
     hash(Buffer.from(file.originalname), SEED, 'hex'),
     Date.now(),
-    mime.extension(file.mimetype),
+    mime.getExtension(file.mimetype),
   ].join('.');
 }
 

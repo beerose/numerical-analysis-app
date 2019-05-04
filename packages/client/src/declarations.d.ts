@@ -6,8 +6,6 @@ declare namespace NodeJS {
   }
 }
 
-declare module 'query-string';
-
 declare module '@reach/visually-hidden' {
   const VisuallyHidden: React.SFC;
 
