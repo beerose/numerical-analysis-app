@@ -53,19 +53,18 @@ export class MainMenu extends React.Component<Props> {
     }
   }
 
-  getSelectedItem() {
-    return this.props.location.pathname.split('/')[1];
-  }
-
   render() {
-    const menuItems = this.getMenuItemsForUserRole(this.props.userRole);
+    const { location, userRole } = this.props;
+
+    const menuItems = this.getMenuItemsForUserRole(userRole);
+    const selectedItem = location.pathname.split('/')[1];
 
     return (
       <Menu
         theme="dark"
         mode="horizontal"
         css={mainMenuStyles}
-        defaultSelectedKeys={[this.getSelectedItem()]}
+        selectedKeys={[selectedItem]}
       >
         {menuItems.map(item => (
           <Menu.Item key={item.key}>
