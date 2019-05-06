@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import { List, Spin } from 'antd';
 import { GroupDTO, UserDTO } from 'common';
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ import { LABELS } from '../../utils/labels';
 import { makeIdDict } from '../../utils/makeDict';
 
 import { NewGroupButton } from './components/NewGroupButton';
+import { SelectLecturer } from './components/SelectLecturer';
 import { GroupApiContext } from './GroupApiContext';
 
 type GroupListItemProps = GroupDTO & {
@@ -68,35 +69,56 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
     groupApi.actions.listGroups();
   }, []);
 
-  const lecturers = usePromise(
+  const lecturersDict = usePromise(
     () => groupApi.actions.listLecturers().then(makeIdDict),
     makeIdDict(groupApi.lecturers),
     []
   );
 
+  // TODO: Add a way to clear selected lecturer
+  // TODO: Hold this state in URL searchParams
+  const [selectedLecturer, selectLecturer] = useState();
+
   const {
     groups,
     isLoading,
+    lecturers,
     error,
     actions: { deleteGroup },
   } = groupApi;
+
+  const dataSource =
+    selectedLecturer && groups
+      ? groups.filter(g => g.lecturer_id === selectedLecturer)
+      : groups;
 
   return (
     <PaddingContainer>
       <Breadcrumbs />
       <NewGroupButton onClick={() => props.history.push('/groups/new')} />
+      <SelectLecturer
+        lecturers={lecturers}
+        onChange={selectLecturer}
+        value={selectedLecturer}
+        css={css`
+          width: 12em;
+          height: 32px;
+          box-sizing: content-box;
+          margin-left: ${Theme.Padding.Quarter};
+        `}
+      />
       <Spin spinning={isLoading}>
         {error ? (
           <ErrorMessage message={error.toString()} />
         ) : (
           <List
             itemLayout="horizontal"
-            dataSource={groups}
+            dataSource={dataSource}
             renderItem={group => (
               <GroupListItem
                 {...group}
                 handleDelete={() => deleteGroup(group.id)}
-                lecturer={lecturers[group.lecturer_id]}
+                lecturer={lecturersDict[group.lecturer_id]}
               />
             )}
           />
