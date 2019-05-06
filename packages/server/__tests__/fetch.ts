@@ -17,7 +17,6 @@ export const fetch: TestFetchFunc = makeFetch(app) as TestFetchFunc;
 
 fetch.asAdmin = (url: string | Request, init?: RequestInit) =>
   fetch(url, {
-    ...init,
     headers: {
       Accept: 'application/json, text/plain, */*',
       Authorization:

@@ -15,7 +15,7 @@ export = async () => {
     {
       sql: `
     INSERT IGNORE INTO users(user_name, email, user_role)
-    VALUES (?, ?, ?)`,
+    VALUES (?, ?, ?);`,
       values: ['Test Admin User', 'admin@test.com', 'admin'],
     },
     err => {

@@ -1,7 +1,7 @@
 import { GroupDTO, GroupWithLecturer, TaskDTO, UserDTO } from 'common';
 import { Omit } from 'lodash';
+import { sql } from 'tag-sql';
 
-import { sql } from '../../lib';
 import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
