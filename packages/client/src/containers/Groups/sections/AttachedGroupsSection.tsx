@@ -4,7 +4,7 @@ import { async } from 'q';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { DeleteWithConfirm, Flex, Theme } from '../../../components';
+import { DeleteWithConfirmation, Flex, Theme } from '../../../components';
 import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { GroupApiContextState } from '../GroupApiContext';
 
@@ -104,7 +104,7 @@ export const AttachedGroupsSection = (props: Props) => {
           renderItem={(item: GroupDTO) => (
             <List.Item
               actions={[
-                <DeleteWithConfirm
+                <DeleteWithConfirmation
                   onConfirm={() => handleDetachGroup(item.id)}
                   label="Odepnij grupę"
                 />,

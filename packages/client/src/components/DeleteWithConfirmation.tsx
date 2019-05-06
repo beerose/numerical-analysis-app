@@ -3,7 +3,7 @@ import React from 'react';
 
 import { LABELS } from '../utils/labels';
 
-export const DeleteWithConfirm: React.FC<{
+export const DeleteWithConfirmation: React.FC<{
   onConfirm: (e?: React.MouseEvent<any>) => void;
   label?: React.ReactNode;
 }> = ({ onConfirm, label }) => (

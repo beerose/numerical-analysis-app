@@ -1,78 +1,107 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button, List, Spin } from 'antd';
-import { GroupDTO } from 'common';
-import * as React from 'react';
+import { List, Spin } from 'antd';
+import { GroupDTO, UserDTO } from 'common';
+import React, { Fragment, useContext, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Breadcrumbs, ErrorMessage } from '../../components';
-import { DeleteWithConfirm } from '../../components/DeleteWithConfirm';
+import { Breadcrumbs, ErrorMessage, Theme } from '../../components';
+import { LocaleContext } from '../../components/locale';
+import { DeleteWithConfirmation } from '../../components/DeleteWithConfirmation';
 import { PaddingContainer } from '../../components/PaddingContainer';
+import { usePromise } from '../../utils';
 import { LABELS } from '../../utils/labels';
+import { makeIdDict } from '../../utils/makeDict';
 
-import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
+import { NewGroupButton } from './components/NewGroupButton';
+import { GroupApiContext } from './GroupApiContext';
 
-const newGroupButtonStyles = css`
-  width: 140px;
-  margin: 25px 0 7px 0;
-  align-self: start;
-`;
+type GroupListItemProps = GroupDTO & {
+  handleDelete: () => void;
+  lecturer: UserDTO;
+};
+const GroupListItem = (props: GroupListItemProps) => {
+  const { texts } = useContext(LocaleContext);
 
-export class ListGroupsContainer extends React.Component<RouteComponentProps> {
-  static contextType = GroupApiContext;
-  context!: GroupApiContextState;
+  return (
+    <List.Item
+      actions={[
+        <DeleteWithConfirmation onConfirm={props.handleDelete}>
+          <a>{LABELS.delete}</a>
+        </DeleteWithConfirmation>,
+      ]}
+    >
+      <List.Item.Meta
+        title={<Link to={`/groups/${props.id}`}>{props.group_name}</Link>}
+        description={
+          props.lecturer && (
+            <Fragment>
+              <Link
+                to={`/users/${props.lecturer_id}`}
+                title={texts.lecturer}
+                css={css`
+                  color: inherit;
+                `}
+              >
+                {props.lecturer.user_name}
+              </Link>
+              <span
+                css={css`
+                  margin-left: ${Theme.Padding.Standard};
+                `}
+              >
+                {props.semester}
+              </span>
+            </Fragment>
+          )
+        }
+      />
+    </List.Item>
+  );
+};
 
-  componentDidMount() {
-    this.context.actions.listGroups();
-  }
+export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
+  const groupApi = useContext(GroupApiContext);
 
-  render() {
-    const {
-      groups,
-      isLoading,
-      error,
-      actions: { deleteGroup },
-    } = this.context;
+  useEffect(() => {
+    groupApi.actions.listGroups();
+  }, []);
 
-    return (
-      <PaddingContainer>
-        <Breadcrumbs />
-        <Button
-          icon="usergroup-add"
-          type="primary"
-          onClick={() => this.props.history.push('/groups/new')}
-          css={newGroupButtonStyles}
-        >
-          {LABELS.newGroup}
-        </Button>
-        <Spin spinning={isLoading}>
-          {error ? (
-            <ErrorMessage message={error.toString()} />
-          ) : (
-            <List
-              itemLayout="horizontal"
-              dataSource={groups}
-              renderItem={(item: GroupDTO) => (
-                <List.Item
-                  actions={[
-                    <DeleteWithConfirm onConfirm={() => deleteGroup(item.id)}>
-                      <a>{LABELS.delete}</a>
-                    </DeleteWithConfirm>,
-                  ]}
-                >
-                  <List.Item.Meta
-                    title={
-                      <Link to={`/groups/${item.id}`}>{item.group_name}</Link>
-                    }
-                    // description={`Prowadzący: ${item.lecture}`} TO DO
-                  />
-                </List.Item>
-              )}
-            />
-          )}
-        </Spin>
-      </PaddingContainer>
-    );
-  }
-}
+  const lecturers = usePromise(
+    () => groupApi.actions.listLecturers().then(makeIdDict),
+    makeIdDict(groupApi.lecturers),
+    []
+  );
+
+  const {
+    groups,
+    isLoading,
+    error,
+    actions: { deleteGroup },
+  } = groupApi;
+
+  return (
+    <PaddingContainer>
+      <Breadcrumbs />
+      <NewGroupButton onClick={() => props.history.push('/groups/new')} />
+      <Spin spinning={isLoading}>
+        {error ? (
+          <ErrorMessage message={error.toString()} />
+        ) : (
+          <List
+            itemLayout="horizontal"
+            dataSource={groups}
+            renderItem={group => (
+              <GroupListItem
+                {...group}
+                handleDelete={() => deleteGroup(group.id)}
+                lecturer={lecturers[group.lecturer_id]}
+              />
+            )}
+          />
+        )}
+      </Spin>
+    </PaddingContainer>
+  );
+};

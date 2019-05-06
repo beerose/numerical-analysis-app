@@ -13,7 +13,7 @@ export * from './PaddingContainer';
 export * from './TaskTypeSelect';
 export * from './Flex';
 export * from './DateRange';
-export * from './DeleteWithConfirm';
+export * from './DeleteWithConfirmation';
 export * from './Table';
 export * from './theme';
 export { WrappedNewPasswordForm as NewPasswordForm } from './NewPasswordForm';

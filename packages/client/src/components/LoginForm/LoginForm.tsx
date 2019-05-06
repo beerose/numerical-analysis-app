@@ -103,4 +103,4 @@ const LoginForm = (props: Props) => {
   );
 };
 
-export const WrappedLoginForm = Form.create()(LoginForm);
+export const WrappedLoginForm = Form.create<Props>()(LoginForm);

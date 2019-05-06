@@ -8,7 +8,7 @@ import moment, { Moment } from 'moment';
 import * as React from 'react';
 
 import { Theme } from '../../../components/theme';
-import { DeleteWithConfirm } from '../../../components/DeleteWithConfirm';
+import { DeleteWithConfirmation } from '../../../components/DeleteWithConfirmation';
 import { Flex } from '../../../components/Flex';
 import { LABELS } from '../../../utils/labels';
 import { WrappedEditMeetingForm } from '../components/EditMeetingForm';
@@ -122,11 +122,11 @@ export class MeetingsSection extends React.Component<Props, State> {
                     >
                       {LABELS.edit}
                     </a>,
-                    <DeleteWithConfirm
+                    <DeleteWithConfirmation
                       onConfirm={() => this.handleDeleteMeeting(meeting.id)}
                     >
                       <a>{LABELS.delete}</a>
-                    </DeleteWithConfirm>,
+                    </DeleteWithConfirmation>,
                   ]}
                 >
                   <List.Item.Meta title={meeting.meeting_name} />
