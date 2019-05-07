@@ -1,6 +1,16 @@
 /** @jsx jsx */
 import { css, jsx, ObjectInterpolation } from '@emotion/core';
-import { CSSProperties, forwardRef, ReactNode, ReactType } from 'react';
+import {
+  ComponentProps,
+  CSSProperties,
+  FC,
+  forwardRef,
+  ReactNode,
+  ReactSVG,
+  ReactType,
+} from 'react';
+
+import { Theme } from './theme';
 
 type FlexProps = CSSProperties & {
   children?: ReactNode;
@@ -14,7 +24,7 @@ type FlexProps = CSSProperties & {
   size?: string | number;
 };
 
-export const Flex = forwardRef(
+const _Flex = forwardRef(
   (
     {
       children,
@@ -44,3 +54,9 @@ export const Flex = forwardRef(
       children
     )
 );
+
+type FlexUtilityComponent = typeof _Flex & {
+  Spacer: FC<ComponentProps<typeof _Flex>>;
+};
+export const Flex: FlexUtilityComponent = _Flex as FlexUtilityComponent;
+Flex.Spacer = () => <Flex size={Theme.Padding.Half} />;

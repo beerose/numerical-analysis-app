@@ -11,7 +11,7 @@ import {
 } from 'common';
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { DateRange, DeleteWithConfirm, Flex } from '../../../components/';
+import { DateRange, DeleteWithConfirmation, Flex } from '../../../components/';
 import { Colors, LABELS, showMessage, useToggle } from '../../../utils';
 
 import { TaskMeta } from './TaskMeta';
@@ -161,9 +161,9 @@ export const TaskListItem = ({
           <a role="link" onClick={() => navigateTo(String(task.id))}>
             {LABELS.edit}
           </a>,
-          <DeleteWithConfirm onConfirm={() => deleteTask(task.id)}>
+          <DeleteWithConfirmation onConfirm={() => deleteTask(task.id)}>
             <a>{LABELS.delete}</a>
-          </DeleteWithConfirm>,
+          </DeleteWithConfirmation>,
         ]}
         onClick={toggleGradesVisible}
       >

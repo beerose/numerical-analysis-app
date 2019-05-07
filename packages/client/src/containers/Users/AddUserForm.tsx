@@ -96,4 +96,4 @@ export const NewUserModalForm = (props: Props) => {
   );
 };
 
-export const WrappedNewUserModalForm = Form.create()(NewUserModalForm);
+export const WrappedNewUserModalForm = Form.create<Props>()(NewUserModalForm);

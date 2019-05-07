@@ -3,5 +3,6 @@ export namespace Theme {
   export enum Padding {
     Standard = '40px',
     Half = '20px',
+    Quarter = '10px',
   }
 }

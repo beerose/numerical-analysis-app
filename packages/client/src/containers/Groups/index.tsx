@@ -1,12 +1,12 @@
 import React from 'react';
-import { Route, RouteChildrenProps, Switch } from 'react-router';
+import { Route, RouteComponentProps, Switch } from 'react-router';
 
 import { CreateGroupContainer } from './CreateGroupContainer';
 import { GroupApiProvider } from './GroupApiContext';
 import { GroupDetailsContainer } from './GroupDetailsContainer';
 import { ListGroupsContainer } from './ListGroupsContainer';
 
-export const Groups = (props: RouteChildrenProps) => {
+export const Groups = (props: RouteComponentProps) => {
   return (
     <GroupApiProvider {...props}>
       <Switch>

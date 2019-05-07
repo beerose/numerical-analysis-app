@@ -10,7 +10,7 @@ import {
   NewAccount,
   NotFoundPage,
 } from './components';
-import { Groups, Home, ListUsersContainer } from './containers';
+import { Groups, Home, Users } from './containers';
 import { SettingsContainer } from './containers/Settings';
 import { LABELS } from './utils/labels';
 import { AuthContext } from './AuthContext';
@@ -76,15 +76,8 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                           <Home userRole={userRole} userName={userName} />
                         )}
                       />
-                      <Route
-                        exact
-                        path="/users"
-                        component={ListUsersContainer}
-                      />
-                      <Route
-                        path="/groups"
-                        render={routeContext => <Groups {...routeContext} />}
-                      />
+                      <Route path="/users" component={Users} />
+                      <Route path="/groups" component={Groups} />
                       <Route path="/settings" component={SettingsContainer} />
                     </>
                   ) : (

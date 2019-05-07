@@ -6,13 +6,13 @@ import * as React from 'react';
 
 import { Colors, findStringifiedLowercase, LABELS } from '../../../utils';
 
-type SelectSuperUserProps = {
+type SelectLecturerProps = {
   lecturers: UserDTO[];
 } & SelectProps;
 
 export const SelectLecturer = React.forwardRef(
   (
-    { lecturers, value, ...rest }: SelectSuperUserProps,
+    { lecturers, value, ...rest }: SelectLecturerProps,
     ref: React.Ref<Select>
   ) => (
     <Select

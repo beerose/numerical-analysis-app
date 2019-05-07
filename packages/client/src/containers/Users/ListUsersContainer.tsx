@@ -14,6 +14,7 @@ import {
   Breadcrumbs,
   ErrorMessage,
   SelectRole,
+  Theme,
   UsersTable,
 } from '../../components';
 import { PaddingContainer } from '../../components/PaddingContainer';
@@ -22,22 +23,26 @@ import { LABELS } from '../../utils/labels';
 import { WrappedNewUserModalForm } from './AddUserForm';
 
 const SearchPanel = styled.div`
-  margin: 20px 0 20px 0;
+  margin: ${Theme.Padding.Half} 0 ${Theme.Padding.Half} 0;
   display: flex;
+  flex-wrap: wrap;
+  > * {
+    margin-bottom: 5px;
+  }
 `;
 
 const Input = styled(AntInput)`
   width: 400px;
-  margin-right: 10px;
+  margin-right: ${Theme.Padding.Quarter};
 `;
 
 const selectStyles = css`
   width: 300px;
-  margin-right: 10px;
+  margin-right: ${Theme.Padding.Quarter};
 `;
 
 const buttonStyles = css`
-  margin: 20px 20px 20px 0;
+  margin: ${Theme.Padding.Half} ${Theme.Padding.Half} ${Theme.Padding.Half} 0;
 `;
 
 type State = {
