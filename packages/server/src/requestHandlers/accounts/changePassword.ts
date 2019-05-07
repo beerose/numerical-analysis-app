@@ -3,13 +3,8 @@ import { apiMessages, UserDTO } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import {
-  BackendResponse,
-  generateUserJwtToken,
-  GetRequest,
-  handleBadRequest,
-} from '../../lib';
-import { db } from '../../store';
+import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
+
 import { storePassword } from './storePassword';
 
 const ChangePasswordBodyV = t.type({

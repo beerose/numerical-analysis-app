@@ -1,12 +1,13 @@
 import { ServerRoutes, UserRole } from 'common';
 import { Router } from 'express';
+
 import { auth } from '../../middleware';
 
-const { Accounts: Routes } = ServerRoutes;
-
+import { changePassword } from './changePassword';
 import { loginUser } from './loginUser';
 import { checkNewAccountToken, storeUserPassword } from './newAccount';
-import { changePassword } from './changePassword';
+
+const { Accounts: Routes } = ServerRoutes;
 
 export const router = Router();
 

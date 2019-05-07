@@ -1,8 +1,8 @@
-import * as t from 'io-ts';
 import { hash } from 'bcrypt';
 import { apiMessages, ApiResponse, UserDTO } from 'common';
-import { db } from '../../store';
 import * as codes from 'http-status-codes';
+
+import { db } from '../../store';
 const SALT_ROUNDS = 10;
 
 export const storePassword = (
