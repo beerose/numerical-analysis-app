@@ -4,6 +4,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import React, { useCallback, useState } from 'react';
 
 import { Colors, LABELS } from '../utils';
+
 import { Flex } from '.';
 
 const FormItem = Form.Item;
@@ -77,4 +78,4 @@ export const NewPasswordForm = (props: Props) => {
   );
 };
 
-export const WrappedNewPasswordForm = Form.create()(NewPasswordForm);
+export const WrappedNewPasswordForm = Form.create<Props>()(NewPasswordForm);

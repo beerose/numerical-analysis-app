@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-import { ListUsersContainer } from './ListUsersContainer';
+import { ListUsersContainer } from './ListUsers';
 import UserDetailsPage from './UserDetailsPage';
 
 export type UsersProps = RouteComponentProps;

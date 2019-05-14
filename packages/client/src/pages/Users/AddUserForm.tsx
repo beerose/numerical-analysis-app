@@ -4,7 +4,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { UserDTO } from 'common';
 import * as React from 'react';
 
-import { SelectRole } from '../../components/';
+import { SelectRole } from '../../components';
 import { Colors, LABELS } from '../../utils';
 
 const FormItem = Form.Item;

@@ -10,8 +10,8 @@ import {
   NewAccount,
   NotFoundPage,
 } from './components';
-import { Groups, Home, Users } from './containers';
-import { SettingsContainer } from './containers/Settings';
+import { Groups, Home, Users } from './pages';
+import { SettingsContainer } from './pages/Settings';
 import { LABELS } from './utils/labels';
 import { AuthContext } from './AuthContext';
 

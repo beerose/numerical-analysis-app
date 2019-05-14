@@ -118,4 +118,4 @@ class NewGroupForm extends React.Component<Props> {
   }
 }
 
-export const WrappedNewGroupForm = Form.create()(NewGroupForm);
+export const WrappedNewGroupForm = Form.create<Props>()(NewGroupForm);

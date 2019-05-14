@@ -18,7 +18,7 @@ import { DeepRequired } from 'utility-types';
 import { Flex, Table, Theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
-import { gradesToCsv, isSafari, usePromise } from '../../../utils/';
+import { gradesToCsv, isSafari, usePromise } from '../../../utils';
 import { evalEquation } from '../components/evalEquation';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
 import { GroupApiContextState } from '../GroupApiContext';

@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 import dotenv from 'dotenv';
-dotenv.load();
+dotenv.config();
 
 import { connection } from '../../src/store/connection';
 

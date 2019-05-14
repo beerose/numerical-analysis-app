@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 
-import { CreateGroupContainer } from './CreateGroupContainer';
+import { CreateGroupContainer } from './CreateGroup';
 import { GroupApiProvider } from './GroupApiContext';
-import { GroupDetailsContainer } from './GroupDetailsContainer';
-import { ListGroupsContainer } from './ListGroupsContainer';
+import { GroupDetailsContainer } from './GroupDetails';
+import { ListGroupsContainer } from './ListGroups';
 
 export const Groups = (props: RouteComponentProps) => {
   return (

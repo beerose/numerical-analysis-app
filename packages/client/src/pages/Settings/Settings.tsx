@@ -1,13 +1,9 @@
-import React, { useState, useContext } from 'react';
-import {
-  Flex,
-  NewPasswordForm,
-  Breadcrumbs,
-  PaddingContainer,
-} from '../../components';
-import { Modal, Button } from 'antd';
-import { AuthContext } from '../../AuthContext';
+import { Button, Modal } from 'antd';
+import React, { useContext, useState } from 'react';
+
+import { Flex, NewPasswordForm, PaddingContainer } from '../../components';
 import { showMessage } from '../../utils';
+import { AuthContext } from '../../AuthContext';
 
 export const SettingsContainer = () => {
   const [modalVisible, setModalVisible] = useState(false);
