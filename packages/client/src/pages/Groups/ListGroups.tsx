@@ -10,6 +10,7 @@ import { Breadcrumbs, ErrorMessage, Theme } from '../../components';
 import { LocaleContext } from '../../components/locale';
 import { DeleteWithConfirmation } from '../../components/DeleteWithConfirmation';
 import { PaddingContainer } from '../../components/PaddingContainer';
+import { RemoveSelected } from '../../components/RemoveSelected';
 import { usePromise } from '../../utils';
 import { LABELS } from '../../utils/labels';
 import { makeIdDict } from '../../utils/makeDict';
@@ -106,6 +107,10 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
           box-sizing: content-box;
           margin-left: ${Theme.Padding.Quarter};
         `}
+      />
+      <RemoveSelected
+        type="close-circle"
+        onClick={() => selectLecturer(null)}
       />
       <Spin spinning={isLoading}>
         {error ? (
