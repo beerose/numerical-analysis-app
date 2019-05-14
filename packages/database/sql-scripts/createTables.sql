@@ -117,7 +117,7 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `active_user` int(1) GENERATED ALWAYS AS (if(isnull(`password`),0,1)) VIRTUAL,
   `privileges` json DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL UNIQUE,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci UNIQUE NOT NULL,
   `user_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `student_index` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
   `user_role` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -126,6 +126,6 @@ CREATE TABLE `users` (
   PRIMARY KEY (`id`),
   KEY `user_role` (`user_role`),
   FULLTEXT KEY `user_name` (`user_name`),
-  FULLTEXT KEY `email` (`email`),
+  FULLTEXT KEY `email_fulltext` (`email`),
   FULLTEXT KEY `student_index` (`student_index`)
 ) ENGINE=InnoDB AUTO_INCREMENT=566 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
