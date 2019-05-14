@@ -5,17 +5,10 @@ import { FormComponentProps } from 'antd/lib/form';
 import { UserDTO } from 'common';
 import * as React from 'react';
 
-import { Colors, LABELS } from '../../../utils/';
+import { RemoveSelected } from '../../../components/RemoveSelected';
+import { Colors, LABELS } from '../../../utils';
 
 const FormItem = Form.Item;
-
-const RemoveSelectedStudent = styled(Icon)`
-  padding: 5px;
-  cursor: pointer;
-  * {
-    fill: ${Colors.Blackish};
-  }
-`;
 
 type State = {
   selectedStudent?: UserDTO;
@@ -100,7 +93,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
           ))}
         </Select>
         {selectedStudent && (
-          <RemoveSelectedStudent
+          <RemoveSelected
             type="close-circle"
             onClick={this.clearSelectedStudent}
           />
@@ -155,4 +148,6 @@ export class NewStudentModalForm extends React.Component<Props, State> {
   }
 }
 
-export const WrappedNewStudentModalForm = Form.create()(NewStudentModalForm);
+export const WrappedNewStudentModalForm = Form.create<Props>()(
+  NewStudentModalForm
+);
