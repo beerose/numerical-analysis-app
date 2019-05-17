@@ -10,7 +10,7 @@ describe('users', () => {
         body: JSON.stringify({
           email: 'jon@doe.com',
           user_name: 'Jon Doe',
-          user_role: UserRole.admin,
+          user_role: UserRole.Admin,
         } as UserDTO),
         method: 'POST',
       })
@@ -23,7 +23,7 @@ describe('users', () => {
       .then((res: { users: UserDTO[] }) => {
         const user = res.users.find(
           (u: UserDTO) =>
-            u.user_name === 'Jon Doe' && u.user_role === UserRole.admin
+            u.user_name === 'Jon Doe' && u.user_role === UserRole.Admin
         );
 
         expect(user).toBeTruthy();

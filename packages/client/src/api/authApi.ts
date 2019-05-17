@@ -1,4 +1,4 @@
-import { ApiResponse, ServerRoutes } from 'common';
+import { ApiResponse, ServerRoutes, UserRole } from 'common';
 
 import { LABELS } from '../utils/labels';
 
@@ -10,7 +10,7 @@ const { Accounts } = ServerRoutes;
 type AuthResponse = {
   token: string;
   user_name: string;
-  user_role: string;
+  user_role: UserRole;
 };
 
 const handleWrongResponse = (response: ApiResponse | AuthResponse) => {
@@ -30,12 +30,7 @@ const handleServerError = (err: any) => {
   return { error: err.response.data.message };
 };
 
-export const login = (
-  email: string,
-  password: string
-): Promise<
-  { token: string; user_name: string; user_role: string } | { error: string }
-> => {
+export const login = (email: string, password: string) => {
   const data = new URLSearchParams();
   data.append('email', email);
   data.append('password', password);
@@ -51,12 +46,7 @@ export const login = (
     .catch(handleServerError);
 };
 
-export const newAccount = (
-  token: string,
-  password: string
-): Promise<
-  { token: string; user_name: string; user_role: string } | { error: string }
-> => {
+export const newAccount = (token: string, password: string) => {
   const data = new URLSearchParams();
   data.append('token', token);
   data.append('password', password);

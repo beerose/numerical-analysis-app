@@ -2,6 +2,8 @@ import { createContext } from 'react';
 
 import pl from './pl.json';
 
+export type LocaleEntry = keyof typeof pl;
+
 function createLanguagePack<T>(texts: T) {
   return {
     texts,

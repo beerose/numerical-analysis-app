@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 // tslint:disable-next-line:no-import-side-effect
 import './styles.css';
-import { AuthProvider } from './AuthProvider';
+import { AuthProvider } from './AuthContext';
 import { Main } from './Main';
 
 export class App extends React.Component {

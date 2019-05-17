@@ -107,7 +107,7 @@ const readCSV = (
       email: values[3],
       student_index: values[2],
       user_name: `${values[0]} ${values[1]}`,
-      user_role: UserRole.student,
+      user_role: UserRole.Student,
     };
     users.push(user);
   });

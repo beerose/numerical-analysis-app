@@ -10,9 +10,9 @@ const AddUserV = t.type({
   student_index: t.union([t.string, t.undefined]),
   user_name: t.string,
   user_role: t.union([
-    t.literal(UserRole.admin),
-    t.literal(UserRole.student),
-    t.literal(UserRole.superUser),
+    t.literal(UserRole.Admin),
+    t.literal(UserRole.Student),
+    t.literal(UserRole.SuperUser),
   ]),
 });
 

@@ -7,7 +7,7 @@ import { fetch } from '../../fetch';
 const user = {
   email: 'mad@max.com',
   user_name: 'Mad Max',
-  user_role: UserRole.admin,
+  user_role: UserRole.Admin,
 };
 
 describe('AUTH: create account', () => {

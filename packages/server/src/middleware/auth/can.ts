@@ -11,7 +11,7 @@ export const can = (what: What, where: Where) => (
 ) => {
   const { privileges: privilegesString, user_role } = res.locals
     .user as UserWithStringPrivileges;
-  if (user_role === UserRole.admin) {
+  if (user_role === UserRole.Admin) {
     return next();
   }
   if (!privilegesString) {

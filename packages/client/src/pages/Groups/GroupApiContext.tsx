@@ -1,3 +1,7 @@
+/**
+ * TODO:
+ * Use zustand to get rid of these ugly casts and classes
+ */
 import {
   ApiResponse,
   GroupDTO,

@@ -11,6 +11,7 @@ import {
   NotFoundPage,
 } from './components';
 import { Groups, Home, Users } from './pages';
+import { Logout } from './pages/Logout';
 import { SettingsContainer } from './pages/Settings';
 import { LABELS } from './utils/labels';
 import { AuthContext } from './AuthContext';
@@ -79,6 +80,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                       <Route path="/users" component={Users} />
                       <Route path="/groups" component={Groups} />
                       <Route path="/settings" component={SettingsContainer} />
+                      <Route path="/logout" component={Logout} />
                     </>
                   ) : (
                     <LoginForm

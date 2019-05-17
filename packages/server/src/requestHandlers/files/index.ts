@@ -23,7 +23,7 @@ export type DirectoryListingDTO = Array<{
 
 router.get(
   ServerRoutes.Files,
-  // auth.authorize([UserRole.admin, UserRole.superUser]),
+  // auth.authorize([UserRole.Admin, UserRole.SuperUser]),
   listFiles
 );
 

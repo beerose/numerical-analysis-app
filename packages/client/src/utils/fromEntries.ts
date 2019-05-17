@@ -4,7 +4,7 @@ type Primitive = boolean | number | string | bigint | symbol | null | undefined;
 
 type Narrowable = Primitive | object | {};
 
-type Entry<K extends PropertyKey, V> = [K, V];
+type Entry<K extends PropertyKey, V> = [K, V] | readonly [K, V];
 
 // prettier-ignore
 /**

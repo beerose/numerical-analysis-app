@@ -11,12 +11,12 @@ export const router = Router();
 
 router.post(
   Grades,
-  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.authorize([UserRole.Admin, UserRole.SuperUser]),
   setTaskPoints
 );
 
 router.get(
   Grades,
-  auth.authorize([UserRole.admin, UserRole.superUser]),
+  auth.authorize([UserRole.Admin, UserRole.SuperUser]),
   GetGrades
 );

@@ -15,6 +15,6 @@ router.post(Routes.New, checkNewAccountToken, storeUserPassword);
 router.post(Routes.Login, loginUser);
 router.post(
   Routes.ChangePassword,
-  auth.authorize([UserRole.admin, UserRole.student, UserRole.superUser]),
+  auth.authorize([UserRole.Admin, UserRole.Student, UserRole.SuperUser]),
   changePassword
 );

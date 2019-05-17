@@ -22,7 +22,7 @@ export const addStudentToGroup = (
 ) => {
   handleBadRequest(AddStudentToGroupBodyV, req.body, res).then(() => {
     const { user, group_id } = req.body;
-    db.upsertUser({ ...user, user_role: UserRole.student }, upsertErr => {
+    db.upsertUser({ ...user, user_role: UserRole.Student }, upsertErr => {
       if (upsertErr) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,

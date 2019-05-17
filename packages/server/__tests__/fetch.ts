@@ -25,7 +25,7 @@ fetch.asAdmin = (url: string | Request, init?: RequestInit) =>
         generateUserJwtToken({
           email: 'admin@test.com',
           user_name: 'Test Admin User',
-          user_role: UserRole.admin,
+          user_role: UserRole.Admin,
         }),
       'Content-Type': 'application/json',
     },

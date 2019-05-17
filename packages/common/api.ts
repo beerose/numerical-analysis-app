@@ -1,7 +1,7 @@
 import * as t from 'io-ts';
 import { isNumber, isString } from 'util';
 
-import { Grade, GroupGradeSettings } from './domain';
+import { Grade, GroupGradeSettings, UserRole } from './domain';
 import { isGroupKind, Typeguard } from './utils';
 
 export type ApiResponse =
@@ -12,12 +12,6 @@ export type ApiResponse =
       error: string;
       error_details?: string;
     };
-
-export enum UserRole {
-  admin = 'admin',
-  superUser = 'superUser',
-  student = 'student',
-}
 
 export const userRoleOptions = Object.values(UserRole);
 

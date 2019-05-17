@@ -37,7 +37,7 @@ export function uploadFiles(
   if (
     filePath &&
     res.locals.user &&
-    res.locals.user.user_role === UserRole.student
+    res.locals.user.user_role === UserRole.Student
   ) {
     return res
       .status(codes.FORBIDDEN)

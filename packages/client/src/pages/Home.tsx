@@ -68,7 +68,7 @@ export const Home: React.FC<HomeProps> = ({
           </h1>
           {/* TODO: Powiedz użytkownikowi jaką ma rolę i co może robić w aplikacji? */}
           <Flex flexDirection="row">
-            {userRole !== UserRole.student && (
+            {userRole !== UserRole.Student && (
               <TileLink to="/groups">
                 <Icon type="team" />
                 {texts.groups}

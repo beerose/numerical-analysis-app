@@ -8,7 +8,7 @@ import { generateUserJwtToken } from './generateUserJwtToken';
 //   const token = generateUserJwtToken({
 //     email: process.env.EMAIL || 'hello@example.com',
 //     user_name: 'Ola',
-//     user_role: UserRole.admin,
+//     user_role: UserRole.Admin,
 //   });
 //   const mailOptions = {
 //     from: 'Analiza numeryczna',
