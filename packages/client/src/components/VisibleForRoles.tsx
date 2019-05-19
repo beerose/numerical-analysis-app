@@ -1,7 +1,7 @@
 import { UserRole } from 'common';
 import React, { useContext } from 'react';
 
-import { AuthContext } from '../AuthContext';
+import { useAuthStore } from '../AuthStore';
 
 type VisibleForRolesProps = { [P in UserRole]?: boolean } & {
   children: React.ReactElement;
@@ -10,6 +10,6 @@ export const VisibleForRoles: React.FC<VisibleForRolesProps> = ({
   children,
   ...roles
 }) => {
-  const { userRole } = useContext(AuthContext);
+  const userRole = useAuthStore(s => s.userRole);
   return userRole && roles[userRole] ? children : null;
 };

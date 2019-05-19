@@ -4,19 +4,20 @@ import createStore from 'zustand';
 
 import * as authService from './api/authApi';
 import { userInCookies } from './userInCookies';
+import * as zustandDevtools from './utils/zustandDevtools';
 
 const hoursFromNow = (expirationHours: number) => {
   const now = new Date();
   return now.setHours(now.getHours() + expirationHours);
 };
 
-export const [useAuthStore] = createStore(set => ({
-  error: false,
+export const [useAuthStore, authStore] = createStore(set => ({
   errorMessage: undefined as string | undefined,
   token: undefined as string | undefined,
   userAuth: false,
   userName: undefined as string | undefined,
   userRole: undefined as UserRole | undefined,
+  ...userInCookies.get(),
   actions: {
     changePassword: authService.changePassword,
     createNewAccount: (token: string, password: string) => {
@@ -49,7 +50,7 @@ export const [useAuthStore] = createStore(set => ({
           return res;
         })
         .catch(err => {
-          set({ error: true, errorMessage: err.message });
+          set({ errorMessage: err.message });
         });
     },
     logout: () => {
@@ -85,15 +86,20 @@ export const [useAuthStore] = createStore(set => ({
             userAuth: true,
             userName: res.user_name,
             userRole: res.user_role,
+            errorMessage: '',
           });
+
           return res;
         })
         .catch((err: Error) => {
-          set({ error: true, errorMessage: err.message });
+          set({ errorMessage: err.message });
         });
     },
   },
 }));
 
-const _store = useAuthStore();
-export type AuthStore = typeof _store;
+export type AuthStoreState = ReturnType<typeof authStore.getState>;
+
+if (process.env.NODE_ENV === 'development') {
+  zustandDevtools.mountStoreSinkDevtool('AuthStore', authStore);
+}

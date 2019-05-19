@@ -3,25 +3,16 @@ import { css, jsx } from '@emotion/core';
 import { Button, Modal } from 'antd';
 import jwt from 'jsonwebtoken';
 import * as qs from 'query-string';
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { ModalHeader } from '../../components/ModalHeader';
-import { LABELS } from '../../utils/labels';
-import { AuthConsumer } from '../../AuthContext';
-
 import { NewPasswordForm } from '../';
+import { ModalHeader } from '../../components/ModalHeader';
+import { useMergeState } from '../../utils';
+import { LABELS } from '../../utils/labels';
+import useRouter from '../../utils/useRouter';
+import { useAuthStore } from '../../AuthStore';
 
-const errorContainerStyles = css`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: red;
-`;
-const buttonStyles = css`
-  margin: 20px 0 0 0;
-  align-self: center;
-`;
 const ErrorContainer = ({
   errorMessage,
   onClick,
@@ -31,9 +22,22 @@ const ErrorContainer = ({
   onClick: () => void;
   label: string;
 }) => (
-  <section css={errorContainerStyles}>
+  <section
+    css={css`
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: red;
+    `}
+  >
     {errorMessage}
-    <Button onClick={onClick} css={buttonStyles}>
+    <Button
+      onClick={onClick}
+      css={css`
+        margin: 20px 0 0 0;
+        align-self: center;
+      `}
+    >
       {label}
     </Button>
   </section>
@@ -50,94 +54,81 @@ type State = {
   token: string;
 };
 type Props = RouteComponentProps;
-export class NewAccount extends React.Component<Props, State> {
-  state = {
+export const NewAccount: React.FC<Props> = props => {
+  const [{ localErrorMessage, userName, token }, setState] = useMergeState({
     localErrorMessage: '',
     token: '',
     userName: '',
-  };
+  });
+  const { actions, errorMessage: authErrorMessage, userAuth } = useAuthStore();
+  const { ...routerProps } = useRouter();
+  console.log({ routerProps });
 
-  componentDidMount() {
-    const parsedHash = qs.parse(this.props.location.hash);
-    if (!parsedHash.token) {
-      this.setState({
+  useEffect(() => {
+    const qsToken = String(qs.parse(props.location.hash).token || '');
+
+    if (!qsToken) {
+      setState({
         localErrorMessage: LABELS.magicLinkInvalid,
       });
       return;
     }
-    this.setState({ token: parsedHash.token });
+    setState({ token: qsToken });
 
     let decoded;
     try {
-      decoded = jwt.verify(parsedHash.token, process.env.JWT_SECRET || '') as {
+      decoded = jwt.verify(qsToken, process.env.JWT_SECRET || '') as {
         user_name?: string;
       };
     } catch (err) {
-      this.setState({
+      setState({
         localErrorMessage: LABELS.magicLinkInvalid,
       });
       return;
     }
 
     if (!decoded.user_name) {
-      this.setState({
+      setState({
         localErrorMessage: LABELS.magicLinkInvalid,
       });
       return;
     }
 
-    this.setState({ userName: decoded.user_name });
-  }
+    setState({ userName: decoded.user_name });
+  });
 
-  render() {
-    const { localErrorMessage, userName, token } = this.state;
-    return (
-      <AuthConsumer>
-        {({ actions, errorMessage: authErrorMessage, userAuth }) => {
-          let errorMessage;
-          if (userAuth) {
-            errorMessage = 'Jesteś już zalogowany';
-          } else {
-            errorMessage = localErrorMessage
-              ? localErrorMessage
-              : authErrorMessage;
+  const errorMessage = userAuth
+    ? 'Jesteś już zalogowany'
+    : localErrorMessage || authErrorMessage;
+
+  return (
+    <Modal
+      visible
+      centered
+      title={
+        errorMessage ? (
+          errorModalHeader
+        ) : (
+          <NewAccountModalHeader userName={userName} />
+        )
+      }
+      footer={null}
+      width={400}
+      closable={false}
+    >
+      {errorMessage ? (
+        <ErrorContainer
+          errorMessage={errorMessage}
+          onClick={() => console.log('oopsie')}
+          label={userAuth ? 'Przejdź do strony głównej' : LABELS.goToLoginPage}
+        />
+      ) : (
+        <NewPasswordForm
+          onSubmit={(password: string) =>
+            actions.createNewAccount(token, password)
           }
-          return (
-            <Modal
-              visible
-              centered
-              title={
-                errorMessage ? (
-                  errorModalHeader
-                ) : (
-                  <NewAccountModalHeader userName={userName} />
-                )
-              }
-              footer={null}
-              width={400}
-              closable={false}
-            >
-              {errorMessage ? (
-                <ErrorContainer
-                  errorMessage={errorMessage}
-                  onClick={actions.goToMainPage}
-                  label={
-                    userAuth
-                      ? 'Przejdź do strony głównej'
-                      : LABELS.goToLoginPage
-                  }
-                />
-              ) : (
-                <NewPasswordForm
-                  onSubmit={(password: string) =>
-                    actions.createNewAccount(token, password)
-                  }
-                />
-              )}
-            </Modal>
-          );
-        }}
-      </AuthConsumer>
-    );
-  }
-}
+        />
+      )}
+    </Modal>
+  );
+};

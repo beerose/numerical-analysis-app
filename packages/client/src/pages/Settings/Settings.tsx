@@ -3,14 +3,14 @@ import React, { useContext, useState } from 'react';
 
 import { Flex, NewPasswordForm, PaddingContainer } from '../../components';
 import { showMessage } from '../../utils';
-import { AuthContext } from '../../AuthContext';
+import { useAuthStore } from '../../AuthStore';
 
 export const SettingsContainer = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const authContext = useContext(AuthContext);
+  const { userName, userRole, actions } = useAuthStore();
 
   const handleSubmit = (newPassword: string): void => {
-    authContext.actions.changePassword(newPassword).then(res => {
+    actions.changePassword(newPassword).then(res => {
       showMessage(res);
     });
     setModalVisible(false);
@@ -19,11 +19,10 @@ export const SettingsContainer = () => {
   return (
     <PaddingContainer>
       <Flex paddingBottom={10}>
-        <b style={{ paddingRight: 5 }}>Imię i nazwisko:</b>{' '}
-        {authContext.userName}
+        <b style={{ paddingRight: 5 }}>Imię i nazwisko:</b> {userName}
       </Flex>
       <Flex paddingBottom={15}>
-        <b style={{ paddingRight: 5 }}>Rola:</b> {authContext.userRole}
+        <b style={{ paddingRight: 5 }}>Rola:</b> {userRole}
       </Flex>
       <Button style={{ width: 150 }} onClick={() => setModalVisible(true)}>
         Zmień hasło

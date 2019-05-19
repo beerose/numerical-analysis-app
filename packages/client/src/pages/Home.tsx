@@ -9,7 +9,7 @@ import { PaddingContainer } from '../components';
 import { LocaleContext } from '../components/locale';
 import { Flex } from '../components/Flex';
 import { Colors } from '../utils';
-import { AuthContextState } from '../AuthContext';
+import { AuthStoreState } from '../AuthStore';
 
 type TileLinkProps = LinkProps;
 
@@ -49,7 +49,7 @@ const TileLink = (props: TileLinkProps) => (
   />
 );
 
-export type HomeProps = Pick<AuthContextState, 'userName' | 'userRole'>;
+export type HomeProps = Pick<AuthStoreState, 'userName' | 'userRole'>;
 export const Home: React.FC<HomeProps> = ({
   userName,
   userRole,
