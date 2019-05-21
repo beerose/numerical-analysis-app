@@ -54,7 +54,7 @@ adjustPrivileges.add = (groupId, userId, what, callback) => {
   });
 };
 
-adjustPrivileges.update = (groupId, prevUserId, nextUserId, what) => {
+adjustPrivileges.update = (_groupId, _prevUserId, _nextUserId, _what) => {
   return;
 };
 
