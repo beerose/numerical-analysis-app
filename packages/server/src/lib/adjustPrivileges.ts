@@ -1,5 +1,4 @@
 import { GroupDTO, UserDTO, UserPrivileges, What } from 'common';
-import { callbackPromise } from 'nodemailer/lib/shared';
 
 import { db } from '../store';
 
