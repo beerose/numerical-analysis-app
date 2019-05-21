@@ -1,4 +1,4 @@
-import { ApiResponse, ServerRoutes, UserRole } from 'common';
+import { ApiResponse, ServerRoutes, UserPrivileges, UserRole } from 'common';
 
 import { LABELS } from '../utils/labels';
 
@@ -11,6 +11,7 @@ type AuthResponse = {
   token: string;
   user_name: string;
   user_role: UserRole;
+  privileges?: UserPrivileges;
 };
 
 const handleWrongResponse = (response: ApiResponse | AuthResponse) => {

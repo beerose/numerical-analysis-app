@@ -1,5 +1,6 @@
 import { UserDTO, UserRole } from 'common';
 import Cookies from 'js-cookie';
+
 type UserCookieObject = {
   userName: UserDTO['user_name'];
   userRole: UserDTO['user_role'];
