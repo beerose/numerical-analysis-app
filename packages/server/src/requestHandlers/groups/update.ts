@@ -27,6 +27,7 @@ const UpdateGroupBodyV = t.type({
   ]),
   id: t.number,
   lecturer_id: t.number,
+  prev_lecturer_id: t.number,
   semester: t.union([t.string, t.undefined]),
 });
 
@@ -36,13 +37,15 @@ export const update = (req: UpdateGroupBody, res: BackendResponse) => {
   handleBadRequest(UpdateGroupBodyV, req.body, res).then(() => {
     const group = req.body;
 
-    db.updateGroup(group, err => {
+    db.updateGroup(group, (err, result) => {
       if (err) {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,
           error_details: err.message,
         });
       }
+
+      console.log({ result });
 
       return res.status(codes.OK).send({ message: apiMessages.groupUpdated });
     });

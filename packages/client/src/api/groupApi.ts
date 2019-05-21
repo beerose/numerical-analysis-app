@@ -115,7 +115,7 @@ export const addGroup = (
 };
 
 export type UpdateGroupPayload = Omit<GroupDTO, 'data' | 'lecturer_name'> &
-  Pick<DeepRequired<GroupDTO>, 'data'>;
+  Pick<DeepRequired<GroupDTO>, 'data'> & { prev_lecturer_id: UserDTO['id'] };
 
 export const updateGroup = (group: UpdateGroupPayload) => {
   return authFetch<ApiResponse>(SERVER_URL + Groups.Update, {
@@ -338,7 +338,7 @@ export const setTaskPoints = (
   points: number
 ) =>
   authFetch<ApiResponse>(SERVER_URL + Grades, {
-    body: JSON.stringify({ task_id: taskId, user_id: userId, points }),
+    body: JSON.stringify({ points, task_id: taskId, user_id: userId }),
     method: 'POST',
   });
 
@@ -362,7 +362,7 @@ export const setFinalGrade = (
   grade: number
 ) =>
   authFetch<ApiResponse>(SERVER_URL + Groups.Results.SetFinal, {
-    body: JSON.stringify({ group_id: groupId, user_id: userId, grade }),
+    body: JSON.stringify({ grade, group_id: groupId, user_id: userId }),
     method: 'POST',
   });
 
@@ -394,6 +394,6 @@ export const attachTask = (
   weight: number
 ) =>
   authFetch(SERVER_URL + Groups.Tasks.Attach, {
-    body: JSON.stringify({ group_id: groupId, task_id: taskId, weight }),
+    body: JSON.stringify({ weight, group_id: groupId, task_id: taskId }),
     method: 'POST',
   });
