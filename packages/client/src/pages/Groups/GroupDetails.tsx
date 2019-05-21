@@ -1,7 +1,7 @@
 // tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Icon, Menu, Spin } from 'antd';
+import { Button, Icon, Menu, Spin, Tooltip } from 'antd';
 import { groupFeatures } from 'common';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
@@ -146,6 +146,11 @@ export class GroupDetailsContainer extends React.Component<
                 <Icon type="line-chart" />
                 {texts.grades}
               </MenuLink>
+              <Menu.Item>
+                <Tooltip title="Udostępnij grupę do edycji innemu użytkownikowi">
+                  <Button style={{ width: '90%' }}>Udostępnij</Button>
+                </Tooltip>
+              </Menu.Item>
             </Menu>
             <Flex flexDirection="column" width="100%" overflow="hidden">
               <Breadcrumbs
