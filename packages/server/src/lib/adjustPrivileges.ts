@@ -1,4 +1,5 @@
 import { GroupDTO, UserDTO, UserPrivileges, What } from 'common';
+import { callbackPromise } from 'nodemailer/lib/shared';
 
 import { db } from '../store';
 
@@ -17,7 +18,6 @@ interface AdjustPrivilegesFunc {
     privileges: What[],
     callback: AdjustCallback
   ) => void;
-  delete: () => void;
 }
 
 export const adjustPrivileges: AdjustPrivilegesFunc = () => null;
@@ -54,10 +54,11 @@ adjustPrivileges.add = (groupId, userId, what, callback) => {
   });
 };
 
-adjustPrivileges.update = (_groupId, _prevUserId, _nextUserId, _what) => {
-  return;
-};
-
-adjustPrivileges.delete = () => {
-  return;
+adjustPrivileges.update = (groupId, prevUserId, nextUserId, what, callback) => {
+  adjustPrivileges.add(groupId, prevUserId, [], err => {
+    if (err) {
+      return callback(err);
+    }
+    return adjustPrivileges.add(groupId, nextUserId, what, callback);
+  });
 };
