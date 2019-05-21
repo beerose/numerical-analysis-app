@@ -117,7 +117,7 @@ export class GroupApiProvider extends React.Component<
 
   listLecturers = () =>
     usersService
-      .listUsers({ roles: [UserRole.superUser, UserRole.admin] })
+      .listUsers({ roles: [UserRole.SuperUser, UserRole.Admin] })
       .then(res => {
         this.setState({ lecturers: res.users });
         return res.users;
@@ -254,7 +254,7 @@ export class GroupApiProvider extends React.Component<
   };
 
   updateStudentInGroup = async (user: Omit<UserDTO, 'user_role'>) => {
-    await usersService.updateUser({ ...user, user_role: UserRole.student });
+    await usersService.updateUser({ ...user, user_role: UserRole.Student });
   };
 
   addNewStudentToGroup = (user: UserDTO) => {
