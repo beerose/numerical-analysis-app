@@ -41,7 +41,7 @@ type StateValues = {
   isLoading: boolean;
   error: boolean;
   errorMessage?: string;
-  lecturers: UserDTO[];
+  lecturers?: UserDTO[];
   currentGroupStudents?: UserWithGroups[];
 };
 
@@ -63,7 +63,6 @@ export const GroupApiContext = React.createContext<GroupApiContextState>({
   }),
   error: false,
   isLoading: false,
-  lecturers: [],
 });
 
 export class GroupApiProvider extends React.Component<
@@ -79,7 +78,6 @@ export class GroupApiProvider extends React.Component<
       >,
       error: false,
       isLoading: false,
-      lecturers: [],
     };
 
     // this.state.actions won't be accessible from class body
