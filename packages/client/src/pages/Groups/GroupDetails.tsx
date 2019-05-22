@@ -12,6 +12,7 @@ import { LocaleContext } from '../../components/locale';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
+import { ShareGroupForEdit } from './components';
 import {
   AttachedGroupsSection,
   GradesSection,
@@ -147,9 +148,10 @@ export class GroupDetailsContainer extends React.Component<
                 {texts.grades}
               </MenuLink>
               <Menu.Item>
-                <Tooltip title="Udostępnij grupę do edycji innemu użytkownikowi">
-                  <Button style={{ width: '90%' }}>Udostępnij</Button>
-                </Tooltip>
+                <ShareGroupForEdit
+                  lecturers={this.context.lecturers}
+                  actions={this.context.actions}
+                />
               </Menu.Item>
             </Menu>
             <Flex flexDirection="column" width="100%" overflow="hidden">
