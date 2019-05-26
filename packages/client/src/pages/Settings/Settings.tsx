@@ -1,5 +1,5 @@
 import { Button, Modal } from 'antd';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Flex, NewPasswordForm, PaddingContainer } from '../../components';
 import { showMessage } from '../../utils';

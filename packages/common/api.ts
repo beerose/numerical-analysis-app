@@ -22,6 +22,7 @@ export type UserDTO = {
   student_index?: string;
   user_role: UserRole;
   active_user?: boolean;
+  privileges?: UserPrivileges;
 };
 
 export type Where = 'groups' | 'users';

@@ -1,5 +1,5 @@
 import { compare as comparePassword } from 'bcrypt';
-import { apiMessages, UserDTO } from 'common';
+import { apiMessages, UserDTO, UserPrivileges } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
@@ -20,7 +20,12 @@ type LoginUserRequest = GetRequest<typeof LoginUserBodyV>;
 
 export const loginUser = (
   req: LoginUserRequest,
-  res: BackendResponse<{ token: string; user_name: string; user_role: string }>
+  res: BackendResponse<{
+    token: string;
+    user_name: string;
+    user_role: string;
+    privileges?: UserPrivileges;
+  }>
 ) => {
   handleBadRequest(LoginUserBodyV, req.body, res).then(() => {
     const { email, password } = req.body;
@@ -42,7 +47,12 @@ export const loginUser = (
         });
       }
 
-      const { user_name, user_role, password: hashedPassword } = result;
+      const {
+        user_name,
+        user_role,
+        password: hashedPassword,
+        privileges,
+      } = result;
 
       return comparePassword(
         password,
@@ -65,7 +75,9 @@ export const loginUser = (
             user_role,
           });
 
-          return res.status(codes.OK).send({ token, user_name, user_role });
+          return res
+            .status(codes.OK)
+            .send({ token, user_name, user_role, privileges });
         }
       );
     });

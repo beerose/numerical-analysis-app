@@ -1,7 +1,7 @@
 // tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Icon, Menu, Spin } from 'antd';
+import { Button, Icon, Menu, Spin, Tooltip } from 'antd';
 import { groupFeatures } from 'common';
 import * as React from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
@@ -12,6 +12,7 @@ import { LocaleContext } from '../../components/locale';
 import { Theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
 
+import { ShareGroupForEdit } from './components';
 import {
   AttachedGroupsSection,
   GradesSection,
@@ -146,6 +147,12 @@ export class GroupDetailsContainer extends React.Component<
                 <Icon type="line-chart" />
                 {texts.grades}
               </MenuLink>
+              <Menu.Item>
+                <ShareGroupForEdit
+                  lecturers={this.context.lecturers}
+                  actions={this.context.actions}
+                />
+              </Menu.Item>
             </Menu>
             <Flex flexDirection="column" width="100%" overflow="hidden">
               <Breadcrumbs

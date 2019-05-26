@@ -11,7 +11,7 @@ import {
 } from 'common';
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { DateRange, DeleteWithConfirmation, Flex } from '../../../components/';
+import { DateRange, DeleteWithConfirmation, Flex } from '../../../components';
 import { Colors, LABELS, showMessage, useToggle } from '../../../utils';
 
 import { TaskMeta } from './TaskMeta';

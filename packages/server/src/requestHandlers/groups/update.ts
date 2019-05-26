@@ -3,6 +3,7 @@ import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
 import { BackendResponse, handleBadRequest, PostRequest } from '../../lib';
+import { adjustPrivileges } from '../../lib/adjustPrivileges';
 import { db } from '../../store';
 
 const UpdateGroupBodyV = t.type({
@@ -27,6 +28,7 @@ const UpdateGroupBodyV = t.type({
   ]),
   id: t.number,
   lecturer_id: t.number,
+  prev_lecturer_id: t.number,
   semester: t.union([t.string, t.undefined]),
 });
 
@@ -44,7 +46,23 @@ export const update = (req: UpdateGroupBody, res: BackendResponse) => {
         });
       }
 
-      return res.status(codes.OK).send({ message: apiMessages.groupUpdated });
+      return adjustPrivileges.update(
+        group.id,
+        group.prev_lecturer_id,
+        group.lecturer_id,
+        ['edit', 'read'],
+        adjustErr => {
+          if (adjustErr) {
+            return res.status(codes.INTERNAL_SERVER_ERROR).send({
+              error: apiMessages.internalError,
+              error_details: adjustErr.error,
+            });
+          }
+          return res
+            .status(codes.OK)
+            .send({ message: apiMessages.groupUpdated });
+        }
+      );
     });
   });
 };

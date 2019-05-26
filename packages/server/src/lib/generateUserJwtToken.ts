@@ -1,4 +1,4 @@
-import { UserDTO } from 'common';
+import { UserDTO, UserPrivileges } from 'common';
 import jwt from 'jsonwebtoken';
 
 console.assert(process.env.JWT_SECRET, 'process.env.JWT_SECRET must be set');

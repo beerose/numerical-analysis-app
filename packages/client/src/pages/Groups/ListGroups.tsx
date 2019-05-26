@@ -68,7 +68,10 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
 
   useEffect(() => {
     groupApi.actions.listGroups();
-  }, []);
+    if (!groupApi.lecturers) {
+      groupApi.actions.listLecturers();
+    }
+  }, [groupApi.lecturers]);
 
   const lecturersDict = usePromise(
     () => groupApi.actions.listLecturers().then(makeIdDict),
@@ -102,15 +105,10 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
       <Breadcrumbs />
       <NewGroupButton onClick={() => props.history.push('/groups/new')} />
       <SelectLecturer
+        style={{ marginLeft: Theme.Padding.Quarter }}
         lecturers={lecturers}
         onChange={selectLecturer}
         value={selectedLecturer}
-        css={css`
-          width: 12em;
-          height: 32px;
-          box-sizing: content-box;
-          margin-left: ${Theme.Padding.Quarter};
-        `}
       />
       <RemoveSelected
         type="close-circle"

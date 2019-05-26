@@ -108,6 +108,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
             ...antFormValues,
             data: groupDataState,
             id: group.id,
+            prev_lecturer_id: group.lecturer_id,
           })
           .then(() => {
             actions.getGroup(group.id);

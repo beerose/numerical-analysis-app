@@ -1,5 +1,5 @@
 // tslint:disable: object-literal-sort-keys
-import { UserRole } from 'common';
+import { UserPrivileges, UserRole } from 'common';
 import createStore from 'zustand';
 
 import * as authService from './api/authApi';
@@ -17,6 +17,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
   userAuth: false,
   userName: undefined as string | undefined,
   userRole: undefined as UserRole | undefined,
+  privileges: undefined as UserPrivileges | undefined,
   ...userInCookies.get(),
   actions: {
     changePassword: authService.changePassword,
@@ -70,7 +71,12 @@ export const [useAuthStore, authStore] = createStore(set => ({
             throw new Error(res.error);
           }
 
-          const { token, user_name: userName, user_role: userRole } = res;
+          const {
+            token,
+            user_name: userName,
+            user_role: userRole,
+            privileges,
+          } = res;
 
           userInCookies.set(
             {
@@ -82,6 +88,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
           );
 
           set({
+            privileges,
             token: res.token,
             userAuth: true,
             userName: res.user_name,
