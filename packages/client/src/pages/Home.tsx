@@ -1,15 +1,14 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Icon } from 'antd';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 
-import { UserRole } from '../../../../dist/common';
 import { PaddingContainer } from '../components';
 import { LocaleContext } from '../components/locale';
 import { Flex } from '../components/Flex';
 import { Colors } from '../utils';
-import { AuthStoreState } from '../AuthStore';
+import { useAuthStore } from '../AuthStore';
 
 type TileLinkProps = LinkProps;
 
@@ -49,40 +48,38 @@ const TileLink = (props: TileLinkProps) => (
   />
 );
 
-export type HomeProps = Pick<AuthStoreState, 'userName' | 'userRole'>;
-export const Home: React.FC<HomeProps> = ({
-  userName,
-  userRole,
-}: HomeProps) => {
+const TilesNavigation = () => {
+  const { texts } = useContext(LocaleContext);
+
   return (
-    <LocaleContext.Consumer>
-      {({ texts }) => (
-        <PaddingContainer as="section">
-          <h1
-            css={css`
-              font-size: 2.5em;
-              margin: 1em;
-            `}
-          >
-            {texts.hello} {userName}!
-          </h1>
-          {/* TODO: Powiedz użytkownikowi jaką ma rolę i co może robić w aplikacji? */}
-          <Flex flexDirection="row">
-            {userRole !== UserRole.Student && (
-              <TileLink to="/groups">
-                <Icon type="team" />
-                {texts.groups}
-              </TileLink>
-            )}
-            {userRole === 'admin' && (
-              <TileLink to="/users">
-                <Icon type="user" />
-                {texts.users}
-              </TileLink>
-            )}
-          </Flex>
-        </PaddingContainer>
-      )}
-    </LocaleContext.Consumer>
+    <Flex as="nav" flexDirection="row">
+      <TileLink to="/groups">
+        <Icon type="team" />
+        {texts.groups}
+      </TileLink>
+      <TileLink to="/users">
+        <Icon type="user" />
+        {texts.users}
+      </TileLink>
+    </Flex>
+  );
+};
+
+export const Home: React.FC = () => {
+  const { texts } = useContext(LocaleContext);
+  const { userName } = useAuthStore();
+
+  return (
+    <PaddingContainer as="section">
+      <h1
+        css={css`
+          font-size: 2.5em;
+          margin: 1em;
+        `}
+      >
+        {texts.hello} {userName}!
+      </h1>
+      <TilesNavigation />
+    </PaddingContainer>
   );
 };

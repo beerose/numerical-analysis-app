@@ -25,7 +25,7 @@ const handleWrongResponse = (response: ApiResponse | AuthResponse) => {
 
 const handleServerError = (err: any) => {
   if (!err.response) {
-    return { error: LABELS.serverUnavaliable };
+    return { error: JSON.stringify(err) };
   }
   return { error: err.response.data.message };
 };

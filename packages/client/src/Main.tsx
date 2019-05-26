@@ -10,6 +10,7 @@ import {
   NewAccount,
   NotFoundPage,
 } from './components';
+import { VisibleForRoles } from './components/VisibleForRoles';
 import { Groups, Home, Users } from './pages';
 import { Logout } from './pages/Logout';
 import { SettingsContainer } from './pages/Settings';
@@ -69,20 +70,13 @@ export const Main: React.FC<Props> = ({ history, location }) => {
       <ErrorBoundary>
         <StyledContent>
           <Switch>
-            <Route
-              path="/accounts/new"
-              render={routeContext => <NewAccount {...routeContext} />}
-            />
+            <Route path="/accounts/new" component={NewAccount} />
             {userAuth ? (
               <>
-                <Route
-                  exact
-                  path="/"
-                  render={() => (
-                    <Home userRole={userRole} userName={userName} />
-                  )}
-                />
-                <Route path="/users" component={Users} />
+                <Route exact path="/" component={Home} />
+                <VisibleForRoles admin superUser>
+                  <Route path="/users" component={Users} />
+                </VisibleForRoles>
                 <Route path="/groups" component={Groups} />
                 <Route path="/settings" component={SettingsContainer} />
                 <Route path="/logout" component={Logout} />

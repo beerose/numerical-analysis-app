@@ -2,7 +2,12 @@ import { apiMessages, UserRole } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
+import {
+  BackendResponse,
+  GetRequest,
+  handleBadRequest,
+  sendRegistrationLink as sendStudentActivationLink,
+} from '../../lib';
 import { db, DUPLICATE_ENTRY_ERROR } from '../../store';
 
 const AddUserV = t.type({
@@ -34,6 +39,9 @@ export const create = (req: AddUserRequest, res: BackendResponse) => {
           error_details: err.message,
         });
       }
+
+      sendStudentActivationLink(user);
+
       return res.status(codes.OK).send({ message: apiMessages.userCreated });
     });
   });

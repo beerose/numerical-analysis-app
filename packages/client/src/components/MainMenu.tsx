@@ -5,8 +5,6 @@ import { UserRole } from 'common';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { fromEntries } from '../utils/fromEntries';
-
 import { LocaleContext, LocaleEntry } from './locale';
 
 const mainMenuStyles = css`
@@ -20,10 +18,6 @@ type MenuItem = {
   icon: string;
   path: string;
 };
-
-function menuItems(xs: MenuItem[]) {
-  return fromEntries(xs.map(x => [x.key, x] as const));
-}
 
 // tslint:disable:object-literal-sort-keys
 const MENU_ITEMS: Partial<Record<MenuItem['key'], MenuItem>> = {
@@ -67,7 +61,7 @@ type Props = {
 
 export const MainMenu: React.FC<Props> = ({ location, userRole }) => {
   const { texts } = useContext(LocaleContext);
-  const menuItems = getMenuItemsForUserRole(userRole);
+  const menuItemsForRole = getMenuItemsForUserRole(userRole);
   const selectedItem = location.pathname.split('/')[1];
 
   return (
@@ -77,7 +71,7 @@ export const MainMenu: React.FC<Props> = ({ location, userRole }) => {
       css={mainMenuStyles}
       selectedKeys={[selectedItem]}
     >
-      {menuItems.map(item => (
+      {menuItemsForRole.map(item => (
         <Menu.Item key={item.key}>
           <Link to={item.path}>
             <Icon type={item.icon} />

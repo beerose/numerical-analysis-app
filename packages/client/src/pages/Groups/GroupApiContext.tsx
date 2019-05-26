@@ -117,7 +117,7 @@ export class GroupApiProvider extends React.Component<
 
   listLecturers = () =>
     usersService
-      .listUsers({ roles: [UserRole.superUser, UserRole.admin] })
+      .listUsers({ roles: [UserRole.SuperUser, UserRole.Admin] })
       .then(res => {
         this.setState({ lecturers: res.users });
         return res.users;

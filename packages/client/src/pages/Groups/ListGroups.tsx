@@ -72,7 +72,7 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
 
   const lecturersDict = usePromise(
     () => groupApi.actions.listLecturers().then(makeIdDict),
-    makeIdDict(groupApi.lecturers),
+    groupApi.lecturers ? makeIdDict(groupApi.lecturers) : {},
     []
   );
 
@@ -87,6 +87,10 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
     error,
     actions: { deleteGroup },
   } = groupApi;
+
+  if (!lecturers) {
+    return <Spin />;
+  }
 
   const dataSource =
     selectedLecturer && groups

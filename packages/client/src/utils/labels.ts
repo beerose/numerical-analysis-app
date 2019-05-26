@@ -60,7 +60,7 @@ export const LABELS = {
   semester: 'Semestr',
   semesterRequired: 'Należy podać semestr',
   serverUnavaliable: 'Serwer jest niedostępny, spróbuj ponownie później',
-  setNewPassword: 'ustaw hasło do swojego konta',
+  setNewPassword: 'Ustaw hasło do swojego konta.',
   superUser: 'Prowadzący',
   upload: 'CSV upload',
   weekdays: ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek'],
