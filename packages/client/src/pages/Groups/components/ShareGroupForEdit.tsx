@@ -1,7 +1,8 @@
 import { Button, Icon, Popover, Spin, Tooltip } from 'antd';
+import { UserDTO } from 'common';
 import React, { useEffect, useState } from 'react';
 
-import { UserDTO } from '../../../../../../dist/common';
+import { Flex } from '../../../components';
 import { GroupApiContextState } from '../GroupApiContext';
 
 import { SelectLecturer } from './SelectLecturer';
@@ -9,8 +10,27 @@ import { SelectLecturer } from './SelectLecturer';
 type PopoverContentProps = {
   lecturers?: UserDTO[];
 };
-const PopoverContent = ({ lecturers }: PopoverContentProps) =>
-  lecturers ? <SelectLecturer lecturers={lecturers} /> : <Spin />;
+const PopoverContent = ({ lecturers }: PopoverContentProps) => {
+  const [selectedLecturer, setSelectedLecturer] = useState();
+
+  return lecturers ? (
+    <Flex flexDirection="column">
+      <SelectLecturer
+        lecturers={lecturers}
+        onChange={v => setSelectedLecturer(v)}
+        value={selectedLecturer}
+      />
+      <Button
+        style={{ marginTop: '20px', alignSelf: 'flex-end' }}
+        type="primary"
+      >
+        Zapisz
+      </Button>
+    </Flex>
+  ) : (
+    <Spin />
+  );
+};
 
 type ShareGroupForEditProps = Pick<
   GroupApiContextState,
@@ -35,7 +55,7 @@ export const ShareGroupForEdit = ({
       title="Wybierz z listy użytkowników"
       trigger="click"
       visible={formVisible}
-      onVisibleChange={() => setFormVisible(true)}
+      onVisibleChange={setFormVisible}
       placement="right"
     >
       <Tooltip title="Udostępnij grupę do edycji innemu użytkownikowi">
