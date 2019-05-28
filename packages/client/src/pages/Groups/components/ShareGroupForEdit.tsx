@@ -3,6 +3,7 @@ import { UserDTO } from 'common';
 import React, { useEffect, useState } from 'react';
 
 import { Flex } from '../../../components';
+import { showMessage } from '../../../utils';
 import { GroupApiContextState } from '../GroupApiContext';
 
 import { SelectLecturer } from './SelectLecturer';
@@ -50,10 +51,17 @@ export const ShareGroupForEdit = ({
     }
   }, [lecturers]);
 
+  const handleShareClick = (userId: UserDTO['id']) => {
+    actions.shareForEdit(userId).then(showMessage);
+    setFormVisible(false);
+  };
+
   return (
     <Popover
       style={{ width: 400 }}
-      content={<PopoverContent lecturers={lecturers} onShare={console.log} />}
+      content={
+        <PopoverContent lecturers={lecturers} onShare={handleShareClick} />
+      }
       title="Wybierz z listy użytkowników"
       trigger="click"
       visible={formVisible}
