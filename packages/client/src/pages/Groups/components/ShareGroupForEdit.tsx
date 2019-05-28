@@ -9,8 +9,9 @@ import { SelectLecturer } from './SelectLecturer';
 
 type PopoverContentProps = {
   lecturers?: UserDTO[];
+  onShare: (id: UserDTO['id']) => void;
 };
-const PopoverContent = ({ lecturers }: PopoverContentProps) => {
+const PopoverContent = ({ lecturers, onShare }: PopoverContentProps) => {
   const [selectedLecturer, setSelectedLecturer] = useState();
 
   return lecturers ? (
@@ -23,6 +24,7 @@ const PopoverContent = ({ lecturers }: PopoverContentProps) => {
       <Button
         style={{ marginTop: '20px', alignSelf: 'flex-end' }}
         type="primary"
+        onClick={() => onShare(selectedLecturer)}
       >
         Zapisz
       </Button>
@@ -51,7 +53,7 @@ export const ShareGroupForEdit = ({
   return (
     <Popover
       style={{ width: 400 }}
-      content={<PopoverContent lecturers={lecturers} />}
+      content={<PopoverContent lecturers={lecturers} onShare={console.log} />}
       title="Wybierz z listy użytkowników"
       trigger="click"
       visible={formVisible}
