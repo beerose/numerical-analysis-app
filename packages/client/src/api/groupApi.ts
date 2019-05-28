@@ -397,3 +397,9 @@ export const attachTask = (
     body: JSON.stringify({ weight, group_id: groupId, task_id: taskId }),
     method: 'POST',
   });
+
+export const shareForEdit = (groupId: GroupDTO['id'], userId: UserDTO['id']) =>
+  authFetch(SERVER_URL + Groups.ShareForEdit, {
+    body: JSON.stringify({ group_id: groupId, user_id: userId }),
+    method: 'POST',
+  });
