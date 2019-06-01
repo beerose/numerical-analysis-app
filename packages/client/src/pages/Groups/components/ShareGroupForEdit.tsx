@@ -37,22 +37,36 @@ const PopoverContent = ({ lecturers, onShare }: PopoverContentProps) => {
 
 type ShareGroupForEditProps = Pick<
   GroupApiContextState,
-  'lecturers' | 'actions'
+  'lecturers' | 'actions' | 'currentGroup'
 >;
 export const ShareGroupForEdit = ({
+  currentGroup,
   lecturers,
   actions,
 }: ShareGroupForEditProps) => {
   const [formVisible, setFormVisible] = useState(false);
+  const [choosableLecturers, setChoosableLecturers] = useState<UserDTO[]>([]);
 
   useEffect(() => {
     if (!lecturers) {
-      actions.listLecturers();
+      actions.listLecturers().then(res => {
+        setChoosableLecturers(
+          res.filter(l => {
+            return (
+              !l.privileges ||
+              !l.privileges.groups ||
+              (currentGroup && !l.privileges.groups[currentGroup.id]) ||
+              (currentGroup && !l.privileges.groups[currentGroup.id].length)
+            );
+          })
+        );
+      });
     }
   }, [lecturers]);
 
   const handleShareClick = (userId: UserDTO['id']) => {
     actions.shareForEdit(userId).then(showMessage);
+    setChoosableLecturers(prev => prev.filter(l => l.id !== userId));
     setFormVisible(false);
   };
 
@@ -60,7 +74,10 @@ export const ShareGroupForEdit = ({
     <Popover
       style={{ width: 400 }}
       content={
-        <PopoverContent lecturers={lecturers} onShare={handleShareClick} />
+        <PopoverContent
+          lecturers={choosableLecturers}
+          onShare={handleShareClick}
+        />
       }
       title="Wybierz z listy użytkowników"
       trigger="click"
