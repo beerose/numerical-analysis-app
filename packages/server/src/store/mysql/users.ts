@@ -81,7 +81,9 @@ export const listUsers = (
     limit: number;
     offset: number;
   },
-  callback: QueryCallback<Array<Omit<UserDTO, 'active_user'>>>
+  callback: QueryCallback<
+    Array<Omit<UserDTO, 'active_user' | 'privileges'> & { privileges: string }>
+  >
 ) =>
   connection.query(
     {
