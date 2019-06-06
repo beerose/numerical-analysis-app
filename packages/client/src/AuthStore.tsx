@@ -2,6 +2,10 @@
 import { UserDTO, UserPrivileges, UserRole } from 'common';
 import createStore from 'zustand';
 
+/**
+ * TODO: GET USER ID FROM THE BACKEND
+ */
+
 import * as authService from './api/authApi';
 import { userInCookies } from './userInCookies';
 import * as zustandDevtools from './utils/zustandDevtools';
@@ -35,7 +39,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
           userInCookies.set(
             {
               token,
-              user: res,
+              user: { user_name, user_role },
             },
             hoursFromNow(24)
           );
@@ -64,18 +68,12 @@ export const [useAuthStore, authStore] = createStore(set => ({
             throw new Error(res.error);
           }
 
-          const {
-            token,
-            user_name: userName,
-            user_role: userRole,
-            privileges,
-          } = res;
+          const { token, user_name, user_role, privileges } = res;
 
           userInCookies.set(
             {
               token,
-              userName,
-              userRole,
+              user: { user_name, user_role },
             },
             hoursFromNow(remember ? 24 : 7)
           );
@@ -83,7 +81,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
           set({
             privileges,
             token: res.token,
-            user: res,
+            user: { user_name, user_role },
             errorMessage: '',
           });
 

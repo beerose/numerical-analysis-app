@@ -22,8 +22,7 @@ export const loginUser = (
   req: LoginUserRequest,
   res: BackendResponse<{
     token: string;
-    user_name: string;
-    user_role: string;
+    user: UserDTO;
     privileges?: UserPrivileges;
   }>
 ) => {
@@ -75,9 +74,9 @@ export const loginUser = (
             user_role,
           });
 
-          return res
-            .status(codes.OK)
-            .send({ token, user_name, user_role, privileges });
+          delete result.password;
+
+          return res.status(codes.OK).send({ token, privileges, user: result });
         }
       );
     });

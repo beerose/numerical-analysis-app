@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 type UserCookieObject = {
   token: string;
-  user: UserDTO;
+  user: Partial<UserDTO>;
 };
 
 export const userInCookies = {
