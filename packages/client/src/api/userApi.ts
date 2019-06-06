@@ -1,4 +1,4 @@
-import { ApiResponse, ServerRoutes, UserDTO } from 'common';
+import { ApiResponse, GroupDTO, ServerRoutes, UserDTO } from 'common';
 import * as qs from 'query-string';
 
 import { showMessage } from '../utils/showMessage';
@@ -37,13 +37,10 @@ export const listUsers = async ({
 };
 
 export const addUser = async (user: UserDTO) => {
-  const options = {
+  await authFetch<ApiResponse>(SERVER_URL + Users.Create, {
     body: JSON.stringify(user),
     method: 'POST',
-  };
-  await authFetch<ApiResponse>(SERVER_URL + Users.Create, options).then(
-    showMessage
-  );
+  }).then(showMessage);
 };
 
 export const deleteUser = async (id: UserDTO['id']) => {
@@ -57,16 +54,15 @@ export const deleteUser = async (id: UserDTO['id']) => {
   );
 };
 
-export const updateUser = async (user: UserDTO) => {
-  const options = {
+export const updateUser = (user: UserDTO) => {
+  return authFetch<ApiResponse>(SERVER_URL + Users.Update, {
     body: JSON.stringify(user),
     headers: {
       Accept: 'application/json, text/plain, */*',
     },
-    method: 'POST',
-  };
-
-  await authFetch<ApiResponse>(SERVER_URL + Users.Update, options).then(
-    showMessage
-  );
+    method: 'POST', 
+  }).then(showMessage);
 };
+
+export const getStudentGroups = (userId: UserDTO['id']) =>
+  authFetch<{ groups: GroupDTO[] }>(SERVER_URL + Users.Student.Groups(userId));

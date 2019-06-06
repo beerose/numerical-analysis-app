@@ -1,12 +1,14 @@
-import { css } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Button, Modal } from 'antd';
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { NewPasswordForm } from '../';
-import { ModalHeader } from '../../components/ModalHeader';
-import { LABELS } from '../../utils/labels';
-import { useAuthStore } from '../../AuthStore';
+import { LABELS } from '../utils/labels';
+import { useAuthStore } from '../AuthStore';
+
+import { NewPasswordForm } from '.';
+import { ModalHeader } from './ModalHeader';
 
 const ErrorContainer = ({
   errorMessage,

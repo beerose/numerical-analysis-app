@@ -1,4 +1,5 @@
-import { css, ObjectInterpolation } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx, ObjectInterpolation } from '@emotion/core';
 import {
   ComponentProps,
   CSSProperties,

@@ -25,7 +25,7 @@ export type UserDTO = {
   privileges?: UserPrivileges;
 };
 
-const isUserId: Typeguard<UserDTO['id']> = isNumber;
+export const isUserId: Typeguard<UserDTO['id']> = isNumber;
 export const userIdRuntimeType = new t.Type(
   'UserDTO.id',
   isUserId,

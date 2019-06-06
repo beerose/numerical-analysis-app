@@ -1,4 +1,5 @@
-import { css } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { List, Spin } from 'antd';
 import { GroupDTO, UserDTO } from 'common';
 import React, { Fragment, useContext, useEffect, useState } from 'react';
@@ -104,7 +105,9 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
       <Breadcrumbs />
       <NewGroupButton onClick={() => props.history.push('/groups/new')} />
       <SelectLecturer
-        style={{ marginLeft: Theme.Padding.Quarter }}
+        style={{
+          marginLeft: Theme.Padding.Quarter,
+        }}
         lecturers={lecturers}
         onChange={selectLecturer}
         value={selectedLecturer}

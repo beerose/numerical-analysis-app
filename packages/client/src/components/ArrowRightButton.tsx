@@ -1,9 +1,12 @@
-import { css, keyframes } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx, keyframes } from '@emotion/core';
 import VisuallyHidden from '@reach/visually-hidden';
 import { Icon } from 'antd';
 import React from 'react';
 
 import { ResetButton } from './ResetButton';
+
+type Props = { alt: string } & React.ComponentProps<typeof ResetButton>;
 
 const pointRight = keyframes`
   0% {
@@ -16,8 +19,6 @@ const pointRight = keyframes`
     transform: translateX(0);
   }
 `;
-
-type Props = { alt: string } & React.ComponentProps<typeof ResetButton>;
 
 export const ArrowRightButton: React.FC<Props> = ({ alt, ...rest }) => (
   <ResetButton

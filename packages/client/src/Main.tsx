@@ -1,7 +1,8 @@
-import { css } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Layout } from 'antd';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Route, RouteChildrenProps, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -83,7 +84,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
             <Route path="/accounts/new" component={NewAccount} />
             {/* Route for /login is not needed, because no other path will match */}
             {userAuth ? (
-              <>
+              <Fragment>
                 <Route exact path="/" component={Home} />
                 <VisibleForRoles admin superUser>
                   <Route path="/users" component={Users} />
@@ -91,7 +92,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                 <Route path="/groups" component={Groups} />
                 <Route path="/settings" component={SettingsContainer} />
                 <Route path="/logout" component={Logout} />
-              </>
+              </Fragment>
             ) : (
               <Switch>
                 <Route exact path="/" component={Welcome} />

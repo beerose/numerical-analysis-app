@@ -1,5 +1,6 @@
 import { Button } from 'antd';
-import { css } from 'emotion';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import moment from 'moment';
 import React from 'react';
 

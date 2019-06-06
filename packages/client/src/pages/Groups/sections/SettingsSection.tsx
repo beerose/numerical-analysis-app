@@ -1,4 +1,5 @@
-import { css } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Col, Form, Input, Row } from 'antd';
 // tslint:disable-next-line:no-submodule-imports

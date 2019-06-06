@@ -1,5 +1,7 @@
-import { css, Global } from '@emotion/core';
-import React, { useContext, useEffect, useRef } from 'react';
+import { Global } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
+import React, { useContext, useEffect } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 
 import { Flex } from '../components';

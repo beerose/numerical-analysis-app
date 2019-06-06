@@ -3,7 +3,8 @@ import { Button, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 // tslint:enable: no-submodule-imports
 import { GroupType, UserDTO } from 'common';
-import { css } from 'emotion';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 
 import { Colors, LABELS } from '../../../utils';

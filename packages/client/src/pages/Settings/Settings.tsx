@@ -19,12 +19,12 @@ export const SettingsContainer = () => {
   return (
     <PaddingContainer>
       <Flex paddingBottom={10}>
-        <b style={{ paddingRight: 5 }}>Imię i nazwisko:</b> {userName}
+        <b css={{ paddingRight: 5 }}>Imię i nazwisko:</b> {userName}
       </Flex>
       <Flex paddingBottom={15}>
-        <b style={{ paddingRight: 5 }}>Rola:</b> {userRole}
+        <b css={{ paddingRight: 5 }}>Rola:</b> {userRole}
       </Flex>
-      <Button style={{ width: 150 }} onClick={() => setModalVisible(true)}>
+      <Button css={{ width: 150 }} onClick={() => setModalVisible(true)}>
         Zmień hasło
       </Button>
       <Modal

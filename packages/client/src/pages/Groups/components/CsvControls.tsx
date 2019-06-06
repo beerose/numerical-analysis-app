@@ -1,4 +1,5 @@
-import { css } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Button, Icon, Tooltip, Upload } from 'antd';
 import { CSV_DELIMITER } from 'common';
 import React from 'react';

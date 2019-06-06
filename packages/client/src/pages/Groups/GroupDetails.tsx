@@ -1,5 +1,6 @@
 // tslint:disable-next-line:no-single-line-block-comment
-import { css } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Button, Icon, Menu, Spin, Tooltip } from 'antd';
 import { groupFeatures } from 'common';
 import * as React from 'react';

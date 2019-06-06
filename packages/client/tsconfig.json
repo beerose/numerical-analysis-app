@@ -14,8 +14,7 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "noEmitHelpers": true,
-    // jsx goes through babel, because we'd like to use fragments without error
-    "jsx": "preserve",
+    "jsx": "react",
     "lib": ["es2018", "dom"],
     "target": "es5",
     "module": "es2015",

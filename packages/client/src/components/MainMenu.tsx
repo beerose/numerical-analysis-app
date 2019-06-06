@@ -1,4 +1,5 @@
-import { css } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Icon, Menu } from 'antd';
 import { UserRole } from 'common';
 import React, { useContext } from 'react';
@@ -43,7 +44,7 @@ const MENU_ITEMS: Partial<Record<MenuItem['key'], MenuItem>> = {
 
 function getMenuItemsForUserRole(userRole: UserRole | undefined): MenuItem[] {
   if (!userRole) {
-    return [MENU_ITEMS.login];
+    return [MENU_ITEMS.login!];
   }
 
   return [

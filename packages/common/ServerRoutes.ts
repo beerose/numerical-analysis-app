@@ -1,3 +1,5 @@
+import { UserDTO } from './api';
+
 export const ServerRoutes = {
   Accounts: {
     ChangePassword: '/accounts/change_password',
@@ -48,7 +50,12 @@ export const ServerRoutes = {
   Users: {
     Create: '/users/create',
     Delete: '/users/delete',
+    Get: (userId: UserDTO['id'] | ':id') => `/users/${userId}`,
     List: '/users',
+    Student: {
+      Groups: (userId: UserDTO['id'] | ':id') =>
+        `/users/${userId}/student.groups`,
+    },
     Update: '/users/update',
   },
 } as const;

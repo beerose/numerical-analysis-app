@@ -74,7 +74,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
               selectedStudent.user_name
             }`
           }
-          style={{ width: 300 }}
+          css={{ width: 300 }}
           placeholder={LABELS.selectFromList}
           optionFilterProp="children"
           onChange={this.handleSelectChange}

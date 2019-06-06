@@ -1,5 +1,6 @@
 import { GroupDTO, UserDTO, UserPrivileges } from 'common';
 import { Omit } from 'react-router';
+import { sql } from 'tag-sql';
 
 import { connection } from '../connection';
 
@@ -231,5 +232,30 @@ export const getUserPrivileges = (
         return callback(null, null);
       }
       return callback(null, res[0].privileges);
+    }
+  );
+
+export const getStudentGroups = (
+  { userId }: { userId: UserDTO['id'] },
+  callback: QueryCallback<GroupDTO[]>
+) =>
+  connection.query(
+    sql`
+      SELECT g.*
+      FROM
+        (SELECT group_id
+        FROM user_belongs_to_group ubg
+        WHERE ubg.user_id = ${userId}) student_groups
+      JOIN \`groups\` g
+      WHERE g.id = student_groups.group_id;
+    `,
+    (err, res) => {
+      if (err) {
+        return callback(err, res);
+      }
+
+      console.log("STUDENT'S GROUPS", res);
+
+      return callback(null, res);
     }
   );

@@ -1,5 +1,6 @@
 // tslint:disable-next-line:no-single-line-block-comment
-import { css } from '@emotion/core';
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, List, Modal, Spin } from 'antd';
 import { MeetingDTO } from 'common';
