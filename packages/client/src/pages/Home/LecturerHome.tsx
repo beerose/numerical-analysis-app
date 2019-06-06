@@ -3,11 +3,11 @@ import { Icon } from 'antd';
 import React, { useContext } from 'react';
 import { Link, LinkProps } from 'react-router-dom';
 
-import { PaddingContainer } from '../components';
-import { LocaleContext } from '../components/locale';
-import { Flex } from '../components/Flex';
-import { Colors } from '../utils';
-import { useAuthStore } from '../AuthStore';
+import { PaddingContainer } from '../../components';
+import { LocaleContext } from '../../components/locale';
+import { Flex } from '../../components/Flex';
+import { Colors } from '../../utils';
+import { AuthStoreState } from '../../AuthStore';
 
 type TileLinkProps = LinkProps;
 
@@ -64,9 +64,8 @@ const TilesNavigation = () => {
   );
 };
 
-export const Home: React.FC = () => {
+export const LecturerHome: React.FC<AuthStoreState> = ({ userName }) => {
   const { texts } = useContext(LocaleContext);
-  const { userName } = useAuthStore();
 
   return (
     <PaddingContainer as="section">

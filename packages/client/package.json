@@ -28,6 +28,7 @@
     "react-dom": "^16.9.0-alpha.0",
     "react-emotion": "^10.0.0",
     "react-router-dom": "^5.0.0",
+    "react-spring": "^8.0.21",
     "react-use": "^8.3.1",
     "src": "^1.1.2",
     "tagged-template-noop": "^2.1.0",
