@@ -9,11 +9,19 @@ export type StudentHomeProps = AuthStoreState;
 export const StudentHome: React.FC<StudentHomeProps> = (
   props: AuthStoreState
 ) => {
-  const studentGroups = usePromise(() => getStudentGroups(props.));
+  const result = usePromise(
+    () => getStudentGroups(props.user!.id),
+    { error: null },
+    [props.user!.id]
+  );
+
+  if ('error' in result) {
+    throw result.error;
+  }
 
   return (
     <PaddingContainer>
-      {JSON.stringify(props)} {JSON.stringify(studentGroups)}
+      {JSON.stringify(props)} {JSON.stringify(result.groups)}
     </PaddingContainer>
   );
 };
