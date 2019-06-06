@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Icon } from 'antd';
 import React from 'react';
 import { Assign } from 'utility-types';

@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 
 import { Colors } from '../utils';
 export const DateRange = ({ start, end }: { start: string; end: string }) => {

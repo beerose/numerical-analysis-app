@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Col, Form, Input, Row } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
@@ -10,7 +9,7 @@ import { DeepRequired } from 'utility-types';
 
 import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
-import { Theme } from '../../../components/theme';
+import { Theme } from '../../../components/Theme';
 import { LABELS, useMergeKey, useMergeState } from '../../../utils';
 import { GradeEquationInput } from '../components/GradeEquationInput';
 import {

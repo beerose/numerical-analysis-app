@@ -1,6 +1,5 @@
 import { Button, List, Modal, Select, Spin } from 'antd';
 import { GroupDTO } from 'common';
-import { async } from 'q';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 

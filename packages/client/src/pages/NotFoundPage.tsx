@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useContext } from 'react';
 
-import { Flex } from './Flex';
+import { LocaleContext } from '../components/locale';
+import { Flex } from '../components/Flex';
 
 const Container = styled(Flex)`
   flex-direction: column;
@@ -27,14 +28,16 @@ type NotFoundPageProps = {
   children?: React.ReactNode;
 };
 
-export const NotFoundPage = ({ children }: NotFoundPageProps) => (
-  <Container flex={1}>
-    <h1>404</h1>
-    {children}
-    <Spacer />
-  </Container>
-);
+export const NotFoundPage = (props: NotFoundPageProps) => {
+  const { texts } = useContext(LocaleContext);
 
-NotFoundPage.defaultProps = {
-  children: <p>Nie mogliśmy znaleźć strony, której szukasz 😔</p>,
+  const children = props.children || <p>{texts.couldntFindPage}</p>;
+
+  return (
+    <Container flex={1}>
+      <h1>404</h1>
+      {children}
+      <Spacer />
+    </Container>
+  );
 };

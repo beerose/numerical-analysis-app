@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Button, Modal } from 'antd';
 import React, { useState } from 'react';
 import { RouteComponentProps } from 'react-router';

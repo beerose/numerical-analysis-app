@@ -1,17 +1,13 @@
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Layout } from 'antd';
-import * as React from 'react';
+import React from 'react';
 import { Route, RouteChildrenProps, Switch } from 'react-router';
+import { Link } from 'react-router-dom';
 
-import {
-  ErrorBoundary,
-  LoginForm,
-  MainMenu,
-  NewAccount,
-  NotFoundPage,
-} from './components';
+import { ErrorBoundary, LoginForm, MainMenu, NewAccount } from './components';
 import { VisibleForRoles } from './components/VisibleForRoles';
-import { Groups, Home, Users } from './pages';
+import { Groups, Home, NotFoundPage, Users, Welcome } from './pages';
 import { Logout } from './pages/Logout';
 import { SettingsContainer } from './pages/Settings';
 import { LABELS } from './utils/labels';
@@ -40,16 +36,23 @@ const StyledLayout = styled(Layout)`
   min-height: 100%;
 `;
 
-const Title = styled.p`
-  cursor: pointer;
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.65);
+const Title: React.FC = ({ children }) => (
+  <Link
+    to="/"
+    css={css`
+      cursor: pointer;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.65);
 
-  transition: color 0.3s ease;
-  &:hover {
-    color: white;
-  }
-`;
+      transition: color 0.3s ease;
+      &:hover {
+        color: white;
+      }
+    `}
+  >
+    {children}
+  </Link>
+);
 
 type Props = RouteChildrenProps;
 export const Main: React.FC<Props> = ({ history, location }) => {
@@ -61,16 +64,24 @@ export const Main: React.FC<Props> = ({ history, location }) => {
     userName,
   } = useAuthStore();
 
+  const handleLoginSuccess = (...args: Parameters<typeof actions.login>) => {
+    if (location.pathname === '/login') {
+      history.push('/');
+    }
+    actions.login(...args);
+  };
+
   return (
     <StyledLayout>
       <StyledHeader>
-        <Title onClick={() => history.push('/')}>{LABELS.appName}</Title>
-        <MainMenu userRole={userRole || ''} location={location} />
+        <Title>{LABELS.appName}</Title>
+        <MainMenu userRole={userRole} location={location} />
       </StyledHeader>
       <ErrorBoundary>
         <StyledContent>
           <Switch>
             <Route path="/accounts/new" component={NewAccount} />
+            {/* Route for /login is not needed, because no other path will match */}
             {userAuth ? (
               <>
                 <Route exact path="/" component={Home} />
@@ -82,7 +93,22 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                 <Route path="/logout" component={Logout} />
               </>
             ) : (
-              <LoginForm onSubmit={actions.login} errorMessage={errorMessage} />
+              <Switch>
+                <Route exact path="/" component={Welcome} />
+                <Route path="/login">
+                  <Welcome />
+                  <LoginForm
+                    onSubmit={handleLoginSuccess}
+                    errorMessage={errorMessage}
+                  />
+                </Route>
+                <Route>
+                  <LoginForm
+                    onSubmit={handleLoginSuccess}
+                    errorMessage={errorMessage}
+                  />
+                </Route>
+              </Switch>
             )}
             <NotFoundPage />
           </Switch>

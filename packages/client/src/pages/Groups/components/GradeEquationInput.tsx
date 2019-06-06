@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Col, Input, Row } from 'antd';
 import { ColProps } from 'antd/lib/col';

@@ -27,7 +27,7 @@ export const TaskTypeSelect = React.forwardRef(
           <>
             <Icon
               type="pushpin"
-              style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
+              style={{ color: Colors.SemiLightGray, marginRight: '5px' }}
             />
           </>
         }

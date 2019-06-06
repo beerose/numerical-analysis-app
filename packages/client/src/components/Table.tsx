@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Table as AntTable } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { TableProps } from 'antd/lib/table';

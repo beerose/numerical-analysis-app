@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { List, Spin } from 'antd';
 import { GroupDTO, UserDTO } from 'common';
 import React, { Fragment, useContext, useEffect, useState } from 'react';

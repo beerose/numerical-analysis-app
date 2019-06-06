@@ -1,6 +1,5 @@
 // tslint:disable-next-line:no-single-line-block-comment
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Alert } from 'antd';
 
 const alertStyles = css`

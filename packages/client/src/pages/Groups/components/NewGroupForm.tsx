@@ -80,7 +80,7 @@ class NewGroupForm extends React.Component<Props> {
           })(
             <Input
               prefix={
-                <Icon type="tags" style={{ color: Colors.SemiLightGrey }} />
+                <Icon type="tags" style={{ color: Colors.SemiLightGray }} />
               }
               placeholder={LABELS.groupName}
             />

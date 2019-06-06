@@ -47,7 +47,7 @@ export const NewPasswordForm = (props: Props) => {
         })(
           <Input
             prefix={
-              <Icon type="lock" style={{ color: Colors.SemiLightGrey }} />
+              <Icon type="lock" style={{ color: Colors.SemiLightGray }} />
             }
             type="password"
             placeholder="Nowe hasło"
@@ -60,7 +60,7 @@ export const NewPasswordForm = (props: Props) => {
         })(
           <Input
             prefix={
-              <Icon type="lock" style={{ color: Colors.SemiLightGrey }} />
+              <Icon type="lock" style={{ color: Colors.SemiLightGray }} />
             }
             type="password"
             placeholder={LABELS.confirmPassword}

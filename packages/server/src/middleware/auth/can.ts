@@ -1,10 +1,10 @@
-import { UserDTO, UserPrivileges, UserRole, What, Where } from 'common';
+import { UserDTO, UserPrivileges, UserRole } from 'common';
 import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
 type UserWithStringPrivileges = UserDTO & { privileges: string };
 
-export const can = (what: What, where: Where) => (
+export const can = (what: UserPrivileges.What, where: UserPrivileges.Where) => (
   req: Request,
   res: Response,
   next: NextFunction

@@ -1,6 +1,5 @@
 // tslint:disable-next-line:no-single-line-block-comment
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Button, Icon, Menu, Spin, Tooltip } from 'antd';
 import { groupFeatures } from 'common';
 import * as React from 'react';
@@ -9,7 +8,7 @@ import { Link, LinkProps } from 'react-router-dom';
 
 import { Breadcrumbs, NotFoundPage } from '../../components';
 import { LocaleContext } from '../../components/locale';
-import { Theme } from '../../components/theme';
+import { Theme } from '../../components/Theme';
 import { Flex } from '../../components/Flex';
 
 import { ShareGroupForEdit } from './components';

@@ -54,7 +54,7 @@ const LoginForm = (props: Props) => {
     >
       <Form
         onSubmit={handleSubmit}
-        style={{ padding: '0px 20px 0 20px', alignItems: 'center' }}
+        css={{ padding: '0px 20px 0 20px', alignItems: 'center' }}
       >
         {errorMessage && <FormError>{errorMessage}</FormError>}
         <FormItem validateStatus={errorMessage ? 'error' : 'validating'}>
@@ -63,7 +63,7 @@ const LoginForm = (props: Props) => {
           })(
             <Input
               prefix={
-                <Icon type="user" style={{ color: Colors.SemiLightGrey }} />
+                <Icon type="user" style={{ color: Colors.SemiLightGray }} />
               }
               placeholder={LABELS.email}
             />
@@ -75,7 +75,7 @@ const LoginForm = (props: Props) => {
           })(
             <Input
               prefix={
-                <Icon type="lock" style={{ color: Colors.SemiLightGrey }} />
+                <Icon type="lock" css={{ color: Colors.SemiLightGray }} />
               }
               type="password"
               placeholder={LABELS.password}
@@ -87,13 +87,13 @@ const LoginForm = (props: Props) => {
             initialValue: true,
             valuePropName: 'checked',
           })(<Checkbox>{LABELS.rememberMe}</Checkbox>)}
-          <Link to="/" style={{ float: 'right' }}>
+          <Link to="/" css={{ float: 'right' }}>
             {LABELS.forgotPassword}
           </Link>
           <Button
             type="primary"
             htmlType="submit"
-            style={{ width: '100%', marginTop: '20px' }}
+            css={{ width: '100%', marginTop: '20px' }}
           >
             {LABELS.logIn}
           </Button>

@@ -1,3 +1,6 @@
+/**
+ * TODO: Move this to **server** package
+ */
 export const apiMessages = {
   accountExists: 'Twoje konto już istnieje',
   activitySet: 'Aktywność ustawiona',

@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Icon, Select } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { SelectProps } from 'antd/lib/select';
@@ -29,7 +28,7 @@ export const SelectLecturer = React.forwardRef(
         <span>
           <Icon
             type="user"
-            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
+            style={{ color: Colors.SemiLightGray, marginRight: '5px' }}
           />
           {LABELS.lecturer}
         </span>

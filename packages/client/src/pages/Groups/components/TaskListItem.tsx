@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Card, Input, List, Spin, Table } from 'antd';
 import {
@@ -34,7 +33,7 @@ const StyledTaskCard = styled(Card)`
   }
   margin-bottom: 10px;
   &:hover {
-    border: 1px solid ${Colors.SemiLightGrey};
+    border: 1px solid ${Colors.SemiLightGray};
   }
 `;
 
@@ -60,7 +59,7 @@ const TaskPointsInput = (props: TaskPointsInputProps) => {
     <Input
       css={css`
         width: ${task.max_points < 100 ? '65px' : '75px'};
-        border: 1 solid ${Colors.SemiLightGrey} !important;
+        border: 1 solid ${Colors.SemiLightGray} !important;
         margin-right: 3px;
       `}
       type="number"

@@ -15,7 +15,7 @@
   "goToMeetings": "Idź do spotkań.",
   "edit": "Edytuj",
   "lecturer": "Prowadzący",
-  "classRoomNumber": "Numer sali",
+  "classroomNumber": "Numer sali",
   "groupName": "Nazwa grupy",
   "groupType": "Typ grupy",
   "tasks": "Zadania i sprawdziany",
@@ -34,5 +34,8 @@
   "settings": "Ustawienia",
   "attached": "Podpięte grupy",
   "pts": "pkt.",
-  "logout": "Wyloguj"
+  "logout": "Wyloguj",
+  "login": "Zaloguj się",
+  "welcomeToTheApp": "Witaj w Lagrange!",
+  "couldntFindPage": "Nie mogliśmy znaleźć strony, której szukasz 😔"
 }

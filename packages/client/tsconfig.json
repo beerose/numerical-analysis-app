@@ -14,11 +14,13 @@
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
     "noEmitHelpers": true,
-    "jsx": "react",
+    // jsx goes through babel, because we'd like to use fragments without error
+    "jsx": "preserve",
     "lib": ["es2018", "dom"],
     "target": "es5",
     "module": "es2015",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "sourceMap": false
   },
   "include": ["src"],
   "exclude": ["node_modules", "../../node_modules"],

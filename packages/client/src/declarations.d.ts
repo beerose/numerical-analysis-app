@@ -11,3 +11,8 @@ declare module '@reach/visually-hidden' {
 
   export default VisuallyHidden;
 }
+
+declare module '*.svg' {
+  const uri: string;
+  export default uri;
+}

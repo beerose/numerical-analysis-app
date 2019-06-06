@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Icon, Menu } from 'antd';
 import { UserRole } from 'common';
 import React, { useContext } from 'react';
@@ -16,7 +15,6 @@ const mainMenuStyles = css`
 type MenuItem = {
   key: LocaleEntry;
   icon: string;
-  path: string;
 };
 
 // tslint:disable:object-literal-sort-keys
@@ -24,26 +22,30 @@ const MENU_ITEMS: Partial<Record<MenuItem['key'], MenuItem>> = {
   groups: {
     icon: 'team',
     key: 'groups',
-    path: '/groups',
   },
   users: {
     icon: 'user',
     key: 'users',
-    path: '/users',
   },
   settings: {
     icon: 'setting',
     key: 'settings',
-    path: '/settings',
   },
   logout: {
     icon: 'logout',
     key: 'logout',
-    path: '/logout',
+  },
+  login: {
+    icon: 'login',
+    key: 'login',
   },
 };
 
-function getMenuItemsForUserRole(userRole: string): MenuItem[] {
+function getMenuItemsForUserRole(userRole: UserRole | undefined): MenuItem[] {
+  if (!userRole) {
+    return [MENU_ITEMS.login];
+  }
+
   return [
     MENU_ITEMS.groups,
     userRole === UserRole.Admin && MENU_ITEMS.users,
@@ -53,7 +55,7 @@ function getMenuItemsForUserRole(userRole: string): MenuItem[] {
 }
 
 type Props = {
-  userRole: string;
+  userRole?: UserRole;
   location: {
     pathname: string;
   };
@@ -71,11 +73,11 @@ export const MainMenu: React.FC<Props> = ({ location, userRole }) => {
       css={mainMenuStyles}
       selectedKeys={[selectedItem]}
     >
-      {menuItemsForRole.map(item => (
-        <Menu.Item key={item.key}>
-          <Link to={item.path}>
-            <Icon type={item.icon} />
-            {texts[item.key]}
+      {menuItemsForRole.map(({ key, icon }) => (
+        <Menu.Item key={key}>
+          <Link to={'/' + key}>
+            <Icon type={icon} />
+            {texts[key]}
           </Link>
         </Menu.Item>
       ))}

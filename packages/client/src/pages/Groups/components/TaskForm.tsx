@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Button, DatePicker, Form, Icon, Input, Switch } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
@@ -131,7 +130,7 @@ const TaskForm = (props: Props) => {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
           <Input
-            prefix={<Icon type="tag" style={{ color: Colors.SemiLightGrey }} />}
+            prefix={<Icon type="tag" style={{ color: Colors.SemiLightGray }} />}
           />
         )}
       </Form.Item>
@@ -139,7 +138,7 @@ const TaskForm = (props: Props) => {
         {getFieldDecorator('description')(
           <Input
             prefix={
-              <Icon type="edit" style={{ color: Colors.SemiLightGrey }} />
+              <Icon type="edit" style={{ color: Colors.SemiLightGray }} />
             }
           />
         )}
@@ -152,7 +151,7 @@ const TaskForm = (props: Props) => {
             type="number"
             css={smallInputStyles}
             prefix={
-              <Icon type="calculator" style={{ color: Colors.SemiLightGrey }} />
+              <Icon type="calculator" style={{ color: Colors.SemiLightGray }} />
             }
           />
         )}
@@ -165,7 +164,7 @@ const TaskForm = (props: Props) => {
             type="number"
             css={smallInputStyles}
             prefix={
-              <Icon type="bar-chart" style={{ color: Colors.SemiLightGrey }} />
+              <Icon type="bar-chart" style={{ color: Colors.SemiLightGray }} />
             }
           />
         )}

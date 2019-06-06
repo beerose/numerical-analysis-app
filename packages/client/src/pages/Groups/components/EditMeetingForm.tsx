@@ -53,7 +53,7 @@ const EditMeetingForm = (props: Props) => {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
           <Input
-            prefix={<Icon type="tag" style={{ color: Colors.SemiLightGrey }} />}
+            prefix={<Icon type="tag" style={{ color: Colors.SemiLightGray }} />}
             placeholder="Nazwa spotkania"
             className={formItems}
           />

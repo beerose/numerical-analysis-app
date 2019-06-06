@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Flex } from '../../../components';
-import { Theme } from '../../../components/theme';
+import { Theme } from '../../../components/Theme';
 import { showMessage } from '../../../utils';
 import { WrappedTaskForm as TaskForm } from '../components/TaskForm';
 import { GroupApiContextState } from '../GroupApiContext';

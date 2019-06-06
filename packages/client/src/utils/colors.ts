@@ -1,11 +1,13 @@
 export enum Colors {
-  SemiLightGrey = 'rgba(0,0,0,.25)',
-  Grey = '#777',
-  Primary = 'rgb(24, 144, 255)',
-  PrimaryLight = '#40a9ff',
+  SemiLightGray = 'rgba(0,0,0,.25)',
+  Gray = '#777',
+  Primary = '#40a9ff', // from ant buttons
+  PrimaryActive = '#1890ff', // from ant menu active item
+  PrimaryLight = '#64b5ff',
+  PrimaryDark = '#1373CC',
   White = 'white',
   Blackish = '#001529',
   Red = '#f5222d',
   Green = 'green',
-  PrimaryLightGrey = '#f0f2f5',
+  LightGray = '#f0f2f5',
 }

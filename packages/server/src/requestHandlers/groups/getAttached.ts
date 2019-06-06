@@ -1,7 +1,7 @@
+import { apiMessages, GroupDTO } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { apiMessages, GroupDTO } from '../../../../../dist/common';
 import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
 import { db } from '../../store';
 

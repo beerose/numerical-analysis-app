@@ -106,7 +106,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
             })(
               <Input
                 prefix={
-                  <Icon type="user" style={{ color: Colors.SemiLightGrey }} />
+                  <Icon type="user" style={{ color: Colors.SemiLightGray }} />
                 }
                 placeholder={LABELS.name}
                 disabled={!!this.state.selectedStudent}
@@ -119,7 +119,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
             })(
               <Input
                 prefix={
-                  <Icon type="mail" style={{ color: Colors.SemiLightGrey }} />
+                  <Icon type="mail" style={{ color: Colors.SemiLightGray }} />
                 }
                 placeholder={LABELS.email}
                 disabled={!!this.state.selectedStudent}
@@ -132,7 +132,7 @@ export class NewStudentModalForm extends React.Component<Props, State> {
             })(
               <Input
                 prefix={
-                  <Icon type="book" style={{ color: Colors.SemiLightGrey }} />
+                  <Icon type="book" style={{ color: Colors.SemiLightGray }} />
                 }
                 placeholder={LABELS.index}
                 disabled={!!this.state.selectedStudent}

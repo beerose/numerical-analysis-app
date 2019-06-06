@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Col, Input, Row } from 'antd';
 import { Tresholds } from 'common';
 import React, { useCallback, useContext } from 'react';

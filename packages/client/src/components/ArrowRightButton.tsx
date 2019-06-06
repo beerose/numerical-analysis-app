@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx, keyframes } from '@emotion/core';
+import { css, keyframes } from '@emotion/core';
 import VisuallyHidden from '@reach/visually-hidden';
 import { Icon } from 'antd';
 import React from 'react';

@@ -15,11 +15,11 @@ const StyledDeleteIcon = styled(Icon)`
   left: 500px;
   margin-top: 10px;
   font-size: 24px;
-  color: ${Colors.SemiLightGrey};
+  color: ${Colors.SemiLightGray};
   transition: all 0.3s;
 
   &:hover {
-    color: ${Colors.Grey};
+    color: ${Colors.Gray};
   }
 `;
 
@@ -31,7 +31,7 @@ const StyledInput = styled(Input)`
 const ChoosableTaskContainer = styled(Flex)`
   padding: 6px 0px 8px 6px;
   margin-bottom: 10px;
-  border: 1px solid ${Colors.SemiLightGrey};
+  border: 1px solid ${Colors.SemiLightGray};
   width: 490px;
   overflow-x: scroll;
 `;

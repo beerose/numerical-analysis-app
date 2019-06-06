@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import { Button, Spin } from 'antd';
 import { UserDTO } from 'common';
 import { saveAs } from 'file-saver';
@@ -7,7 +6,7 @@ import * as React from 'react';
 import { Omit } from 'react-router';
 
 import { UsersTable } from '../../../components';
-import { Theme } from '../../../components/theme';
+import { Theme } from '../../../components/Theme';
 import { Flex } from '../../../components/Flex';
 import { isSafari } from '../../../utils/isSafari';
 import { studentsToCsv } from '../../../utils/studentsToCsv';

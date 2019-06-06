@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx, ObjectInterpolation } from '@emotion/core';
+import { css, ObjectInterpolation } from '@emotion/core';
 import {
   ComponentProps,
   CSSProperties,
@@ -10,7 +9,7 @@ import {
   ReactType,
 } from 'react';
 
-import { Theme } from './theme';
+import { Theme } from './Theme';
 
 type FlexProps = CSSProperties & {
   children?: ReactNode;

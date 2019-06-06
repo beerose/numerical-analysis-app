@@ -1,5 +1,4 @@
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Input, List, Modal, Select, Spin } from 'antd';
 import { join } from 'path';
@@ -7,7 +6,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
-import { Theme } from '../../../components/theme';
+import { Theme } from '../../../components/Theme';
 import { Flex } from '../../../components/Flex';
 import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { TaskListItem } from '../components/TaskListItem';

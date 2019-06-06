@@ -53,7 +53,7 @@ export const NewUserModalForm = (props: Props) => {
           })(
             <Input
               prefix={
-                <Icon type="user" style={{ color: Colors.SemiLightGrey }} />
+                <Icon type="user" style={{ color: Colors.SemiLightGray }} />
               }
               placeholder={LABELS.name}
             />
@@ -65,7 +65,7 @@ export const NewUserModalForm = (props: Props) => {
           })(
             <Input
               prefix={
-                <Icon type="mail" style={{ color: Colors.SemiLightGrey }} />
+                <Icon type="mail" style={{ color: Colors.SemiLightGray }} />
               }
               placeholder={LABELS.email}
             />
@@ -82,7 +82,7 @@ export const NewUserModalForm = (props: Props) => {
           })(
             <Input
               prefix={
-                <Icon type="book" style={{ color: Colors.SemiLightGrey }} />
+                <Icon type="book" style={{ color: Colors.SemiLightGray }} />
               }
               placeholder={LABELS.optionalIndex}
             />

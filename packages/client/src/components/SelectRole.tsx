@@ -24,7 +24,7 @@ export const SelectRole = React.forwardRef(
         <>
           <Icon
             type="tag"
-            style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
+            style={{ color: Colors.SemiLightGray, marginRight: '5px' }}
           />
           {placeholder}
         </>

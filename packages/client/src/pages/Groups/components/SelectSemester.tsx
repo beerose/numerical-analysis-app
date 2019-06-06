@@ -29,7 +29,7 @@ export const SelectSemester = React.forwardRef(
           <>
             <Icon
               type="table"
-              style={{ color: Colors.SemiLightGrey, marginRight: '5px' }}
+              style={{ color: Colors.SemiLightGray, marginRight: '5px' }}
             />
             {texts.semester}
           </>

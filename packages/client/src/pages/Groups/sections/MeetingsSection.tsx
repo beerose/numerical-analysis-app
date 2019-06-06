@@ -1,13 +1,12 @@
 // tslint:disable-next-line:no-single-line-block-comment
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, List, Modal, Spin } from 'antd';
 import { MeetingDTO } from 'common';
 import moment, { Moment } from 'moment';
 import * as React from 'react';
 
-import { Theme } from '../../../components/theme';
+import { Theme } from '../../../components/Theme';
 import { DeleteWithConfirmation } from '../../../components/DeleteWithConfirmation';
 import { Flex } from '../../../components/Flex';
 import { LABELS } from '../../../utils/labels';

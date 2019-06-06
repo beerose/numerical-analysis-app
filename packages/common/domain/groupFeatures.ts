@@ -1,4 +1,4 @@
-import { GroupType } from '.';
+import { GroupType } from './Group';
 
 type GroupFeaturesConfig = {
   hasMeetings?: boolean;
@@ -9,8 +9,8 @@ type GroupFeaturesConfig = {
 
 export const groupFeatures: Record<GroupType, GroupFeaturesConfig> = {
   [GroupType.Lecture]: {
-    hasTasks: true,
     hasAttachedGroups: true,
+    hasTasks: true,
   },
   [GroupType.Lab]: {
     hasMeetings: true,
