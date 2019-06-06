@@ -1,9 +1,9 @@
 import { css, Global } from '@emotion/core';
-import { Button } from 'antd';
 import React, { useContext } from 'react';
 
-import { Flex, PaddingContainer } from '../components';
+import { Flex } from '../components';
 import { LocaleContext } from '../components/locale';
+import { LinkButton } from '../components/LinkButton';
 import { Colors } from '../utils';
 
 const Background = () => {
@@ -54,8 +54,12 @@ export const Welcome: React.FC = () => {
       css={css`
         position: relative;
         height: 100%;
-
+        flex: 1;
         z-index: 0;
+
+        /* needed for proper scaling on Chrome */
+        display: flex;
+        flex-direction: column;
       `}
     >
       <Global
@@ -83,37 +87,55 @@ export const Welcome: React.FC = () => {
           }
         `}
       />
-      <div
-        css={css`
-          position: absolute;
-          padding: 12em 1em 12em 2em;
-          width: 24em;
-
-          max-width: 100%;
-          border-radius: 5px;
-
-          font-size: 1.5em;
-
-          color: white;
-        `}
-      >
-        <h1
+      <Flex height="100%" center width="38em" maxWidth="100%" flex={1}>
+        <div
           css={css`
+            border-radius: 5px;
             font-size: 1.5em;
-            font-weight: bold;
+            color: white;
 
-            color: inherit;
+            padding-bottom: 4.5em;
           `}
         >
-          {texts.welcomeToTheApp}
-        </h1>
-        <p>Lorem ipsum, ta aplikacja pozwala Ci robić rzeczy</p>
-        <Flex center>
-          <Button type="dashed" size="large">
-            {texts.login}
-          </Button>
-        </Flex>
-      </div>
+          <article
+            css={css`
+              padding: 1em;
+              border-radius: 5px;
+              @media (max-width: 800px) {
+                background-color: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(8px);
+              }
+            `}
+          >
+            <h1
+              css={css`
+                font-size: 1.5em;
+                font-weight: bold;
+
+                color: inherit;
+              `}
+            >
+              {texts.welcomeToTheApp}
+            </h1>
+            <p>Lorem ipsum, ta aplikacja pozwala Ci robić rzeczy</p>
+            <Flex center>
+              <LinkButton
+                to="/login"
+                type="dashed"
+                size="large"
+                css={css`
+                  margin-top: 0.5em;
+                  font-size: inherit;
+                  padding: 0.5em 1em;
+                  height: auto;
+                `}
+              >
+                {texts.login}
+              </LinkButton>
+            </Flex>
+          </article>
+        </div>
+      </Flex>
 
       <Background />
     </section>
