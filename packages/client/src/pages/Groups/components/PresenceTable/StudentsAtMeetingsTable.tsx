@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { SortOrder } from 'antd/lib/table';
 import { MeetingDetailsModel, MeetingDTO } from 'common';
 import React from 'react';
 
@@ -6,6 +7,8 @@ import { Table } from '../../../../components/Table';
 
 import { FieldIdentifier, MeetingId } from './types';
 import { AllStudentsPresenceCheckbox } from './AllStudentsPresenceCheckbox';
+
+const sortDirections = ['descend', 'ascend'] as SortOrder[];
 
 type IdentifiedChangeHandler<T extends FieldIdentifier> = (
   eventTarget: T
@@ -78,8 +81,8 @@ export class StudentsAtMeetingsTable<
 
     return (
       <Table
-        sortDirections={['descend', 'ascend']}
         size="small"
+        sortDirections={sortDirections}
         rowKey={record => String(record.student.id)}
         columns={this.columns}
         dataSource={meetingsDetails}

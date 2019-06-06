@@ -30,7 +30,6 @@ export const ShareGroupForEdit = ({
 
   return (
     <Popover
-      style={{ width: 400 }}
       content={<PopoverContent lecturers={lecturers} />}
       title="Wybierz z listy użytkowników"
       trigger="click"
@@ -39,7 +38,7 @@ export const ShareGroupForEdit = ({
       placement="right"
     >
       <Tooltip title="Udostępnij grupę do edycji innemu użytkownikowi">
-        <Button onClick={() => setFormVisible(true)} style={{ width: '90%' }}>
+        <Button onClick={() => setFormVisible(true)} css={{ width: '90%' }}>
           Udostępnij
         </Button>
       </Tooltip>

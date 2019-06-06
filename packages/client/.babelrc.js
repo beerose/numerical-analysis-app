@@ -1,13 +1,13 @@
 module.exports = {
-  presets: [
-    [
-      '@emotion/babel-preset-css-prop',
-      {
-        autoLabel: true,
-        labelFormat: '[local]',
-      },
-    ],
-  ],
+  // presets: [
+  //   [
+  //     '@emotion/babel-preset-css-prop',
+  //     {
+  //       autoLabel: true,
+  //       labelFormat: '[local]',
+  //     },
+  //   ],
+  // ],
   plugins: [
     'babel-plugin-transform-inline-environment-variables',
     '@emotion/babel-plugin-core',

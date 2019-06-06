@@ -34,8 +34,6 @@ const tableStylesFixes = css`
   }
 `;
 
-// We usually want to have arrows, but i don't want to say <T extends any>
-// tslint:disable-next-line:function-name
 export function Table<T>(props: TableProps<T>) {
   return (
     <AntTable
