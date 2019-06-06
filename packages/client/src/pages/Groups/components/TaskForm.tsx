@@ -47,6 +47,7 @@ type Props = {
   model?: TaskDTO;
   onSubmit: (values: TaskDTO) => void;
 } & FormComponentProps;
+
 const TaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
   const [taskType, setTaskType] = useState<TaskKind | null>(null);

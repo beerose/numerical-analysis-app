@@ -2,35 +2,30 @@ import { UserDTO, UserRole } from 'common';
 import Cookies from 'js-cookie';
 
 type UserCookieObject = {
-  userName: UserDTO['user_name'];
-  userRole: UserDTO['user_role'];
   token: string;
+  user: UserDTO;
 };
 
 export const userInCookies = {
   get() {
-    // TODO: Save json to Cookies ?
     const token = Cookies.get('token');
-    const userName = Cookies.get('user_name');
-    const userRole = Cookies.get('user_role');
-    if (!token || !userName || !userRole) {
+    const user = Cookies.getJSON('user') as Partial<UserDTO>;
+
+    if (!user || !token || !user.user_name || !user.user_role) {
       return;
     }
-    return {
-      userName,
-      userAuth: true,
-      userRole: UserRole.assert(userRole),
-    };
+
+    UserRole.assert(user.user_role);
+    return user;
   },
-  set(user: UserCookieObject, expires: number) {
+  set(uco: UserCookieObject, expires: number) {
     const options = { expires };
-    Cookies.set('user_role', user.userRole, options);
-    Cookies.set('user_name', user.userName, options);
-    Cookies.set('token', user.token, options);
+
+    Cookies.set('token', uco.token, options);
+    Cookies.set('user', uco.user, options);
   },
   clear() {
-    Cookies.remove('user_role');
-    Cookies.remove('user_name');
+    Cookies.remove('user');
     Cookies.remove('token');
   },
 };

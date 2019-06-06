@@ -9,8 +9,8 @@ import { Link, LinkProps } from 'react-router-dom';
 
 import { Breadcrumbs, NotFoundPage } from '../../components';
 import { LocaleContext } from '../../components/locale';
-import { Theme } from '../../components/Theme';
 import { Flex } from '../../components/Flex';
+import { Theme } from '../../components/Theme';
 
 import { ShareGroupForEdit } from './components';
 import {

@@ -1,6 +1,6 @@
-import { Button } from 'antd';
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { Button } from 'antd';
 import moment from 'moment';
 import React from 'react';
 
@@ -33,13 +33,13 @@ export const DateControls = (props: Props) => {
   };
 
   return (
-    <div className={containerStyles}>
+    <div css={containerStyles}>
       {props.config.map(days => (
         <Button
           key={days}
           shape="circle"
           onClick={() => onSelectorClick(days)}
-          className={dateSelectorsStyles}
+          css={dateSelectorsStyles}
         >
           {days > 0 && '+'}
           {days}

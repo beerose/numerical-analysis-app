@@ -1,5 +1,5 @@
 // tslint:disable: object-literal-sort-keys
-import { UserPrivileges, UserRole } from 'common';
+import { UserDTO, UserPrivileges, UserRole } from 'common';
 import createStore from 'zustand';
 
 import * as authService from './api/authApi';
@@ -14,9 +14,7 @@ const hoursFromNow = (expirationHours: number) => {
 export const [useAuthStore, authStore] = createStore(set => ({
   errorMessage: undefined as string | undefined,
   token: undefined as string | undefined,
-  userAuth: false,
-  userName: undefined as string | undefined,
-  userRole: undefined as UserRole | undefined,
+  user: undefined as UserDTO | undefined,
   privileges: undefined as UserPrivileges | undefined,
   ...userInCookies.get(),
   actions: {
@@ -30,22 +28,21 @@ export const [useAuthStore, authStore] = createStore(set => ({
           }
 
           // tslint:disable-next-line:no-shadowed-variable
-          const { token, user_name: userName, user_role: userRole } = res;
+          const { token, user_name, user_role } = res;
+
+          console.log('>>', { res });
 
           userInCookies.set(
             {
               token,
-              userName,
-              userRole: UserRole.assert(userRole),
+              user: res,
             },
             hoursFromNow(24)
           );
 
           set({
             token,
-            userName,
-            userRole,
-            userAuth: true,
+            user: res,
           });
 
           return res;
@@ -57,11 +54,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
     logout: () => {
       userInCookies.clear();
 
-      set({
-        userAuth: false,
-        userName: undefined,
-        userRole: undefined,
-      });
+      set({ user: undefined });
     },
     login: (email: string, password: string, remember: boolean) => {
       authService
@@ -90,9 +83,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
           set({
             privileges,
             token: res.token,
-            userAuth: true,
-            userName: res.user_name,
-            userRole: res.user_role,
+            user: res,
             errorMessage: '',
           });
 

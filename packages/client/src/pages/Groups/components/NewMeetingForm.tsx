@@ -1,8 +1,8 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Button, DatePicker, Form, Icon, Input } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
 import moment from 'moment';
 import React, { useEffect } from 'react';
 
@@ -77,4 +77,4 @@ const NewMeetingForm = (props: Props) => {
     </Form>
   );
 };
-export const WrappedNewMeetingForm = Form.create()(NewMeetingForm);
+export const WrappedNewMeetingForm = Form.create<Props>()(NewMeetingForm);

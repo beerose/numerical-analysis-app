@@ -1,10 +1,10 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Button, Form, Icon, Input } from 'antd';
 // tslint:disable: no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
 // tslint:enable: no-submodule-imports
 import { GroupType, UserDTO } from 'common';
-/** @jsx jsx */
-import { css, jsx } from '@emotion/core';
 import * as React from 'react';
 
 import { Colors, LABELS } from '../../../utils';
@@ -64,7 +64,7 @@ class NewGroupForm extends React.Component<Props> {
     } = this.props;
 
     return (
-      <Form onSubmit={this.handleSubmit} className={formStyles}>
+      <Form onSubmit={this.handleSubmit} css={formStyles}>
         <FormItem label={LABELS.group} {...FORM_ITEM_LAYOUT}>
           {getFieldDecorator('group', {
             rules: [{ required: true, message: LABELS.groupRequired }],

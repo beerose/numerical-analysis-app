@@ -237,14 +237,14 @@ export const GradesSection = ({
       width: 120,
     },
     {
-      align: 'center',
+      align: 'center' as const,
       key: 'meetings_grade',
       render: (item: UserResultsModel) => item.presences + item.activity,
       title: 'Obecności i aktywności',
       width: 120,
     },
     {
-      align: 'center',
+      align: 'center' as const,
       key: 'suggested_grade',
       render: (item: UserResultsModel) => (
         <SuggestedGrade userResults={item} currentGroup={currentGroup} />
@@ -253,7 +253,7 @@ export const GradesSection = ({
       width: 100,
     },
     {
-      align: 'center',
+      align: 'center' as const,
       key: 'confirm_grade',
       render: (studentResults: UserResultsModel) => (
         <ArrowRightButton

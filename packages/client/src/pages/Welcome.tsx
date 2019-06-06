@@ -1,6 +1,5 @@
-import { Global } from '@emotion/core';
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { css, Global, jsx } from '@emotion/core';
 import React, { useContext, useEffect } from 'react';
 import { animated, config, useSpring } from 'react-spring';
 
@@ -153,7 +152,7 @@ export const Welcome: React.FC = () => {
             css={css`
               padding: 1em;
               border-radius: 5px;
-              @media (max-width: 800px) {
+              @media (max-width: 1000px) {
                 background-color: rgba(0, 0, 0, 0.5);
                 backdrop-filter: blur(8px);
               }

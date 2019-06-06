@@ -7,8 +7,8 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
-import { Theme } from '../../../components/Theme';
 import { Flex } from '../../../components/Flex';
+import { Theme } from '../../../components/Theme';
 import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { TaskListItem } from '../components/TaskListItem';
 import { GroupApiContextState } from '../GroupApiContext';

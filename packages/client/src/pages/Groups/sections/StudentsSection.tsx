@@ -7,8 +7,8 @@ import * as React from 'react';
 import { Omit } from 'react-router';
 
 import { UsersTable } from '../../../components';
-import { Theme } from '../../../components/Theme';
 import { Flex } from '../../../components/Flex';
+import { Theme } from '../../../components/Theme';
 import { isSafari } from '../../../utils/isSafari';
 import { studentsToCsv } from '../../../utils/studentsToCsv';
 import { WrappedNewStudentModalForm } from '../components/AddStudentForm';
