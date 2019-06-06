@@ -82,13 +82,15 @@ export const listUsers = (
     limit: number;
     offset: number;
   },
-  callback: QueryCallback
+  callback: QueryCallback<
+    Array<Omit<UserDTO, 'active_user' | 'privileges'> & { privileges: string }>
+  >
 ) =>
   connection.query(
     {
       sql: /* sql */ `
     SELECT
-      id, user_name, email, student_index, user_role
+      id, user_name, email, student_index, user_role, privileges
     FROM
       users
       ${searchParam || roles ? 'WHERE' : ''}

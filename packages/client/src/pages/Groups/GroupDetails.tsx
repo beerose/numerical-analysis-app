@@ -149,6 +149,7 @@ export class GroupDetailsContainer extends React.Component<
               </MenuLink>
               <Menu.Item>
                 <ShareGroupForEdit
+                  currentGroup={this.context.currentGroup}
                   lecturers={this.context.lecturers}
                   actions={this.context.actions}
                 />

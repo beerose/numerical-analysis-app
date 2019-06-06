@@ -394,6 +394,14 @@ export class GroupApiProvider extends React.Component<
     return groupsService.attachTask(this.state.currentGroup.id, taskId, weight);
   };
 
+  shareForEdit = async (userId: UserDTO['id']) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+
+    return groupsService.shareForEdit(this.state.currentGroup.id, userId);
+  };
+
   render() {
     return (
       <GroupApiContext.Provider value={this.state as GroupApiContextState}>

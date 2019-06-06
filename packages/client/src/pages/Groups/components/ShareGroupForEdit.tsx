@@ -1,40 +1,87 @@
 import { Button, Icon, Popover, Spin, Tooltip } from 'antd';
+import { UserDTO } from 'common';
 import React, { useEffect, useState } from 'react';
 
-import { UserDTO } from '../../../../../../dist/common';
+import { Flex } from '../../../components';
+import { showMessage } from '../../../utils';
 import { GroupApiContextState } from '../GroupApiContext';
 
 import { SelectLecturer } from './SelectLecturer';
 
 type PopoverContentProps = {
   lecturers?: UserDTO[];
+  onShare: (id: UserDTO['id']) => void;
 };
-const PopoverContent = ({ lecturers }: PopoverContentProps) =>
-  lecturers ? <SelectLecturer lecturers={lecturers} /> : <Spin />;
+const PopoverContent = ({ lecturers, onShare }: PopoverContentProps) => {
+  const [selectedLecturer, setSelectedLecturer] = useState();
+
+  return lecturers ? (
+    <Flex flexDirection="column">
+      <SelectLecturer
+        lecturers={lecturers}
+        onChange={v => setSelectedLecturer(v)}
+        value={selectedLecturer}
+      />
+      <Button
+        style={{ marginTop: '20px', alignSelf: 'flex-end' }}
+        type="primary"
+        onClick={() => onShare(selectedLecturer)}
+      >
+        Zapisz
+      </Button>
+    </Flex>
+  ) : (
+    <Spin />
+  );
+};
 
 type ShareGroupForEditProps = Pick<
   GroupApiContextState,
-  'lecturers' | 'actions'
+  'lecturers' | 'actions' | 'currentGroup'
 >;
 export const ShareGroupForEdit = ({
+  currentGroup,
   lecturers,
   actions,
 }: ShareGroupForEditProps) => {
   const [formVisible, setFormVisible] = useState(false);
+  const [choosableLecturers, setChoosableLecturers] = useState<UserDTO[]>([]);
 
   useEffect(() => {
     if (!lecturers) {
-      actions.listLecturers();
+      actions.listLecturers().then(res => {
+        setChoosableLecturers(
+          res.filter(l => {
+            return (
+              !l.privileges ||
+              !l.privileges.groups ||
+              (currentGroup && !l.privileges.groups[currentGroup.id]) ||
+              (currentGroup && !l.privileges.groups[currentGroup.id].length)
+            );
+          })
+        );
+      });
     }
   }, [lecturers]);
 
+  const handleShareClick = (userId: UserDTO['id']) => {
+    actions.shareForEdit(userId).then(showMessage);
+    setChoosableLecturers(prev => prev.filter(l => l.id !== userId));
+    setFormVisible(false);
+  };
+
   return (
     <Popover
-      content={<PopoverContent lecturers={lecturers} />}
+      content={
+        <PopoverContent
+          lecturers={choosableLecturers}
+          onShare={handleShareClick}
+        />
+      }
       title="Wybierz z listy użytkowników"
       trigger="click"
       visible={formVisible}
-      onVisibleChange={() => setFormVisible(true)}
+      onVisibleChange={setFormVisible}
       placement="right"
     >
       <Tooltip title="Udostępnij grupę do edycji innemu użytkownikowi">

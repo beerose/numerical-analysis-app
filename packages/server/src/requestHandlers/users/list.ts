@@ -36,6 +36,11 @@ export const list = (
           error_details: listErr.message,
         });
       }
+      const usersWithPrivileges = users.map(u => ({
+        ...u,
+        privileges: u.privileges ? JSON.parse(u.privileges) : undefined,
+      }));
+
       return db.countUsers({ roles, searchParam }, (countErr, [{ total }]) => {
         if (countErr) {
           return res.status(codes.INTERNAL_SERVER_ERROR).send({
@@ -43,7 +48,7 @@ export const list = (
             error_details: countErr.message,
           });
         }
-        return res.status(codes.OK).send({ users, total });
+        return res.status(codes.OK).send({ total, users: usersWithPrivileges });
       });
     }
   );
