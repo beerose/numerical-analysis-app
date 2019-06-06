@@ -57,13 +57,7 @@ const Title: React.FC = ({ children }) => (
 
 type Props = RouteChildrenProps;
 export const Main: React.FC<Props> = ({ history, location }) => {
-  const {
-    userRole,
-    userAuth,
-    actions,
-    errorMessage,
-    userName,
-  } = useAuthStore();
+  const { actions, errorMessage, user } = useAuthStore();
 
   const handleLoginSuccess = (...args: Parameters<typeof actions.login>) => {
     if (location.pathname === '/login') {
@@ -76,14 +70,14 @@ export const Main: React.FC<Props> = ({ history, location }) => {
     <StyledLayout>
       <StyledHeader>
         <Title>{LABELS.appName}</Title>
-        <MainMenu userRole={userRole} location={location} />
+        <MainMenu userRole={user && user.user_role} location={location} />
       </StyledHeader>
       <ErrorBoundary>
         <StyledContent>
           <Switch>
             <Route path="/accounts/new" component={NewAccount} />
             {/* Route for /login is not needed, because no other path will match */}
-            {userAuth ? (
+            {user ? (
               <Fragment>
                 <Route exact path="/" component={Home} />
                 <VisibleForRoles admin superUser>

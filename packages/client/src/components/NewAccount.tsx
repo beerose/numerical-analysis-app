@@ -52,14 +52,14 @@ type State = {
 };
 type Props = RouteComponentProps;
 export const NewAccount: React.FC<Props> = props => {
-  const { actions, errorMessage: authError, userAuth } = useAuthStore();
+  const { actions, errorMessage: authError, user } = useAuthStore();
 
   const token = new URLSearchParams(props.location.search).get('token');
 
   const errors = [
     !token &&
       'Do aktywacji konta potrzebujesz tokena, który znajduje się w linku wysłanym na Twój email',
-    userAuth && 'Jesteś już zalogowany',
+    user && 'Jesteś już zalogowany',
     authError,
   ].filter(Boolean);
 
@@ -76,7 +76,7 @@ export const NewAccount: React.FC<Props> = props => {
         <ErrorContainer
           errorMessage={errors.join('\n')}
           onClick={() => props.history.push('/')}
-          label={userAuth ? 'Przejdź do strony głównej' : LABELS.goToLoginPage}
+          label={user ? 'Przejdź do strony głównej' : LABELS.goToLoginPage}
         />
       ) : (
         <NewPasswordForm
