@@ -66,7 +66,7 @@ export const GroupApiContext = React.createContext<GroupApiContextState>({
 });
 
 export class GroupApiProvider extends React.Component<
-  RouteChildrenProps,
+  Pick<RouteChildrenProps, 'history' | 'location'>,
   StateValues
 > {
   constructor(props: RouteChildrenProps) {
@@ -400,6 +400,15 @@ export class GroupApiProvider extends React.Component<
     }
 
     return groupsService.shareForEdit(this.state.currentGroup.id, userId);
+  };
+
+  getGroupsForStudent = (
+    ...args: Parameters<typeof groupsService.getStudentGroups>
+  ) => {
+    return groupsService.getStudentGroups(...args).then(({ groups }) => {
+      this.setState({ groups });
+      return groups;
+    });
   };
 
   render() {

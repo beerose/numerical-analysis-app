@@ -37,5 +37,8 @@
   "logout": "Wyloguj",
   "login": "Zaloguj się",
   "welcomeToTheApp": "Witaj w Lagrange!",
-  "couldntFindPage": "Nie mogliśmy znaleźć strony, której szukasz 😔"
+  "couldntFindPage": "Nie mogliśmy znaleźć strony, której szukasz 😔",
+  "lecture": "Wykład",
+  "lab": "Pracownia",
+  "exercise": "Ćwiczenia"
 }

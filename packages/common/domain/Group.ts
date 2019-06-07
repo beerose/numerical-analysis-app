@@ -33,7 +33,6 @@ export type GroupDTO = {
   group_type: GroupType;
   lecturer_id: UserDTO['id'];
   lecturer_name?: string;
-  class_number?: number;
   semester?: string;
   data?: GroupGradeSettings;
 };

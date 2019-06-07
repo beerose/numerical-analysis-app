@@ -55,7 +55,7 @@ const FormRow: React.FC<FormRowProps> = ({ label, children }) => (
 
 type AntFormState = Pick<
   GroupDTO,
-  'class_number' | 'group_name' | 'group_type' | 'lecturer_id' | 'semester'
+  'group_name' | 'group_type' | 'lecturer_id' | 'semester'
 >;
 
 type GroupDataState = DeepRequired<GroupDTO>['data'];

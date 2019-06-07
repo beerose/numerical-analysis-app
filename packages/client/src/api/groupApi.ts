@@ -403,3 +403,8 @@ export const shareForEdit = (groupId: GroupDTO['id'], userId: UserDTO['id']) =>
     body: JSON.stringify({ group_id: groupId, user_id: userId }),
     method: 'POST',
   });
+
+export const getStudentGroups = (userId: UserDTO['id']) =>
+  authFetch<{ groups: GroupDTO[] }>(
+    SERVER_URL + ServerRoutes.Users.Student.Groups(userId)
+  );

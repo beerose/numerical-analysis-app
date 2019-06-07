@@ -3,20 +3,20 @@ import Cookies from 'js-cookie';
 
 type UserCookieObject = {
   token: string;
-  user: Partial<UserDTO>;
+  user: UserDTO;
 };
 
 export const userInCookies = {
   get() {
     const token = Cookies.get('token');
-    const user = Cookies.getJSON('user') as Partial<UserDTO>;
+    const user = Cookies.getJSON('user') as UserDTO;
 
     if (!user || !token || !user.user_name || !user.user_role) {
       return;
     }
 
     UserRole.assert(user.user_role);
-    return user;
+    return { user, token };
   },
   set(uco: UserCookieObject, expires: number) {
     const options = { expires };

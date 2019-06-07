@@ -9,7 +9,9 @@ import StudentHome from './StudentHome';
 export const Home = () => {
   const authStore = useAuthStore();
 
-  return authStore.userRole === UserRole.Student ? (
+  console.assert(authStore.user);
+
+  return authStore.user!.user_role === UserRole.Student ? (
     <StudentHome {...authStore} />
   ) : (
     <LecturerHome {...authStore} />

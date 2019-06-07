@@ -60,9 +60,6 @@ export const updateUser = (user: UserDTO) => {
     headers: {
       Accept: 'application/json, text/plain, */*',
     },
-    method: 'POST', 
+    method: 'POST',
   }).then(showMessage);
 };
-
-export const getStudentGroups = (userId: UserDTO['id']) =>
-  authFetch<{ groups: GroupDTO[] }>(SERVER_URL + Users.Student.Groups(userId));

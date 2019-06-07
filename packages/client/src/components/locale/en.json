@@ -37,5 +37,8 @@
   "logout": "Logout",
   "login": "Login",
   "welcomeToTheApp": "Witaj to Lagrange!",
-  "couldntFindPage": "We couldn't find the page you are looking for 😔"
+  "couldntFindPage": "We couldn't find the page you are looking for 😔",
+  "lecture": "Lecture",
+  "lab": "Lab",
+  "exercise": "Exercise"
 }

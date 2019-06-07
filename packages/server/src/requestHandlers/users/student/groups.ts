@@ -10,8 +10,6 @@ export const groups = (
   req: GetStudentGroups,
   res: BackendResponse<{ groups: GroupDTO[] }>
 ) => {
-  console.log('groups', `/users/${req.params.id}/student.groups`);
-
   const userId = parseInt(req.params.id, 10);
   if (!isUserId(userId)) {
     return res.status(codes.BAD_REQUEST).send({

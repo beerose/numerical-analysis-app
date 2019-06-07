@@ -243,20 +243,20 @@ export const getStudentGroups = (
 ) =>
   connection.query(
     sql`
-      SELECT g.*
+      SELECT g.*, u.user_name as lecturer_name
       FROM
         (SELECT group_id
         FROM user_belongs_to_group ubg
         WHERE ubg.user_id = ${userId}) student_groups
-      JOIN \`groups\` g
-      WHERE g.id = student_groups.group_id;
+      INNER JOIN \`groups\` g
+      ON g.id = student_groups.group_id
+      INNER JOIN users u
+      ON u.id = g.lecturer_id;
     `,
     (err, res) => {
       if (err) {
         return callback(err, res);
       }
-
-      console.log("STUDENT'S GROUPS", res);
 
       return callback(null, res);
     }

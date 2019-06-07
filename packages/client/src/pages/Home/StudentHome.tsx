@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { List } from 'antd';
 import { GroupDTO } from 'common';
 import React, { useContext } from 'react';
@@ -8,22 +10,31 @@ import { PaddingContainer } from '../../components';
 import { usePromise } from '../../utils';
 import { AuthStoreState } from '../../AuthStore';
 import { GroupsListItemDescription } from '../Groups/components/GroupsListItemDescription';
+import { GroupApiContext } from '../Groups/GroupApiContext';
 
 type MyGroupsListItemProps = { group: GroupDTO };
 const MyGroupsListItem: React.FC<MyGroupsListItemProps> = ({ group }) => {
   return (
-    <List.Item>
-      <List.Item.Meta
-        title={<Link to={`/groups/${group.id}`}>{group.group_name}</Link>}
-        description={
-          <GroupsListItemDescription
-            lecturerId={group.lecturer_id}
-            lecturerName={group.lecturer_name || '??????'}
-            group={group}
-          />
-        }
+    <List.Item
+      css={css`
+        flex-wrap: wrap;
+      `}
+    >
+      <h1
+        css={css`
+          width: 100%;
+          & > a {
+            color: inherit;
+          }
+        `}
+      >
+        <Link to={`/groups/${group.id}`}>{group.group_name}</Link>
+      </h1>
+      <GroupsListItemDescription
+        lecturerId={group.lecturer_id}
+        lecturerName={group.lecturer_name!}
+        group={group}
       />
-      {JSON.stringify(group)}
     </List.Item>
   );
 };
@@ -32,23 +43,33 @@ export type StudentHomeProps = AuthStoreState;
 export const StudentHome: React.FC<StudentHomeProps> = (
   props: AuthStoreState
 ) => {
+  const {
+    actions: { getGroupsForStudent },
+  } = useContext(GroupApiContext);
+
   const result = usePromise(
-    () => getStudentGroups(props.user!.id),
-    { error: null },
+    () =>
+      getGroupsForStudent(props.user!.id!).catch((error: Error) => ({ error })),
+    [] as GroupDTO[],
     [props.user!.id]
   );
 
-  if ('error' in result) {
+  if ('error' in result && result.error) {
     throw result.error;
   }
 
-  const { groups } = result;
+  const groups = result as GroupDTO[];
 
   return (
     <PaddingContainer>
-      {JSON.stringify(props)}}
       <section>
-        <h1>Moje grupy</h1>
+        <h1
+          css={css`
+            font-size: 2em;
+          `}
+        >
+          Twoje grupy
+        </h1>
         <List
           dataSource={groups}
           renderItem={group => <MyGroupsListItem group={group} />}

@@ -2,10 +2,6 @@
 import { UserDTO, UserPrivileges, UserRole } from 'common';
 import createStore from 'zustand';
 
-/**
- * TODO: GET USER ID FROM THE BACKEND
- */
-
 import * as authService from './api/authApi';
 import { userInCookies } from './userInCookies';
 import * as zustandDevtools from './utils/zustandDevtools';
@@ -51,9 +47,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
       return authService
         .login(email, password)
         .then(res => {
-          console.log('>>', res);
           if ('error' in res) {
-            console.log('>> throw');
             throw new Error(res.error);
           }
 
@@ -71,7 +65,6 @@ export const [useAuthStore, authStore] = createStore(set => ({
           return res;
         })
         .catch((err: Error) => {
-          console.log('>> catch');
           set({ errorMessage: err.message });
           return { error: Error };
         });

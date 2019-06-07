@@ -9,3 +9,4 @@ export * from './usePostMessageHandler';
 export * from './useToggle';
 export * from './usePromise';
 export * from './findStringifiedLowercase';
+export * from './useBoolean';
