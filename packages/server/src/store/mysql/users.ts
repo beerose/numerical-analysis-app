@@ -6,7 +6,18 @@ import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
 
-export const addUser = (user: UserDTO, callback: QueryCallback) =>
+export const getUser = (
+  userId: UserDTO['id'],
+  callback: QueryCallback<UserDTO>
+) =>
+  connection.query(
+    sql`
+      SELECT * FROM users WHERE id = ${userId};
+    `,
+    callback
+  );
+
+export const addUser = (user: Omit<UserDTO, 'id'>, callback: QueryCallback) =>
   connection.query(
     {
       sql: /* sql */ `

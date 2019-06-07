@@ -1,17 +1,39 @@
-import { apiMessages } from 'common';
+import { apiMessages, UserDTO } from 'common';
 import * as codes from 'http-status-codes';
+import * as t from 'io-ts';
+import { NumberFromString } from 'io-ts-types/lib/number/NumberFromString';
 
-import { BackendResponse, GetRequest } from '../../lib';
-
-type GetUserRequest = GetRequest<any>;
+import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
+import { db } from '../../store';
 
 // TODO:
 // Consider only responding with student data if he's the one who's asking for it.
+/*
+  allow if
+  - student is asking for lecturer info
+  - student is asking for his own info (params.id matches token?)
+  - lecturer is asking for anything
 
-export const get = (req: GetUserRequest, res: BackendResponse) => {
-  console.log('get', `/users/${req.params.id}`);
-  return res.status(codes.INTERNAL_SERVER_ERROR).send({
-    error: apiMessages.internalError,
-    error_details: 'Not implemented yet. Sorry!',
-  });
+  TODO: Add tests for this
+*/
+
+const GetUserV = t.type({
+  id: NumberFromString,
+});
+
+type GetUserRequest = GetRequest<any, typeof GetUserV>;
+
+export const get = (req: GetUserRequest, res: BackendResponse<UserDTO>) => {
+  handleBadRequest(GetUserV, req.params, res).then(({ id }) =>
+    db.getUser(id, (dbError, user) => {
+      if (dbError) {
+        res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: dbError.message,
+        });
+      }
+
+      res.status(codes.OK).send(user);
+    })
+  );
 };
