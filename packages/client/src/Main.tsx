@@ -60,10 +60,11 @@ export const Main: React.FC<Props> = ({ history, location }) => {
   const { actions, errorMessage, user } = useAuthStore();
 
   const handleLoginSuccess = (...args: Parameters<typeof actions.login>) => {
-    if (location.pathname === '/login') {
-      history.push('/');
-    }
-    actions.login(...args);
+    actions.login(...args).then(res => {
+      if (!('error' in res) && location.pathname === '/login') {
+        history.push('/');
+      }
+    });
   };
 
   return (

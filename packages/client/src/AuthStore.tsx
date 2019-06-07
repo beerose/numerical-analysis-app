@@ -32,22 +32,9 @@ export const [useAuthStore, authStore] = createStore(set => ({
           }
 
           // tslint:disable-next-line:no-shadowed-variable
-          const { token, user_name, user_role } = res;
-
-          console.log('>>', { res });
-
-          userInCookies.set(
-            {
-              token,
-              user: { user_name, user_role },
-            },
-            hoursFromNow(24)
-          );
-
-          set({
-            token,
-            user: res,
-          });
+          const { token, user } = res;
+          userInCookies.set({ token, user }, hoursFromNow(24));
+          set({ token, user });
 
           return res;
         })
@@ -61,34 +48,32 @@ export const [useAuthStore, authStore] = createStore(set => ({
       set({ user: undefined });
     },
     login: (email: string, password: string, remember: boolean) => {
-      authService
+      return authService
         .login(email, password)
         .then(res => {
+          console.log('>>', res);
           if ('error' in res) {
+            console.log('>> throw');
             throw new Error(res.error);
           }
 
-          const { token, user_name, user_role, privileges } = res;
+          const { token, user, privileges } = res;
 
-          userInCookies.set(
-            {
-              token,
-              user: { user_name, user_role },
-            },
-            hoursFromNow(remember ? 24 : 7)
-          );
+          userInCookies.set({ token, user }, hoursFromNow(remember ? 24 : 7));
 
           set({
+            user,
             privileges,
-            token: res.token,
-            user: { user_name, user_role },
+            token,
             errorMessage: '',
           });
 
           return res;
         })
         .catch((err: Error) => {
+          console.log('>> catch');
           set({ errorMessage: err.message });
+          return { error: Error };
         });
     },
   },

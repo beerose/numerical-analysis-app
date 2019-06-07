@@ -7,7 +7,7 @@ import { useAuthStore } from '../../AuthStore';
 
 export const SettingsContainer = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const { userName, userRole, actions } = useAuthStore();
+  const { user, actions } = useAuthStore();
 
   const handleSubmit = (newPassword: string): void => {
     actions.changePassword(newPassword).then(res => {
@@ -19,10 +19,10 @@ export const SettingsContainer = () => {
   return (
     <PaddingContainer>
       <Flex paddingBottom={10}>
-        <b css={{ paddingRight: 5 }}>Imię i nazwisko:</b> {userName}
+        <b css={{ paddingRight: 5 }}>Imię i nazwisko:</b> {user!.user_name}
       </Flex>
       <Flex paddingBottom={15}>
-        <b css={{ paddingRight: 5 }}>Rola:</b> {userRole}
+        <b css={{ paddingRight: 5 }}>Rola:</b> {user!.user_role}
       </Flex>
       <Button css={{ width: 150 }} onClick={() => setModalVisible(true)}>
         Zmień hasło

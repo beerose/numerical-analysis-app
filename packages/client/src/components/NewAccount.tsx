@@ -45,11 +45,6 @@ const NewAccountModalHeader = () => (
 );
 const errorModalHeader = <ModalHeader title="Wystąpił błąd" />;
 
-type State = {
-  userName: string;
-  localErrorMessage: string;
-  token: string;
-};
 type Props = RouteComponentProps;
 export const NewAccount: React.FC<Props> = props => {
   const { actions, errorMessage: authError, user } = useAuthStore();

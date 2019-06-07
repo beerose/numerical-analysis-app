@@ -61,7 +61,7 @@ const Background = () => {
           <AnimFeTurbulence
             type="fractalNoise"
             baseFrequency={freq}
-            numOctaves="1.5"
+            numOctaves="1"
             result="TURB"
             seed="8"
           />

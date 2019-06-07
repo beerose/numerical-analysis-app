@@ -65,7 +65,7 @@ const TilesNavigation = () => {
   );
 };
 
-export const LecturerHome: React.FC<AuthStoreState> = ({ userName }) => {
+export const LecturerHome: React.FC<AuthStoreState> = ({ user }) => {
   const { texts } = useContext(LocaleContext);
 
   return (
@@ -76,7 +76,7 @@ export const LecturerHome: React.FC<AuthStoreState> = ({ userName }) => {
           margin: 1em;
         `}
       >
-        {texts.hello} {userName}!
+        {texts.hello} {user!.user_name}!
       </h1>
       <TilesNavigation />
     </PaddingContainer>

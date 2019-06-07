@@ -1,6 +1,7 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Checkbox, Form, Icon, Input, Modal } from 'antd';
-// tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
@@ -44,14 +45,7 @@ const LoginForm = (props: Props) => {
     errorMessage,
   } = props;
   return (
-    <Modal
-      visible
-      centered
-      title={LoginModalHeader}
-      footer={null}
-      width={400}
-      closable={false}
-    >
+    <Modal visible centered title={LoginModalHeader} footer={null} width={400}>
       <Form
         onSubmit={handleSubmit}
         css={{ padding: '0px 20px 0 20px', alignItems: 'center' }}
@@ -87,7 +81,7 @@ const LoginForm = (props: Props) => {
             initialValue: true,
             valuePropName: 'checked',
           })(<Checkbox>{LABELS.rememberMe}</Checkbox>)}
-          <Link to="/" css={{ float: 'right' }}>
+          <Link to="/forgot-password" css={{ float: 'right' }}>
             {LABELS.forgotPassword}
           </Link>
           <Button

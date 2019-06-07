@@ -1,6 +1,10 @@
-import { ApiResponse, ServerRoutes, UserPrivileges, UserRole } from 'common';
-
-import { LABELS } from '../utils/labels';
+import {
+  ApiResponse,
+  ServerRoutes,
+  UserDTO,
+  UserPrivileges,
+  UserRole,
+} from 'common';
 
 import { SERVER_URL } from '.';
 import { authFetch } from './authFetch';
@@ -9,16 +13,15 @@ const { Accounts } = ServerRoutes;
 
 type AuthResponse = {
   token: string;
-  user_name: string;
-  user_role: UserRole;
+  user: UserDTO;
   privileges?: UserPrivileges;
 };
 
-const handleWrongResponse = (response: ApiResponse | AuthResponse) => {
+const handleResponse = (response: ApiResponse | AuthResponse) => {
   if ('error' in response) {
     return response;
   }
-  if ('token' in response && response.user_name && response.user_role) {
+  if ('token' in response && response.user) {
     return response;
   }
   return { error: 'Zła odpowiedź z serwera' };
@@ -32,6 +35,9 @@ const handleServerError = (err: any) => {
 };
 
 export const login = (email: string, password: string) => {
+  // TODO: Dlaczego nie robimy JSON.stringify({ email, password })? To jest post przecież.
+  // Te funkcje też są prawie takie same.
+
   const data = new URLSearchParams();
   data.append('email', email);
   data.append('password', password);
@@ -43,7 +49,7 @@ export const login = (email: string, password: string) => {
     method: 'POST',
   })
     .then(response => response.json())
-    .then(handleWrongResponse)
+    .then(handleResponse)
     .catch(handleServerError);
 };
 
@@ -59,7 +65,7 @@ export const newAccount = (token: string, password: string) => {
     method: 'POST',
   })
     .then(response => response.json())
-    .then(handleWrongResponse)
+    .then(handleResponse)
     .catch(handleServerError);
 };
 

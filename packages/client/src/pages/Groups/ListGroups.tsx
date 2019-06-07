@@ -1,8 +1,8 @@
 /** @jsx jsx */
-import { css, jsx } from '@emotion/core';
+import { jsx } from '@emotion/core';
 import { List, Spin } from 'antd';
 import { GroupDTO, UserDTO } from 'common';
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -15,6 +15,7 @@ import { usePromise } from '../../utils';
 import { LABELS } from '../../utils/labels';
 import { makeIdDict } from '../../utils/makeDict';
 
+import { GroupsListItemDescription } from './components/GroupsListItemDescription';
 import { NewGroupButton } from './components/NewGroupButton';
 import { SelectLecturer } from './components/SelectLecturer';
 import { GroupApiContext } from './GroupApiContext';
@@ -38,24 +39,12 @@ const GroupListItem = (props: GroupListItemProps) => {
         title={<Link to={`/groups/${props.id}`}>{props.group_name}</Link>}
         description={
           props.lecturer && (
-            <Fragment>
-              <Link
-                to={`/users/${props.lecturer_id}`}
-                title={texts.lecturer}
-                css={css`
-                  color: inherit;
-                `}
-              >
-                {props.lecturer.user_name}
-              </Link>
-              <span
-                css={css`
-                  margin-left: ${Theme.Padding.Standard};
-                `}
-              >
-                {props.semester}
-              </span>
-            </Fragment>
+            <GroupsListItemDescription
+              lecturerId={props.lecturer_id}
+              lecturerName={props.lecturer.user_name}
+              group={props}
+              texts={texts}
+            />
           )
         }
       />
