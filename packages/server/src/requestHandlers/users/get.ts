@@ -25,15 +25,22 @@ type GetUserRequest = GetRequest<any, typeof GetUserV>;
 
 export const get = (req: GetUserRequest, res: BackendResponse<UserDTO>) => {
   handleBadRequest(GetUserV, req.params, res).then(({ id }) =>
-    db.getUser(id, (dbError, user) => {
+    db.getUser(id, (dbError, [user]) => {
       if (dbError) {
-        res.status(codes.INTERNAL_SERVER_ERROR).send({
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,
           error_details: dbError.message,
         });
       }
 
-      res.status(codes.OK).send(user);
+      if (!user) {
+        return res.status(codes.NOT_FOUND).send({
+          error: apiMessages.userNotFound,
+        });
+      }
+
+      delete user.password;
+      return res.status(codes.OK).send(user);
     })
   );
 };

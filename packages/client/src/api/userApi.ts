@@ -10,6 +10,9 @@ const { Users } = ServerRoutes;
 
 const LIMIT = 10;
 
+export const getUser = (userId: UserDTO['id']) =>
+  authFetch<UserDTO>(SERVER_URL + Users.Get(userId));
+
 export const listUsers = async ({
   searchParam,
   roles,

@@ -21,9 +21,8 @@ const DetailsListItem = styled.li`
 const DetailsList = styled.ul`
   color: rgba(0, 0, 0, 0.65);
 
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16em, 1fr));
 
   padding: 0;
   list-style: none;
