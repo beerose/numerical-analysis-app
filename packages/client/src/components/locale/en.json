@@ -40,5 +40,9 @@
   "couldntFindPage": "We couldn't find the page you are looking for 😔",
   "lecture": "Lecture",
   "lab": "Lab",
-  "exercise": "Exercise"
+  "exercise": "Exercise",
+  "role": "Role",
+  "email": "Email",
+  "firstNameAndSurname": "First name and surname",
+  "userNotFound": "We couldn't find the user you are looking for 🔍❌"
 }

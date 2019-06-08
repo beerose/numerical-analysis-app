@@ -1,12 +1,17 @@
 import { UserDTO } from 'common';
-import React from 'react';
+import React, { useContext } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { getUser } from '../../api/userApi';
-import { Breadcrumbs, NotFoundPage, PaddingContainer } from '../../components';
+import {
+  Breadcrumbs,
+  LocaleContext,
+  NotFoundPage,
+  PaddingContainer,
+  Spacer,
+  UserInfo,
+} from '../../components';
 import { usePromise } from '../../utils';
-
-const USER_NOT_FOUND = Symbol('USER_NOT_FOUND');
 
 export type UserDetailsPageProps = RouteComponentProps<{ id: string }>;
 export const UserDetailsPage: React.FC<UserDetailsPageProps> = ({
@@ -14,33 +19,32 @@ export const UserDetailsPage: React.FC<UserDetailsPageProps> = ({
     params: { id: paramsId },
   },
 }) => {
-  const user = usePromise(
-    (): Promise<UserDTO | typeof USER_NOT_FOUND> => {
-      const userId = Number(paramsId);
-      if (!isNaN(userId)) {
-        return getUser(userId);
-      }
-      return Promise.resolve(USER_NOT_FOUND);
-    },
-    null,
-    [paramsId]
-  );
+  const { texts } = useContext(LocaleContext);
+  const response = usePromise(() => getUser(Number(paramsId)), null, [
+    paramsId,
+  ]);
 
-  if (!user) {
+  if (!response) {
     return null;
   }
 
-  if (user === USER_NOT_FOUND) {
+  if (response.status === 404) {
     return (
-      <PaddingContainer>
-        <NotFoundPage>User not found 🔍</NotFoundPage>
-      </PaddingContainer>
+      <NotFoundPage>
+        {texts.userNotFound}
+        <Spacer height={100} />
+      </NotFoundPage>
     );
+  }
+
+  if ('error' in response) {
+    throw response;
   }
 
   return (
     <PaddingContainer>
       <Breadcrumbs />
+      <UserInfo {...response.data} />
     </PaddingContainer>
   );
 };

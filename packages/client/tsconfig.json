@@ -15,9 +15,9 @@
     "importHelpers": true,
     "noEmitHelpers": true,
     "jsx": "react",
-    "lib": ["es2018", "dom"],
+    "lib": ["esnext", "es2018", "dom"],
     "target": "es5",
-    "module": "es2015",
+    "module": "esnext",
     "moduleResolution": "node",
     "sourceMap": false
   },

@@ -10,6 +10,6 @@ export const VisibleForRoles: React.FC<VisibleForRolesProps> = ({
   children,
   ...roles
 }) => {
-  const userRole = useAuthStore(s => s.userRole);
+  const userRole = useAuthStore(s => s.user && s.user.user_role);
   return userRole && roles[userRole] ? children : null;
 };
