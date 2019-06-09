@@ -12,7 +12,7 @@ const CSV_FORMAT = ['name', 'surname', 'index', 'email'].join(
 );
 
 export type CsvControlsProps = {
-  onUploadClick: (_: { file: File }) => void;
+  onUploadClick?: (_: { file: File }) => void;
   onDownloadClick: () => void;
 };
 
@@ -34,19 +34,21 @@ export const CsvControls: React.FC<CsvControlsProps> = ({
           `}
         >
           <b>CSV</b>
-          <Upload
-            accept="text/csv"
-            showUploadList={false}
-            customRequest={onUploadClick}
-          >
-            <Tooltip title={texts.importCsv}>
-              <Button
-                type="default"
-                icon="upload"
-                aria-label={texts.importCsv}
-              />
-            </Tooltip>
-          </Upload>
+          {onUploadClick && (
+            <Upload
+              accept="text/csv"
+              showUploadList={false}
+              customRequest={onUploadClick}
+            >
+              <Tooltip title={texts.importCsv}>
+                <Button
+                  type="default"
+                  icon="upload"
+                  aria-label={texts.importCsv}
+                />
+              </Tooltip>
+            </Upload>
+          )}
 
           <Tooltip title={texts.exportCsv}>
             <Button

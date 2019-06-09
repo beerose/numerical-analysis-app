@@ -24,7 +24,9 @@ type UploadObject = {
   file: File;
 };
 
-type Props = GroupApiContextState;
+type Props = GroupApiContextState & {
+  editable: boolean;
+};
 
 type State = {
   students: UserDTO[];
@@ -118,6 +120,8 @@ export class StudentsSection extends React.Component<Props, State> {
       allStudents,
     } = this.state;
 
+    const { editable } = this.props;
+
     return (
       <Flex flexDirection="column">
         <WrappedNewStudentModalForm
@@ -137,7 +141,7 @@ export class StudentsSection extends React.Component<Props, State> {
           </Button>
           <CsvControls
             onDownloadClick={this.handleStudentsCsvDownload}
-            onUploadClick={this.handleStudentsCsvUpload}
+            onUploadClick={editable ? this.handleStudentsCsvUpload : undefined}
           />
         </section>
         <Spin spinning={isFetching}>

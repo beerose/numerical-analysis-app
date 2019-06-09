@@ -167,7 +167,7 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
                 <SettingsSection {...context} editable={editable} />
               </Route>
               <Route exact path={'/groups/:id/students'}>
-                <StudentsSection {...context} />
+                <StudentsSection {...context} editable={editable} />
               </Route>
               <Route exact path={'/groups/:id/presence'}>
                 <MeetingsDetailsSections {...context} />
