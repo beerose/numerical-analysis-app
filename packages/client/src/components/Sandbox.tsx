@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
 import React, { ComponentProps } from 'react';
 
 type SandboxProps = Required<Pick<ComponentProps<'iframe'>, 'srcDoc'>>;
