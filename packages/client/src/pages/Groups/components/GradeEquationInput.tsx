@@ -33,6 +33,7 @@ type GroupEquationProps = {
   onChange: (value: string) => void;
   onErrorChange: (error: ErrorMessage) => void;
   error: ErrorMessage;
+  disabled?: boolean;
 };
 // tslint:disable-next-line:max-func-body-length
 export const GradeEquationInput: React.FC<GroupEquationProps> = ({
@@ -40,6 +41,7 @@ export const GradeEquationInput: React.FC<GroupEquationProps> = ({
   onChange: setEquation,
   onErrorChange: setError,
   error,
+  disabled,
 }) => {
   const [result, setResult] = useState<number | null>(null);
   const [testMode, setTestMode] = useState(false);
@@ -93,7 +95,12 @@ export const GradeEquationInput: React.FC<GroupEquationProps> = ({
           </Code>
         </LeftColumn>
         <RightColumn>
-          <TextArea rows={1} value={equation} onChange={handleEquationChange} />
+          <TextArea
+            disabled={disabled}
+            rows={1}
+            value={equation}
+            onChange={handleEquationChange}
+          />
         </RightColumn>
       </Row>
       <EquationEvalSandbox
