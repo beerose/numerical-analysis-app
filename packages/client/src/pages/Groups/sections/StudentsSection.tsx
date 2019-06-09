@@ -148,7 +148,9 @@ export class StudentsSection extends React.Component<Props, State> {
           <UsersTable
             showPagination={false}
             onDelete={this.deleteStudent}
+            hideDelete={!editable}
             onUpdate={this.updateStudent}
+            hideEdit={!editable}
             users={students}
             extraColumns={['index']}
             css={{

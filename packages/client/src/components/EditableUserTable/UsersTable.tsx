@@ -72,7 +72,9 @@ type UsersTableProps = {
   total?: number;
   extraColumns?: ExtraColumnTypes[];
   onUpdate: (user: UserDTO) => void;
+  hideEdit?: boolean;
   onDelete: (id: UserDTO['id']) => void;
+  hideDelete?: boolean;
   onTableChange?: (cfg: PaginationConfig) => void;
   className?: string;
 };
@@ -88,23 +90,30 @@ export class UsersTable extends React.Component<
       dataIndex: 'edit',
       render: (_: any, record: UserDTO) => {
         const editable = this.isEditing(record);
-        return editable ? (
-          <div style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '100px' }}>
-            <EditableConsumer>
-              {(form: WrappedFormUtils) => (
-                <ActionLink onClick={() => this.handleUpdate(form, record.id)}>
-                  {LABELS.save}
-                </ActionLink>
-              )}
-            </EditableConsumer>
-            <ActionLink onClick={this.handleCancelEdit}>
-              {LABELS.cancel}
+        return (
+          !this.props.hideEdit &&
+          (editable ? (
+            <div
+              style={{ display: 'flex', flexWrap: 'wrap', maxWidth: '100px' }}
+            >
+              <EditableConsumer>
+                {(form: WrappedFormUtils) => (
+                  <ActionLink
+                    onClick={() => this.handleUpdate(form, record.id)}
+                  >
+                    {LABELS.save}
+                  </ActionLink>
+                )}
+              </EditableConsumer>
+              <ActionLink onClick={this.handleCancelEdit}>
+                {LABELS.cancel}
+              </ActionLink>
+            </div>
+          ) : (
+            <ActionLink onClick={() => this.handleEdit(record.email)}>
+              {LABELS.edit}
             </ActionLink>
-          </div>
-        ) : (
-          <ActionLink onClick={() => this.handleEdit(record.email)}>
-            {LABELS.edit}
-          </ActionLink>
+          ))
         );
       },
     },
@@ -112,16 +121,18 @@ export class UsersTable extends React.Component<
       dataIndex: 'delete',
       render: (_: any, record: UserDTO) => {
         return (
-          <Popconfirm
-            title={LABELS.areYouSure}
-            onConfirm={() => this.handleDelete(record.id)}
-            okText={LABELS.yes}
-            okType="danger"
-            placement="topRight"
-            cancelText={LABELS.no}
-          >
-            <ActionLink>{LABELS.delete}</ActionLink>
-          </Popconfirm>
+          !this.props.hideDelete && (
+            <Popconfirm
+              title={LABELS.areYouSure}
+              onConfirm={() => this.handleDelete(record.id)}
+              okText={LABELS.yes}
+              okType="danger"
+              placement="topRight"
+              cancelText={LABELS.no}
+            >
+              <ActionLink>{LABELS.delete}</ActionLink>
+            </Popconfirm>
+          )
         );
       },
     },
