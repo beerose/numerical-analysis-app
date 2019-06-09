@@ -1,4 +1,5 @@
-import styled from '@emotion/styled';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
 import { Button, Divider, Form, Icon, Input, Modal, Select } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
