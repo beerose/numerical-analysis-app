@@ -4,7 +4,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 // tslint:disable-next-line:no-import-side-effect
-import { IfUserPrivileged } from './components/IfUserPrivileged';
 import './styles.css';
 import { Main } from './Main';
 
