@@ -1,5 +1,6 @@
-import { UserPrivileges } from 'common';
+import { UserPrivileges, UserRole } from 'common';
 import React from 'react';
+import { render } from 'react-dom';
 
 import { useAuthStore } from '../AuthStore';
 
@@ -15,6 +16,10 @@ export const IfUserPrivileged = (props: IfUserPrivilegedProps) => {
   const user = useAuthStore(state => state.user);
 
   const fallback = props.otherwise || null;
+
+  if (user && user.user_role === UserRole.Admin) {
+    return render;
+  }
 
   if (!user || !user.privileges) {
     return fallback;
