@@ -6,7 +6,6 @@ import { SelectProps } from 'antd/lib/select';
 import { UserDTO } from 'common';
 import * as React from 'react';
 
-import { Theme } from '../../../components';
 import { Colors, findStringifiedLowercase, LABELS } from '../../../utils';
 
 type SelectLecturerProps = {
@@ -25,6 +24,7 @@ export const SelectLecturer = React.forwardRef(
         box-sizing: content-box;
       `}
       showSearch
+      disabled={rest.disabled}
       placeholder={
         <span>
           <Icon

@@ -14,9 +14,11 @@ export const SelectSemester = React.forwardRef(
     {
       value,
       onChange,
+      disabled,
     }: {
       value?: SelectValue;
       onChange?: (value: SelectValue) => void;
+      disabled?: boolean;
     },
     ref: React.Ref<Select>
   ) => {
@@ -25,6 +27,7 @@ export const SelectSemester = React.forwardRef(
       <Select
         showArrow
         mode="single"
+        disabled={disabled}
         placeholder={
           <>
             <Icon
