@@ -32,7 +32,7 @@ export const email = {
 const DEVELOPMENT_MAIL_REGEX = /^(hasparus|ola.zxcvbnm)\+\w+@gmail\.com/;
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:1234';
 
-export const sendRegistrationLink = (user: UserDTO) => {
+export const sendRegistrationLink = (user: Omit<UserDTO, 'id'>) => {
   if (
     process.env.NODE_ENV !== 'production' &&
     !user.email.match(DEVELOPMENT_MAIL_REGEX)

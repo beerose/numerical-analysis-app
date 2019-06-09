@@ -4,8 +4,12 @@ import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { reporter } from 'io-ts-reporters';
 
-export interface GetRequest<QueryValidator extends t.Any> extends Request {
+export interface GetRequest<
+  QueryValidator extends t.Any,
+  ParamsValidator extends t.Any = t.Any
+> extends Request {
   query: t.TypeOf<QueryValidator>;
+  params: t.TypeOf<ParamsValidator>;
 }
 
 export interface PostRequest<BodyValidator extends t.Any> extends Request {

@@ -6,6 +6,7 @@ import {
   BackendResponse,
   GetRequest,
   handleBadRequest,
+  PostRequest,
   sendRegistrationLink as sendStudentActivationLink,
 } from '../../lib';
 import { db, DUPLICATE_ENTRY_ERROR } from '../../store';
@@ -21,7 +22,7 @@ const AddUserV = t.type({
   ]),
 });
 
-type AddUserRequest = GetRequest<typeof AddUserV>;
+type AddUserRequest = PostRequest<typeof AddUserV>;
 
 export const create = (req: AddUserRequest, res: BackendResponse) => {
   handleBadRequest(AddUserV, req.body, res).then(() => {

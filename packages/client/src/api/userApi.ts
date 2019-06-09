@@ -4,11 +4,14 @@ import * as qs from 'query-string';
 import { showMessage } from '../utils/showMessage';
 
 import { SERVER_URL } from './';
-import { authFetch } from './authFetch';
+import { authFetch, authFetch2 } from './authFetch';
 
 const { Users } = ServerRoutes;
 
 const LIMIT = 10;
+
+export const getUser = (userId: UserDTO['id']) =>
+  authFetch2<UserDTO>(SERVER_URL + Users.Get(userId));
 
 export const listUsers = async ({
   searchParam,

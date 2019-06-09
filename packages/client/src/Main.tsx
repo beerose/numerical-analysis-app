@@ -7,6 +7,7 @@ import { Route, RouteChildrenProps, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import { ErrorBoundary, LoginForm, MainMenu, NewAccount } from './components';
+import { LocaleContextStatefulProvider } from './components/locale';
 import { VisibleForRoles } from './components/VisibleForRoles';
 import { Groups, Home, NotFoundPage, Users, Welcome } from './pages';
 import { GroupApiProvider } from './pages/Groups/GroupApiContext';
@@ -69,50 +70,52 @@ export const Main: React.FC<Props> = ({ history, location }) => {
   };
 
   return (
-    <StyledLayout>
-      <StyledHeader>
-        <Title>{LABELS.appName}</Title>
-        <MainMenu userRole={user && user.user_role} location={location} />
-      </StyledHeader>
-      <ErrorBoundary>
-        <GroupApiProvider history={history} location={location}>
-          <StyledContent>
-            <Switch>
-              <Route path="/accounts/new" component={NewAccount} />
-              {/* Route for /login is not needed, because no other path will match */}
-              {user ? (
-                <Fragment>
-                  <Route exact path="/" component={Home} />
-                  <VisibleForRoles admin superUser>
-                    <Route path="/users" component={Users} />
-                  </VisibleForRoles>
-                  <Route path="/groups" component={Groups} />
-                  <Route path="/settings" component={SettingsContainer} />
-                  <Route path="/logout" component={Logout} />
-                </Fragment>
-              ) : (
-                <Switch>
-                  <Route exact path="/" component={Welcome} />
-                  <Route path="/login">
-                    <Welcome />
-                    <LoginForm
-                      onSubmit={handleLoginSuccess}
-                      errorMessage={errorMessage}
-                    />
-                  </Route>
-                  <Route>
-                    <LoginForm
-                      onSubmit={handleLoginSuccess}
-                      errorMessage={errorMessage}
-                    />
-                  </Route>
-                </Switch>
-              )}
-              <NotFoundPage />
-            </Switch>
-          </StyledContent>
-        </GroupApiProvider>
-      </ErrorBoundary>
-    </StyledLayout>
+    <LocaleContextStatefulProvider>
+      <StyledLayout>
+        <StyledHeader>
+          <Title>{LABELS.appName}</Title>
+          <MainMenu userRole={user && user.user_role} location={location} />
+        </StyledHeader>
+        <ErrorBoundary>
+          <GroupApiProvider history={history} location={location}>
+            <StyledContent>
+              <Switch>
+                <Route path="/accounts/new" component={NewAccount} />
+                {/* Route for /login is not needed, because no other path will match */}
+                {user ? (
+                  <Fragment>
+                    <Route exact path="/" component={Home} />
+                    <VisibleForRoles admin superUser>
+                      <Route path="/users" component={Users} />
+                    </VisibleForRoles>
+                    <Route path="/groups" component={Groups} />
+                    <Route path="/settings" component={SettingsContainer} />
+                    <Route path="/logout" component={Logout} />
+                  </Fragment>
+                ) : (
+                  <Switch>
+                    <Route exact path="/" component={Welcome} />
+                    <Route path="/login">
+                      <Welcome />
+                      <LoginForm
+                        onSubmit={handleLoginSuccess}
+                        errorMessage={errorMessage}
+                      />
+                    </Route>
+                    <Route>
+                      <LoginForm
+                        onSubmit={handleLoginSuccess}
+                        errorMessage={errorMessage}
+                      />
+                    </Route>
+                  </Switch>
+                )}
+                <NotFoundPage />
+              </Switch>
+            </StyledContent>
+          </GroupApiProvider>
+        </ErrorBoundary>
+      </StyledLayout>
+    </LocaleContextStatefulProvider>
   );
 };

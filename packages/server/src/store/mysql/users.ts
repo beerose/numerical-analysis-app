@@ -6,7 +6,18 @@ import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
 
-export const addUser = (user: UserDTO, callback: QueryCallback) =>
+export const getUser = (
+  userId: UserDTO['id'],
+  callback: QueryCallback<UserWithPassword[]>
+) =>
+  connection.query(
+    sql`
+      SELECT * FROM users WHERE id = ${userId};
+    `,
+    callback
+  );
+
+export const addUser = (user: Omit<UserDTO, 'id'>, callback: QueryCallback) =>
   connection.query(
     {
       sql: /* sql */ `
@@ -125,9 +136,13 @@ export const countUsers = (
     callback
   );
 
+type UserWithPassword = UserDTO & {
+  password: string;
+};
+
 export const findUserByEmail = (
   { email }: { email: string },
-  callback: QueryCallback<UserDTO & { password: string } | null>
+  callback: QueryCallback<UserWithPassword | null>
 ) =>
   connection.query(
     {

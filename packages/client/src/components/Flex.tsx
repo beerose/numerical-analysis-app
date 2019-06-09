@@ -24,7 +24,7 @@ type FlexProps = CSSProperties & {
   size?: string | number;
 };
 
-const _Flex = forwardRef(
+export const Flex = forwardRef(
   (
     {
       children,
@@ -55,8 +55,4 @@ const _Flex = forwardRef(
     )
 );
 
-type FlexUtilityComponent = typeof _Flex & {
-  Spacer: FC<ComponentProps<typeof _Flex>>;
-};
-export const Flex: FlexUtilityComponent = _Flex as FlexUtilityComponent;
-Flex.Spacer = () => <Flex size={Theme.Padding.Half} />;
+export const Spacer = Flex;

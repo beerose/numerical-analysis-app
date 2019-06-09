@@ -21,7 +21,7 @@
     "babel-runtime": "^6.26.0",
     "core-js": "2.6.5",
     "file-saver": "^2.0.0",
-    "fp-ts": "^1.17.2",
+    "fp-ts": "^2.0.0-rc.3",
     "lodash.frompairs": "^4.0.1",
     "node-sass": "^4.12.0",
     "query-string": "^6.5.0",
@@ -54,7 +54,7 @@
     "tslib": "^1.9.3",
     "tslint": "^5.16.0",
     "tslint-microsoft-contrib": "^6.1.1",
-    "typescript": "^3.4.5",
+    "typescript": "^3.5.1",
     "webpack-cli": "^3.3.1"
   }
 }
