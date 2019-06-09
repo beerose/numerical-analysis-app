@@ -12,6 +12,7 @@ import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
 import { Theme } from '../../../components/Theme';
 import { LABELS, useMergeKey, useMergeState } from '../../../utils';
+import { isUserPrivileged } from '../../../utils/isUserPrivileged';
 import { GradeEquationInput } from '../components/GradeEquationInput';
 import {
   GradeTresholdsList,
@@ -72,6 +73,8 @@ const SettingsSectionInternal: React.FC<Props> = ({
   if (!group) {
     throw new Error('No group');
   }
+
+  const editable = isUserPrivileged(['edit'], 'groups', group.id);
 
   const { texts } = useContext(LocaleContext);
   const [groupDataState, mergeGroupDataState] = useMergeState<GroupDataState>(
@@ -145,12 +148,13 @@ const SettingsSectionInternal: React.FC<Props> = ({
             rules: [
               { required: true, message: 'Nazwa grupy nie może być pusta' },
             ],
-          })(<Input />)}
+          })(<Input disabled={!editable} />)}
         </Form.Item>
       </FormRow>
       <FormRow label={texts.groupType}>
         {getFieldDecorator<AntFormState>('group_type')(
           <GroupTypeRadioGroup
+            disabled={!editable}
             css={css`
               display: flex;
               > label {
@@ -163,13 +167,20 @@ const SettingsSectionInternal: React.FC<Props> = ({
       </FormRow>
       <FormRow label={texts.lecturer}>
         {getFieldDecorator<AntFormState>('lecturer_id')(
-          <SelectLecturer lecturers={lecturers || []} css={{ width: '100%' }} />
+          <SelectLecturer
+            disabled={!editable}
+            lecturers={lecturers || []}
+            css={{ width: '100%' }}
+          />
         )}
       </FormRow>
       <FormRow label={texts.semester}>
-        {getFieldDecorator<AntFormState>('semester')(<SelectSemester />)}
+        {getFieldDecorator<AntFormState>('semester')(
+          <SelectSemester disabled={!editable} />
+        )}
       </FormRow>
       <GradeEquationInput
+        disabled={!editable}
         value={groupDataState.grade_equation}
         onChange={setEquation}
         error={equationErrorMsg}
@@ -177,17 +188,20 @@ const SettingsSectionInternal: React.FC<Props> = ({
       />
       <FormRow label={texts.gradeTresholds}>
         <GradeTresholdsList
+          disabled={!editable}
           value={groupDataState.tresholds}
           onChange={setTresholds}
         />
       </FormRow>
-      <Button
-        type="primary"
-        htmlType="submit"
-        disabled={Boolean(equationErrorMsg)}
-      >
-        {LABELS.save}
-      </Button>
+      {editable && (
+        <Button
+          type="primary"
+          htmlType="submit"
+          disabled={Boolean(equationErrorMsg)}
+        >
+          {LABELS.save}
+        </Button>
+      )}
     </SettingsForm>
   );
 };
