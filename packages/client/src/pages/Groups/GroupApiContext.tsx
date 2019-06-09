@@ -121,18 +121,20 @@ export class GroupApiProvider extends React.Component<
         return res.users;
       });
 
-  getGroup = (groupId?: GroupDTO['id']) => {
+  getGroup = async (groupId?: GroupDTO['id']) => {
     if (!groupId) {
       // tslint:disable-next-line:no-parameter-reassignment // runtime default arg
       groupId = Number(this.props.location.pathname.split('/')[2]);
     }
-    groupsService.getGroup(groupId).then(res => {
-      if ('error' in res) {
-        showMessage(res);
-        this.props.history.push('/groups/');
-      }
-      this.setState({ currentGroup: res });
+    const res = await groupsService.getGroup(groupId);
+    if ('error' in res) {
+      showMessage(res);
+      this.props.history.push('/groups/');
+    }
+    this.setState({
+      currentGroup: res,
     });
+    return res;
   };
 
   listGroups = (query?: Parameters<typeof groupsService.listGroups>[0]) => {

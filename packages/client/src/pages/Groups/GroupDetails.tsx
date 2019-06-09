@@ -1,9 +1,9 @@
 // tslint:disable-next-line:no-single-line-block-comment
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button, Icon, Menu, Spin, Tooltip } from 'antd';
+import { Icon, Menu, Spin } from 'antd';
 import { groupFeatures } from 'common';
-import * as React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Route, RouteComponentProps, Switch } from 'react-router';
 import { Link, LinkProps } from 'react-router-dom';
 
@@ -11,6 +11,8 @@ import { Breadcrumbs, NotFoundPage } from '../../components';
 import { LocaleContext } from '../../components/locale';
 import { Flex } from '../../components/Flex';
 import { Theme } from '../../components/Theme';
+import { isUserPrivileged } from '../../utils/isUserPrivileged';
+import { useAuthStore } from '../../AuthStore';
 
 import { ShareGroupForEdit } from './components';
 import {
@@ -39,32 +41,32 @@ const menuStyles = css`
   width: 250px;
 `;
 
-export class GroupDetailsContainer extends React.Component<
-  RouteComponentProps
-> {
-  static contextType = GroupApiContext;
-  context!: GroupApiContextState;
+type State = {
+  editable: boolean;
+};
 
-  componentDidMount() {
-    this.context.actions.getGroup();
-  }
+export const GroupDetailsContainer = (props: RouteComponentProps) => {
+  const context = useContext(GroupApiContext);
 
-  componentDidUpdate() {
-    const groupId = Number(this.props.location.pathname.split('/')[2]);
-    if (
-      !this.context.currentGroup ||
-      this.context.currentGroup.id !== groupId
-    ) {
-      this.context.actions.getGroup();
+  const [editable, setEditable] = useState(false);
+  const user = useAuthStore(state => state.user);
+
+  useEffect(() => {
+    const groupId = Number(props.location.pathname.split('/')[2]);
+
+    if (!context.currentGroup || context.currentGroup.id !== groupId) {
+      context.actions.getGroup().then(res => {
+        setEditable(isUserPrivileged(['edit'], 'groups', res.id, user));
+      });
     }
-  }
+  }, [context.currentGroup, editable]);
 
-  getSelectedItem() {
-    return this.props.location.pathname.split('/')[3] || 'settings';
-  }
+  const getSelectedItem = () => {
+    return props.location.pathname.split('/')[3] || 'settings';
+  };
 
-  replaceGroupIdBreadcrumb = (tokens: string[]) => {
-    const { currentGroup } = this.context;
+  const replaceGroupIdBreadcrumb = (tokens: string[]) => {
+    const { currentGroup } = context;
     return tokens.map((token, i) => {
       const previousToken = tokens[i - 1];
       if (
@@ -84,139 +86,125 @@ export class GroupDetailsContainer extends React.Component<
     });
   };
 
-  // tslint:disable-next-line:max-func-body-length
-  render() {
-    const {
-      match: { url: matchUrl },
-    } = this.props;
+  const {
+    match: { url: matchUrl },
+  } = props;
 
-    const { currentGroup: group } = this.context;
+  const { currentGroup: group } = context;
 
-    if (!group) {
-      return (
-        <Flex flex={1} justifyContent="center" alignItems="center">
-          <Spin />
-        </Flex>
-      );
-    }
-
-    const features = groupFeatures[group.group_type];
-
+  if (!group) {
     return (
-      <LocaleContext.Consumer>
-        {({ texts }) => (
-          <Flex flex={1}>
-            <Menu
-              mode="inline"
-              selectedKeys={[this.getSelectedItem()]}
-              css={menuStyles}
-            >
-              <MenuLink to={matchUrl} key="settings">
-                <Icon type="setting" />
-                {texts.groupSettings}
-              </MenuLink>
-              <MenuLink to={`${matchUrl}/students`} key="students">
-                <Icon type="team" />
-                {texts.students}
-              </MenuLink>
-              {features.hasMeetings && (
-                <MenuLink to={`${matchUrl}/meetings`} key="meetings">
-                  <Icon type="schedule" />
-                  {texts.meetings}
-                </MenuLink>
-              )}
-              {features.hasPresence && (
-                <MenuLink to={`${matchUrl}/presence`} key="presence">
-                  <Icon type="calendar" />
-                  {texts.presence}
-                </MenuLink>
-              )}
-              {features.hasTasks && (
-                <MenuLink to={`${matchUrl}/tasks`} key="tasks">
-                  <Icon type="calculator" />
-                  {texts.tasks}
-                </MenuLink>
-              )}
-              {features.hasAttachedGroups && (
-                <MenuLink to={`${matchUrl}/attached`} key="attached">
-                  <Icon type="pushpin" />
-                  {texts.attached}
-                </MenuLink>
-              )}
-              <MenuLink to={`${matchUrl}/grades`} key="grades">
-                <Icon type="line-chart" />
-                {texts.grades}
-              </MenuLink>
-              <Menu.Item>
-                <ShareGroupForEdit
-                  currentGroup={this.context.currentGroup}
-                  lecturers={this.context.lecturers}
-                  actions={this.context.actions}
-                />
-              </Menu.Item>
-            </Menu>
-            <Flex flexDirection="column" width="100%" overflow="hidden">
-              <Breadcrumbs
-                css={css`
-                  padding: ${Theme.Padding.Half} 0 0 ${Theme.Padding.Standard};
-                `}
-                replaceTokens={this.replaceGroupIdBreadcrumb}
-              />
-              <Switch>
-                <Route exact path={'/groups/:id'}>
-                  <SettingsSection {...this.context} />
-                </Route>
-                <Route exact path={'/groups/:id/students'}>
-                  <StudentsSection {...this.context} />
-                </Route>
-                <Route exact path={'/groups/:id/presence'}>
-                  <MeetingsDetailsSections {...this.context} />
-                </Route>
-                <Route exact path={'/groups/:id/meetings'}>
-                  <MeetingsSection {...this.context} />
-                </Route>
-                <Route exact path={'/groups/:id/tasks'}>
-                  {({ history }) => (
-                    <TasksSection {...this.context} history={history} />
-                  )}
-                </Route>
-                <Route exact path={'/groups/:id/tasks/new'}>
-                  {({ history }) => (
-                    <TaskSection
-                      {...this.context}
-                      history={history}
-                      mode={'create'}
-                    />
-                  )}
-                </Route>
-                <Route exact path={'/groups/:id/tasks/:task_id'}>
-                  {({ history }) => (
-                    <TaskSection
-                      {...this.context}
-                      mode={'edit'}
-                      history={history}
-                    />
-                  )}
-                </Route>
-                <Route exact path={'/groups/:id/grades'}>
-                  {({ history }) => (
-                    <GradesSection {...this.context} history={history} />
-                  )}
-                </Route>
-                <Route exact path={'/groups/:id/attached'}>
-                  {({ history }) => (
-                    <AttachedGroupsSection
-                      {...this.context}
-                      history={history}
-                    />
-                  )}
-                </Route>
-                <NotFoundPage />
-              </Switch>
-            </Flex>
-          </Flex>
-        )}
-      </LocaleContext.Consumer>
+      <Flex flex={1} justifyContent="center" alignItems="center">
+        <Spin />
+      </Flex>
     );
   }
-}
+
+  const features = groupFeatures[group.group_type];
+
+  return (
+    <LocaleContext.Consumer>
+      {({ texts }) => (
+        <Flex flex={1}>
+          <Menu
+            mode="inline"
+            selectedKeys={[getSelectedItem()]}
+            css={menuStyles}
+          >
+            <MenuLink to={matchUrl} key="settings">
+              <Icon type="setting" />
+              {texts.groupSettings}
+            </MenuLink>
+            <MenuLink to={`${matchUrl}/students`} key="students">
+              <Icon type="team" />
+              {texts.students}
+            </MenuLink>
+            {features.hasMeetings && (
+              <MenuLink to={`${matchUrl}/meetings`} key="meetings">
+                <Icon type="schedule" />
+                {texts.meetings}
+              </MenuLink>
+            )}
+            {features.hasPresence && (
+              <MenuLink to={`${matchUrl}/presence`} key="presence">
+                <Icon type="calendar" />
+                {texts.presence}
+              </MenuLink>
+            )}
+            {features.hasTasks && (
+              <MenuLink to={`${matchUrl}/tasks`} key="tasks">
+                <Icon type="calculator" />
+                {texts.tasks}
+              </MenuLink>
+            )}
+            {features.hasAttachedGroups && (
+              <MenuLink to={`${matchUrl}/attached`} key="attached">
+                <Icon type="pushpin" />
+                {texts.attached}
+              </MenuLink>
+            )}
+            <MenuLink to={`${matchUrl}/grades`} key="grades">
+              <Icon type="line-chart" />
+              {texts.grades}
+            </MenuLink>
+            <Menu.Item>
+              <ShareGroupForEdit
+                currentGroup={context.currentGroup}
+                lecturers={context.lecturers}
+                actions={context.actions}
+              />
+            </Menu.Item>
+          </Menu>
+          <Flex flexDirection="column" width="100%" overflow="hidden">
+            <Breadcrumbs
+              css={css`
+                padding: ${Theme.Padding.Half} 0 0 ${Theme.Padding.Standard};
+              `}
+              replaceTokens={replaceGroupIdBreadcrumb}
+            />
+            <Switch>
+              <Route exact path={'/groups/:id'}>
+                <SettingsSection {...context} editable={editable} />
+              </Route>
+              <Route exact path={'/groups/:id/students'}>
+                <StudentsSection {...context} />
+              </Route>
+              <Route exact path={'/groups/:id/presence'}>
+                <MeetingsDetailsSections {...context} />
+              </Route>
+              <Route exact path={'/groups/:id/meetings'}>
+                <MeetingsSection {...context} />
+              </Route>
+              <Route exact path={'/groups/:id/tasks'}>
+                {({ history }) => (
+                  <TasksSection {...context} history={history} />
+                )}
+              </Route>
+              <Route exact path={'/groups/:id/tasks/new'}>
+                {({ history }) => (
+                  <TaskSection {...context} history={history} mode={'create'} />
+                )}
+              </Route>
+              <Route exact path={'/groups/:id/tasks/:task_id'}>
+                {({ history }) => (
+                  <TaskSection {...context} mode={'edit'} history={history} />
+                )}
+              </Route>
+              <Route exact path={'/groups/:id/grades'}>
+                {({ history }) => (
+                  <GradesSection {...context} history={history} />
+                )}
+              </Route>
+              <Route exact path={'/groups/:id/attached'}>
+                {({ history }) => (
+                  <AttachedGroupsSection {...context} history={history} />
+                )}
+              </Route>
+              <NotFoundPage />
+            </Switch>
+          </Flex>
+        </Flex>
+      )}
+    </LocaleContext.Consumer>
+  );
+};

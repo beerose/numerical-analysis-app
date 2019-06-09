@@ -61,7 +61,10 @@ type AntFormState = Pick<
 
 type GroupDataState = DeepRequired<GroupDTO>['data'];
 
-type Props = GroupApiContextState & FormComponentProps;
+type Props = GroupApiContextState &
+  FormComponentProps & {
+    editable: boolean;
+  };
 
 // tslint:disable-next-line:max-func-body-length
 const SettingsSectionInternal: React.FC<Props> = ({
@@ -69,12 +72,11 @@ const SettingsSectionInternal: React.FC<Props> = ({
   currentGroup: group,
   form,
   lecturers,
+  editable,
 }) => {
   if (!group) {
     throw new Error('No group');
   }
-
-  const editable = isUserPrivileged(['edit'], 'groups', group.id);
 
   const { texts } = useContext(LocaleContext);
   const [groupDataState, mergeGroupDataState] = useMergeState<GroupDataState>(
