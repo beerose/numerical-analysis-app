@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { Breadcrumbs, ErrorMessage, Theme } from '../../components';
 import { LocaleContext } from '../../components/locale';
 import { DeleteWithConfirmation } from '../../components/DeleteWithConfirmation';
+import { IfUserPrivileged } from '../../components/IfUserPrivileged';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { RemoveSelected } from '../../components/RemoveSelected';
 import { usePromise } from '../../utils';
@@ -30,9 +31,16 @@ const GroupListItem = (props: GroupListItemProps) => {
   return (
     <List.Item
       actions={[
-        <DeleteWithConfirmation onConfirm={props.handleDelete}>
-          <a>{LABELS.delete}</a>
-        </DeleteWithConfirmation>,
+        <IfUserPrivileged
+          to={['edit']}
+          in="groups"
+          withId={props.id}
+          render={
+            <DeleteWithConfirmation onConfirm={props.handleDelete}>
+              <a>{LABELS.delete}</a>
+            </DeleteWithConfirmation>
+          }
+        />,
       ]}
     >
       <List.Item.Meta
