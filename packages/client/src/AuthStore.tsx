@@ -11,6 +11,10 @@ const hoursFromNow = (expirationHours: number) => {
   return now.setHours(now.getHours() + expirationHours);
 };
 
+/**
+ * Prefer importing `useAuthStore` over `authStore`.
+ * Import authStore only in tests.
+ */
 export const [useAuthStore, authStore] = createStore(set => ({
   errorMessage: undefined as string | undefined,
   token: undefined as string | undefined,

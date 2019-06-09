@@ -1,20 +1,20 @@
 import { UserPrivileges } from 'common';
 import React from 'react';
-import getState from 'zustand';
 
-import { authStore } from '../AuthStore';
+import { useAuthStore } from '../AuthStore';
 
 type IfUserPrivilegedProps = {
   to: UserPrivileges.What[];
   in: UserPrivileges.Where;
   withId: number;
-  render: React.ReactNode;
-  otherwise?: React.ReactNode;
+  render: React.ReactElement;
+  otherwise?: React.ReactElement;
 };
 
 export const IfUserPrivileged = (props: IfUserPrivilegedProps) => {
-  const user = authStore.getState().user;
-  const fallback = props.otherwise ? props.otherwise : false;
+  const user = useAuthStore(state => state.user);
+
+  const fallback = props.otherwise || null;
 
   if (!user || !user.privileges) {
     return fallback;
@@ -29,10 +29,3 @@ export const IfUserPrivileged = (props: IfUserPrivilegedProps) => {
     ? props.render
     : fallback;
 };
-
-// <IfUserPrivileged
-//  to="edit"
-//  groupId={groupId}
-//  render={() => <EditGroupForm />}
-//  otherwise={() => <Thingy disabled />}
-/// >;
