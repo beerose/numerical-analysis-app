@@ -1,6 +1,5 @@
 import { UserPrivileges, UserRole } from 'common';
 import React from 'react';
-import { render } from 'react-dom';
 
 import { useAuthStore } from '../AuthStore';
 
@@ -8,29 +7,37 @@ type IfUserPrivilegedProps = {
   to: UserPrivileges.What[];
   in: UserPrivileges.Where;
   withId: number;
-  render: React.ReactElement;
-  otherwise?: React.ReactElement;
+  render: JSX.Element | (() => JSX.Element);
+  otherwise?: JSX.Element | (() => JSX.Element);
 };
 
-export const IfUserPrivileged = (props: IfUserPrivilegedProps) => {
+export const IfUserPrivileged: React.FC<IfUserPrivilegedProps> = ({
+  render,
+  otherwise,
+  withId,
+  in: resource,
+  to,
+}) => {
   const user = useAuthStore(state => state.user);
 
-  const fallback = props.otherwise || null;
+  const fallback =
+    typeof otherwise === 'function' ? otherwise() : otherwise || null;
+  const renderResult = typeof render === 'function' ? render() : render;
 
   if (user && user.user_role === UserRole.Admin) {
-    return render;
+    return renderResult;
   }
 
   if (!user || !user.privileges) {
     return fallback;
   }
 
-  const privilegesSection = user.privileges[props.in];
-  if (!privilegesSection || !privilegesSection[props.withId]) {
+  const privilegesSection = user.privileges[resource];
+  if (!privilegesSection || !privilegesSection[withId]) {
     return fallback;
   }
 
-  return props.to.every(what => privilegesSection[props.withId].includes(what))
-    ? props.render
+  return to.every(what => privilegesSection[withId].includes(what))
+    ? renderResult
     : fallback;
 };
