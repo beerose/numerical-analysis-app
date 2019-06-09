@@ -92,7 +92,7 @@ CREATE TABLE `user_belongs_to_group` (
   `user_id` int(11) DEFAULT NULL REFERENCES users(id) ON DELETE CASCADE,
   `group_id` int(11) DEFAULT NULL REFERENCES `groups`(id) ON DELETE CASCADE,
   `grade` decimal(16,1) DEFAULT NULL,
-  UNIQUE KEY `user_id` (`user_id`,`group_id`)
+  UNIQUE KEY `unique_ids` (`user_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --

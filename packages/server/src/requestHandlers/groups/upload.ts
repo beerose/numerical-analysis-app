@@ -51,20 +51,17 @@ export const upload = (
           );
           return;
         }
-        db.attachStudentToGroup(
-          { email: user.email, groupId: groupId },
-          attachErr => {
-            if (attachErr) {
-              connection.rollback(() =>
-                res.status(codes.INTERNAL_SERVER_ERROR).send({
-                  error: apiMessages.internalError,
-                  error_details: attachErr.message,
-                })
-              );
-              return;
-            }
+        db.attachStudentToGroup({ groupId, email: user.email }, attachErr => {
+          if (attachErr) {
+            connection.rollback(() =>
+              res.status(codes.INTERNAL_SERVER_ERROR).send({
+                error: apiMessages.internalError,
+                error_details: attachErr.message,
+              })
+            );
+            return;
           }
-        );
+        });
       });
     });
     connection.commit(commitErr => {

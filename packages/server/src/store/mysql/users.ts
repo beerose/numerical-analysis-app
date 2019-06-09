@@ -224,7 +224,7 @@ export const attachStudentToGroup = (
     {
       sql: /* sql */ `
     INSERT IGNORE INTO user_belongs_to_group(user_id, group_id)
-    VALUES ((SELECT id FROM users WHERE email = "${email}"), ${groupId})
+    VALUES ((SELECT id FROM users WHERE email = ?), ?)
   `,
       values: [email, groupId],
     },
