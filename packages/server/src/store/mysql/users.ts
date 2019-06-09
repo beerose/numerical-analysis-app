@@ -8,12 +8,15 @@ import { QueryCallback } from './QueryCallback';
 
 export const getUser = (
   userId: UserDTO['id'],
-  callback: QueryCallback<UserWithPassword[]>
+  callback: QueryCallback<
+    Array<Omit<UserWithPassword, 'privileges'> & { privileges: string }>
+  >
 ) =>
   connection.query(
-    sql`
-      SELECT * FROM users WHERE id = ${userId};
-    `,
+    {
+      sql: `SELECT * FROM users WHERE id = ?;`,
+      values: [userId],
+    },
     callback
   );
 
@@ -147,6 +150,18 @@ export const findUserByEmail = (
   connection.query(
     {
       sql: 'SELECT * FROM users WHERE email = ?;',
+      typeCast: (field, orig) => {
+        if (field.type === 'JSON') {
+          let parsed: UserPrivileges = {};
+          try {
+            parsed = JSON.parse(field.string());
+          } catch {
+            parsed = {};
+          }
+          return parsed;
+        }
+        return orig();
+      },
       values: [email],
     },
     (err, res) => {

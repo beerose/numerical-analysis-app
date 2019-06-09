@@ -40,6 +40,8 @@ export const get = (req: GetUserRequest, res: BackendResponse<UserDTO>) => {
       }
 
       delete user.password;
+      user.privileges = user.privileges ? JSON.parse(user.privileges) : null;
+
       return res.status(codes.OK).send(user);
     })
   );
