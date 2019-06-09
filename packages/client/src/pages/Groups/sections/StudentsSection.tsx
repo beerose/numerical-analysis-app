@@ -1,6 +1,6 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import { Button, Spin } from 'antd';
+import { Button, Spin, Tooltip } from 'antd';
 import { UserDTO } from 'common';
 import { saveAs } from 'file-saver';
 import * as React from 'react';
@@ -131,14 +131,19 @@ export class StudentsSection extends React.Component<Props, State> {
           onCancel={this.cancelAddNewStudent}
         />
         <section>
-          <Button
-            icon="user-add"
-            type="primary"
-            onClick={this.showAddStudentModal}
-            css={addUserButtonStyles}
+          <Tooltip
+            title={!editable && 'Nie masz uprawnień aby dodać użtkownika'}
           >
-            Dodaj studenta
-          </Button>
+            <Button
+              icon="user-add"
+              type="primary"
+              onClick={this.showAddStudentModal}
+              css={addUserButtonStyles}
+              disabled={!editable}
+            >
+              Dodaj studenta
+            </Button>
+          </Tooltip>
           <CsvControls
             onDownloadClick={this.handleStudentsCsvDownload}
             onUploadClick={editable ? this.handleStudentsCsvUpload : undefined}
