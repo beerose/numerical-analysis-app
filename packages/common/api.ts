@@ -13,7 +13,9 @@ export type ApiResponse =
       error_details?: string;
     };
 
-export const userRoleOptions = Object.values(UserRole);
+export const userRoleOptions: string[] = Object.values(UserRole).filter(
+  o => typeof o === 'string'
+);
 
 export type UserDTO = {
   id: number;
