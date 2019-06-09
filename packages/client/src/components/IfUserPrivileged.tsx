@@ -3,6 +3,31 @@ import React from 'react';
 
 import { useAuthStore } from '../AuthStore';
 
+export const isUserPrivileged = (
+  to: UserPrivileges.What[],
+  resource: UserPrivileges.Where,
+  withId: number
+): boolean => {
+  const user = useAuthStore(state => state.user);
+
+  if (user && user.user_role === UserRole.Admin) {
+    return true;
+  }
+
+  if (!user || !user.privileges) {
+    return false;
+  }
+
+  const privilegesSection = user.privileges[resource];
+  if (!privilegesSection || !privilegesSection[withId]) {
+    return false;
+  }
+
+  return to.every(what => privilegesSection[withId].includes(what))
+    ? true
+    : false;
+};
+
 type IfUserPrivilegedProps = {
   to: UserPrivileges.What[];
   in: UserPrivileges.Where;
@@ -18,26 +43,9 @@ export const IfUserPrivileged: React.FC<IfUserPrivilegedProps> = ({
   in: resource,
   to,
 }) => {
-  const user = useAuthStore(state => state.user);
-
   const fallback =
     typeof otherwise === 'function' ? otherwise() : otherwise || null;
   const renderResult = typeof render === 'function' ? render() : render;
 
-  if (user && user.user_role === UserRole.Admin) {
-    return renderResult;
-  }
-
-  if (!user || !user.privileges) {
-    return fallback;
-  }
-
-  const privilegesSection = user.privileges[resource];
-  if (!privilegesSection || !privilegesSection[withId]) {
-    return fallback;
-  }
-
-  return to.every(what => privilegesSection[withId].includes(what))
-    ? renderResult
-    : fallback;
+  return isUserPrivileged(to, resource, withId) ? renderResult : fallback;
 };
