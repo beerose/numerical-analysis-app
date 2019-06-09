@@ -13,12 +13,6 @@ export class App extends React.Component {
     return (
       <Router basename={process.env.PUBLIC_URL}>
         <Route>{routeContext => <Main {...routeContext} />}</Route>
-        <IfUserPrivileged
-          to={['edit']}
-          in={'groups'}
-          withId={54}
-          render={<div />}
-        />
       </Router>
     );
   }
