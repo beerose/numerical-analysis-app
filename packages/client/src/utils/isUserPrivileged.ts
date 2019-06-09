@@ -1,13 +1,14 @@
-import { UserPrivileges, UserRole } from 'common';
+import { UserDTO, UserPrivileges, UserRole } from 'common';
 
 import { useAuthStore } from '../AuthStore';
 
 export const isUserPrivileged = (
   to: UserPrivileges.What[],
   resource: UserPrivileges.Where,
-  withId: number
+  withId: number,
+  providedUser?: UserDTO
 ): boolean => {
-  const user = useAuthStore(state => state.user);
+  const user = providedUser || useAuthStore(state => state.user);
 
   if (user && user.user_role === UserRole.Admin) {
     return true;
