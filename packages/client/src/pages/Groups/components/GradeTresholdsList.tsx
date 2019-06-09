@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Col, Input, Row } from 'antd';
+import { InputProps } from 'antd/lib/input';
 import { Tresholds } from 'common';
 import React, { useCallback, useContext } from 'react';
 import { debounce } from 'ts-debounce';
@@ -27,11 +28,12 @@ export const tresholdsKeys: Array<keyof Tresholds> = [
 type GradeTresholdsListProps = {
   onChange: (value: Tresholds) => void;
   value: Tresholds;
-};
+} & Pick<InputProps, 'disabled'>;
 
 export const GradeTresholdsList: React.FC<GradeTresholdsListProps> = ({
   onChange,
   value: tresholds,
+  disabled,
 }) => {
   const { texts } = useContext(LocaleContext);
 
@@ -82,6 +84,7 @@ export const GradeTresholdsList: React.FC<GradeTresholdsListProps> = ({
             </Col>
             <Col span={4}>
               <Input
+                disabled={disabled}
                 type="number"
                 data-key={key}
                 value={tresholds[key]}
