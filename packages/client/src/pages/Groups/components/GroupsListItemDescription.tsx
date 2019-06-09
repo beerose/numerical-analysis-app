@@ -2,6 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { GroupDTO, UserDTO } from 'common';
+import { Any } from 'io-ts';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -12,6 +13,7 @@ export type GroupsListItemDescriptionProps = {
   lecturerId: UserDTO['id'];
   lecturerName: string;
   group: GroupDTO;
+  texts: Omit<typeof LocaleContext.Consumer, '$$typeof'>;
 };
 
 const DetailsListItem = styled.li`
