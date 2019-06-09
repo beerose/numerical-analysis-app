@@ -15,7 +15,6 @@ export const [useAuthStore, authStore] = createStore(set => ({
   errorMessage: undefined as string | undefined,
   token: undefined as string | undefined,
   user: undefined as UserDTO | undefined,
-  privileges: undefined as UserPrivileges | undefined,
   ...userInCookies.get(),
   actions: {
     changePassword: authService.changePassword,
@@ -51,13 +50,12 @@ export const [useAuthStore, authStore] = createStore(set => ({
             throw new Error(res.error);
           }
 
-          const { token, user, privileges } = res;
+          const { token, user } = res;
 
           userInCookies.set({ token, user }, hoursFromNow(remember ? 24 : 7));
 
           set({
             user,
-            privileges,
             token,
             errorMessage: '',
           });
