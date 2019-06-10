@@ -17,11 +17,15 @@ const Container = styled.section`
   padding: ${Theme.Padding.Standard};
 `;
 
-type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
+type Props = GroupApiContextState &
+  Pick<RouteComponentProps, 'history'> & {
+    editable: boolean;
+  };
 export const TasksSection = ({
   actions,
   history,
   currentGroupStudents,
+  editable,
 }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tasks, setTasks] = useState<TaskDTO[]>([]);
@@ -93,64 +97,69 @@ export const TasksSection = ({
 
   return (
     <Container>
-      <Button icon="plus" type="primary" onClick={() => navigateTo('new')}>
-        Nowe zadanie
-      </Button>
-      <Button
-        icon="plus"
-        type="primary"
-        onClick={handleOpenModal}
-        style={{ marginLeft: 20 }}
-      >
-        Dodaj istniejące zadanie
-      </Button>
-      <Modal
-        footer={null}
-        visible={modalVisible}
-        onCancel={() => setModalVisible(false)}
-        cancelText="Cofnij"
-        onOk={handleAttachTask}
-        okText={LABELS.save}
-      >
-        <Select
-          showSearch
-          filterOption={findStringifiedLowercase}
-          style={{
-            margin: `${Theme.Padding.Half} 0 0 ${Theme.Padding.Half}`,
-            width: 400,
-          }}
-          onChange={(value: number) =>
-            setSelectedTask(prev => ({ weight: prev.weight, id: value }))
-          }
-          placeholder="Wybierz zadanie"
-        >
-          {allTasks.map(task => (
-            <Select.Option key={task.id.toString()} value={task.id}>
-              {task.name}
-            </Select.Option>
-          ))}
-        </Select>
-        <Input
-          style={{ width: 400, margin: Theme.Padding.Half }}
-          type="number"
-          placeholder="Podaj wagę zadania"
-          onChange={handleInputChange}
-        />
-        <Button
-          style={{ marginLeft: Theme.Padding.Half }}
-          type="primary"
-          onClick={handleAttachTask}
-          disabled={!selectedTask.weight || !selectedTask.id}
-        >
-          Zapisz
-        </Button>
-      </Modal>
+      {editable && (
+        <div>
+          <Button icon="plus" type="primary" onClick={() => navigateTo('new')}>
+            Nowe zadanie
+          </Button>
+          <Button
+            icon="plus"
+            type="primary"
+            onClick={handleOpenModal}
+            style={{ marginLeft: 20 }}
+          >
+            Dodaj istniejące zadanie
+          </Button>
+          <Modal
+            footer={null}
+            visible={modalVisible}
+            onCancel={() => setModalVisible(false)}
+            cancelText="Cofnij"
+            onOk={handleAttachTask}
+            okText={LABELS.save}
+          >
+            <Select
+              showSearch
+              filterOption={findStringifiedLowercase}
+              style={{
+                margin: `${Theme.Padding.Half} 0 0 ${Theme.Padding.Half}`,
+                width: 400,
+              }}
+              onChange={(value: number) =>
+                setSelectedTask(prev => ({ weight: prev.weight, id: value }))
+              }
+              placeholder="Wybierz zadanie"
+            >
+              {allTasks.map(task => (
+                <Select.Option key={task.id.toString()} value={task.id}>
+                  {task.name}
+                </Select.Option>
+              ))}
+            </Select>
+
+            <Input
+              style={{ width: 400, margin: Theme.Padding.Half }}
+              type="number"
+              placeholder="Podaj wagę zadania"
+              onChange={handleInputChange}
+            />
+            <Button
+              style={{ marginLeft: Theme.Padding.Half }}
+              type="primary"
+              onClick={handleAttachTask}
+              disabled={!selectedTask.weight || !selectedTask.id}
+            >
+              Zapisz
+            </Button>
+          </Modal>
+        </div>
+      )}
       {tasks ? (
         <List
           itemLayout="horizontal"
           dataSource={tasks}
           css={css`
-            padding-top: ${Theme.Padding.Standard};
+            padding-top: ${Theme.Padding.Half};
             height: 100%;
           `}
           renderItem={(task: TaskDTO) => (
