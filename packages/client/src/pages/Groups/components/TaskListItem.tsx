@@ -47,10 +47,11 @@ type TaskPointsInputProps = {
     points: number
   ) => void;
   grade?: UserTaskPoints;
+  disabled?: boolean;
 };
 
 const TaskPointsInput = (props: TaskPointsInputProps) => {
-  const { task, userId, onChange, grade } = props;
+  const { task, userId, onChange, grade, disabled } = props;
 
   const handleInputValueChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(task.id, userId, Number(event.target.value));
@@ -63,6 +64,7 @@ const TaskPointsInput = (props: TaskPointsInputProps) => {
         border: 1 solid ${Colors.SemiLightGray} !important;
         margin-right: 3px;
       `}
+      disabled={disabled}
       type="number"
       defaultValue={grade && grade.points.toString()}
       onChange={handleInputValueChange}
@@ -140,6 +142,7 @@ export const TaskListItem = ({
       render: (user: UserWithGroups) => (
         <Flex justifyContent="center" alignContent="center" alignItems="center">
           <TaskPointsInput
+            disabled={!editable}
             onChange={handleSetTaskPoints}
             task={task}
             grade={

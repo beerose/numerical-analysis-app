@@ -164,7 +164,7 @@ export const TasksSection = ({
           `}
           renderItem={(task: TaskDTO) => (
             <TaskListItem
-              editable={editable}
+              editable={!editable}
               navigateTo={navigateTo}
               task={task}
               deleteTask={deleteTask}
