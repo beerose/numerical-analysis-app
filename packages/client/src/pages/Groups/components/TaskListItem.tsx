@@ -83,6 +83,7 @@ type Props = {
   ) => Promise<ApiResponse>;
   students?: UserWithGroups[];
   fetchGrades: (taskId: TaskDTO['id']) => Promise<UserTaskPoints[]>;
+  editable: boolean;
 };
 
 // tslint:disable-next-line:max-func-body-length
@@ -93,6 +94,7 @@ export const TaskListItem = ({
   students,
   setTaskPoints,
   fetchGrades,
+  editable,
 }: Props) => {
   const [gradesVisible, toggleGradesVisible] = useToggle(false);
   const [grades, setGrades] = useState<UserTaskPoints[] | undefined>(undefined);
@@ -156,15 +158,19 @@ export const TaskListItem = ({
   return (
     <StyledTaskCard>
       <List.Item
-        actions={[
-          // TODO: react-router Link?
-          <a role="link" onClick={() => navigateTo(String(task.id))}>
-            {LABELS.edit}
-          </a>,
-          <DeleteWithConfirmation onConfirm={() => deleteTask(task.id)}>
-            <a>{LABELS.delete}</a>
-          </DeleteWithConfirmation>,
-        ]}
+        actions={
+          editable
+            ? [
+                // TODO: react-router Link?
+                <a role="link" onClick={() => navigateTo(String(task.id))}>
+                  {LABELS.edit}
+                </a>,
+                <DeleteWithConfirmation onConfirm={() => deleteTask(task.id)}>
+                  <a>{LABELS.delete}</a>
+                </DeleteWithConfirmation>,
+              ]
+            : []
+        }
         onClick={toggleGradesVisible}
       >
         <TaskMeta task={task} />
