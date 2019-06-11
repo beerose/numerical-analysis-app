@@ -201,7 +201,11 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
               </Route>
               <Route exact path={'/groups/:id/attached'}>
                 {({ history }) => (
-                  <AttachedGroupsSection {...context} history={history} />
+                  <AttachedGroupsSection
+                    {...context}
+                    history={history}
+                    editable={editable}
+                  />
                 )}
               </Route>
               <NotFoundPage />

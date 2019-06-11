@@ -7,7 +7,10 @@ import { DeleteWithConfirmation, Flex, Theme } from '../../../components';
 import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { GroupApiContextState } from '../GroupApiContext';
 
-type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
+type Props = GroupApiContextState &
+  Pick<RouteComponentProps, 'history'> & {
+    editable: boolean;
+  };
 export const AttachedGroupsSection = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [attached, setAttached] = useState<GroupDTO[]>([]);
@@ -59,13 +62,15 @@ export const AttachedGroupsSection = (props: Props) => {
 
   return (
     <Flex padding={Theme.Padding.Standard} flexDirection="column">
-      <Button
-        type="primary"
-        style={{ width: 180, marginBottom: 20 }}
-        onClick={() => setModalVisible(true)}
-      >
-        Podepnij nową grupę
-      </Button>
+      {props.editable && (
+        <Button
+          type="primary"
+          style={{ width: 180, marginBottom: 20 }}
+          onClick={() => setModalVisible(true)}
+        >
+          Podepnij nową grupę
+        </Button>
+      )}
       <Modal
         visible={modalVisible}
         cancelText="Cofnij"
@@ -102,12 +107,16 @@ export const AttachedGroupsSection = (props: Props) => {
           dataSource={attached}
           renderItem={(item: GroupDTO) => (
             <List.Item
-              actions={[
-                <DeleteWithConfirmation
-                  onConfirm={() => handleDetachGroup(item.id)}
-                  label="Odepnij grupę"
-                />,
-              ]}
+              actions={
+                props.editable
+                  ? [
+                      <DeleteWithConfirmation
+                        onConfirm={() => handleDetachGroup(item.id)}
+                        label="Odepnij grupę"
+                      />,
+                    ]
+                  : []
+              }
             >
               <List.Item.Meta
                 title={
