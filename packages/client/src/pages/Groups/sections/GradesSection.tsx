@@ -128,12 +128,16 @@ const SetGrade = ({
   </Select>
 );
 
-type Props = GroupApiContextState & Pick<RouteComponentProps, 'history'>;
+type Props = GroupApiContextState &
+  Pick<RouteComponentProps, 'history'> & {
+    editable: boolean;
+  };
 
 export const GradesSection = ({
   actions,
   currentGroup,
   currentGroupStudents,
+  editable,
 }: Props) => {
   const [tableData, setTableData] = useState<UserResultsModel[]>([]);
   const gradeSettings = currentGroup && currentGroup.data;
@@ -280,12 +284,17 @@ export const GradesSection = ({
     },
     {
       key: 'set_grade',
-      render: (studentResults: UserResultsModel) => (
-        <SetGrade
-          value={studentResults.finalGrade}
-          onChange={grade => setGrade(studentResults.userId, grade)}
-        />
-      ),
+      render: (studentResults: UserResultsModel) =>
+        editable ? (
+          <SetGrade
+            value={studentResults.finalGrade}
+            onChange={grade => setGrade(studentResults.userId, grade)}
+          />
+        ) : (
+          <Flex justifyContent="center">
+            {studentResults.finalGrade || '-'}
+          </Flex>
+        ),
       title: `Wystawiona ocena`,
       width: 150,
     },
@@ -306,7 +315,11 @@ export const GradesSection = ({
           </Button>
           <Table
             rowKey={(i: UserResultsModel) => i.userId.toString()}
-            columns={columns}
+            columns={
+              editable
+                ? columns
+                : columns.filter(c => c.key !== 'confirm_grade')
+            }
             dataSource={tableData}
             pagination={false}
             bordered

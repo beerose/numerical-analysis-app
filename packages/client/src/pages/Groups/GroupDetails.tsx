@@ -196,7 +196,11 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
               </Route>
               <Route exact path={'/groups/:id/grades'}>
                 {({ history }) => (
-                  <GradesSection {...context} history={history} />
+                  <GradesSection
+                    {...context}
+                    history={history}
+                    editable={editable}
+                  />
                 )}
               </Route>
               <Route exact path={'/groups/:id/attached'}>
