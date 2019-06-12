@@ -19,7 +19,9 @@ const Container = styled.section`
   padding: ${Theme.Padding.Standard};
 `;
 
-type Props = GroupApiContextState;
+type Props = GroupApiContextState & {
+  editable: boolean;
+};
 
 type State = {
   meetingModalVisible: boolean;
@@ -82,9 +84,11 @@ export class MeetingsSection extends React.Component<Props, State> {
 
     return (
       <Container>
-        <Button icon="plus" type="primary" onClick={this.openNewMeetingModal}>
-          Nowe spotkanie
-        </Button>
+        {this.props.editable && (
+          <Button icon="plus" type="primary" onClick={this.openNewMeetingModal}>
+            Nowe spotkanie
+          </Button>
+        )}
         <Modal
           centered
           visible={this.state.meetingModalVisible}
@@ -108,26 +112,31 @@ export class MeetingsSection extends React.Component<Props, State> {
             itemLayout="horizontal"
             dataSource={meetings}
             css={css`
-              padding: ${Theme.Padding.Standard} 0;
               max-height: 100vh;
               width: 400px;
             `}
             renderItem={(meeting: MeetingDTO) => {
               return (
                 <List.Item
-                  actions={[
-                    <a
-                      role="edit"
-                      onClick={() => this.handleEditClick(meeting)}
-                    >
-                      {LABELS.edit}
-                    </a>,
-                    <DeleteWithConfirmation
-                      onConfirm={() => this.handleDeleteMeeting(meeting.id)}
-                    >
-                      <a>{LABELS.delete}</a>
-                    </DeleteWithConfirmation>,
-                  ]}
+                  actions={
+                    this.props.editable
+                      ? [
+                          <a
+                            role="edit"
+                            onClick={() => this.handleEditClick(meeting)}
+                          >
+                            {LABELS.edit}
+                          </a>,
+                          <DeleteWithConfirmation
+                            onConfirm={() =>
+                              this.handleDeleteMeeting(meeting.id)
+                            }
+                          >
+                            <a>{LABELS.delete}</a>
+                          </DeleteWithConfirmation>,
+                        ]
+                      : []
+                  }
                 >
                   <List.Item.Meta title={meeting.meeting_name} />
                   {moment(meeting.date, 'YYYY-MM-DD')
