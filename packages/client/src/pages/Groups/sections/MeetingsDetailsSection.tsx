@@ -4,7 +4,9 @@ import * as React from 'react';
 import { PresenceTable } from '../components/PresenceTable';
 import { GroupApiContextState } from '../GroupApiContext';
 
-type Props = GroupApiContextState;
+type Props = GroupApiContextState & {
+  editable: boolean;
+};
 
 export class MeetingsDetailsSections extends React.Component<Props> {
   handleSetActivity = this.withErrorHandler(this.props.actions.setActivity);
