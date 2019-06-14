@@ -36,6 +36,13 @@ Set `DB_NAME, DB_HOST, DB_PASSWORD, DB_USER` in your ENV
 
 -- TBD --
 
+## Deploy
+
+```
+  yarn workspace server build
+  yarn workspace scripts deploy-server
+```
+
 ## Development
 
 ### Prerequirements
