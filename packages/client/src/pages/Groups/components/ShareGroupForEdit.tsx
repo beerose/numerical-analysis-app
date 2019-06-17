@@ -56,7 +56,8 @@ export const ShareGroupForEdit = ({
               !l.privileges ||
               !l.privileges.groups ||
               (currentGroup && !l.privileges.groups[currentGroup.id]) ||
-              (currentGroup && !l.privileges.groups[currentGroup.id].length)
+              (currentGroup &&
+                l.privileges.groups[currentGroup.id].length === 0)
             );
           })
         );
