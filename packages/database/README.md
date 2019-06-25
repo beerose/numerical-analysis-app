@@ -1,7 +1,3 @@
-# 🚛 Deployment
-
-We're deploying the database on heroku as https://numerical-db.herokuapp.com/
-
 # 🔌 How to setup a database?
 
 Add following varaibles to .env file:

@@ -1,7 +1,9 @@
 import dotenv from 'dotenv';
 
-console.log('Loading process.env with contents of .env');
-dotenv.config();
+if (process.env.NODE_ENV !== 'production') {
+  console.log('Loading process.env with contents of .env');
+  dotenv.config();
+}
 
 console.log('Starting server', {
   env: process.env.NODE_ENV,

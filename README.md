@@ -36,6 +36,13 @@ Set `DB_NAME, DB_HOST, DB_PASSWORD, DB_USER` in your ENV
 
 -- TBD --
 
+## Deploy
+
+```
+  yarn workspace server build
+  yarn workspace scripts deploy-server
+```
+
 ## Development
 
 ### Prerequirements
@@ -57,13 +64,13 @@ For DB migrations make sure you have migrate tool installed:
 1. Start MySQL server and create `numerical_analysis` database:
 
 ```
-DATABASE_URL="mysql://<username>:<password>@127.0.0.1:3306/numerical_analysis" dbmate create
+
 ```
 
 2. Create database structure:
 
 ```
-DATABASE_URL="mysql://<username>:<password>@127.0.0.1:3306/numerical_analysis" dbmate -d ./migrations/ up
+
 ```
 
 3. Starting the service
