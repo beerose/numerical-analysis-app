@@ -67,10 +67,14 @@ const SuggestedGrade: React.FC<GradeDisplayProps> = ({
   userResults,
   currentGroup,
 }) => {
-  if (!currentGroup || !currentGroup.data) {
+  if (!currentGroup) {
     return <Spin />;
   }
-  if (!currentGroup.data.tresholds || !currentGroup.data.grade_equation) {
+  if (
+    !currentGroup.data ||
+    !currentGroup.data.tresholds ||
+    !currentGroup.data.grade_equation
+  ) {
     return <Fragment>Brak odpowiednich ustawień</Fragment>;
   }
 
@@ -90,7 +94,7 @@ const mergedResultsToTableItem = (
 
   return {
     activity: results ? results.sum_activity : 0,
-    finalGrade: final && Grade(final.grade),
+    finalGrade: final && final.grade ? Grade(final.grade) : undefined,
     index: student.student_index,
     maxTasksPoints: results ? results.max_tasks_grade : 0,
     presences: results ? results.presences : 0,
@@ -143,6 +147,9 @@ export const GradesSection = ({
   const gradeSettings = currentGroup && currentGroup.data;
 
   useEffect(() => {
+    if (!currentGroup) {
+      actions.getGroup();
+    }
     if (!currentGroupStudents) {
       actions.listStudentsWithGroup();
     } else if (currentGroup) {
