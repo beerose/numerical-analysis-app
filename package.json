@@ -15,7 +15,8 @@
     "db:stop": "yarn workspace database stop",
     "db:remove": "yarn workspace database remove",
     "prod:ssh": "ssh anumuser@rno.ii.uni.wroc.pl",
-    "prod:mysql": "mysql -u root -h rno.ii.uni.wroc.pl -u anumuser"
+    "prod:mysql": "mysql -u root -h rno.ii.uni.wroc.pl -u anumuser",
+    "password:set": "yarn workspace server setPassword"
   },
   "devDependencies": {
     "@hasparus/tslint-config": "hasparus/tslint-config-hasparus",

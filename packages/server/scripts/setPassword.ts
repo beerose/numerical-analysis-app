@@ -42,9 +42,9 @@ const newPassQuestions: Questions<{
 ];
 
 program
-  .command('addUser')
-  .alias('a')
-  .description('Add a user')
+  .command('setPassword')
+  .alias('p')
+  .description('Set password for user')
   .action(() => {
     prompt(questions).then(answers =>
       db.findUserByEmail(
