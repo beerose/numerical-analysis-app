@@ -7,7 +7,7 @@ const SALT_ROUNDS = 10;
 
 export const storePassword = (
   password: string,
-  user: UserDTO,
+  user: Pick<UserDTO, 'email'>,
   callback: (
     result:
       | {
