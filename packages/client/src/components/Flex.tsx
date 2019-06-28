@@ -10,7 +10,7 @@ import {
   ReactType,
 } from 'react';
 
-import { Theme } from './Theme';
+import { theme as Theme } from './theme';
 
 type FlexProps = CSSProperties & {
   children?: ReactNode;

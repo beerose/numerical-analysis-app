@@ -10,7 +10,7 @@ import { DeepRequired } from 'utility-types';
 
 import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
-import { Theme } from '../../../components/Theme';
+import { theme } from '../../../components/theme';
 import { LABELS, useMergeKey, useMergeState } from '../../../utils';
 import { isUserPrivileged } from '../../../utils/isUserPrivileged';
 import { GradeEquationInput } from '../components/GradeEquationInput';
@@ -24,9 +24,9 @@ import { SelectSemester } from '../components/SelectSemester';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const SettingsForm = styled.form`
-  margin-left: ${Theme.Padding.Standard};
-  margin-top: ${Theme.Padding.Half};
-  margin-bottom: ${Theme.Padding.Half};
+  margin-left: ${theme.Padding.Standard};
+  margin-top: ${theme.Padding.Half};
+  margin-bottom: ${theme.Padding.Half};
   height: auto;
   > div {
     padding-bottom: 15px;

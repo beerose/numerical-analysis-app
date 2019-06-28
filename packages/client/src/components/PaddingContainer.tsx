@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { Theme } from './Theme';
+import { theme } from './theme';
 export const PaddingContainer = styled.div`
-  padding: ${Theme.Padding.Half} ${Theme.Padding.Standard};
+  padding: ${theme.Padding.Half} ${theme.Padding.Standard};
 `;

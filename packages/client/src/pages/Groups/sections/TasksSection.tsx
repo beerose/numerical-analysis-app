@@ -7,14 +7,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
+import { theme } from '../../../components/theme';
 import { Flex } from '../../../components/Flex';
-import { Theme } from '../../../components/Theme';
 import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { TaskListItem } from '../components/TaskListItem';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
-  padding: ${Theme.Padding.Standard};
+  padding: ${theme.Padding.Standard};
 `;
 
 type Props = GroupApiContextState &
@@ -122,7 +122,7 @@ export const TasksSection = ({
               showSearch
               filterOption={findStringifiedLowercase}
               style={{
-                margin: `${Theme.Padding.Half} 0 0 ${Theme.Padding.Half}`,
+                margin: `${theme.Padding.Half} 0 0 ${theme.Padding.Half}`,
                 width: 400,
               }}
               onChange={(value: number) =>
@@ -138,13 +138,13 @@ export const TasksSection = ({
             </Select>
 
             <Input
-              style={{ width: 400, margin: Theme.Padding.Half }}
+              style={{ width: 400, margin: theme.Padding.Half }}
               type="number"
               placeholder="Podaj wagę zadania"
               onChange={handleInputChange}
             />
             <Button
-              style={{ marginLeft: Theme.Padding.Half }}
+              style={{ marginLeft: theme.Padding.Half }}
               type="primary"
               onClick={handleAttachTask}
               disabled={!selectedTask.weight || !selectedTask.id}
@@ -159,7 +159,7 @@ export const TasksSection = ({
           itemLayout="horizontal"
           dataSource={tasks}
           css={css`
-            padding-top: ${Theme.Padding.Half};
+            padding-top: ${theme.Padding.Half};
             height: 100%;
           `}
           renderItem={(task: TaskDTO) => (
