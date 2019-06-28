@@ -5,9 +5,10 @@ import program from 'commander';
 import dotenv from 'dotenv';
 import { prompt, Questions } from 'inquirer';
 
-dotenv.config();
 import { storePassword } from '../src/requestHandlers/accounts/storePassword';
 import { db } from '../src/store';
+
+dotenv.config();
 
 const questions: Questions<{
   email: string;

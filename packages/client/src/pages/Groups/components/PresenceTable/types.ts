@@ -1,6 +1,5 @@
-import { MeetingDetailsModel, MeetingDTO, UserDTO } from 'common';
+import { MeetingDetailsModel, MeetingDTO, Student, UserDTO } from 'common';
 
-export type Student = Pick<UserDTO, 'id' | 'user_name' | 'student_index'>;
 export type MeetingId = MeetingDTO['id'];
 
 export type BoxedStudent = { student: Student };

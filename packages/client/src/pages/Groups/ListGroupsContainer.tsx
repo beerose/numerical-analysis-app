@@ -26,8 +26,6 @@ type GroupListItemProps = GroupDTO & {
   lecturer: UserDTO;
 };
 const GroupListItem = (props: GroupListItemProps) => {
-  const { texts } = useContext(LocaleContext);
-
   return (
     <List.Item
       actions={[
@@ -51,7 +49,6 @@ const GroupListItem = (props: GroupListItemProps) => {
               lecturerId={props.lecturer_id}
               lecturerName={props.lecturer.user_name}
               group={props}
-              texts={texts}
             />
           )
         }
