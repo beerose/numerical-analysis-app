@@ -5,7 +5,6 @@ import { GroupDTO } from 'common';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { getStudentGroups } from '../../api/userApi';
 import { PaddingContainer } from '../../components';
 import { usePromise } from '../../utils';
 import { AuthStoreState } from '../../AuthStore';
@@ -47,18 +46,16 @@ export const StudentHome: React.FC<StudentHomeProps> = (
     actions: { getGroupsForStudent },
   } = useContext(GroupApiContext);
 
-  const result = usePromise(
+  const groups = usePromise(
     () =>
       getGroupsForStudent(props.user!.id!).catch((error: Error) => ({ error })),
-    [] as GroupDTO[],
+    'LOADING',
     [props.user!.id]
   );
 
-  if ('error' in result && result.error) {
-    throw result.error;
+  if (typeof groups === 'object' && 'error' in groups && groups.error) {
+    throw groups.error;
   }
-
-  const groups = result as GroupDTO[];
 
   return (
     <PaddingContainer>
@@ -71,7 +68,8 @@ export const StudentHome: React.FC<StudentHomeProps> = (
           Twoje grupy
         </h1>
         <List
-          dataSource={groups}
+          loading={groups === 'LOADING'}
+          dataSource={Array.isArray(groups) ? groups : []}
           renderItem={group => <MyGroupsListItem group={group} />}
         />
       </section>

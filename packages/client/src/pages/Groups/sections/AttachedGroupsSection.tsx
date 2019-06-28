@@ -3,7 +3,7 @@ import { GroupDTO } from 'common';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { DeleteWithConfirmation, Flex, Theme } from '../../../components';
+import { DeleteWithConfirmation, Flex, theme } from '../../../components';
 import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { GroupApiContextState } from '../GroupApiContext';
 
@@ -61,7 +61,7 @@ export const AttachedGroupsSection = (props: Props) => {
   const attachedGroupIds = attached.map(g => g.id);
 
   return (
-    <Flex padding={Theme.Padding.Standard} flexDirection="column">
+    <Flex padding={theme.Padding.Standard} flexDirection="column">
       {props.editable && (
         <Button
           type="primary"
@@ -82,7 +82,7 @@ export const AttachedGroupsSection = (props: Props) => {
         <Select
           showSearch
           filterOption={findStringifiedLowercase}
-          style={{ width: '300px', margin: Theme.Padding.Half }}
+          style={{ width: '300px', margin: theme.Padding.Half }}
           onChange={(value: GroupDTO['id']) => setSelectedGroup(value)}
           defaultValue={undefined}
         >

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, RouteComponentProps, Switch } from 'react-router';
+import { Route, Switch } from 'react-router';
 
 import { CreateGroupContainer } from './CreateGroup';
 import { GroupDetailsContainer } from './GroupDetails';

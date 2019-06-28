@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Breadcrumbs, ErrorMessage, Theme } from '../../components';
+import { Breadcrumbs, ErrorMessage, theme } from '../../components';
 import { LocaleContext } from '../../components/locale';
 import { DeleteWithConfirmation } from '../../components/DeleteWithConfirmation';
 import { IfUserPrivileged } from '../../components/IfUserPrivileged';
@@ -103,7 +103,7 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
       <NewGroupButton onClick={() => props.history.push('/groups/new')} />
       <SelectLecturer
         style={{
-          marginLeft: Theme.Padding.Quarter,
+          marginLeft: theme.Padding.Quarter,
         }}
         lecturers={lecturers}
         onChange={selectLecturer}

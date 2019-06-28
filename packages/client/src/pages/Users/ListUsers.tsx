@@ -2,19 +2,17 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Input as AntInput, Spin } from 'antd';
-// tslint:disable:no-submodule-imports
 import { SelectValue } from 'antd/lib/select';
 import { PaginationConfig } from 'antd/lib/table';
-// tslint:enable:no-submodule-imports
 import { UserDTO } from 'common';
-import * as React from 'react';
+import React from 'react';
 
 import { usersService } from '../../api';
 import {
   Breadcrumbs,
   ErrorMessage,
   SelectRole,
-  Theme,
+  theme,
   UsersTable,
 } from '../../components';
 import { PaddingContainer } from '../../components/PaddingContainer';
@@ -23,7 +21,7 @@ import { LABELS } from '../../utils/labels';
 import { WrappedNewUserModalForm } from './AddUserForm';
 
 const SearchPanel = styled.div`
-  margin: ${Theme.Padding.Half} 0 ${Theme.Padding.Half} 0;
+  margin: ${theme.Padding.Half} 0 ${theme.Padding.Half} 0;
   display: flex;
   flex-wrap: wrap;
   > * {
@@ -33,16 +31,16 @@ const SearchPanel = styled.div`
 
 const Input = styled(AntInput)`
   width: 400px;
-  margin-right: ${Theme.Padding.Quarter};
+  margin-right: ${theme.Padding.Quarter};
 `;
 
 const selectStyles = css`
   width: 300px;
-  margin-right: ${Theme.Padding.Quarter};
+  margin-right: ${theme.Padding.Quarter};
 `;
 
 const buttonStyles = css`
-  margin: ${Theme.Padding.Half} ${Theme.Padding.Half} ${Theme.Padding.Half} 0;
+  margin: ${theme.Padding.Half} ${theme.Padding.Half} ${theme.Padding.Half} 0;
 `;
 
 type State = {

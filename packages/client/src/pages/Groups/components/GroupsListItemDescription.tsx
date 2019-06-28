@@ -13,7 +13,6 @@ export type GroupsListItemDescriptionProps = {
   lecturerId: UserDTO['id'];
   lecturerName: string;
   group: GroupDTO;
-  texts: Omit<typeof LocaleContext.Consumer, '$$typeof'>;
 };
 
 const DetailsListItem = styled.li`

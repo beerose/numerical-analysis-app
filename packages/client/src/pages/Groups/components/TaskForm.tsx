@@ -48,6 +48,7 @@ type Props = {
   onSubmit: (values: TaskDTO) => void;
 } & FormComponentProps;
 
+// tslint:disable-next-line:no-big-function
 const TaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
   const [taskType, setTaskType] = useState<TaskKind | null>(null);
