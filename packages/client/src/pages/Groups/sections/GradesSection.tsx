@@ -15,7 +15,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { DeepRequired } from 'utility-types';
 
-import { Flex, Table, Theme } from '../../../components';
+import { Flex, Table, theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
 import { gradesToCsv, isSafari, usePromise } from '../../../utils';
@@ -311,7 +311,7 @@ export const GradesSection = ({
   return (
     <LocaleContext.Consumer>
       {({ texts }) => (
-        <Flex padding={Theme.Padding.Standard} flexDirection="column">
+        <Flex padding={theme.Padding.Standard} flexDirection="column">
           <Button
             type="primary"
             icon="download"

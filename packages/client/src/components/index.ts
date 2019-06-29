@@ -15,7 +15,7 @@ export * from './Flex';
 export * from './DateRange';
 export * from './DeleteWithConfirmation';
 export * from './Table';
-export * from './Theme';
+export * from './theme';
 export * from './UserInfo';
 export * from './locale';
 export { WrappedNewPasswordForm as NewPasswordForm } from './NewPasswordForm';

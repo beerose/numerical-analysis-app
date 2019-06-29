@@ -6,18 +6,17 @@ import { Any } from 'io-ts';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { Theme } from '../../../components';
+import { theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 
 export type GroupsListItemDescriptionProps = {
   lecturerId: UserDTO['id'];
   lecturerName: string;
   group: GroupDTO;
-  texts: Omit<typeof LocaleContext.Consumer, '$$typeof'>;
 };
 
 const DetailsListItem = styled.li`
-  margin-right: ${Theme.Padding.Standard};
+  margin-right: ${theme.Padding.Standard};
 `;
 
 const DetailsList = styled.ul`

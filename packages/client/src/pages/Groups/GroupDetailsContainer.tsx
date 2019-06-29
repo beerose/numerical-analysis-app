@@ -9,8 +9,8 @@ import { Link, LinkProps } from 'react-router-dom';
 
 import { Breadcrumbs, NotFoundPage } from '../../components';
 import { LocaleContext } from '../../components/locale';
+import { theme } from '../../components/theme';
 import { Flex } from '../../components/Flex';
-import { Theme } from '../../components/Theme';
 import { isUserPrivileged } from '../../utils/isUserPrivileged';
 import { useAuthStore } from '../../AuthStore';
 
@@ -158,7 +158,7 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
           <Flex flexDirection="column" width="100%" overflow="hidden">
             <Breadcrumbs
               css={css`
-                padding: ${Theme.Padding.Half} 0 0 ${Theme.Padding.Standard};
+                padding: ${theme.Padding.Half} 0 0 ${theme.Padding.Standard};
               `}
               replaceTokens={replaceGroupIdBreadcrumb}
             />

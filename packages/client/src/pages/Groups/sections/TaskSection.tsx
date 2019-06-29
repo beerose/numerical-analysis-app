@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { Flex } from '../../../components';
-import { Theme } from '../../../components/Theme';
+import { theme } from '../../../components/theme';
 import { showMessage } from '../../../utils';
 import { WrappedTaskForm as TaskForm } from '../components/TaskForm';
 import { GroupApiContextState } from '../GroupApiContext';
@@ -51,7 +51,7 @@ export const TaskSection = (props: Props) => {
   return (
     <Flex
       alignItems="flex-start"
-      padding={Theme.Padding.Half}
+      padding={theme.Padding.Half}
       flexDirection="column"
     >
       <TaskForm

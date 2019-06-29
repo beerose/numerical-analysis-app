@@ -32,7 +32,7 @@ export class CreateGroupContainer extends React.Component<RouteComponentProps> {
       <Flex center justifyContent="center" alignItems="center" height="80vh">
         <WrappedNewGroupForm
           loading={isLoading}
-          lecturers={lecturers}
+          lecturers={lecturers || []}
           onSubmit={this.handleSubmit}
           onCancel={this.handleCancel}
         />

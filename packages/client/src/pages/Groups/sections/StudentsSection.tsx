@@ -7,8 +7,8 @@ import * as React from 'react';
 import { Omit } from 'react-router';
 
 import { UsersTable } from '../../../components';
+import { theme } from '../../../components/theme';
 import { Flex } from '../../../components/Flex';
-import { Theme } from '../../../components/Theme';
 import { isSafari } from '../../../utils/isSafari';
 import { studentsToCsv } from '../../../utils/studentsToCsv';
 import { WrappedNewStudentModalForm } from '../components/AddStudentForm';
@@ -16,8 +16,8 @@ import { CsvControls } from '../components/CsvControls';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const addUserButtonStyles = css`
-  margin: ${Theme.Padding.Half};
-  margin-left: ${Theme.Padding.Standard};
+  margin: ${theme.Padding.Half};
+  margin-left: ${theme.Padding.Standard};
 `;
 
 type UploadObject = {
@@ -159,8 +159,8 @@ export class StudentsSection extends React.Component<Props, State> {
             users={students}
             extraColumns={['index']}
             css={{
-              paddingBottom: Theme.Padding.Half,
-              paddingLeft: Theme.Padding.Standard,
+              paddingBottom: theme.Padding.Half,
+              paddingLeft: theme.Padding.Standard,
               width: '600px',
             }}
           />

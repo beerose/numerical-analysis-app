@@ -7,16 +7,16 @@ import { MeetingDTO } from 'common';
 import moment, { Moment } from 'moment';
 import * as React from 'react';
 
+import { theme } from '../../../components/theme';
 import { DeleteWithConfirmation } from '../../../components/DeleteWithConfirmation';
 import { Flex } from '../../../components/Flex';
-import { Theme } from '../../../components/Theme';
 import { LABELS } from '../../../utils/labels';
 import { WrappedEditMeetingForm } from '../components/EditMeetingForm';
 import { WrappedNewMeetingForm } from '../components/NewMeetingForm';
 import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
-  padding: ${Theme.Padding.Standard};
+  padding: ${theme.Padding.Standard};
 `;
 
 type Props = GroupApiContextState & {

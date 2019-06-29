@@ -1,4 +1,4 @@
-export namespace Theme {
+export namespace theme {
   // immutable part of the theme -- known on type level to improve DX
 
   export enum Padding {
