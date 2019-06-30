@@ -6,8 +6,7 @@ import { UserDTO, UserRole } from 'common';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { DeleteWithConfirmation, Flex, theme } from '../../../components';
-import { RemoveSelected } from '../../../components/RemoveSelected';
+import { Flex, theme } from '../../../components';
 import { Colors, LABELS, showMessage } from '../../../utils';
 import { isAlreadyPrivilegedToEdit } from '../../../utils/isPrivilegedToEdit';
 import { useAuthStore } from '../../../AuthStore';
