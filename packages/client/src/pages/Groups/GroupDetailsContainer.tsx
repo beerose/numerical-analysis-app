@@ -55,10 +55,10 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
     const groupId = Number(props.location.pathname.split('/')[2]);
 
     if (!context.currentGroup || context.currentGroup.id !== groupId) {
-      context.actions.getGroup().then(res => {
-        setEditable(isUserPrivileged(['edit'], 'groups', res.id, user));
-      });
+      context.actions.getGroup();
     }
+
+    setEditable(isUserPrivileged(['edit'], 'groups', groupId, user));
   }, [context.currentGroup, editable]);
 
   const getSelectedItem = () => {
