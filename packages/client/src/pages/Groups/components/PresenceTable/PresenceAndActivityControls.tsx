@@ -50,6 +50,7 @@ export type PresenceAndActivityControlsProps = FieldIdentifier & {
   activity: number;
   isPresent: boolean;
   onChange: PresenceAndActivityChangeHandler;
+  editable: boolean;
 };
 
 export class PresenceAndActivityControls extends React.PureComponent<
@@ -79,13 +80,17 @@ export class PresenceAndActivityControls extends React.PureComponent<
   };
 
   render() {
-    const { isPresent, activity } = this.props;
+    const { isPresent, activity, editable } = this.props;
 
     return (
       <ControlsContainer>
-        <Checkbox checked={isPresent} onChange={this.handleIsPresentChanged} />
+        <Checkbox
+          disabled={!editable}
+          checked={isPresent}
+          onChange={this.handleIsPresentChanged}
+        />
         <Input
-          disabled={!isPresent}
+          disabled={!isPresent || !editable}
           type="number"
           value={activity}
           onChange={this.handleActivityChanged}

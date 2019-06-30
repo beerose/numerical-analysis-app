@@ -4,10 +4,13 @@ import { SummaryCheckbox } from '../../../../components/SummaryCheckbox';
 
 import { PresenceTableStateConsumer } from './PresenceTableStateContext';
 
-export type AllStudentsPresenceCheckboxProps = { meetingId: number };
+export type AllStudentsPresenceCheckboxProps = {
+  meetingId: number;
+  editable: boolean;
+};
 export const AllStudentsPresenceCheckbox: React.FC<
   AllStudentsPresenceCheckboxProps
-> = ({ meetingId }) => {
+> = ({ meetingId, editable }) => {
   return (
     <PresenceTableStateConsumer>
       {({ onChange, value }) => {
@@ -36,6 +39,7 @@ export const AllStudentsPresenceCheckbox: React.FC<
               checked={presentCount}
               max={studentsCount}
               onChange={handleChange}
+              disabled={!editable}
             />
           );
         }

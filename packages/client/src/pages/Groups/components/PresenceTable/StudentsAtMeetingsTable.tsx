@@ -19,13 +19,15 @@ type Props<T extends FieldIdentifier> = {
   meetingsDetails: MeetingDetailsModel[];
   makeRenderMeetingData: (
     meetingId: MeetingId,
-    handleChange: IdentifiedChangeHandler<T>
+    handleChange: IdentifiedChangeHandler<T>,
+    editable: boolean
   ) => (
     meetingData: MeetingDetailsModel['data'],
     record: MeetingDetailsModel,
     index: number
   ) => React.ReactNode;
   handleChange: IdentifiedChangeHandler<T>;
+  editable: boolean;
 };
 
 const CenteredText = styled.div`
@@ -63,13 +65,17 @@ export class StudentsAtMeetingsTable<
         key: meetingId,
         render: this.props.makeRenderMeetingData(
           meetingId,
-          this.props.handleChange
+          this.props.handleChange,
+          this.props.editable
         ),
         title: (
           <CenteredText>
             {meetingName}
             <Em>{new Date(date).toLocaleDateString('pl')}</Em>
-            <AllStudentsPresenceCheckbox meetingId={meetingId} />
+            <AllStudentsPresenceCheckbox
+              meetingId={meetingId}
+              editable={this.props.editable}
+            />
           </CenteredText>
         ),
       })

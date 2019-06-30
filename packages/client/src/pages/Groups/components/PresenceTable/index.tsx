@@ -20,7 +20,8 @@ const boundActivity = (num: number) =>
 
 const makeRenderCheckboxAndInput = (
   meetingId: MeetingId,
-  handleChange: PresenceAndActivityControlsProps['onChange']
+  handleChange: PresenceAndActivityControlsProps['onChange'],
+  editable: boolean
 ) => (
   meetingData: MeetingDetailsModel['data'],
   record: MeetingDetailsModel,
@@ -28,6 +29,7 @@ const makeRenderCheckboxAndInput = (
 ) => {
   return (
     <PresenceAndActivityControls
+      editable={editable}
       meetingId={meetingId}
       studentId={record.student.id}
       onChange={handleChange}
@@ -51,6 +53,7 @@ export type PresenceTableProps = {
     meetingId: number,
     activity: number
   ) => void;
+  editable: boolean;
 };
 export class PresenceTable extends React.Component<PresenceTableProps> {
   // TODO: Move this logic into GroupApiContextProvider and remove PresenceTableContext
@@ -102,7 +105,7 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
   };
 
   render() {
-    const { meetings, meetingsDetails } = this.props;
+    const { meetings, meetingsDetails, editable } = this.props;
 
     if (!meetings || !meetingsDetails) {
       return <Spin />;
@@ -126,6 +129,7 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
             meetingsDetails={meetingsDetails}
             makeRenderMeetingData={makeRenderCheckboxAndInput}
             handleChange={this.handleChange}
+            editable={editable}
           />
         </PresenceTableStateProvider>
       </PaddingContainer>
