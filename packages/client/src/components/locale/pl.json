@@ -44,5 +44,6 @@
   "role": "Rola",
   "email": "Email",
   "firstNameAndSurname": "Imię i nazwisko",
-  "userNotFound": "Nie mogliśmy znaleźć użytkownika, którego szukasz 🔍❌"
+  "userNotFound": "Nie mogliśmy znaleźć użytkownika, którego szukasz 🔍❌",
+  "privileges": "Ustawienia edycji"
 }

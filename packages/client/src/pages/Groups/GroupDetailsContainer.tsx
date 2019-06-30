@@ -25,6 +25,7 @@ import {
   TaskSection,
   TasksSection,
 } from './sections';
+import { PrivilegesSection } from './sections/PrivilegesSection';
 import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
 
 type MenuLinkProps = {
@@ -147,13 +148,10 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
               <Icon type="line-chart" />
               {texts.grades}
             </MenuLink>
-            <Menu.Item>
-              <ShareGroupForEdit
-                currentGroup={context.currentGroup}
-                lecturers={context.lecturers}
-                actions={context.actions}
-              />
-            </Menu.Item>
+            <MenuLink to={`${matchUrl}/privileges`} key="privileges">
+              <Icon type="edit" />
+              {texts.privileges}
+            </MenuLink>
           </Menu>
           <Flex flexDirection="column" width="100%" overflow="hidden">
             <Breadcrumbs
@@ -211,6 +209,9 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
                     editable={editable}
                   />
                 )}
+              </Route>
+              <Route exact path={'/groups/:id/privileges'}>
+                <PrivilegesSection {...context} editable={editable} />
               </Route>
               <NotFoundPage />
             </Switch>

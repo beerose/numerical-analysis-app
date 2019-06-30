@@ -5,7 +5,7 @@ export const LABELS = {
   appName: 'Lagrange',
   areYouSure: 'Jesteś pewien?',
   assignment: 'Pracownia',
-  cancel: 'cofnij',
+  cancel: 'anuluj',
   classDay: 'Dzień ćwiczeń',
   classDayRequired: 'Należy podać dzień ćwiczeń',
   classTime: 'Godzina pracowni',
