@@ -14,7 +14,6 @@ import { Flex } from '../../components/Flex';
 import { isUserPrivileged } from '../../utils/isUserPrivileged';
 import { useAuthStore } from '../../AuthStore';
 
-import { ShareGroupForEdit } from './components';
 import {
   AttachedGroupsSection,
   GradesSection,
