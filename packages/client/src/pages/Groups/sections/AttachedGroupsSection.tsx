@@ -122,7 +122,10 @@ export const AttachedGroupsSection = (props: Props) => {
                 title={
                   <a
                     role="link"
-                    onClick={() => props.history.push(`/groups/${item.id}`)}
+                    onClick={() => {
+                      props.actions.cleanCurrentGroup();
+                      props.history.push(`/groups/${item.id}`);
+                    }}
                   >
                     {item.group_name}
                   </a>

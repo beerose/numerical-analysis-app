@@ -84,6 +84,10 @@ export class GroupApiProvider extends React.Component<
     this.state = state as StateValues;
   }
 
+  cleanCurrentGroup = () => {
+    this.setState({ currentGroup: undefined });
+  };
+
   createGroup = ({
     semester,
     group_name,
