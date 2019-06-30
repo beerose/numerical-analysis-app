@@ -12,7 +12,7 @@ const emptyMessage = ' ';
 const StyledDeleteIcon = styled(Icon)`
   cursor: pointer;
   position: absolute;
-  left: 500px;
+  left: 550px;
   margin-top: 10px;
   font-size: 24px;
   color: ${Colors.SemiLightGray};
@@ -32,8 +32,9 @@ const ChoosableTaskContainer = styled(Flex)`
   padding: 6px 0px 8px 6px;
   margin-bottom: 10px;
   border: 1px solid ${Colors.SemiLightGray};
-  width: 490px;
+  width: 540px;
   overflow-x: scroll;
+  max-height: 57px;
 `;
 
 export type ChoosableFormFields = {
@@ -53,7 +54,8 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
           id?: number;
           group_capacity?: number;
           max_groups?: number;
-        }>
+        }
+    >
   >([]);
   const { getFieldDecorator } = form;
 
@@ -69,6 +71,7 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
 
   const add = () => {
     setSubtasks(prev => prev.concat([{}]));
+    // tslint:disable-next-line:no-increment-decrement
     setKeys(prev => prev.concat(id++));
     window.scrollTo(0, document.body.scrollHeight);
   };
@@ -90,8 +93,8 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
           initialValue: (subtasks[k] && subtasks[k].id) || k,
           rules: [
             {
+              message: emptyMessage,
               required: true,
-              message: ' ',
             },
           ],
         })(<StyledInput type="number" />)}
@@ -102,8 +105,8 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
           initialValue: (subtasks[k] && subtasks[k].group_capacity) || 1,
           rules: [
             {
-              required: true,
               message: emptyMessage,
+              required: true,
             },
           ],
         })(<StyledInput type="number" />)}
@@ -114,8 +117,8 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
           initialValue: (subtasks[k] && subtasks[k].max_groups) || 1,
           rules: [
             {
-              required: true,
               message: emptyMessage,
+              required: true,
             },
           ],
         })(<StyledInput type="number" />)}
