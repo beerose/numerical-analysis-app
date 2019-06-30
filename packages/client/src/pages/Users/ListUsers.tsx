@@ -76,6 +76,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
     usersService
       .listUsers({
         currentPage,
+        limit: true,
         roles: searchRoles,
         searchParam: searchValue,
       })

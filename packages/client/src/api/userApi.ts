@@ -17,10 +17,12 @@ export const listUsers = async ({
   searchParam,
   roles,
   currentPage = 1,
+  limit,
 }: {
   searchParam?: string;
   roles?: string[] | string;
   currentPage?: number;
+  limit?: boolean;
 }): Promise<{ users: UserDTO[]; total: string }> => {
   const options: RequestInit = {
     method: 'GET',
@@ -28,8 +30,8 @@ export const listUsers = async ({
 
   const queryParams = qs.stringify({
     roles,
-    limit: LIMIT,
-    offset: (currentPage - 1) * LIMIT,
+    limit: limit ? LIMIT : undefined,
+    offset: limit ? (currentPage - 1) * LIMIT : undefined,
     search_param: searchParam,
   });
 
