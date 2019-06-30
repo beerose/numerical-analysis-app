@@ -1,9 +1,11 @@
 import { Button, Icon, Popover, Spin, Tooltip } from 'antd';
-import { UserDTO } from 'common';
+import { UserDTO, UserRole } from 'common';
 import React, { useEffect, useState } from 'react';
 
 import { Flex } from '../../../components';
 import { showMessage } from '../../../utils';
+import { isAlreadyPrivilegedToEdit } from '../../../utils/isPrivilegedToEdit';
+import { useAuthStore } from '../../../AuthStore';
 import { GroupApiContextState } from '../GroupApiContext';
 
 import { SelectLecturer } from './SelectLecturer';
@@ -46,6 +48,7 @@ export const ShareGroupForEdit = ({
 }: ShareGroupForEditProps) => {
   const [formVisible, setFormVisible] = useState(false);
   const [choosableLecturers, setChoosableLecturers] = useState<UserDTO[]>([]);
+  const activeUserId = useAuthStore(s => s.user && s.user.id);
 
   useEffect(() => {
     if (!lecturers) {
@@ -53,11 +56,9 @@ export const ShareGroupForEdit = ({
         setChoosableLecturers(
           res.filter(l => {
             return (
-              !l.privileges ||
-              !l.privileges.groups ||
-              (currentGroup && !l.privileges.groups[currentGroup.id]) ||
-              (currentGroup &&
-                l.privileges.groups[currentGroup.id].length === 0)
+              l.id !== activeUserId &&
+              l.user_role !== UserRole.Admin &&
+              !isAlreadyPrivilegedToEdit(l, currentGroup && currentGroup.id)
             );
           })
         );
