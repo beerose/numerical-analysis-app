@@ -24,7 +24,13 @@ const conteinerStyles = css`
   padding: ${theme.Padding.Standard};
 `;
 
-const LecturerItem = ({ u }: { u: UserDTO }) => (
+const LecturerItem = ({
+  u,
+  onDelete,
+}: {
+  u: UserDTO;
+  onDelete: () => void;
+}) => (
   <span
     key={u.id}
     css={css`
@@ -33,23 +39,26 @@ const LecturerItem = ({ u }: { u: UserDTO }) => (
       padding: 3px 0;
     `}
   >
-    <Popconfirm
-      title={LABELS.areYouSure}
-      cancelText={LABELS.cancel}
-      okText={LABELS.delete}
-    >
-      <Icon
-        type="close-circle"
-        css={css`
-          padding: 5px;
-          cursor: pointer;
-          * {
-            fill: ${Colors.Red};
-          }
-        `}
-      />
-    </Popconfirm>
     <Link to={`/users/${u.id}`}>{u.user_name}</Link>
+    {u.user_role !== UserRole.Admin && (
+      <Popconfirm
+        title={LABELS.areYouSure}
+        cancelText={LABELS.cancel}
+        okText={LABELS.delete}
+        onConfirm={onDelete}
+      >
+        <Icon
+          type="close-circle"
+          css={css`
+            padding: 5px;
+            cursor: pointer;
+            * {
+              fill: ${Colors.Red};
+            }
+          `}
+        />
+      </Popconfirm>
+    )}
   </span>
 );
 
@@ -105,6 +114,13 @@ export const PrivilegesSection = (props: Props) => {
     });
   };
 
+  const handleUnshare = (userId: UserDTO['id']) => {
+    props.actions.unshareForEdit(userId).then(res => {
+      showMessage(res);
+      updateLecturers();
+    });
+  };
+
   return (
     <Flex css={conteinerStyles} flexDirection="column">
       <span>
@@ -129,7 +145,13 @@ export const PrivilegesSection = (props: Props) => {
       <Flex flexDirection="column">
         <Title>Osoby, które mają dostęp do edycji grupy:</Title>
         {privilegedUsers &&
-          privilegedUsers.map(u => <LecturerItem key={u.id} u={u} />)}
+          privilegedUsers.map(u => (
+            <LecturerItem
+              key={u.id}
+              u={u}
+              onDelete={() => handleUnshare(u.id)}
+            />
+          ))}
       </Flex>
     </Flex>
   );
