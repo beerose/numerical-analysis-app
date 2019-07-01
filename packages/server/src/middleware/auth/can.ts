@@ -1,4 +1,3 @@
-import { deepEqual } from 'assert';
 import { UserDTO, UserPrivileges, UserRole } from 'common';
 import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
@@ -10,19 +9,17 @@ export const can = (what: UserPrivileges.What, where: UserPrivileges.Where) => (
   res: Response,
   next: NextFunction
 ) => {
-  const { privileges: privilegesString, user_role } = res.locals
-    .user as UserWithStringPrivileges;
+  const { privileges, user_role } = res.locals.user as UserWithStringPrivileges;
   if (user_role === UserRole.Admin) {
     return next();
   }
   if (user_role === UserRole.SuperUser && what === 'read') {
     return next();
   }
-  if (!privilegesString) {
+  if (!privileges) {
     res.status(codes.UNAUTHORIZED).send({ error: 'Access denied' });
     return;
   }
-  const privileges: UserPrivileges = JSON.parse(privilegesString);
   if (where === 'groups') {
     const groupId = extractGroupId(req);
     if (!groupId) {
