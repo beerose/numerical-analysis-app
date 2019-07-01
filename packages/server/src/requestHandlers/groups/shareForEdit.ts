@@ -15,12 +15,6 @@ type ShareForEditRequest = PostRequest<typeof ShareForEditBodyV>;
 export const share = (req: ShareForEditRequest, res: BackendResponse) => {
   handleBadRequest(ShareForEditBodyV, req.body, res).then(() => {
     const { group_id, user_id } = req.body;
-    if (res.locals.user && res.locals.user.user_role === UserRole.Admin) {
-      res.status(codes.BAD_REQUEST).send({
-        error: apiMessages.cannotChangeAdminPrivileges,
-      });
-      return;
-    }
     db.getUserPrivileges({ userId: user_id }, (getErr, privileges) => {
       if (getErr) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({

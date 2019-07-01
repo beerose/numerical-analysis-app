@@ -15,12 +15,6 @@ type UnshareForEditRequest = PostRequest<typeof UnshareForEditBodyV>;
 export const unshare = (req: UnshareForEditRequest, res: BackendResponse) => {
   handleBadRequest(UnshareForEditBodyV, req.body, res).then(() => {
     const { group_id: groupId, user_id: userId } = req.body;
-    if (res.locals.user && res.locals.user.user_role === UserRole.Admin) {
-      res.status(codes.BAD_REQUEST).send({
-        error: apiMessages.cannotChangeAdminPrivileges,
-      });
-      return;
-    }
     adjustPrivileges.add(groupId, userId, [], err => {
       if (err) {
         res

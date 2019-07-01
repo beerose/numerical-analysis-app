@@ -85,7 +85,6 @@ export const PrivilegesSection = (props: Props) => {
       const privileged: UserDTO[] = [];
       res.map(lecturer => {
         if (
-          lecturer.id === activeUserId ||
           lecturer.user_role === UserRole.Admin ||
           isAlreadyPrivilegedToEdit(
             lecturer,
