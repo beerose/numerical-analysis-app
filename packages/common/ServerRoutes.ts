@@ -30,7 +30,9 @@ export const ServerRoutes = {
       Get: '/groups/results',
       SetFinal: '/groups/results.set',
     },
+    // tslint:disable:object-literal-sort-keys
     ShareForEdit: '/groups/shareForEdit',
+    UnshareForEdit: '/groups/unshareForEdit',
     Students: {
       AddToGroup: '/groups/students.add',
       List: '/groups/students',
