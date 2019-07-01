@@ -15,6 +15,7 @@ import * as results from './results';
 import { share } from './shareForEdit';
 import * as students from './students';
 import * as tasks from './tasks';
+import { unshare } from './unshareForEdit';
 import { update } from './update';
 import { upload } from './upload';
 
@@ -65,6 +66,12 @@ router.post(
   auth.authorize([UserRole.Admin, UserRole.SuperUser]),
   auth.can('edit', 'groups'),
   share
+);
+router.post(
+  Routes.UnshareForEdit,
+  auth.authorize([UserRole.Admin, UserRole.SuperUser]),
+  auth.can('edit', 'groups'),
+  unshare
 );
 router.get(
   Routes.GetAttached,
