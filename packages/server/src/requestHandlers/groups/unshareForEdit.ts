@@ -21,7 +21,7 @@ export const unshare = (req: UnshareForEditRequest, res: BackendResponse) => {
           .status(codes.INTERNAL_SERVER_ERROR)
           .send({ error: apiMessages.internalError });
       }
-      res.status(codes.OK).send({ error: apiMessages.groupWasUnshared });
+      res.status(codes.OK).send({ message: apiMessages.groupWasUnshared });
     });
   });
 };
