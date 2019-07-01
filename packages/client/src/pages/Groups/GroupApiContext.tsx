@@ -408,6 +408,14 @@ export class GroupApiProvider extends React.Component<
     return groupsService.shareForEdit(this.state.currentGroup.id, userId);
   };
 
+  unshareForEdit = async (userId: UserDTO['id']) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+
+    return groupsService.unshareForEdit(this.state.currentGroup.id, userId);
+  };
+
   getGroupsForStudent = (
     ...args: Parameters<typeof groupsService.getStudentGroups>
   ) => {

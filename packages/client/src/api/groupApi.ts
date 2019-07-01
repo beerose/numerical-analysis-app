@@ -404,6 +404,15 @@ export const shareForEdit = (groupId: GroupDTO['id'], userId: UserDTO['id']) =>
     method: 'POST',
   });
 
+export const unshareForEdit = (
+  groupId: GroupDTO['id'],
+  userId: UserDTO['id']
+) =>
+  authFetch(SERVER_URL + Groups.UnshareForEdit, {
+    body: JSON.stringify({ group_id: groupId, user_id: userId }),
+    method: 'POST',
+  });
+
 export const getStudentGroups = (userId: UserDTO['id']) =>
   authFetch<{ groups: GroupDTO[] }>(
     SERVER_URL + ServerRoutes.Users.Student.Groups(userId)
