@@ -41,10 +41,6 @@ const menuStyles = css`
   width: 250px;
 `;
 
-type State = {
-  editable: boolean;
-};
-
 export const GroupDetailsContainer = (props: RouteComponentProps) => {
   const context = useContext(GroupApiContext);
 
