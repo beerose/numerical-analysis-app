@@ -54,4 +54,5 @@ export const apiMessages = {
   userRemovedFromGroup: 'Student został usunięty z grupy',
   userUpdated: 'Użytkownik został poprawnie zedytowany',
   usersUploaded: 'Użytkownicy zostali dodani',
+  cannotChangeAdminPrivileges: 'Nie można zmienić uprawnień admina',
 };
