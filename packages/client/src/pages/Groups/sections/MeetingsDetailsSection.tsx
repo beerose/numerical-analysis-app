@@ -1,6 +1,10 @@
+import { Button } from 'antd';
 import { ApiResponse } from 'common';
 import * as React from 'react';
 
+import { Flex, LocaleContext, theme } from '../../../components';
+import { isSafari } from '../../../utils';
+import { meetingsDetailsToCsv } from '../../../utils/meetingsDetailsToCsv';
 import { PresenceTable } from '../components/PresenceTable';
 import { GroupApiContextState } from '../GroupApiContext';
 
@@ -37,6 +41,24 @@ export class MeetingsDetailsSections extends React.Component<Props> {
       });
   }
 
+  handleMeetingsDetailsCsvDownload() {
+    const mimeType = isSafari() ? 'application/csv' : 'text/csv';
+    const blob = new Blob(
+      [
+        meetingsDetailsToCsv(
+          this.props.meetingsDetails || [],
+          this.props.meetings || []
+        ),
+      ],
+      { type: mimeType }
+    );
+
+    saveAs(
+      blob,
+      `students-meetings-details-${this.props.currentGroup!.id}.csv`
+    );
+  }
+
   render() {
     const {
       meetings,
@@ -46,15 +68,30 @@ export class MeetingsDetailsSections extends React.Component<Props> {
     } = this.props;
 
     return (
-      <PresenceTable
-        editable={editable}
-        meetings={meetings}
-        meetingsDetails={meetingsDetails}
-        setStudentMeetingDetails={setStudentMeetingDetails}
-        setActivity={this.handleSetActivity}
-        addPresence={this.handleAddPresence}
-        deletePresence={this.handleDeletePresence}
-      />
+      <LocaleContext.Consumer>
+        {({ texts }) => (
+          <Flex flexDirection="column" padding={theme.Padding.Standard}>
+            <Button
+              type="primary"
+              icon="download"
+              onClick={() => this.handleMeetingsDetailsCsvDownload()}
+              aria-label={texts.exportCsv}
+              style={{ width: 200, marginBottom: '10px', marginLeft: 1 }}
+            >
+              {texts.exportCsv}
+            </Button>
+            <PresenceTable
+              editable={editable}
+              meetings={meetings}
+              meetingsDetails={meetingsDetails}
+              setStudentMeetingDetails={setStudentMeetingDetails}
+              setActivity={this.handleSetActivity}
+              addPresence={this.handleAddPresence}
+              deletePresence={this.handleDeletePresence}
+            />
+          </Flex>
+        )}
+      </LocaleContext.Consumer>
     );
   }
 }

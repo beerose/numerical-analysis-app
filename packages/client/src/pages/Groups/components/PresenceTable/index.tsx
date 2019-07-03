@@ -122,17 +122,15 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
     };
 
     return (
-      <PaddingContainer>
-        <PresenceTableStateProvider value={contextValue}>
-          <StudentsAtMeetingsTable
-            meetings={meetings}
-            meetingsDetails={meetingsDetails}
-            makeRenderMeetingData={makeRenderCheckboxAndInput}
-            handleChange={this.handleChange}
-            editable={editable}
-          />
-        </PresenceTableStateProvider>
-      </PaddingContainer>
+      <PresenceTableStateProvider value={contextValue}>
+        <StudentsAtMeetingsTable
+          meetings={meetings}
+          meetingsDetails={meetingsDetails}
+          makeRenderMeetingData={makeRenderCheckboxAndInput}
+          handleChange={this.handleChange}
+          editable={editable}
+        />
+      </PresenceTableStateProvider>
     );
   }
 }
