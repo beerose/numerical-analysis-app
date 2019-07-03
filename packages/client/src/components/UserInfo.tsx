@@ -12,7 +12,7 @@ export const UserInfo: React.FC<UserInfoProps> = props => {
 
   return (
     <section>
-      <Flex paddingBottom={10}>
+      <Flex paddingBottom={10} paddingTop={20}>
         <b css={{ paddingRight: 5 }}>{texts.firstNameAndSurname}:</b>{' '}
         {props.user_name}
       </Flex>
