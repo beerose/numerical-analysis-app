@@ -2,7 +2,7 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Layout } from 'antd';
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Route, RouteChildrenProps, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -60,6 +60,7 @@ const Title: React.FC = ({ children }) => (
 type Props = RouteChildrenProps;
 export const Main: React.FC<Props> = ({ history, location }) => {
   const { actions, errorMessage, user } = useAuthStore();
+  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const handleLoginSuccess = (...args: Parameters<typeof actions.login>) => {
     actions.login(...args).then(res => {

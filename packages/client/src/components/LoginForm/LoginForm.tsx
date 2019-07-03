@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Checkbox, Form, Icon, Input, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import * as React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ModalHeader } from '../../components/ModalHeader';
@@ -45,7 +45,14 @@ const LoginForm = (props: Props) => {
     errorMessage,
   } = props;
   return (
-    <Modal visible centered title={LoginModalHeader} footer={null} width={400}>
+    <Modal
+      visible
+      centered
+      title={LoginModalHeader}
+      footer={null}
+      width={400}
+      closable={false}
+    >
       <Form
         onSubmit={handleSubmit}
         css={{ padding: '0px 20px 0 20px', alignItems: 'center' }}
