@@ -1,6 +1,6 @@
 import { MeetingDetailsModel, MeetingDTO } from '../../../../dist/common';
 
-const HEADER = 'name, index, presences, activities';
+const HEADER = 'name; index; presences; activities';
 
 const renameKeys = (
   obj: Record<number, any>,
@@ -40,9 +40,9 @@ const studentMeetingDetailsToCsvRow = (
   return [
     name,
     index,
-    presences.join(),
+    presences.join(','),
     JSON.stringify(presencesAndActivities),
-  ].join(',');
+  ].join(';');
 };
 
 export const meetingsDetailsToCsv = (
