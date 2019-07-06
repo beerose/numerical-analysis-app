@@ -24,6 +24,9 @@ const StudentGroupsListItem: React.FC<StudentGroupsListItemProps> = ({
           width: 100%;
           & > a {
             color: inherit;
+            :hover {
+              text-decoration: underline;
+            }
           }
         `}
       >
