@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie';
+import * as qs from 'query-string';
 
 import { ApiResponse } from '../../../../dist/common';
 
@@ -38,7 +39,7 @@ type ApiResponse2<T> =
 
 export function authFetch2<T>(
   url: string,
-  options: RequestInit = {}
+  options: RequestInit & { query?: Record<string, unknown> } = {}
 ): Promise<ApiResponse2<T>> {
   const token = Cookies.get('token');
   if (!token) {
@@ -51,6 +52,11 @@ export function authFetch2<T>(
     'Content-Type': 'application/json',
     ...options.headers,
   };
+
+  if (options.query) {
+    // tslint:disable-next-line:no-parameter-reassignment
+    url += qs.stringify(options.query);
+  }
 
   return fetch(url, options).then(async res => {
     const json = await res.json();

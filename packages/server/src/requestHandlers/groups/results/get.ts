@@ -17,7 +17,8 @@ export const getResults = (
 ) => {
   handleBadRequest(GetResultsQueryV, req.query, res).then(query => {
     const groupId = Number(query.group_id);
-    db.getUsersResults({ groupId }, (err, tasksResults) => {
+
+    db.getUsersTaskPoints({ groupId }, (err, tasksResults) => {
       if (err) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,
@@ -34,6 +35,7 @@ export const getResults = (
           });
           return;
         }
+
         db.getUsersMeetingsPoints(
           { groupId },
           (meetingsErr, meetingsResults) => {

@@ -1,4 +1,4 @@
-import { GroupDTO, UserDTO, UserPrivileges } from 'common';
+import { GroupDTO, TaskDTO, TaskKind, UserDTO, UserPrivileges } from 'common';
 import { Omit } from 'react-router';
 import { sql } from 'tag-sql';
 
@@ -267,6 +267,7 @@ export const getUserPrivileges = (
     }
   );
 
+// student
 export const getStudentGroups = (
   { userId }: { userId: UserDTO['id'] },
   callback: QueryCallback<GroupDTO[]>
@@ -291,3 +292,41 @@ export const getStudentGroups = (
       return callback(null, res);
     }
   );
+
+export type GetStudentTasksSummary = Array<{
+  id: TaskDTO['id'];
+  name: string;
+  kind: TaskKind;
+  pts: number;
+  max_pts: number;
+  start_upload_date: Date;
+  end_upload_date: Date;
+  created_at: Date;
+  updated_at: Date;
+  data: Exclude<TaskDTO['data'], undefined>;
+}>;
+
+export const getStudentsTasks = (
+  { userId, groupId }: { userId: UserDTO['id']; groupId?: GroupDTO['id'] },
+  callback: QueryCallback<GetStudentTasksSummary>
+) =>
+  connection.query(
+    sql`
+      SELECT 
+        t.id, t.name, t.kind, 
+        (task_id * weight) AS pts, 
+        (t.max_points * weight) AS max_pts, 
+        t.start_upload_date, t.end_upload_date, 
+        t.created_at, t.updated_at, t.data 
+      FROM user_has_points
+      JOIN group_has_task
+        USING(task_id)
+      JOIN tasks t
+        ON t.id = task_id 
+      WHERE user_id = ${userId} ${
+      groupId === undefined ? sql.empty : sql`AND group_id = 12`
+    };`,
+    callback
+  );
+
+// getStudentsFutureMeetings

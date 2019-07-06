@@ -57,6 +57,10 @@ export const ServerRoutes = {
     Student: {
       Groups: (userId: UserDTO['id'] | ':id') =>
         `/users/${userId}/student.groups`,
+      Results: (userId: UserDTO['id'] | ':id') =>
+        `/users/${userId}/student.results`,
+      Tasks: (userId: UserDTO['id'] | ':id') =>
+        `/users/${userId}/student.tasks`,
     },
     Update: '/users/update',
   },

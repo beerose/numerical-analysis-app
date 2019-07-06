@@ -8,7 +8,11 @@ if (process.env.NODE_ENV !== 'production') {
     // tslint:enable:no-http-string
   };
 } else {
-  urls = {};
+  urls = {
+    SERVER_URL: process.env.SERVER_URL!,
+  };
 }
 
 export const SERVER_URL = urls.SERVER_URL;
+
+console.assert(SERVER_URL, 'SERVER_URL must be defined in process.env');

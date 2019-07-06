@@ -39,6 +39,10 @@ type StateValues = {
   currentGroup?: GroupDTO;
   currentTask?: TaskDTO;
   isLoading: boolean;
+  /**
+   * TODO: Stop using error: boolean. Wtf.
+   * Hold actual error here -- if you want a boolean, check if it's truthy
+   */
   error: boolean;
   errorMessage?: string;
   lecturers?: UserDTO[];
@@ -419,9 +423,15 @@ export class GroupApiProvider extends React.Component<
   getGroupsForStudent = (
     ...args: Parameters<typeof groupsService.getStudentGroups>
   ) => {
-    return groupsService.getStudentGroups(...args).then(({ groups }) => {
-      this.setState({ groups });
-      return groups;
+    return groupsService.getStudentGroups(...args).then(res => {
+      if ('data' in res) {
+        const { groups } = res.data;
+        this.setState({ groups });
+        return groups;
+      }
+
+      this.setState({ error: true, errorMessage: res.error_details });
+      return res;
     });
   };
 

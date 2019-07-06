@@ -24,4 +24,13 @@ router.post(Routes.Create, /*auth.authorize([UserRole.Admin]),*/ create);
 router.post(Routes.Update, auth.authorize([UserRole.Admin]), update);
 router.delete(Routes.Delete, auth.authorize([UserRole.Admin]), deleteUser);
 
-router.get(Routes.Student.Groups(':id'), student.groups);
+router.get(
+  Routes.Student.Groups(':id'),
+  auth.authorize([UserRole.Student]),
+  student.groups
+);
+router.get(
+  Routes.Student.Results(':id'),
+  auth.authorize([UserRole.Student, UserRole.SuperUser, UserRole.Admin]),
+  student.results
+);

@@ -35,8 +35,9 @@ const handleServerError = (err: any) => {
 };
 
 export const login = (email: string, password: string) => {
-  // TODO: Dlaczego nie robimy JSON.stringify({ email, password })? To jest post przecież.
+  // Dlaczego nie robimy JSON.stringify({ email, password })? To jest post przecież.
   // Te funkcje też są prawie takie same.
+  // ODPOWIEDŹ: Tak polecają ludzie na stackoverflow
 
   const data = new URLSearchParams();
   data.append('email', email);

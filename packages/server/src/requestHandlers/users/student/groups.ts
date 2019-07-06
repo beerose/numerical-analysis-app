@@ -1,33 +1,33 @@
 import { apiMessages, GroupDTO, isUserId } from 'common';
 import * as codes from 'http-status-codes';
+import * as t from 'io-ts';
+import { NumberFromString } from 'io-ts-types/lib/number/NumberFromString';
 
-import { BackendResponse, GetRequest } from '../../../lib';
+import { BackendResponse, GetRequest, handleBadRequest } from '../../../lib';
 import { db } from '../../../store';
 
-type GetStudentGroups = GetRequest<any>;
+const GetStudentGroupsParamsV = t.type({
+  id: NumberFromString,
+});
+
+type GetStudentGroups = GetRequest<t.Any, typeof GetStudentGroupsParamsV>;
 
 export const groups = (
   req: GetStudentGroups,
   res: BackendResponse<{ groups: GroupDTO[] }>
 ) => {
-  const userId = parseInt(req.params.id, 10);
-  if (!isUserId(userId)) {
-    return res.status(codes.BAD_REQUEST).send({
-      error: apiMessages.invalidRequest,
-      error_details: 'Expected path matching /users/:id/student.groups',
-    });
-  }
+  handleBadRequest(GetStudentGroupsParamsV, req.params, res).then(() => {
+    return db.getStudentGroups({ userId: req.params.id }, (dbErr, dbRes) => {
+      if (dbErr) {
+        return res.status(codes.INTERNAL_SERVER_ERROR).send({
+          error: apiMessages.internalError,
+          error_details: dbErr.message,
+        });
+      }
 
-  return db.getStudentGroups({ userId }, (dbErr, dbRes) => {
-    if (dbErr) {
-      return res.status(codes.INTERNAL_SERVER_ERROR).send({
-        error: apiMessages.internalError,
-        error_details: dbErr.message,
+      return res.status(codes.OK).send({
+        groups: dbRes,
       });
-    }
-
-    return res.status(codes.OK).send({
-      groups: dbRes,
     });
   });
 };

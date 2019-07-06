@@ -17,7 +17,7 @@ import { DeepRequired } from 'utility-types';
 import { showMessage } from '../utils/showMessage';
 
 import { SERVER_URL } from '.';
-import { authFetch } from './authFetch';
+import { authFetch, authFetch2 } from './authFetch';
 
 const { Groups, Grades } = ServerRoutes;
 
@@ -413,7 +413,19 @@ export const unshareForEdit = (
     method: 'POST',
   });
 
+/*
+ * Calls for student's part of the app
+ */
+
 export const getStudentGroups = (userId: UserDTO['id']) =>
-  authFetch<{ groups: GroupDTO[] }>(
+  authFetch2<{ groups: GroupDTO[] }>(
     SERVER_URL + ServerRoutes.Users.Student.Groups(userId)
   );
+
+export const getStudentTasksSummary = (
+  userId: UserDTO['id'],
+  groupId: GroupDTO['id']
+) =>
+  authFetch2(SERVER_URL + ServerRoutes.Users.Student.Tasks(userId), {
+    query: { groupId },
+  });

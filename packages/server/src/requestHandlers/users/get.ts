@@ -21,7 +21,7 @@ const GetUserV = t.type({
   id: NumberFromString,
 });
 
-type GetUserRequest = GetRequest<any, typeof GetUserV>;
+type GetUserRequest = GetRequest<t.Any, typeof GetUserV>;
 
 export const get = (req: GetUserRequest, res: BackendResponse<UserDTO>) => {
   handleBadRequest(GetUserV, req.params, res).then(({ id }) =>

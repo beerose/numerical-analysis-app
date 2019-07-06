@@ -1,12 +1,13 @@
 import { GroupDTO, MeetingDTO, UserDTO } from 'common';
 import { MysqlError } from 'mysql';
+import { sql } from 'tag-sql';
 
 import { connection } from '../connection';
 
 import { QueryCallback } from './QueryCallback';
 
 export const getMeetingsData = (
-  { groupId }: { groupId: GroupDTO['id'] },
+  { groupId, userId }: { groupId: GroupDTO['id']; userId?: UserDTO['id'] },
   callback: QueryCallback<
     Array<{
       id: UserDTO['id'];
@@ -17,8 +18,7 @@ export const getMeetingsData = (
   >
 ) =>
   connection.query(
-    {
-      sql: /* sql */ `
+    sql`
       SELECT
       	id,
       	user_name,
@@ -27,19 +27,12 @@ export const getMeetingsData = (
       FROM
       	users
       	LEFT JOIN user_attended_meeting ON (users.id = user_attended_meeting.user_id)
-      WHERE
-      	id IN (
-      		SELECT
-      			user_id
-      		FROM
-      			user_belongs_to_group
-      		WHERE
-      			group_id = ?)
-      	GROUP BY
-      		id;
+      WHERE ${
+        userId === undefined
+          ? sql`id IN (SELECT user_id FROM user_belongs_to_group WHERE group_id = ${groupId}) GROUP BY id`
+          : sql`id = ${userId}`
+      };
       `,
-      values: [groupId],
-    },
     (err, res) => {
       if (err) {
         return callback(err, res);
@@ -89,26 +82,23 @@ export const getUsersMeetingsPoints = (
   >
 ) =>
   connection.query(
-    {
-      sql: /* sql */ `
-        SELECT
-	        user_id,
-	        count(meeting_id) AS sum_presences,
-	        sum(points) AS activity_points
-        FROM
-        	user_attended_meeting
-        WHERE
-        	meeting_id IN (
-        		SELECT
-        			id
-        		FROM
-        			meetings
-        		WHERE
-        			group_id = ?)
-        	GROUP BY
-        		user_id;
-          `,
-      values: [groupId],
-    },
+    sql`
+      SELECT
+        user_id,
+        count(meeting_id) AS sum_presences,
+        sum(points) AS activity_points
+      FROM
+        user_attended_meeting
+      WHERE
+        meeting_id IN (
+          SELECT
+            id
+          FROM
+            meetings
+          WHERE
+            group_id = ${groupId})
+        GROUP BY
+          user_id;
+        `,
     callback
   );

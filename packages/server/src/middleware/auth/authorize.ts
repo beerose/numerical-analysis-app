@@ -17,7 +17,7 @@ const decodeJwtUserToken = (
   str: string | undefined
 ): Either<ErrorMsg, UserJwtTokenPayload> => {
   if (!str || !str.startsWith('Bearer ')) {
-    return fail('token is not jwt');
+    return fail('token is malformed or missing');
   }
 
   const token = str.substring(7, str.length);
