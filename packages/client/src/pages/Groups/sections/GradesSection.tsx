@@ -1,6 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, Select, Spin } from 'antd';
+import { SortOrder } from 'antd/lib/table';
 import {
   getGradeFromTresholds,
   Grade,
@@ -22,6 +23,8 @@ import { gradesToCsv, isSafari, usePromise } from '../../../utils';
 import { evalEquation } from '../components/evalEquation';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
 import { GroupApiContextState } from '../GroupApiContext';
+
+const sortDirections = ['descend', 'ascend'] as SortOrder[];
 
 async function computeGradeFromResults(
   studentResults: UserResultsModel,
@@ -233,10 +236,19 @@ export const GradesSection = ({
     {
       dataIndex: 'userName',
       key: 'name',
+      sorter: (a: UserResultsModel, b: UserResultsModel) =>
+        Number(a.userName < b.userName),
       title: 'Imię i nazwisko',
       width: 200,
     },
-    { title: 'Index', dataIndex: 'index', key: 'index', width: 100 },
+    {
+      dataIndex: 'index',
+      key: 'index',
+      sorter: (a: UserResultsModel, b: UserResultsModel) =>
+        Number((a.index || 0) < (b.index || 0)),
+      title: 'Index',
+      width: 100,
+    },
     {
       key: 'tasks_grade',
       render: (item: UserResultsModel) => (
@@ -245,6 +257,8 @@ export const GradesSection = ({
           <b style={{ paddingLeft: 5 }}>{item.maxTasksPoints}</b>
         </Flex>
       ),
+      sorter: (a: UserResultsModel, b: UserResultsModel) =>
+        Number(a.tasksPoints < b.tasksPoints),
       title: `Testy i zadania`,
       width: 120,
     },
@@ -252,6 +266,8 @@ export const GradesSection = ({
       align: 'center' as const,
       key: 'meetings_grade',
       render: (item: UserResultsModel) => item.presences + item.activity,
+      sorter: (a: UserResultsModel, b: UserResultsModel) =>
+        Number(a.presences + a.activity < b.presences + b.activity),
       title: 'Obecności i aktywności',
       width: 120,
     },
@@ -303,6 +319,8 @@ export const GradesSection = ({
             {studentResults.finalGrade || '-'}
           </Flex>
         ),
+      sorter: (a: UserResultsModel, b: UserResultsModel) =>
+        Number((a.finalGrade || 0) < (b.finalGrade || 0)),
       title: `Wystawiona ocena`,
       width: 150,
     },
@@ -322,6 +340,7 @@ export const GradesSection = ({
             {texts.exportCsv}
           </Button>
           <Table
+            sortDirections={sortDirections}
             rowKey={(i: UserResultsModel) => i.userId.toString()}
             columns={
               editable
