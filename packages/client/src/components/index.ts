@@ -19,3 +19,7 @@ export * from './theme';
 export * from './UserInfo';
 export * from './locale';
 export { WrappedNewPasswordForm as NewPasswordForm } from './NewPasswordForm';
+
+import { Typography } from 'antd';
+
+export const { Paragraph, Text, Title } = Typography;
