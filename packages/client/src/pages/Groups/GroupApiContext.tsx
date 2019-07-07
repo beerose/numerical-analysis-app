@@ -447,8 +447,9 @@ export class GroupApiProvider extends React.Component<
         this.setState({ error: res });
         return res;
       })
-      .catch(err => {
+      .catch((err: Error) => {
         this.setState({ error: err });
+        return err;
       });
   };
 

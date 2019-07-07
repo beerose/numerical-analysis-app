@@ -37,7 +37,9 @@ export type GroupDTO = {
   data?: GroupGradeSettings;
 };
 
-const isGroupId: Typeguard<GroupDTO['id']> = isNumber;
+export type GroupId = GroupDTO['id'];
+
+const isGroupId: Typeguard<GroupId> = isNumber;
 export const groupIdRuntimeType = new t.Type(
   'GroupDTO.id',
   isGroupId,

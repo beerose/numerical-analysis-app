@@ -32,11 +32,29 @@ export namespace ApiResponse2 {
     status: number;
   };
 
+  export namespace Error {
+    /**
+     * Turn api errors and errorlike objects (boxed message) to string
+     */
+    export function toString(err: Error | { message: string }) {
+      return 'message' in err ? err.message : JSON.stringify(err);
+    }
+  }
+
   export type Error = {
     error: string;
     error_details?: string;
     status: number;
   };
+
+  export function isError(x: unknown): x is Error {
+    return (
+      typeof x === 'object' &&
+      x !== null &&
+      typeof (x as Record<string, any>).status === 'number' &&
+      typeof (x as Record<string, any>).error === 'string'
+    );
+  }
 }
 
 export type ApiResponse2<T> = ApiResponse2.Success<T> | ApiResponse2.Error;
