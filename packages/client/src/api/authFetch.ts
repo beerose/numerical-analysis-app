@@ -26,16 +26,20 @@ export function authFetch<T = ApiResponse>(
  * New API client proposal:
  */
 
-type ApiResponse2<T> =
-  | {
-      data: T;
-      status: number;
-    }
-  | {
-      error: string;
-      error_details?: string;
-      status: number;
-    };
+export namespace ApiResponse2 {
+  export type Success<T> = {
+    data: T;
+    status: number;
+  };
+
+  export type Error = {
+    error: string;
+    error_details?: string;
+    status: number;
+  };
+}
+
+export type ApiResponse2<T> = ApiResponse2.Success<T> | ApiResponse2.Error;
 
 export function authFetch2<T>(
   url: string,

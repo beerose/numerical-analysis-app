@@ -9,6 +9,7 @@ import {
   UserResultsDTO,
   UserTaskPoints,
   UserWithGroups,
+  StudentTasksSummary,
 } from 'common';
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
@@ -426,6 +427,9 @@ export const getStudentTasksSummary = (
   userId: UserDTO['id'],
   groupId: GroupDTO['id']
 ) =>
-  authFetch2(SERVER_URL + ServerRoutes.Users.Student.Tasks(userId), {
-    query: { groupId },
-  });
+  authFetch2<{ tasksSummary: StudentTasksSummary }>(
+    SERVER_URL + ServerRoutes.Users.Student.Tasks(userId),
+    {
+      query: { groupId },
+    }
+  );

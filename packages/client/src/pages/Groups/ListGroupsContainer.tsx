@@ -112,7 +112,11 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
       />
       <Spin spinning={isLoading}>
         {error ? (
-          <ErrorMessage message={error.toString()} />
+          <ErrorMessage
+            message={
+              'message' in error ? error.toString() : JSON.stringify(error)
+            }
+          />
         ) : (
           <List
             itemLayout="horizontal"

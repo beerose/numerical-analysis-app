@@ -1,4 +1,4 @@
-import { GroupDTO, TaskDTO, TaskKind, UserDTO, UserPrivileges } from 'common';
+import { GroupDTO, StudentTasksSummary, UserDTO, UserPrivileges } from 'common';
 import { Omit } from 'react-router';
 import { sql } from 'tag-sql';
 
@@ -293,22 +293,9 @@ export const getStudentGroups = (
     }
   );
 
-export type GetStudentTasksSummary = Array<{
-  id: TaskDTO['id'];
-  name: string;
-  kind: TaskKind;
-  pts: number;
-  max_pts: number;
-  start_upload_date: Date;
-  end_upload_date: Date;
-  created_at: Date;
-  updated_at: Date;
-  data: Exclude<TaskDTO['data'], undefined>;
-}>;
-
 export const getStudentsTasks = (
   { userId, groupId }: { userId: UserDTO['id']; groupId?: GroupDTO['id'] },
-  callback: QueryCallback<GetStudentTasksSummary>
+  callback: QueryCallback<StudentTasksSummary>
 ) =>
   connection.query(
     sql`

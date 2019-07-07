@@ -1,4 +1,4 @@
-import { apiMessages, GroupDTO, isUserId } from 'common';
+import { apiMessages, StudentTasksSummary } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { NumberFromString } from 'io-ts-types/lib/number/NumberFromString';
@@ -18,7 +18,7 @@ const GetStudentTasksV = t.type({
 type GetStudentTasks = GetRequest<typeof GetStudentTasksV>;
 
 type StudentTasksResponse = {
-  tasksSummary: db.GetStudentTasksSummary;
+  tasksSummary: StudentTasksSummary;
 };
 
 export const tasksSummary = (

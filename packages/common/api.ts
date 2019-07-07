@@ -137,3 +137,16 @@ export type UserResultsModel = {
   presences: number;
   activity: number;
 };
+
+export type StudentTasksSummary = Array<{
+  id: TaskDTO['id'];
+  name: string;
+  kind: TaskKind;
+  pts: number;
+  max_pts: number;
+  start_upload_date: Date;
+  end_upload_date: Date;
+  created_at: Date;
+  updated_at: Date;
+  data: Exclude<TaskDTO['data'], undefined>;
+}>;

@@ -18,6 +18,7 @@ import React from 'react';
 import { Omit, RouteChildrenProps } from 'react-router';
 import { FunctionKeys } from 'utility-types';
 
+import { ApiResponse2 } from '../../api/authFetch';
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
 import { showMessage } from '../../utils';
@@ -40,11 +41,9 @@ type StateValues = {
   currentTask?: TaskDTO;
   isLoading: boolean;
   /**
-   * TODO: Stop using error: boolean. Wtf.
-   * Hold actual error here -- if you want a boolean, check if it's truthy
+   * TODO: Check if it works properly
    */
-  error: boolean;
-  errorMessage?: string;
+  error?: ApiResponse2.Error | Error;
   lecturers?: UserDTO[];
   currentGroupStudents?: UserWithGroups[];
 };
@@ -65,7 +64,6 @@ export const GroupApiContext = React.createContext<GroupApiContextState>({
       );
     },
   }),
-  error: false,
   isLoading: false,
 });
 
@@ -80,7 +78,6 @@ export class GroupApiProvider extends React.Component<
       actions: (getOwnFunctions(this) as unknown) as ComponentCallbacks<
         GroupApiProvider
       >,
-      error: false,
       isLoading: false,
     };
 
@@ -430,9 +427,29 @@ export class GroupApiProvider extends React.Component<
         return groups;
       }
 
-      this.setState({ error: true, errorMessage: res.error_details });
+      this.setState({ error: res });
       return res;
     });
+  };
+
+  getStudentTasksSummary = (
+    ...args: Parameters<typeof groupsService.getStudentTasksSummary>
+  ) => {
+    return groupsService
+      .getStudentTasksSummary(...args)
+      .then(res => {
+        if ('data' in res) {
+          const { tasksSummary } = res.data;
+          console.assert(tasksSummary, 'response malformed');
+          return tasksSummary;
+        }
+
+        this.setState({ error: res });
+        return res;
+      })
+      .catch(err => {
+        this.setState({ error: err });
+      });
   };
 
   render() {
