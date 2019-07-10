@@ -8,8 +8,8 @@ CREATE TABLE tasks (
   results_date        TIMESTAMP NOT NULL,
   description         TEXT,
   verify_upload       TINYINT(1) NOT NULL DEFAULT 1,
-  start_upload_date   TIMESTAMP,
-  end_upload_date     TIMESTAMP,
+  start_upload_date   TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  end_upload_date     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)
