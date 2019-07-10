@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import { Spin, Table } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import Text from 'antd/lib/typography/Text';
@@ -113,13 +113,23 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
     return <Text>{ApiResponse2.Error.toString(tasksSummary)}</Text>;
   }
 
-  console.log('🌴', tasksSummary);
-
   return (
     <Table<TaskSummary>
       dataSource={tasksSummary}
       rowKey={rowKey}
       columns={columns}
+      css={css`
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+        &:hover {
+          box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        transition: box-shadow 250ms linear;
+
+        .ant-pagination {
+          margin-right: 1em;
+        }
+      `}
       {...rest}
     />
   );
