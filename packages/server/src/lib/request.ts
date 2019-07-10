@@ -42,7 +42,7 @@ export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
     const result = decoder.decode(payload);
     result.fold(_err => {
       response.status(codes.BAD_REQUEST).send({
-        error: 'Bad request: ' + reporter(result).join('\n'),
+        error: reporter(result).join('\n'),
       });
     }, resolve);
   });

@@ -33,17 +33,37 @@ export namespace ApiResponse2 {
   };
 
   export namespace Error {
+    type ErrorLike = { message: string };
+
     /**
      * Turn api errors and errorlike objects (boxed message) to string
      */
-    export function toString(err: Error | { message: string }) {
-      return 'message' in err ? err.message : JSON.stringify(err);
+    export function toString(err: Error | ErrorLike) {
+      if ('message' in err) {
+        return err.message;
+      }
+
+      if (process.env.NODE_ENV === 'development') {
+        return JSON.stringify(err, null, 2);
+      }
+
+      return `${err.status} ${err.error}`;
     }
   }
 
   export type Error = {
+    /**
+     * Error type and message.
+     */
     error: string;
+    /**
+     * Additional error details for developer eyes only.  \
+     * **Do not display this in the user interface.**
+     */
     error_details?: string;
+    /**
+     * Error HTTP status code
+     */
     status: number;
   };
 
