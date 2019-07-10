@@ -201,7 +201,9 @@ export const insertTask = (
     {
       sql: `
     INSERT INTO
-      tasks(name, description, kind, max_points, verify_upload, results_date, end_upload_date, start_upload_date, data)
+      tasks(name, description, kind, max_points,
+        verify_upload, results_date, end_upload_date,
+        start_upload_date, end_vote_date, start_vote_date, data)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
       `,
       values: [
@@ -213,6 +215,8 @@ export const insertTask = (
         task.results_date,
         task.end_upload_date,
         task.start_upload_date,
+        task.end_vote_date,
+        task.start_vote_date,
         JSON.stringify(task.data),
       ],
     },
@@ -237,6 +241,8 @@ export const updateTask = (
         results_date = ?,
         end_upload_date = ?,
         start_upload_date = ?,
+        end_vote_date = ?,
+        start_vote_date = ?,
         data = ?
       WHERE id = ?;
         `,
@@ -249,6 +255,8 @@ export const updateTask = (
         task.results_date,
         task.end_upload_date,
         task.start_upload_date,
+        task.end_vote_date,
+        task.start_vote_date,
         JSON.stringify(task.data),
         task.id,
       ],
