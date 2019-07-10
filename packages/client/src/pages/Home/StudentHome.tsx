@@ -2,8 +2,14 @@
 import { jsx } from '@emotion/core';
 import React, { useContext } from 'react';
 
-import { LocaleContext, PaddingContainer, Text } from '../../components';
+import {
+  Heading,
+  LocaleContext,
+  PaddingContainer,
+  Text,
+} from '../../components';
 import { StudentGroupsList } from '../../components/StudentGroupsList';
+import { StudentTasksTable } from '../../components/StudentTasksTable';
 import { firstWord } from '../../utils/firstWord';
 import { AuthStoreState } from '../../AuthStore';
 
@@ -22,6 +28,8 @@ export const StudentHome: React.FC<StudentHomeProps> = (
         {texts.hello} {firstWord(user.user_name)}
       </Text>
       <StudentGroupsList user={user} />
+      <Heading>{texts.yourTasks}</Heading>
+      <StudentTasksTable />
     </PaddingContainer>
   );
 };

@@ -13,11 +13,11 @@ import { useAuthStore } from '../AuthStore';
 
 type TaskSummary = StudentTasksSummary[number];
 
-export type StudentTasksListProps = TableProps<TaskSummary> & {
-  groupId: GroupDTO['id'];
+export type StudentTasksTableProps = TableProps<TaskSummary> & {
+  groupId?: GroupDTO['id'];
 };
 
-const StudentTasksList: React.FC<StudentTasksListProps> = ({
+export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
   groupId,
   ...rest
 }) => {
@@ -50,5 +50,3 @@ const StudentTasksList: React.FC<StudentTasksListProps> = ({
     />
   );
 };
-
-export default StudentTasksList;

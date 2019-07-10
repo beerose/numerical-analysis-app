@@ -34,3 +34,8 @@ router.get(
   auth.authorize([UserRole.Student, UserRole.SuperUser, UserRole.Admin]),
   student.results
 );
+router.get(
+  Routes.Student.Tasks(':id'),
+  auth.authorize([UserRole.Student, UserRole.SuperUser, UserRole.Admin]),
+  student.tasksSummary
+);

@@ -9,6 +9,9 @@ import { GroupsListItemDescription } from '../pages/Groups/components/GroupsList
 import { GroupApiContext } from '../pages/Groups/GroupApiContext';
 import { usePromise } from '../utils';
 
+import { Heading } from '.';
+import { LocaleContext } from './locale';
+
 type StudentGroupsListItemProps = { group: GroupDTO };
 const StudentGroupsListItem: React.FC<StudentGroupsListItemProps> = ({
   group,
@@ -50,6 +53,7 @@ export const StudentGroupsList: React.FC<StudentGroupsListProps> = ({
   const {
     actions: { getGroupsForStudent },
   } = useContext(GroupApiContext);
+  const { texts } = useContext(LocaleContext);
 
   const groups = usePromise(
     () => getGroupsForStudent(user!.id!).catch((error: Error) => ({ error })),
@@ -63,13 +67,7 @@ export const StudentGroupsList: React.FC<StudentGroupsListProps> = ({
 
   return (
     <section>
-      <h1
-        css={css`
-          font-size: 2em;
-        `}
-      >
-        Twoje grupy
-      </h1>
+      <Heading>{texts.yourGroups}</Heading>
       <List
         loading={groups === 'LOADING'}
         dataSource={Array.isArray(groups) ? groups : []}

@@ -45,5 +45,7 @@
   "email": "Email",
   "firstNameAndSurname": "Imię i nazwisko",
   "userNotFound": "Nie mogliśmy znaleźć użytkownika, którego szukasz 🔍❌",
-  "privileges": "Ustawienia edycji"
+  "privileges": "Ustawienia edycji",
+  "yourGroups": "Twoje grupy",
+  "yourTasks": "Twoje zadania"
 }

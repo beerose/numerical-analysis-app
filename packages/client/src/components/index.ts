@@ -22,4 +22,4 @@ export { WrappedNewPasswordForm as NewPasswordForm } from './NewPasswordForm';
 
 import { Typography } from 'antd';
 
-export const { Paragraph, Text, Title } = Typography;
+export const { Paragraph, Text, Title: Heading } = Typography;

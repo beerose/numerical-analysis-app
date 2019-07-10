@@ -4,12 +4,12 @@ import {
   MeetingDetailsModel,
   MeetingDTO,
   ServerRoutes,
+  StudentTasksSummary,
   TaskDTO,
   UserDTO,
   UserResultsDTO,
   UserTaskPoints,
   UserWithGroups,
-  StudentTasksSummary,
 } from 'common';
 import * as qs from 'query-string';
 import { Omit } from 'react-router';
@@ -425,7 +425,7 @@ export const getStudentGroups = (userId: UserDTO['id']) =>
 
 export const getStudentTasksSummary = (
   userId: UserDTO['id'],
-  groupId: GroupDTO['id']
+  groupId?: GroupDTO['id']
 ) =>
   authFetch2<{ tasksSummary: StudentTasksSummary }>(
     SERVER_URL + ServerRoutes.Users.Student.Tasks(userId),
