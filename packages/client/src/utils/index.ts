@@ -10,3 +10,4 @@ export * from './useToggle';
 export * from './usePromise';
 export * from './findStringifiedLowercase';
 export * from './useBoolean';
+export * from './isDateIsoString';

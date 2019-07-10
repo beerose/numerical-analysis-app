@@ -47,5 +47,13 @@
   "userNotFound": "Nie mogliśmy znaleźć użytkownika, którego szukasz 🔍❌",
   "privileges": "Ustawienia edycji",
   "yourGroups": "Twoje grupy",
-  "yourTasks": "Twoje zadania"
+  "yourTasks": "Twoje zadania",
+  "taskKind": "Rodzaj zadania",
+  "taskName": "Nazwa zadania",
+  "points": "Punkty",
+  "max": "Max",
+  "startUploadDate": "Początek oddawania zadania",
+  "endUploadDate": "Koniec oddawania zadania",
+  "updatedAt": "Zmodyfikowano",
+  "createdAt": "Dodano"
 }

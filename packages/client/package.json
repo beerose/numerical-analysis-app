@@ -20,6 +20,7 @@
     "antd": "^3.16.6",
     "babel-runtime": "^6.26.0",
     "core-js": "2.6.5",
+    "date-fns": "^2.0.0-beta.2",
     "file-saver": "^2.0.0",
     "fp-ts": "^2.0.0-rc.3",
     "lodash.frompairs": "^4.0.1",
