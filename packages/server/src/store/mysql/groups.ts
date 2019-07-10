@@ -194,7 +194,7 @@ export const deleteTaskFromGroup = (
   );
 
 export const insertTask = (
-  task: Omit<TaskDTO, 'id' | 'weight'>,
+  task: Partial<Omit<TaskDTO, 'id' | 'weight'>>,
   callback: QueryCallback
 ) =>
   connection.query(
@@ -220,7 +220,7 @@ export const insertTask = (
   );
 
 export const updateTask = (
-  task: Omit<TaskDTO, 'weight'>,
+  task: Partial<Omit<TaskDTO, 'weight'>>,
   callback: QueryCallback
 ) =>
   connection.query(

@@ -78,17 +78,20 @@ const TaskForm = (props: Props) => {
           });
         }
         props.onSubmit({
-          data: { choosable_subtasks: choosable },
-          description: values.description,
-          end_upload_date: values.end_upload_date,
+          // tslint:disable:object-literal-sort-keys
           id: values.id,
+          description: values.description,
           kind: values.kind,
           max_points: Number(values.max_points),
           name: values.task_name,
           results_date: values.results_date,
           start_upload_date: values.start_upload_date,
+          end_upload_date: values.end_upload_date,
           verify_upload: Boolean(values.verify_upload),
           weight: Number(values.weight),
+          start_vote_date: values.start_vote_date,
+          end_vote_date: values.end_vote_date,
+          data: { choosable_subtasks: choosable },
         });
       }
     );

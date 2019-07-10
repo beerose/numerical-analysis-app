@@ -10,7 +10,9 @@ const UpdateTaskBodyV = t.type({
   group_id: t.number,
 
   // tslint:disable-next-line:object-literal-sort-keys
-  end_upload_date: t.string,
+  data: t.union([t.undefined, t.any]),
+  end_upload_date: t.union([t.string, t.undefined]),
+  end_vote_date: t.union([t.string, t.undefined]),
   id: t.number,
   kind: t.union([
     t.literal(TaskKind.Assignment),
@@ -26,10 +28,10 @@ const UpdateTaskBodyV = t.type({
   max_points: t.number,
   name: t.string,
   results_date: t.union([t.string, t.undefined]),
-  start_upload_date: t.string,
+  start_upload_date: t.union([t.string, t.undefined]),
+  start_vote_date: t.union([t.string, t.undefined]),
   verify_upload: t.boolean,
   weight: t.number,
-  data: t.union([t.undefined, t.any]),
 });
 
 type UpdateTaskRequest = PostRequest<typeof UpdateTaskBodyV>;
@@ -40,16 +42,18 @@ export const updateTask = (
 ) => {
   handleBadRequest(UpdateTaskBodyV, req.body, res).then(() => {
     const task = req.body;
-    console.log({ d: task.data });
     db.updateTask(
       {
         ...task,
-        end_upload_date: new Date(task.end_upload_date),
+        end_upload_date: task.end_upload_date && new Date(task.end_upload_date),
+        end_vote_date: task.end_vote_date && new Date(task.end_vote_date),
         max_points: isNumber(task.max_points) ? Number(task.max_points) : 0,
-        results_date: new Date(
-          task.results_date ? task.results_date : task.end_upload_date
-        ),
-        start_upload_date: new Date(task.start_upload_date),
+        results_date: task.results_date
+          ? new Date(task.results_date)
+          : task.end_upload_date && new Date(task.end_upload_date),
+        start_upload_date:
+          task.start_upload_date && new Date(task.start_upload_date),
+        start_vote_date: task.start_vote_date && new Date(task.start_vote_date),
       },
       err => {
         if (err) {
