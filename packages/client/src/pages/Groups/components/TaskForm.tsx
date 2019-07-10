@@ -113,6 +113,8 @@ const TaskForm = (props: Props) => {
         props.form.setFieldsValue({
           end_upload_date: moment(task.end_upload_date),
           start_upload_date: moment(task.start_upload_date),
+          end_vote_date: moment(task.end_vote_date),
+          start_vote_date: moment(task.start_vote_date),
           verify_upload: task.verify_upload,
         });
       }
