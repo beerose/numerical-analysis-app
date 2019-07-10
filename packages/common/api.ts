@@ -110,6 +110,8 @@ export type TaskDTO = {
   verify_upload: boolean; // default true
   start_upload_date: string | Date;
   end_upload_date: string | Date; // due date of the task
+  start_vote_date: string | Date;
+  end_vote_date: string | Date;
   data?: {
     choosable_subtasks: ChoosableSubtask[];
   };

@@ -19,7 +19,7 @@ import { DeepRequired } from 'utility-types';
 import { Flex, Table, theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
-import { gradesToCsv, isSafari, usePromise } from '../../../utils';
+import { gradesToCsv, isSafari, showMessage, usePromise } from '../../../utils';
 import { evalEquation } from '../components/evalEquation';
 import { tresholdsKeys } from '../components/GradeTresholdsList';
 import { GroupApiContextState } from '../GroupApiContext';
@@ -146,7 +146,8 @@ export const GradesSection = ({
   currentGroup,
   currentGroupStudents,
   editable,
-}: Props) => {
+}: // tslint:disable-next-line:no-big-function
+Props) => {
   const [tableData, setTableData] = useState<UserResultsModel[]>([]);
   const gradeSettings = currentGroup && currentGroup.data;
 
@@ -168,20 +169,23 @@ export const GradesSection = ({
   }, [currentGroup, currentGroupStudents]);
 
   const setGrade = useCallback((studentId: UserDTO['id'], grade: Grade) => {
-    // TODO: Handle error, revert state change.
-    actions.setFinalGrade(studentId, grade);
-
-    setTableData(tData =>
-      tData.map(results => {
-        if (results.userId === studentId) {
-          return {
-            ...results,
-            finalGrade: grade,
-          };
-        }
-        return results;
-      })
-    );
+    actions.setFinalGrade(studentId, grade).then(res => {
+      if ('error' in res) {
+        showMessage(res);
+        return;
+      }
+      setTableData(tData =>
+        tData.map(results => {
+          if (results.userId === studentId) {
+            return {
+              ...results,
+              finalGrade: grade,
+            };
+          }
+          return results;
+        })
+      );
+    });
   }, []);
 
   const confirmGrade = useMemo(
@@ -277,7 +281,7 @@ export const GradesSection = ({
       render: (item: UserResultsModel) => (
         <SuggestedGrade userResults={item} currentGroup={currentGroup} />
       ),
-      title: `Proponowana ocena`,
+      title: 'Proponowana ocena',
       width: 100,
     },
     {

@@ -19,6 +19,7 @@ import {
   ChoosableFormFields,
   DynamicChoosableTasksForm,
 } from './DynamicChoosableTasksForm';
+import { StartEndDatePicker } from './StartEndDatePicker';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -183,64 +184,22 @@ const TaskForm = (props: Props) => {
       </Form.Item>
       {[TaskKind.Assignment, null].includes(taskType) && (
         <section>
-          <Form.Item
-            label={
-              <span>
-                <span
-                  css={css`
-                    color: red;
-                  `}
-                >
-                  *
-                </span>{' '}
-                Terminy oddawania zadania
-              </span>
-            }
-            {...FORM_ITEM_LAYOUT}
-            css={css`
-              padding: 0;
-              margin: 0;
-            `}
-          >
-            <Form.Item
-              {...FORM_ITEM_LAYOUT}
-              style={{ display: 'inline-block', maxWidth: '180px' }}
-            >
-              {getFieldDecorator('start_upload_date', {
-                rules: [{ required: true, message: 'pole jest wymagane' }],
-              })(
-                <DatePicker
-                  css={css`
-                    width: 180px;
-                  `}
-                />
-              )}
-            </Form.Item>
-            <span
-              style={{
-                padding: '10px',
-                textAlign: 'center',
-                width: '24px',
-              }}
-            >
-              -
-            </span>
-
-            <Form.Item
-              {...FORM_ITEM_LAYOUT}
-              style={{ display: 'inline-block' }}
-            >
-              {getFieldDecorator('end_upload_date', {
-                rules: [{ required: true, message: 'pole jest wymagane' }],
-              })(
-                <DatePicker
-                  css={css`
-                    width: 180px;
-                  `}
-                />
-              )}
-            </Form.Item>
-          </Form.Item>
+          <StartEndDatePicker
+            required
+            layout={FORM_ITEM_LAYOUT}
+            getFieldDecorator={getFieldDecorator}
+            label="Terminy oddawania zadania"
+            startKey="start_upload_date"
+            endKey="end_upload_date"
+          />
+          <StartEndDatePicker
+            required
+            layout={FORM_ITEM_LAYOUT}
+            getFieldDecorator={getFieldDecorator}
+            label="Terminy głosowania na zadanie"
+            startKey="start_vote_date"
+            endKey="end_vote_date"
+          />
           <Form.Item
             label="Weryfikacja wysyłanych pilików"
             {...FORM_ITEM_LAYOUT}
