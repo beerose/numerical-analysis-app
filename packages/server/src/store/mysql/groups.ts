@@ -204,7 +204,7 @@ export const insertTask = (
       tasks(name, description, kind, max_points,
         verify_upload, results_date, end_upload_date,
         start_upload_date, end_vote_date, start_vote_date, data)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
       `,
       values: [
         task.name,
