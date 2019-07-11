@@ -18,6 +18,9 @@ export * from './Table';
 export * from './theme';
 export * from './UserInfo';
 export * from './locale';
+export * from './StudentTasksTable';
+export * from './StudentGroupsList';
+
 export { WrappedNewPasswordForm as NewPasswordForm } from './NewPasswordForm';
 
 import { Typography } from 'antd';

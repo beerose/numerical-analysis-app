@@ -97,7 +97,7 @@ export function authFetch2<T>(
 
   if (options.query) {
     // tslint:disable-next-line:no-parameter-reassignment
-    url += qs.stringify(options.query);
+    url += '?' + qs.stringify(options.query);
   }
 
   return fetch(url, options).then(async res => {

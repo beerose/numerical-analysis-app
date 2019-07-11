@@ -11,3 +11,4 @@ export * from './usePromise';
 export * from './findStringifiedLowercase';
 export * from './useBoolean';
 export * from './isDateIsoString';
+export * from './isNumber';
