@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import { Descriptions, Spin } from 'antd';
+import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import {
@@ -9,6 +10,8 @@ import {
 } from '../../components';
 import { isNumber } from '../../utils';
 
+import { GroupApiContext } from './GroupApiContext';
+
 export type StudentGroupDetailsContainerProps = RouteComponentProps<{
   id: string;
 }>;
@@ -16,14 +19,49 @@ export type StudentGroupDetailsContainerProps = RouteComponentProps<{
 export const StudentGroupDetailsContainer: React.FC<
   StudentGroupDetailsContainerProps
 > = ({ match: { params } }) => {
+  const {
+    currentGroup,
+    actions: { getGroup },
+  } = useContext(GroupApiContext);
   const { texts } = useContext(LocaleContext);
 
   console.assert(params.id && isNumber(params.id));
 
+  useEffect(() => {
+    if (!currentGroup) {
+      getGroup();
+    }
+  }, [currentGroup]);
+
+  if (!currentGroup) {
+    return (
+      <PaddingContainer>
+        <Spin />
+      </PaddingContainer>
+    );
+  }
+
   return (
     <PaddingContainer>
-      <Heading>{texts.tasks}</Heading>
-      <StudentTasksTable groupId={Number(params.id)} />
+      <Heading>{currentGroup.group_name}</Heading>
+      <Descriptions column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}>
+        <Descriptions.Item label={texts.groupType}>
+          {currentGroup.group_type}
+        </Descriptions.Item>
+        {/* TODO? */}
+        <Descriptions.Item label={texts.lecturer}>
+          {currentGroup.lecturer_name}
+        </Descriptions.Item>
+        <Descriptions.Item label={texts.semester}>
+          {currentGroup.semester}
+        </Descriptions.Item>
+      </Descriptions>
+      TODO:
+      {JSON.stringify(currentGroup.data)}
+      <section>
+        <Heading>{texts.tasks}</Heading>
+        <StudentTasksTable groupId={Number(params.id)} />
+      </section>
     </PaddingContainer>
   );
 };
