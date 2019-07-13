@@ -64,7 +64,6 @@ export const Main: React.FC<Props> = ({ history, location }) => {
 
   const handleLoginSuccess = (...args: Parameters<typeof actions.login>) => {
     actions.login(...args).then(res => {
-      console.log({ res });
       if (!('error' in res)) {
         history.push('/');
       }
