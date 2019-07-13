@@ -29,6 +29,7 @@ type FormValues = {
 
 type Props = {
   errorMessage?: string;
+  onExit: () => void;
   // onSubmit: (email: string) => void;
 } & FormComponentProps;
 const ForgotPasswordForm = (props: Props) => {
@@ -48,7 +49,15 @@ const ForgotPasswordForm = (props: Props) => {
     errorMessage,
   } = props;
   return (
-    <Modal visible centered title={FormModalHeader} footer={null} width={400}>
+    <Modal
+      visible
+      centered
+      destroyOnClose
+      title={FormModalHeader}
+      footer={null}
+      width={400}
+      onCancel={props.onExit}
+    >
       <Form
         onSubmit={handleSubmit}
         css={{ padding: '0px 20px 0 20px', alignItems: 'center' }}

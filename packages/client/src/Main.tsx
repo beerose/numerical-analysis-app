@@ -61,7 +61,6 @@ const Title: React.FC = ({ children }) => (
 type Props = RouteChildrenProps;
 export const Main: React.FC<Props> = ({ history, location }) => {
   const { actions, errorMessage, user } = useAuthStore();
-  const [loginModalVisible, setLoginModalVisible] = useState(false);
 
   const handleLoginSuccess = (...args: Parameters<typeof actions.login>) => {
     actions.login(...args).then(res => {
@@ -106,7 +105,10 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                     </Route>
                     <Route path="/forgot-password">
                       <Welcome />
-                      <ForgotPasswordForm errorMessage={errorMessage} />
+                      <ForgotPasswordForm
+                        errorMessage={errorMessage}
+                        onExit={() => history.push('/')}
+                      />
                     </Route>
                     <Route>
                       <Welcome />
