@@ -38,7 +38,8 @@ export const [useAuthStore, authStore] = createStore(set => ({
           return res;
         })
         .catch(err => {
-          set({ errorMessage: err.message });
+          console.error(err);
+          set({ errorMessage: err.error || err.message });
         });
     },
     logout: () => {
@@ -66,9 +67,10 @@ export const [useAuthStore, authStore] = createStore(set => ({
 
           return res;
         })
-        .catch((err: Error) => {
-          set({ errorMessage: err.message });
-          return { error: Error };
+        .catch(err => {
+          console.error(err);
+          set({ errorMessage: err.error || err.message });
+          return { err };
         });
     },
   },
