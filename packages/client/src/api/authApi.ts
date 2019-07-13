@@ -49,8 +49,16 @@ export const login = (email: string, password: string) => {
     },
     method: 'POST',
   })
-    .then(response => response.json())
-    .then(handleResponse)
+    .then(async res => {
+      const json = await res.json();
+      return json.error
+        ? {
+            error: json.error,
+            error_details: json.error_details,
+            status: res.status,
+          }
+        : { ...json };
+    })
     .catch(handleServerError);
 };
 

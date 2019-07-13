@@ -67,10 +67,10 @@ export const [useAuthStore, authStore] = createStore(set => ({
 
           return res;
         })
-        .catch(err => {
-          console.error(err);
-          set({ errorMessage: err.error || err.message });
-          return { err };
+        .catch(res => {
+          console.error({ error: res.error });
+          set({ errorMessage: res.error || res.message });
+          return { error: res.error };
         });
     },
   },
