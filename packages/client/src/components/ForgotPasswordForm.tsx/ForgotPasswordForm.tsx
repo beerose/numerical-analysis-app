@@ -11,7 +11,9 @@ import { Colors, LABELS } from '../../utils';
 
 const FormItem = Form.Item;
 
-const LoginModalHeader = <ModalHeader title={LABELS.appName} />;
+const FormModalHeader = (
+  <ModalHeader title="Na Twój email zostanie wysłany link, pozwalający zresetować hasło." />
+);
 
 const FormError = styled.div`
   text-align: center;
@@ -27,16 +29,16 @@ type FormValues = {
 
 type Props = {
   errorMessage?: string;
-  onSubmit: (username: string, password: string, remember: boolean) => void;
+  // onSubmit: (email: string) => void;
 } & FormComponentProps;
-const LoginForm = (props: Props) => {
+const ForgotPasswordForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     props.form.validateFields((err, values: FormValues) => {
       if (err) {
         return;
       }
-      props.onSubmit(values.email, values.password, values.remember);
+      props.onSubmit(values.email);
     });
   };
 
@@ -48,7 +50,7 @@ const LoginForm = (props: Props) => {
     <Modal
       visible
       centered
-      title={LoginModalHeader}
+      title={FormModalHeader}
       footer={null}
       width={400}
       closable={false}
@@ -70,38 +72,18 @@ const LoginForm = (props: Props) => {
             />
           )}
         </FormItem>
-        <FormItem validateStatus={errorMessage ? 'error' : 'validating'}>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: LABELS.passwordRequired }],
-          })(
-            <Input
-              prefix={
-                <Icon type="lock" css={{ color: Colors.SemiLightGray }} />
-              }
-              type="password"
-              placeholder={LABELS.password}
-            />
-          )}
-        </FormItem>
-        <FormItem>
-          {getFieldDecorator('remember', {
-            initialValue: true,
-            valuePropName: 'checked',
-          })(<Checkbox>{LABELS.rememberMe}</Checkbox>)}
-          <Link to="/forgot-password" css={{ float: 'right' }}>
-            {LABELS.forgotPassword}
-          </Link>
-          <Button
-            type="primary"
-            htmlType="submit"
-            css={{ width: '100%', marginTop: '20px' }}
-          >
-            {LABELS.logIn}
-          </Button>
-        </FormItem>
+        <Button
+          type="primary"
+          htmlType="submit"
+          css={{ width: '100%', marginTop: '10px' }}
+        >
+          Wyślij
+        </Button>
       </Form>
     </Modal>
   );
 };
 
-export const WrappedLoginForm = Form.create<Props>()(LoginForm);
+export const WrappedForgotPasswordForm = Form.create<Props>()(
+  ForgotPasswordForm
+);

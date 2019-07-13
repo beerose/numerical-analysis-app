@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { ErrorBoundary, LoginForm, MainMenu, NewAccount } from './components';
 import { LocaleContextStatefulProvider } from './components/locale';
+import { ForgotPasswordForm } from './components/ForgotPasswordForm.tsx';
 import { VisibleForRoles } from './components/VisibleForRoles';
 import { Groups, Home, NotFoundPage, Users, Welcome } from './pages';
 import { GroupApiProvider } from './pages/Groups/GroupApiContext';
@@ -103,7 +104,12 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                         errorMessage={errorMessage}
                       />
                     </Route>
+                    <Route path="/forgot-password">
+                      <Welcome />
+                      <ForgotPasswordForm errorMessage={errorMessage} />
+                    </Route>
                     <Route>
+                      <Welcome />
                       <LoginForm
                         onSubmit={handleLoginSuccess}
                         errorMessage={errorMessage}
