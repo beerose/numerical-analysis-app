@@ -28,6 +28,7 @@ type FormValues = {
 type Props = {
   errorMessage?: string;
   onSubmit: (username: string, password: string, remember: boolean) => void;
+  onExit: () => void;
 } & FormComponentProps;
 const LoginForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,10 +49,11 @@ const LoginForm = (props: Props) => {
     <Modal
       visible
       centered
+      destroyOnClose
+      onCancel={props.onExit}
       title={LoginModalHeader}
       footer={null}
       width={400}
-      closable={false}
     >
       <Form
         onSubmit={handleSubmit}

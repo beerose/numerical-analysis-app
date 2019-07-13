@@ -101,6 +101,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                       <LoginForm
                         onSubmit={handleLoginSuccess}
                         errorMessage={errorMessage}
+                        onExit={() => history.push('/')}
                       />
                     </Route>
                     <Route path="/forgot-password">
