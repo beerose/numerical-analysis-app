@@ -96,14 +96,6 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                 ) : (
                   <Switch>
                     <Route exact path="/" component={Welcome} />
-                    <Route path="/login">
-                      <Welcome />
-                      <LoginForm
-                        onSubmit={handleLoginSuccess}
-                        errorMessage={errorMessage}
-                        onExit={() => history.push('/')}
-                      />
-                    </Route>
                     <Route path="/forgot-password">
                       <Welcome />
                       <ForgotPasswordForm
@@ -114,6 +106,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                     <Route>
                       <Welcome />
                       <LoginForm
+                        onExit={() => history.push('/')}
                         onSubmit={handleLoginSuccess}
                         errorMessage={errorMessage}
                       />
