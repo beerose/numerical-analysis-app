@@ -6,4 +6,6 @@ const Header = styled('header')`
   text-align: center;
 `;
 
-export const ModalHeader = ({ title }: { title: string }) => <Header>{title}</Header>;
+export const ModalHeader = ({ title }: { title: string | React.ReactNode }) => (
+  <Header>{title}</Header>
+);

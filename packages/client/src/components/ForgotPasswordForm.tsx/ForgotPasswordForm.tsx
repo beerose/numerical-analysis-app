@@ -12,7 +12,7 @@ import { Colors, LABELS } from '../../utils';
 const FormItem = Form.Item;
 
 const FormModalHeader = (
-  <ModalHeader title="Na Twój email zostanie wysłany link, pozwalający zresetować hasło." />
+  <ModalHeader title="Na Twój email zostanie wysłany link pozwalający zresetować hasło" />
 );
 
 const FormError = styled.div`
@@ -34,11 +34,12 @@ type Props = {
 const ForgotPasswordForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    props.form.validateFields((err, values: FormValues) => {
+    props.form.validateFields((err, _values: FormValues) => {
       if (err) {
         return;
       }
-      props.onSubmit(values.email);
+      // tslint:disable-next-line:no-commented-code
+      //  props.onSubmit(values.email);
     });
   };
 
@@ -47,14 +48,7 @@ const ForgotPasswordForm = (props: Props) => {
     errorMessage,
   } = props;
   return (
-    <Modal
-      visible
-      centered
-      title={FormModalHeader}
-      footer={null}
-      width={400}
-      closable={false}
-    >
+    <Modal visible centered title={FormModalHeader} footer={null} width={400}>
       <Form
         onSubmit={handleSubmit}
         css={{ padding: '0px 20px 0 20px', alignItems: 'center' }}
