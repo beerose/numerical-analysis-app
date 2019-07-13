@@ -29,7 +29,7 @@ const handleResponse = (response: ApiResponse | AuthResponse) => {
 
 const handleServerError = (err: any) => {
   if (!err.response) {
-    return { error: JSON.stringify(err) };
+    return { error: err instanceof Error ? err : JSON.stringify(err) };
   }
   return { error: err.response.data.message };
 };

@@ -26,6 +26,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
       authService
         .newAccount(token, password)
         .then(res => {
+          console.log({ res });
           if ('error' in res) {
             throw new Error(res.error);
           }
@@ -68,7 +69,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
           return res;
         })
         .catch(res => {
-          console.error({ error: res.error });
+          console.error(res);
           set({ errorMessage: res.error || res.message });
           return { error: res.error };
         });
