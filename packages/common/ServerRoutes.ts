@@ -5,6 +5,7 @@ export const ServerRoutes = {
     ChangePassword: '/accounts/change_password',
     Login: '/accounts/login',
     New: '/accounts/new',
+    ResetPassword: '/accounts/reset_password',
   },
   Files: '/files', // Uses many HTTP methods
   Grades: '/grades',
