@@ -4,7 +4,6 @@ import * as t from 'io-ts';
 
 import {
   BackendResponse,
-  GetRequest,
   handleBadRequest,
   PostRequest,
   sendRegistrationLink as sendStudentActivationLink,

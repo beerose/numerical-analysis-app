@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { Button, Checkbox, Form, Icon, Input, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import { ModalHeader } from '../../components/ModalHeader';
 import { Colors, LABELS } from '../../utils';
@@ -30,17 +29,16 @@ type FormValues = {
 type Props = {
   errorMessage?: string;
   onExit: () => void;
-  // onSubmit: (email: string) => void;
+  onSubmit: (email: string) => void;
 } & FormComponentProps;
 const ForgotPasswordForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    props.form.validateFields((err, _values: FormValues) => {
+    props.form.validateFields((err, values: FormValues) => {
       if (err) {
         return;
       }
-      // tslint:disable-next-line:no-commented-code
-      //  props.onSubmit(values.email);
+      props.onSubmit(values.email);
     });
   };
 
