@@ -101,13 +101,19 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                       <ForgotPasswordForm
                         onSubmit={actions.resetPassword}
                         errorMessage={errorMessage}
-                        onExit={() => history.push('/')}
+                        onExit={() => {
+                          actions.resetError();
+                          history.push('/');
+                        }}
                       />
                     </Route>
                     <Route>
                       <Welcome />
                       <LoginForm
-                        onExit={() => history.push('/')}
+                        onExit={() => {
+                          actions.resetError();
+                          history.push('/');
+                        }}
                         onSubmit={handleLoginSuccess}
                         errorMessage={errorMessage}
                       />

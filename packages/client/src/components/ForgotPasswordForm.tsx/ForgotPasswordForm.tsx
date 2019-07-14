@@ -7,6 +7,7 @@ import React from 'react';
 
 import { ModalHeader } from '../../components/ModalHeader';
 import { Colors, LABELS } from '../../utils';
+import { AuthStoreState } from '../../AuthStore';
 
 const FormItem = Form.Item;
 
@@ -29,7 +30,7 @@ type FormValues = {
 type Props = {
   errorMessage?: string;
   onExit: () => void;
-  onSubmit: (email: string) => void;
+  onSubmit: AuthStoreState['actions']['resetPassword'];
 } & FormComponentProps;
 const ForgotPasswordForm = (props: Props) => {
   const handleSubmit = (e: React.FormEvent) => {

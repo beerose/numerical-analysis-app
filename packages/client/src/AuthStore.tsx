@@ -4,6 +4,7 @@ import createStore from 'zustand';
 
 import * as authService from './api/authApi';
 import { userInCookies } from './userInCookies';
+import { showMessage } from './utils';
 import * as zustandDevtools from './utils/zustandDevtools';
 
 const hoursFromNow = (expirationHours: number) => {
@@ -21,6 +22,9 @@ export const [useAuthStore, authStore] = createStore(set => ({
   user: undefined as UserDTO | undefined,
   ...userInCookies.get(),
   actions: {
+    resetError: () => {
+      set({ errorMessage: null });
+    },
     changePassword: authService.changePassword,
     createNewAccount: (token: string, password: string) => {
       authService
@@ -55,6 +59,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
             throw new Error(res.error);
           }
           set({ errorMessage: '' });
+          showMessage(res);
           return res;
         })
         .catch(res => {
