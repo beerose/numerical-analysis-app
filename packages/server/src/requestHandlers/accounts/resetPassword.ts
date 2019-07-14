@@ -4,8 +4,8 @@ import * as t from 'io-ts';
 
 import {
   BackendResponse,
-  GetRequest,
   handleBadRequest,
+  PostRequest,
   sendResetPasswordLink,
 } from '../../lib';
 import { db } from '../../store';
@@ -14,7 +14,7 @@ const ResetPasswordBodyV = t.type({
   email: t.string,
 });
 
-type ResetPasswordRequest = GetRequest<typeof ResetPasswordBodyV>;
+type ResetPasswordRequest = PostRequest<typeof ResetPasswordBodyV>;
 
 export const resetPassword = (
   req: ResetPasswordRequest,
@@ -39,7 +39,16 @@ export const resetPassword = (
         return;
       }
 
-      sendResetPasswordLink(user);
+      sendResetPasswordLink(user, emailErr => {
+        if (emailErr) {
+          console.error(emailErr);
+          res.status(codes.INTERNAL_SERVER_ERROR).send({
+            error: 'Wystąpił problem z wysłaniem maila. Spróbuj ponownie',
+          });
+          return;
+        }
+        res.status(codes.OK).send({ message: 'Email został wysłany' });
+      });
     });
   });
 };

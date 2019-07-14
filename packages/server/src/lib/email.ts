@@ -29,7 +29,7 @@ export const email = {
   },
 };
 
-const DEVELOPMENT_MAIL_REGEX = /^(hasparus|ola.zxcvbnm)\+\w+@gmail\.com/;
+const DEVELOPMENT_MAIL_REGEX = /(hasparus)|(ola.zxcvbnm)@gmail\.com/;
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:1234';
 
 export const sendRegistrationLink = (user: Omit<UserDTO, 'id'>) => {
@@ -65,12 +65,16 @@ export const sendRegistrationLink = (user: Omit<UserDTO, 'id'>) => {
   );
 };
 
-export const sendResetPasswordLink = (user: Omit<UserDTO, 'id'>) => {
+export const sendResetPasswordLink = (
+  user: Omit<UserDTO, 'id'>,
+  callback: (err: Error | null, info: any) => void
+) => {
   if (
     process.env.NODE_ENV !== 'production' &&
     !user.email.match(DEVELOPMENT_MAIL_REGEX)
   ) {
     // We don't want to send emails to some poor students we ended up having addresses to.
+    callback(null, 'Email was not send -- development environment.');
     return;
   }
 
@@ -96,7 +100,7 @@ export const sendResetPasswordLink = (user: Omit<UserDTO, 'id'>) => {
       subject: 'Reset hasła w aplikacji Lagrange',
       to: user.email,
     },
-    logError
+    callback
   );
 };
 
