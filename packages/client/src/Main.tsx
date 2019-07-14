@@ -99,6 +99,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                     <Route path="/forgot-password">
                       <Welcome />
                       <ForgotPasswordForm
+                        onSubmit={actions.resetPassword}
                         errorMessage={errorMessage}
                         onExit={() => history.push('/')}
                       />

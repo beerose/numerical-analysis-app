@@ -45,6 +45,7 @@ export const login = (email: string, password: string) => {
   return fetch(SERVER_URL + Accounts.Login, {
     body: data.toString(),
     headers: {
+      // tslint:disable-next-line:no-duplicate-string
       'Content-Type': 'application/x-www-form-urlencoded',
     },
     method: 'POST',
@@ -84,3 +85,15 @@ export const changePassword = (newPassword: string) => {
     method: 'POST',
   });
 };
+
+export const resetPassword = (email: UserDTO['email']) =>
+  fetch(SERVER_URL + Accounts.ResetPassword, {
+    body: JSON.stringify({ email }),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+  })
+    .then(response => response.json())
+    .catch(handleServerError);

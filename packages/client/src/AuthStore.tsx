@@ -47,6 +47,21 @@ export const [useAuthStore, authStore] = createStore(set => ({
 
       set({ user: undefined });
     },
+    resetPassword: (email: string) => {
+      return authService
+        .resetPassword(email)
+        .then(res => {
+          if ('error' in res) {
+            throw new Error(res.error);
+          }
+          set({ errorMessage: '' });
+          return res;
+        })
+        .catch(res => {
+          set({ errorMessage: res.error || res.message });
+          return { error: res.error };
+        });
+    },
     login: (email: string, password: string, remember: boolean) => {
       return authService
         .login(email, password)
