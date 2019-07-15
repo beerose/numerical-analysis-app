@@ -109,9 +109,11 @@ export const PrivilegesSection = (props: Props) => {
   };
 
   return (
-    <Flex padding={theme.Padding.Standard} flexDirection="column">
+    <Flex padding={theme.Padding.Standard} flexDirection="column" as="section">
       <span>
-        <Title>Udostępnij grupę nowemu użytkownikowi: </Title>
+        <Title css={{ display: 'block' }}>
+          Udostępnij grupę nowemu użytkownikowi:{' '}
+        </Title>
         <SelectLecturer
           lecturers={choosableUsers || []}
           onChange={v => setSelectedUser(Number(v))}
@@ -130,7 +132,9 @@ export const PrivilegesSection = (props: Props) => {
       </span>
       <Divider />
       <Flex flexDirection="column">
-        <Title>Osoby, które mają dostęp do edycji grupy:</Title>
+        <Title css={{ display: 'block' }}>
+          Osoby, które mają dostęp do edycji grupy:
+        </Title>
         {privilegedUsers &&
           privilegedUsers.map(u => (
             <LecturerItem
