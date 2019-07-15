@@ -1,9 +1,13 @@
-import { apiMessages, GroupDTO } from 'common';
+import { apiMessages, GroupDTO, UserRole } from 'common';
 import codes from 'http-status-codes';
 import * as t from 'io-ts';
+import { promisify } from 'util';
 
 import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
 import { db } from '../../store';
+import { listUsersWithGroup } from '../../store/mysql';
+
+const listStudents = promisify(listUsersWithGroup);
 
 const GetGroupQueryV = t.type({
   group_id: t.string,
@@ -15,8 +19,20 @@ export const getGroup = (
   req: GetGroupRequest,
   res: BackendResponse<GroupDTO>
 ) => {
-  handleBadRequest(GetGroupQueryV, req.query, res).then(query => {
-    db.getGroup({ groupId: Number(query.group_id) }, (err, results) => {
+  handleBadRequest(GetGroupQueryV, req.query, res).then(async query => {
+    const groupId = Number(query.group_id);
+
+    console.log('😀😀😀😀😀', res.locals.user);
+    if (res.locals.user!.user_role === UserRole.Student) {
+      const students = await listStudents(groupId);
+      if (!students.find(s => s.id === res.locals.user!.id)) {
+        return res.status(codes.FORBIDDEN).send({
+          error: "group not found or student doesn't belong to the group",
+        });
+      }
+    }
+
+    return db.getGroup({ groupId }, (err, results) => {
       if (err) {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,

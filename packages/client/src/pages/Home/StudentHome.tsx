@@ -1,5 +1,6 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
+import { Divider } from 'antd';
 import React, { useContext } from 'react';
 
 import {
@@ -28,6 +29,7 @@ export const StudentHome: React.FC<StudentHomeProps> = (
         {texts.hello} {firstWord(user.user_name)}
       </Text>
       <StudentGroupsList user={user} />
+      <Divider />
       <Heading>{texts.yourTasks}</Heading>
       <StudentTasksTable />
     </PaddingContainer>

@@ -1,3 +1,3 @@
-export function isNumber(x: unknown): x is number {
+export function isNumberOrNumberString(x: unknown): boolean {
   return !Number.isNaN(Number(x));
 }
