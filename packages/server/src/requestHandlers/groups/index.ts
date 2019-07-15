@@ -97,7 +97,7 @@ router.get(
   Routes.Students.List,
   auth.authorize([UserRole.Admin, UserRole.SuperUser]),
   auth.can('read', 'groups'),
-  students.listStudentsWithGroups
+  students.listStudentsWithinGroup
 );
 router.post(
   Routes.Students.AddToGroup,

@@ -8,7 +8,7 @@ import {
   PaddingContainer,
   StudentTasksTable,
 } from '../../components';
-import { isNumber } from '../../utils';
+import { isNumberOrNumberString } from '../../utils';
 
 import { GroupApiContext } from './GroupApiContext';
 
@@ -18,18 +18,22 @@ export type StudentGroupDetailsContainerProps = RouteComponentProps<{
 
 export const StudentGroupDetailsContainer: React.FC<
   StudentGroupDetailsContainerProps
-> = ({ match: { params } }) => {
+> = ({
+  match: {
+    params: { id: groupId },
+  },
+}) => {
   const {
     currentGroup,
     actions: { getGroup },
   } = useContext(GroupApiContext);
   const { texts } = useContext(LocaleContext);
 
-  console.assert(params.id && isNumber(params.id));
+  console.assert(groupId && isNumberOrNumberString(groupId));
 
   useEffect(() => {
     if (!currentGroup) {
-      getGroup();
+      getGroup(Number(groupId));
     }
   }, [currentGroup]);
 

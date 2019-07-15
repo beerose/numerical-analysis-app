@@ -136,9 +136,7 @@ export class GroupApiProvider extends React.Component<
       showMessage(res);
       this.props.history.push('/groups/');
     }
-    this.setState({
-      currentGroup: res,
-    });
+    this.setState({ currentGroup: res });
     return res;
   };
 
@@ -236,6 +234,11 @@ export class GroupApiProvider extends React.Component<
       throw new Error(noGroupError);
     }
     this.setState({ isLoading: true });
+
+    /**
+     * TODO: Stop sending all students with groups
+     * Stop filtering here
+     */
     return groupsService.listStudentsWithGroup().then(res => {
       this.setState({
         currentGroupStudents: res.students.filter(

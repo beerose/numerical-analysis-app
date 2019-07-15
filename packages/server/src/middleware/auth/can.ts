@@ -13,9 +13,13 @@ export const can = (what: UserPrivileges.What, where: UserPrivileges.Where) => (
   if (user_role === UserRole.Admin) {
     return next();
   }
+  /**
+   * Is `read` needed anymore?
+   */
   if (user_role === UserRole.SuperUser && what === 'read') {
     return next();
   }
+
   if (!privileges) {
     res.status(codes.UNAUTHORIZED).send({ error: 'Access denied' });
     return;

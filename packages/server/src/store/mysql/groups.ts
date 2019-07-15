@@ -91,6 +91,9 @@ export const deleteGroup = (
     callback
   );
 
+/**
+ * TODO: Get groupId in a first argument here and join using it.
+ */
 export const listUsersWithGroup = (
   callback: QueryCallback<
     Array<UserDTO & { group_ids: string; groups_grades: string }>

@@ -15,6 +15,7 @@ export const getGroup = (
   req: GetGroupRequest,
   res: BackendResponse<GroupDTO>
 ) => {
+
   handleBadRequest(GetGroupQueryV, req.query, res).then(query => {
     db.getGroup({ groupId: Number(query.group_id) }, (err, results) => {
       if (err) {
