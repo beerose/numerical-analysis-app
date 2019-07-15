@@ -51,12 +51,15 @@ export const StudentGroupsList: React.FC<StudentGroupsListProps> = ({
   user,
 }) => {
   const {
+    groups: cachedGroups,
     actions: { getGroupsForStudent },
   } = useContext(GroupApiContext);
   const { texts } = useContext(LocaleContext);
 
   const groups = usePromise(
-    () => getGroupsForStudent(user!.id!).catch((error: Error) => ({ error })),
+    async () =>
+      cachedGroups ||
+      getGroupsForStudent(user!.id!).catch((error: Error) => ({ error })),
     'LOADING',
     [user!.id]
   );

@@ -8,7 +8,7 @@ import { BackendResponse, GetRequest, handleBadRequest } from '../../../lib';
 import { db } from '../../../store';
 
 const ListStudentsWithinGroupQueryV = t.type({
-  groupId: NumberFromString,
+  group_id: NumberFromString,
 });
 
 type ListStudentsWithinGroupRequest = GetRequest<
@@ -20,7 +20,7 @@ export const listStudentsWithinGroup = (
   res: BackendResponse<{ students: UserWithGroups[] }>
 ) => {
   return handleBadRequest(ListStudentsWithinGroupQueryV, req.query, res).then(
-    ({ groupId }) => {
+    ({ group_id: groupId }) => {
       return db.listUsersWithGroup(groupId, (err, students) => {
         if (err) {
           return res.status(codes.INTERNAL_SERVER_ERROR).send({

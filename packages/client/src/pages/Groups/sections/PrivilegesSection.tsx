@@ -3,6 +3,7 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Card, Divider, Icon, Popconfirm } from 'antd';
 import { UserDTO, UserRole } from 'common';
+import partition from 'ramda/es/partition';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -18,10 +19,6 @@ const Title = styled.span`
   font-weight: 600;
   margin-bottom: 10px;
   padding-right: 10px;
-`;
-
-const conteinerStyles = css`
-  padding: ${theme.Padding.Standard};
 `;
 
 const LecturerItem = ({
@@ -66,38 +63,29 @@ type Props = GroupApiContextState & {
   editable: boolean;
 };
 export const PrivilegesSection = (props: Props) => {
-  const [choosableUsers, setChoosableUsers] = useState<UserDTO[] | null>(null);
-  const [privilegedUsers, setPrivilegedUsers] = useState<UserDTO[] | null>(
-    null
-  );
+  const [[privilegedUsers, choosableUsers], setPartitionedLecturers] = useState<
+    [UserDTO[], UserDTO[]]
+  >([[], []]);
+
   const [selectedUser, setSelectedUser] = useState<UserDTO['id'] | null>(null);
-  const activeUserId = useAuthStore(s => s.user && s.user.id);
 
   useEffect(() => {
-    if (!choosableUsers || !privilegedUsers) {
-      updateLecturers();
-    }
+    updateLecturers();
   }, [props.lecturers]);
 
   const updateLecturers = () => {
-    props.actions.listLecturers().then(res => {
-      const choosable: UserDTO[] = [];
-      const privileged: UserDTO[] = [];
-      res.map(lecturer => {
-        if (
+    props.actions.listLecturers().then(lecturers => {
+      const canEdit = (lecturer: UserDTO) => {
+        return (
           lecturer.user_role === UserRole.Admin ||
           isAlreadyPrivilegedToEdit(
             lecturer,
             props.currentGroup && props.currentGroup.id
           )
-        ) {
-          privileged.push(lecturer);
-        } else {
-          choosable.push(lecturer);
-        }
-      });
-      setChoosableUsers(choosable);
-      setPrivilegedUsers(privileged);
+        );
+      };
+
+      setPartitionedLecturers(partition(canEdit, lecturers));
     });
   };
 
@@ -121,7 +109,7 @@ export const PrivilegesSection = (props: Props) => {
   };
 
   return (
-    <Flex css={conteinerStyles} flexDirection="column">
+    <Flex padding={theme.Padding.Standard} flexDirection="column">
       <span>
         <Title>Udostępnij grupę nowemu użytkownikowi: </Title>
         <SelectLecturer

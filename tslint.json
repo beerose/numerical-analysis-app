@@ -9,7 +9,8 @@
       "react-dom",
       "antd",
       "io-ts-types",
-      "io-ts"
+      "io-ts",
+      "ramda"
     ],
     "prefer-template": false,
     "no-nested-template-literals": false,

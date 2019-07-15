@@ -234,21 +234,30 @@ export class GroupApiProvider extends React.Component<
       throw new Error(noGroupError);
     }
     this.setState({ isLoading: true });
-
+    const {
+      currentGroup: { id: groupId },
+    } = this.state;
     /**
      * TODO: Stop sending all students with groups
      * Stop filtering here
      */
-    return groupsService.listStudentsWithGroup().then(res => {
+    return groupsService.listStudentsWithGroup(groupId).then(res => {
+      if (ApiResponse2.isError(res)) {
+        throw res;
+      }
+
+      const students = res.data.students;
+
       this.setState({
-        currentGroupStudents: res.students.filter(
+        currentGroupStudents: students.filter(
           s =>
             this.state.currentGroup &&
             s.group_ids.includes(this.state.currentGroup.id)
         ),
         isLoading: false,
       });
-      return res.students;
+
+      return students;
     });
   };
 
