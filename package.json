@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@hasparus/tslint-config": "hasparus/tslint-config-hasparus",
+    "io-ts-types": "^0.5.0",
     "tslint": "^5.12.0",
     "tslint-config-airbnb": "^5.8.0",
     "tslint-config-prettier": "^1.17.0",
