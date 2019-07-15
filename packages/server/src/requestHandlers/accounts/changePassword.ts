@@ -1,5 +1,4 @@
-import { compare as comparePassword } from 'bcrypt';
-import { apiMessages, UserDTO } from 'common';
+import { apiMessages } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
@@ -22,9 +21,10 @@ export const changePassword = (
     const user = res.locals.user;
 
     if (!user) {
-      res
-        .status(codes.INTERNAL_SERVER_ERROR)
-        .send({ error: apiMessages.internalError });
+      res.status(codes.INTERNAL_SERVER_ERROR).send({
+        error: apiMessages.internalError,
+        error_details: 'User not found in the database',
+      });
       return;
     }
 
