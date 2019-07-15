@@ -1,8 +1,8 @@
-import { apiMessages } from 'common';
 import { Request, Response } from 'express';
+import { fold } from 'fp-ts/lib/Either';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
-import { reporter } from 'io-ts-reporters';
+import { PathReporter } from 'io-ts/lib/PathReporter';
 
 type GetRequestValidator<
   QueryValidator extends t.Any,
@@ -40,10 +40,10 @@ export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
 ): Promise<A> {
   return new Promise(resolve => {
     const result = decoder.decode(payload);
-    result.fold(_err => {
+    fold(_err => {
       response.status(codes.BAD_REQUEST).send({
-        error: 'Bad request: ' + reporter(result).join('\n'),
+        error: 'Bad request: ' + PathReporter.report(result).join('\n'),
       });
-    }, resolve);
+    }, resolve)(result);
   });
 }

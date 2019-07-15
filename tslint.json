@@ -8,7 +8,8 @@
       "fp-ts",
       "react-dom",
       "antd",
-      "io-ts-types"
+      "io-ts-types",
+      "io-ts"
     ],
     "prefer-template": false,
     "no-nested-template-literals": false,
