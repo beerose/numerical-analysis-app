@@ -1,7 +1,7 @@
 import { apiMessages, UserDTO, UserRole } from 'common';
 import { NextFunction } from 'connect';
 import { Request, Response } from 'express';
-import { Either, left, right } from 'fp-ts/lib/Either';
+import { Either, fold, left, right } from 'fp-ts/lib/Either';
 import * as codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
 
@@ -48,7 +48,7 @@ export const authorize = (roles: UserRole[]) => (
   next: NextFunction
 ) => {
   const decoded = decodeJwtUserToken(req.headers.authorization);
-  decoded.fold(
+  fold<ErrorMsg, UserJwtTokenPayload, void>(
     error => {
       res.status(codes.UNAUTHORIZED).send(error);
     },
@@ -73,7 +73,7 @@ export const authorize = (roles: UserRole[]) => (
         return next();
       });
     }
-  );
+  )(decoded);
 };
 
 declare module 'express' {

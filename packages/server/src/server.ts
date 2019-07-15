@@ -8,7 +8,6 @@ import * as requestHandlers from './requestHandlers';
 import { connectToDb, disconnectFromDb } from './store/connection';
 
 const PORT = process.env.PORT;
-
 export const app = express();
 
 if (process.env.NODE_ENV !== 'test') {

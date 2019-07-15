@@ -3,8 +3,8 @@ import { Router } from 'express';
 
 import { auth } from '../../middleware';
 
-import { setTaskPoints } from './set';
 import { GetGrades } from './get';
+import { setTaskPoints } from './set';
 
 const { Grades } = ServerRoutes;
 export const router = Router();
