@@ -30,7 +30,6 @@ export const [useAuthStore, authStore] = createStore(set => ({
       authService
         .newAccount(token, password)
         .then(res => {
-          console.log({ res });
           if ('error' in res) {
             throw new Error(res.error);
           }

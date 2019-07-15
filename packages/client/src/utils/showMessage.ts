@@ -1,10 +1,12 @@
 import { message } from 'antd';
 import { ApiResponse } from 'common';
 
+import { ApiResponse2 } from '../api/authFetch';
+
 message.config({ maxCount: 3, duration: 2 });
 
 export const showMessage = (
-  res: ApiResponse,
+  res: ApiResponse | ApiResponse2<any>,
   opts: { showSuccess?: boolean; showError?: boolean } = {
     showError: true,
     showSuccess: true,
