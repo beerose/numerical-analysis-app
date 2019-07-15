@@ -18,6 +18,7 @@
     "downlevelIteration": true,
     "resolveJsonModule": true,
     "strictBindCallApply": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "noErrorTruncation": true
   }
 }

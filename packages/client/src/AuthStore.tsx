@@ -12,18 +12,24 @@ const hoursFromNow = (expirationHours: number) => {
   return now.setHours(now.getHours() + expirationHours);
 };
 
+type State = {
+  errorMessage?: string;
+  token?: string;
+  user?: UserDTO;
+};
+
 /**
  * Prefer importing `useAuthStore` over `authStore`.
  * Import authStore only in tests.
  */
-export const [useAuthStore, authStore] = createStore(set => ({
-  errorMessage: undefined as string | undefined,
-  token: undefined as string | undefined,
-  user: undefined as UserDTO | undefined,
+export const [useAuthStore, authStore] = createStore<State>(set => ({
+  errorMessage: undefined,
+  token: undefined,
+  user: undefined,
   ...userInCookies.get(),
   actions: {
     resetError: () => {
-      set({ errorMessage: null });
+      set({ errorMessage: undefined });
     },
     changePassword: authService.changePassword,
     createNewAccount: (token: string, password: string) => {
