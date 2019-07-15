@@ -3,6 +3,9 @@ import * as qs from 'query-string';
 
 import { ApiResponse } from '../../../../dist/common';
 
+/**
+ * @deprecated
+ */
 export function authFetch<T = ApiResponse>(
   url: string,
   options: RequestInit = {}
@@ -79,13 +82,20 @@ export namespace ApiResponse2 {
 
 export type ApiResponse2<T> = ApiResponse2.Success<T> | ApiResponse2.Error;
 
+interface AuthFetch2Options extends RequestInit {
+  query?: Record<string, unknown>;
+}
+
 export function authFetch2<T>(
   url: string,
   options: RequestInit & { query?: Record<string, unknown> } = {}
 ): Promise<ApiResponse2<T>> {
-  const token = Cookies.get('token');
-  if (!token) {
-    throw new Error('missing auth token');
+  let token = '';
+  if (!(options.headers && 'Authorization' in options.headers)) {
+    token = Cookies.get('token') || token;
+    if (!token) {
+      throw new Error('missing auth token');
+    }
   }
 
   options.headers = {
