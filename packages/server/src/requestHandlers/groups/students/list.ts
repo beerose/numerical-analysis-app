@@ -21,19 +21,7 @@ export const listStudentsWithinGroup = (
 ) => {
   return handleBadRequest(ListStudentsWithinGroupQueryV, req.query, res).then(
     ({ groupId }) => {
-      console.log(`
-        Ola, could you fix me?
-        Look how bad I need to be fixed.
-        I'm such a sad code.
-        Look at this group id -> ${groupId}.
-        Wouldn't it be amazing to use it in
-        db.listUsersWithGroup?
-        It would be so awesome!
-        We'd send less data to the client!
-        🌹
-      `);
-
-      return db.listUsersWithGroup((err, students) => {
+      return db.listUsersWithGroup(groupId, (err, students) => {
         if (err) {
           return res.status(codes.INTERNAL_SERVER_ERROR).send({
             error: apiMessages.internalError,

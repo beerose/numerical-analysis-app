@@ -64,7 +64,7 @@ export const StudentGroupDetailsContainer: React.FC<
       {JSON.stringify(currentGroup.data)}
       <section>
         <Heading>{texts.tasks}</Heading>
-        <StudentTasksTable groupId={Number(params.id)} />
+        <StudentTasksTable groupId={Number(groupId)} />
       </section>
     </PaddingContainer>
   );

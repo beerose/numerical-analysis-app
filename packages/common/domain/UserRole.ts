@@ -5,6 +5,9 @@ export enum UserRole {
 }
 
 export namespace UserRole {
+  export const All = [UserRole.Admin, UserRole.SuperUser, UserRole.Student];
+  export const NonStudents = [UserRole.Admin, UserRole.SuperUser];
+
   const values: UserRole[] = Object.values(UserRole);
 
   export function assert(str: string): UserRole {
