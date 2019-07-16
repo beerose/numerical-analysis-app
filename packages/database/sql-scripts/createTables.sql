@@ -65,6 +65,8 @@ CREATE TABLE `tasks` (
   `verify_upload` tinyint(1) NOT NULL DEFAULT '1',
   `start_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `end_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start_vote_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+  `end_vote_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `data` json DEFAULT NULL,
