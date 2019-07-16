@@ -85,7 +85,7 @@ export const sendResetPasswordLink = (
   });
 
   const link = `${CLIENT_URL}${
-    ServerRoutes.Accounts.ChangePassword
+    ServerRoutes.Accounts.ResetPassword
   }?token=${token}`;
 
   email.transporter.sendMail(
@@ -93,7 +93,7 @@ export const sendResetPasswordLink = (
       from: 'Aplikacja Lagrange',
       html: emailMessage(
         user.user_name,
-        'Poniżej znajduje się link, dzięki któremu możesz aktywować swoje konto w aplikacji Lagrange, gdzie możesz śledzić swoje punkty z Analizy Numerycznej i wybierać zadania.',
+        'Poniżej znajduje się link, dzięki któremu możesz zresetować swoje hasło w aplikacji Lagrange.',
         link,
         'Ustaw nowe hasło'
       ),

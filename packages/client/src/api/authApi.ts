@@ -7,7 +7,7 @@ import {
 } from 'common';
 
 import { SERVER_URL } from '.';
-import { authFetch } from './authFetch';
+import { authFetch, authFetch2 } from './authFetch';
 
 const { Accounts } = ServerRoutes;
 
@@ -79,8 +79,12 @@ export const newAccount = (token: string, password: string) => {
     .catch(handleServerError);
 };
 
-export const changePassword = (newPassword: string) => {
-  return authFetch(SERVER_URL + Accounts.ChangePassword, {
+export const changePassword = (
+  newPassword: string,
+  headers?: RequestInit['headers']
+) => {
+  return authFetch2(SERVER_URL + Accounts.ChangePassword, {
+    headers,
     body: JSON.stringify({ new_password: newPassword }),
     method: 'POST',
   });

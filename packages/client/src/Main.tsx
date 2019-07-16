@@ -1,12 +1,19 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Layout } from 'antd';
-import React, { Fragment, useState } from 'react';
+import { Layout, Modal } from 'antd';
+import { identity } from 'io-ts';
+import React, { Fragment } from 'react';
 import { Route, RouteChildrenProps, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { ErrorBoundary, LoginForm, MainMenu, NewAccount } from './components';
+import {
+  ErrorBoundary,
+  LoginForm,
+  MainMenu,
+  NewAccount,
+  NewPasswordForm,
+} from './components';
 import { LocaleContextStatefulProvider } from './components/locale';
 import { ForgotPasswordForm } from './components/ForgotPasswordForm.tsx';
 import { VisibleForRoles } from './components/VisibleForRoles';
@@ -14,6 +21,7 @@ import { Groups, Home, NotFoundPage, Users, Welcome } from './pages';
 import { GroupApiProvider } from './pages/Groups/GroupApiContext';
 import { Logout } from './pages/Logout';
 import { SettingsContainer } from './pages/Settings';
+import { showMessage } from './utils';
 import { LABELS } from './utils/labels';
 import { useAuthStore } from './AuthStore';
 
@@ -60,7 +68,7 @@ const Title: React.FC = ({ children }) => (
 
 type Props = RouteChildrenProps;
 export const Main: React.FC<Props> = ({ history, location }) => {
-  const { actions, errorMessage, user } = useAuthStore();
+  const { actions, errorMessage, user } = useAuthStore(identity);
 
   const handleLoginSuccess = (...args: Parameters<typeof actions.login>) => {
     actions.login(...args).then(res => {
@@ -68,6 +76,23 @@ export const Main: React.FC<Props> = ({ history, location }) => {
         history.push('/');
       }
     });
+  };
+
+  const handleResetPassword = (newPassword: string, token: string) => {
+    actions
+      .changePassword(newPassword, {
+        Authorization: `Bearer ${token}`,
+      })
+      .then(res => {
+        if (!('error' in res)) {
+          showMessage({ message: 'Hasło zostało zmienione' });
+          history.push('/login');
+        } else {
+          showMessage({
+            error: `Wystąpił bład, spróbuj ponownie później`,
+          });
+        }
+      });
   };
 
   return (
@@ -82,7 +107,6 @@ export const Main: React.FC<Props> = ({ history, location }) => {
             <StyledContent>
               <Switch>
                 <Route path="/accounts/new" component={NewAccount} />
-                {/* Route for /login is not needed, because no other path will match */}
                 {user ? (
                   <Fragment>
                     <Route exact path="/" component={Home} />
@@ -101,13 +125,39 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                       <ForgotPasswordForm
                         onSubmit={actions.resetPassword}
                         errorMessage={errorMessage}
-                        onExit={() => history.push('/')}
+                        onExit={() => {
+                          actions.resetError();
+                          history.push('/');
+                        }}
                       />
                     </Route>
+                    <Route
+                      path="/accounts/reset_password"
+                      render={props => {
+                        const token = new URLSearchParams(
+                          props.location.search
+                        ).get('token');
+                        return (
+                          <Fragment>
+                            <Welcome />
+                            <Modal visible centered width={400} footer={false}>
+                              <NewPasswordForm
+                                onSubmit={newPassword =>
+                                  handleResetPassword(newPassword, token || '')
+                                }
+                              />
+                            </Modal>
+                          </Fragment>
+                        );
+                      }}
+                    />
                     <Route>
                       <Welcome />
                       <LoginForm
-                        onExit={() => history.push('/')}
+                        onExit={() => {
+                          actions.resetError();
+                          history.push('/');
+                        }}
                         onSubmit={handleLoginSuccess}
                         errorMessage={errorMessage}
                       />

@@ -1,9 +1,10 @@
 // tslint:disable: object-literal-sort-keys
-import { UserDTO, UserPrivileges, UserRole } from 'common';
-import createStore from 'zustand';
+import { UserDTO } from 'common';
+import createStore, { SetState } from 'zustand';
 
 import * as authService from './api/authApi';
 import { userInCookies } from './userInCookies';
+import { showMessage } from './utils';
 import * as zustandDevtools from './utils/zustandDevtools';
 
 const hoursFromNow = (expirationHours: number) => {
@@ -12,21 +13,27 @@ const hoursFromNow = (expirationHours: number) => {
 };
 
 /**
- * Prefer importing `useAuthStore` over `authStore`.
- * Import authStore only in tests.
+ * This will change during the runtime of the application
  */
-export const [useAuthStore, authStore] = createStore(set => ({
-  errorMessage: undefined as string | undefined,
-  token: undefined as string | undefined,
-  user: undefined as UserDTO | undefined,
-  ...userInCookies.get(),
-  actions: {
+type State = {
+  errorMessage?: string;
+  token?: string;
+  user?: UserDTO;
+};
+
+/**
+ * Actions won't change
+ */
+function makeActions(set: SetState<State>) {
+  return {
+    resetError: () => {
+      set({ errorMessage: undefined });
+    },
     changePassword: authService.changePassword,
     createNewAccount: (token: string, password: string) => {
       authService
         .newAccount(token, password)
         .then(res => {
-          console.log({ res });
           if ('error' in res) {
             throw new Error(res.error);
           }
@@ -56,6 +63,7 @@ export const [useAuthStore, authStore] = createStore(set => ({
             throw new Error(res.error);
           }
           set({ errorMessage: '' });
+          showMessage(res);
           return res;
         })
         .catch(res => {
@@ -89,8 +97,30 @@ export const [useAuthStore, authStore] = createStore(set => ({
           return { error: res.error };
         });
     },
-  },
-}));
+  };
+}
+
+/**
+ * Prefer importing `useAuthStore` over `authStore`.
+ * Import authStore only in tests.
+ */
+export const [useAuthStore, authStore] = createStore((
+  set: any /* this is on purpose
+              we want to infer store type,
+              and typing `set` makes it impossible */
+) => {
+  const initialState: State = {
+    errorMessage: undefined,
+    token: undefined,
+    user: undefined,
+    ...userInCookies.get(),
+  };
+
+  return {
+    ...initialState,
+    actions: makeActions(set),
+  };
+});
 
 export type AuthStoreState = ReturnType<typeof authStore.getState>;
 
