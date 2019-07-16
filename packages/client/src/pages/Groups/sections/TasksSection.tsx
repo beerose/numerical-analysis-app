@@ -40,7 +40,7 @@ export const TasksSection = ({
       actions.listTasks({ all: false }).then(res => setTasks(res.tasks));
     }
     if (!currentGroupStudents) {
-      actions.listStudentsWithGroup();
+      actions.listStudentsInGroup();
     }
   }, [actions]);
 

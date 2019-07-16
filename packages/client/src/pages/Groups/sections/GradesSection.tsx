@@ -156,7 +156,7 @@ Props) => {
       actions.getGroup();
     }
     if (!currentGroupStudents) {
-      actions.listStudentsWithGroup();
+      actions.listStudentsInGroup();
     } else if (currentGroup) {
       actions.getResults().then(usersResults => {
         const data = currentGroupStudents.map(s => {

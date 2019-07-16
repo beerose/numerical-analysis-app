@@ -1,11 +1,12 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, Spin, Tooltip } from 'antd';
-import { UserDTO, UserWithGroups } from 'common';
+import { UserDTO, UserRole, UserWithGroups } from 'common';
 import { saveAs } from 'file-saver';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
+import { groupsService, usersService } from '../../../api';
 import { UsersTable } from '../../../components';
 import { theme } from '../../../components/theme';
 import { Flex } from '../../../components/Flex';
@@ -38,7 +39,7 @@ type State = {
 export const StudentsSection: React.FC<Props> = ({
   actions: {
     addNewStudentToGroup,
-    listStudentsWithGroup,
+    listStudentsInGroup,
     deleteStudentFromGroup,
     updateStudentInGroup,
     uploadUsers,
@@ -47,20 +48,29 @@ export const StudentsSection: React.FC<Props> = ({
   editable,
 }) => {
   const [addStudentModalVisible, isModalVisible] = useBoolean(false);
-  const [allStudents, setAllStudents] = useState<UserWithGroups[]>([]);
+  const [otherStudents, setOtherStudents] = useState<UserDTO[]>([]);
   const [isFetching, setIsFetching] = useState(false);
-  const [students, setStudents] = useState<UserWithGroups[]>([]);
+  const [myStudents, setMyStudents] = useState<UserWithGroups[]>([]);
 
   const updateStudentsLists = useCallback(() => {
     if (!currentGroup) {
       return;
     }
-    listStudentsWithGroup().then(res => {
-      setAllStudents(res.filter(s => !s.group_ids.includes(currentGroup.id)));
+    setIsFetching(true);
+    Promise.all([
+      listStudentsInGroup().then(myGroupStudents => {
+        setMyStudents(myGroupStudents);
+        return myGroupStudents;
+      }),
+      usersService
+        .listUsers({})
+        .then(res => res.users.filter(u => u.user_role === UserRole.Student)),
+    ]).then(([ms, os]) => {
       setIsFetching(false);
-      setStudents(res.filter(s => s.group_ids.includes(currentGroup.id)));
+      const myStudentsIds = new Set(ms.map(s => s.id));
+      setOtherStudents(os.filter(s => !myStudentsIds.has(s.id)));
     });
-  }, [currentGroup, listStudentsWithGroup]);
+  }, [currentGroup, listStudentsInGroup]);
 
   useEffect(() => {
     updateStudentsLists();
@@ -93,7 +103,7 @@ export const StudentsSection: React.FC<Props> = ({
     }
 
     const mimeType = isSafari() ? 'application/csv' : 'text/csv';
-    const blob = new Blob([studentsToCsv(students)], { type: mimeType });
+    const blob = new Blob([studentsToCsv(myStudents)], { type: mimeType });
 
     saveAs(blob, `students-of-group-${currentGroup.id}.csv`);
   };
@@ -111,7 +121,7 @@ export const StudentsSection: React.FC<Props> = ({
   return (
     <Flex flexDirection="column">
       <WrappedNewStudentModalForm
-        allStudents={allStudents}
+        allStudents={otherStudents}
         onSubmit={addNewStudent}
         visible={addStudentModalVisible}
         onCancel={isModalVisible.turnOff}
@@ -142,7 +152,7 @@ export const StudentsSection: React.FC<Props> = ({
           hideDelete={!editable}
           onUpdate={updateStudent}
           hideEdit={!editable}
-          users={students}
+          users={myStudents}
           extraColumns={['index']}
           css={{
             paddingBottom: theme.Padding.Half,

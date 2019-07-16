@@ -229,14 +229,14 @@ export class GroupApiProvider extends React.Component<
     this.setState({ isLoading: false });
   };
 
-  listStudentsWithGroup = async () => {
+  listStudentsInGroup = async () => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
     this.setState({ isLoading: true });
     const {
       currentGroup: { id: groupId },
-    } = this.state;
+    } = this.state; 
     /**
      * TODO: Stop sending all students with groups
      * Stop filtering here
