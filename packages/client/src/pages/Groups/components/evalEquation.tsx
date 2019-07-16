@@ -14,7 +14,7 @@ export async function evalEquation<PointCategories extends string>(
   const kvargsString = inspect(pointsInAllCategories);
   const argumentKeys = `(${kvargsString.replace(/\: [\d]+/g, '')})`;
 
-  const promise = new Promise<number>((resolve, reject) => {
+  const res = await new Promise<number>((resolve, reject) => {
     let settled = false;
 
     render(
@@ -41,8 +41,6 @@ export async function evalEquation<PointCategories extends string>(
       }
     );
   });
-
-  const res = await promise;
 
   document.body.removeChild(temporaryRoot);
   return res;

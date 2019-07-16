@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Popconfirm, Table } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
@@ -61,8 +63,8 @@ const getExtraColumnsForRender = (extraColumns: ExtraColumnTypes[] = []) =>
 
 type UsersTableState = {
   currentPage: number;
-  data: UserDTO[];
   editingKey: string;
+  shouldShowPlaceholder: boolean;
 };
 type UsersTableProps = {
   pageSize?: number;
@@ -78,11 +80,26 @@ type UsersTableProps = {
   onTableChange?: (cfg: PaginationConfig) => void;
   className?: string;
 };
+
+const components = {
+  body: {
+    cell: EditableCell,
+    row: EditableFormRow,
+  },
+};
+
 export class UsersTable extends React.Component<
   UsersTableProps,
   UsersTableState
 > {
-  state = { data: this.props.users, editingKey: '', currentPage: 1 };
+  state: UsersTableState = {
+    currentPage: 1,
+    editingKey: '',
+    shouldShowPlaceholder: false,
+  };
+
+  timeoutId?: number;
+
   columns: TableColumn[] = [
     ...tableColumns,
     ...getExtraColumnsForRender(this.props.extraColumns),
@@ -161,6 +178,22 @@ export class UsersTable extends React.Component<
     this.props.onDelete(id);
   }
 
+  componentDidMount() {
+    /**
+     * We want to avoid placeholder blink
+     */
+    this.timeoutId = window.setTimeout(() => {
+      this.setState({ shouldShowPlaceholder: true });
+      this.timeoutId = undefined;
+    });
+  }
+
+  componentWillMount() {
+    if (typeof this.timeoutId === 'number') {
+      window.clearTimeout(this.timeoutId);
+    }
+  }
+
   render() {
     const {
       onTableChange,
@@ -168,16 +201,10 @@ export class UsersTable extends React.Component<
       pageSize,
       total,
       className,
-      users: data,
+      users,
       currentPage,
     } = this.props;
-
-    const components = {
-      body: {
-        cell: EditableCell,
-        row: EditableFormRow,
-      },
-    };
+    const { shouldShowPlaceholder } = this.state;
 
     const columns = this.columns.map(col => {
       if (!col.editable) {
@@ -207,11 +234,24 @@ export class UsersTable extends React.Component<
         size="small"
         rowKey="id"
         components={components}
-        dataSource={data}
+        dataSource={users}
         columns={columns}
         pagination={showPagination ? paginationConfig : false}
         onChange={onTableChange}
         className={className}
+        css={
+          !shouldShowPlaceholder
+            ? css`
+                .ant-table-placeholder {
+                  opacity: 0;
+                }
+              `
+            : css`
+                .ant-table-placeholder {
+                  transition: opacity 250ms linear;
+                }
+              `
+        }
       />
     );
   }

@@ -52,7 +52,6 @@ export const StudentGroupDetailsContainer: React.FC<
         <Descriptions.Item label={texts.groupType}>
           {currentGroup.group_type}
         </Descriptions.Item>
-        {/* TODO? */}
         <Descriptions.Item label={texts.lecturer}>
           {currentGroup.lecturer_name}
         </Descriptions.Item>
@@ -61,7 +60,7 @@ export const StudentGroupDetailsContainer: React.FC<
         </Descriptions.Item>
       </Descriptions>
       TODO:
-      {JSON.stringify(currentGroup.data)}
+      {JSON.stringify(currentGroup.data, null, 2)}
       <section>
         <Heading>{texts.tasks}</Heading>
         <StudentTasksTable groupId={Number(groupId)} />
