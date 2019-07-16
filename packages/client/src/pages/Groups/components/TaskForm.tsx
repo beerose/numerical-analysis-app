@@ -12,7 +12,7 @@ import {
   TaskDTO,
   TaskKind,
 } from '../../../../../../dist/common';
-import { TaskTypeSelect } from '../../../components';
+import { TaskKindSelect } from '../../../components';
 import { Colors, showMessage } from '../../../utils';
 
 import {
@@ -127,7 +127,7 @@ const TaskForm = (props: Props) => {
         {getFieldDecorator('kind', {
           rules: [{ required: true, message: 'rodzaj jest wymagany' }],
         })(
-          <TaskTypeSelect
+          <TaskKindSelect
             onSelect={val => {
               setTaskType(val as TaskKind);
             }}

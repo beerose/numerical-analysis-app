@@ -4,7 +4,7 @@ import { SelectProps, SelectValue } from 'antd/lib/select';
 import { TaskKind } from 'common';
 import React, { useContext } from 'react';
 
-import { Colors } from '../utils';
+import { Colors, findStringifiedLowercase } from '../utils';
 
 import { LocaleContext } from './locale';
 
@@ -15,7 +15,7 @@ type Props = {
   value?: TaskKind;
 } & SelectProps;
 
-export const TaskTypeSelect = React.forwardRef(
+export const TaskKindSelect = React.forwardRef(
   ({ onChange, value, ...props }: Props, ref: React.Ref<Select<TaskKind>>) => {
     const { getText } = useContext(LocaleContext);
 
@@ -32,7 +32,9 @@ export const TaskTypeSelect = React.forwardRef(
           </>
         }
         onChange={onChange}
+        showSearch
         defaultValue={undefined}
+        filterOption={findStringifiedLowercase}
         style={{ minWidth: '120px' }}
         value={value}
         ref={ref}

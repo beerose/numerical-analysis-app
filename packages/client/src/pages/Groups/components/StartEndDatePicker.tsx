@@ -66,7 +66,7 @@ export const StartEndDatePicker = ({
         width: '24px',
       }}
     >
-      -
+      –
     </span>
 
     <Form.Item {...layout} style={{ display: 'inline-block' }}>
