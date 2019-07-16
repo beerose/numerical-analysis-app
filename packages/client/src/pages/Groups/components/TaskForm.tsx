@@ -19,7 +19,7 @@ import {
   ChoosableFormFields,
   DynamicChoosableTasksForm,
 } from './DynamicChoosableTasksForm';
-import { StartEndDatePicker } from './StartEndDatePicker';
+import { RequiredText, StartEndDatePicker } from './StartEndDatePicker';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -53,6 +53,9 @@ type Props = {
 const TaskForm = (props: Props) => {
   const { getFieldDecorator } = props.form;
   const [taskType, setTaskType] = useState<TaskKind | null>(null);
+  const [dateValidationErrors, setDateValidationErrors] = useState<
+    Partial<Record<keyof TaskDTO, { errors: Array<{ message: string }> }>>
+  >({});
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +67,7 @@ const TaskForm = (props: Props) => {
         } & ChoosableFormFields
       ) => {
         if (err) {
+          setDateValidationErrors(err);
           showMessage({ error: 'Wypełnij wszystkie pola' });
           return;
         }
@@ -189,14 +193,7 @@ const TaskForm = (props: Props) => {
       </Form.Item>
       {[TaskKind.Assignment, null].includes(taskType) && (
         <section>
-          <StartEndDatePicker
-            required
-            layout={FORM_ITEM_LAYOUT}
-            getFieldDecorator={getFieldDecorator}
-            label="Terminy oddawania zadania"
-            startKey="start_upload_date"
-            endKey="end_upload_date"
-          />
+          {/* TODO: user DatePicker.RangePicker */}
           <StartEndDatePicker
             required
             layout={FORM_ITEM_LAYOUT}
@@ -205,6 +202,31 @@ const TaskForm = (props: Props) => {
             startKey="start_vote_date"
             endKey="end_vote_date"
           />
+          <Form.Item
+            label={'Terminy oddawania zadania'}
+            {...FORM_ITEM_LAYOUT}
+            required
+            css={css`
+              padding: 0;
+              margin: 0;
+            `}
+          >
+            {getFieldDecorator('start_upload_date', {})(
+              <DatePicker.RangePicker
+                // value={[
+                //   props.form.getFieldValue('start_upload_date'),
+                //   props.form.getFieldValue('end_upload_date'),
+                // ]}
+                // onChange={([from, to]) => {
+                //   console.log({ from, to });
+                //   props.form.setFieldsValue({
+                //     end_upload_date: moment(to),
+                //     start_upload_date: moment(from),
+                //   });
+                // }}
+              />
+            )}
+          </Form.Item>
           <Form.Item
             label="Weryfikacja wysyłanych pilików"
             {...FORM_ITEM_LAYOUT}
