@@ -20,7 +20,7 @@ type Props = {
   visible: boolean;
   allStudents: UserDTO[];
 } & FormComponentProps;
-export class NewStudentModalForm extends React.Component<Props, State> {
+export class AddStudentForm extends React.Component<Props, State> {
   state: State = {};
   getFieldDecorator = this.props.form.getFieldDecorator;
 
@@ -149,6 +149,4 @@ export class NewStudentModalForm extends React.Component<Props, State> {
   }
 }
 
-export const WrappedNewStudentModalForm = Form.create<Props>()(
-  NewStudentModalForm
-);
+export const WrappedNewStudentModalForm = Form.create<Props>()(AddStudentForm);
