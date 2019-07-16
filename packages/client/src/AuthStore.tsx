@@ -1,6 +1,6 @@
 // tslint:disable: object-literal-sort-keys
-import { UserDTO, UserPrivileges, UserRole } from 'common';
-import createStore from 'zustand';
+import { UserDTO } from 'common';
+import createStore, { SetState } from 'zustand';
 
 import * as authService from './api/authApi';
 import { userInCookies } from './userInCookies';
@@ -12,6 +12,9 @@ const hoursFromNow = (expirationHours: number) => {
   return now.setHours(now.getHours() + expirationHours);
 };
 
+/**
+ * This will change during the runtime of the application
+ */
 type State = {
   errorMessage?: string;
   token?: string;
@@ -19,15 +22,10 @@ type State = {
 };
 
 /**
- * Prefer importing `useAuthStore` over `authStore`.
- * Import authStore only in tests.
+ * Actions won't change
  */
-export const [useAuthStore, authStore] = createStore<State>(set => ({
-  errorMessage: undefined,
-  token: undefined,
-  user: undefined,
-  ...userInCookies.get(),
-  actions: {
+function makeActions(set: SetState<State>) {
+  return {
     resetError: () => {
       set({ errorMessage: undefined });
     },
@@ -99,8 +97,30 @@ export const [useAuthStore, authStore] = createStore<State>(set => ({
           return { error: res.error };
         });
     },
-  },
-}));
+  };
+}
+
+/**
+ * Prefer importing `useAuthStore` over `authStore`.
+ * Import authStore only in tests.
+ */
+export const [useAuthStore, authStore] = createStore((
+  set: any /* this is on purpose
+              we want to infer store type,
+              and typing `set` makes it impossible */
+) => {
+  const initialState: State = {
+    errorMessage: undefined,
+    token: undefined,
+    user: undefined,
+    ...userInCookies.get(),
+  };
+
+  return {
+    ...initialState,
+    actions: makeActions(set),
+  };
+});
 
 export type AuthStoreState = ReturnType<typeof authStore.getState>;
 
