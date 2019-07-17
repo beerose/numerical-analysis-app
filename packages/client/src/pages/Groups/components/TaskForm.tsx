@@ -87,6 +87,12 @@ const TaskForm = (props: Props) => {
           });
         });
       }
+
+      // TODO: Fixme
+      const never = new Date(0);
+      values.upload_dates = values.upload_dates || [never, never];
+      values.vote_dates = values.vote_dates || [never, never];
+
       props.onSubmit({
         // tslint:disable:object-literal-sort-keys
         id: values.id,
@@ -172,6 +178,7 @@ const TaskForm = (props: Props) => {
           <Input
             type="number"
             css={smallInputStyles}
+            // step={0.5} TODO: ogarnąć czy nie chcemy przechowywać floata w bazie?
             prefix={
               <Icon type="calculator" style={{ color: Colors.SemiLightGray }} />
             }
@@ -191,7 +198,7 @@ const TaskForm = (props: Props) => {
           />
         )}
       </Form.Item>
-      <Form.Item label="Data wyników" {...FORM_ITEM_LAYOUT}>
+      <Form.Item label="Data wyników" required {...FORM_ITEM_LAYOUT}>
         {getFieldDecorator<FormModel>('results_date', {})(
           <DatePicker
             css={css`

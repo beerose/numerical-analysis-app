@@ -1,4 +1,5 @@
 import { GroupDTO, TaskDTO, UserDTO, UserTaskPoints } from 'common';
+import { sql } from 'tag-sql';
 
 import { connection } from '../connection';
 
@@ -48,29 +49,14 @@ export const getUsersTaskPoints = (
   >
 ) =>
   connection.query(
-    {
-      sql: /* sql */ `
-      SELECT
-      	ubg.user_id,
-      	res.points as tasks_grade
-      FROM
-      	user_belongs_to_group ubg
-      	LEFT JOIN (
-      		SELECT
-      			sum(uhp.points * ght.weight) AS points,
-      			uhp.user_id AS user_id
-      		FROM
-      			group_has_task ght
-      			JOIN user_has_points uhp USING (task_id)
-      		GROUP BY
-      			uhp.user_id) res USING (user_id)
-      	WHERE
-      		ubg.group_id = ?
-      	GROUP BY
-	    	  user_id;
+    sql`
+      SELECT uhp.user_id, sum(points * weight) as tasks_grade FROM
+      user_belongs_to_group ubg
+      JOIN group_has_task ght USING (group_id)
+      JOIN user_has_points uhp USING (task_id)
+      WHERE group_id = ${groupId}
+      GROUP BY uhp.user_id;
     `,
-      values: [groupId],
-    },
     callback
   );
 

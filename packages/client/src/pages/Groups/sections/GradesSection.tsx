@@ -99,8 +99,7 @@ const mergedResultsToTableItem = (
     activity: results ? results.sum_activity : 0,
     finalGrade: final && final.grade ? Grade(final.grade) : undefined,
     index: student.student_index,
-    maxTasksPoints:
-      results && results.max_tasks_grade ? results.max_tasks_grade : 0,
+    maxTasksPoints: (results && results.max_tasks_grade) || 0,
     presences: results ? results.presences : 0,
     tasksPoints: results ? results.tasks_grade : 0,
     userId: student.id,
