@@ -127,8 +127,8 @@ const SetGrade = ({
       max-width: 100%;
     `}
   >
-    {['2', ...tresholdsKeys].map(t => (
-      <Select.Option key={t} value={Grade(Number(t))}>
+    {Grade.grades.map(t => (
+      <Select.Option key={t} value={t}>
         {t}
       </Select.Option>
     ))}
