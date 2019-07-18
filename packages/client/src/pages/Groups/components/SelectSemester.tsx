@@ -7,7 +7,14 @@ import { LocaleContext } from '../../../components/locale';
 import { Colors } from '../../../utils';
 
 // Todo: add semesters logic to the backend and db
-const SEMESTERS = ['zimowy 2018/2019', 'letni 2019'];
+const getSemesters = () => {
+  const currentYear = new Date().getFullYear();
+  return [
+    `zimowy ${currentYear - 1}/${currentYear}`,
+    `letni ${currentYear}`,
+    `zimowy ${currentYear}/${currentYear + 1}`,
+  ];
+};
 
 export const SelectSemester = React.forwardRef(
   (
@@ -23,6 +30,7 @@ export const SelectSemester = React.forwardRef(
     ref: React.Ref<Select>
   ) => {
     const { texts } = useContext(LocaleContext);
+    const semesters = getSemesters();
     return (
       <Select
         showArrow
@@ -41,7 +49,7 @@ export const SelectSemester = React.forwardRef(
         onChange={onChange}
         ref={ref}
       >
-        {SEMESTERS.map(o => (
+        {semesters.map(o => (
           <Select.Option value={o} key={o}>
             {o}
           </Select.Option>
