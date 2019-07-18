@@ -6,13 +6,14 @@ import React, { useContext } from 'react';
 import { LocaleContext } from '../../../components/locale';
 import { Colors } from '../../../utils';
 
-// Todo: add semesters logic to the backend and db
 const getSemesters = () => {
   const currentYear = new Date().getFullYear();
   return [
+    `letni ${currentYear - 1}`,
     `zimowy ${currentYear - 1}/${currentYear}`,
     `letni ${currentYear}`,
     `zimowy ${currentYear}/${currentYear + 1}`,
+    `letni ${currentYear + 1}`,
   ];
 };
 
