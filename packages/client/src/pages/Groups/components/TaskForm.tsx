@@ -12,14 +12,14 @@ import {
   TaskDTO,
   TaskKind,
 } from '../../../../../../dist/common';
-import { TaskTypeSelect } from '../../../components';
+import { TaskKindSelect } from '../../../components';
 import { Colors, showMessage } from '../../../utils';
 
 import {
   ChoosableFormFields,
   DynamicChoosableTasksForm,
 } from './DynamicChoosableTasksForm';
-import { StartEndDatePicker } from './StartEndDatePicker';
+import { RequiredText, StartEndDatePicker } from './StartEndDatePicker';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -43,11 +43,27 @@ const FORM_ITEM_LAYOUT = {
   },
 };
 
+interface FormModel
+  extends ChoosableFormFields,
+    Omit<
+      TaskDTO,
+      | 'end_upload_date'
+      | 'end_vote_date'
+      | 'start_upload_date'
+      | 'start_vote_date'
+      | 'name'
+      | 'data'
+    > {
+  task_name: string;
+  upload_dates: [Date, Date];
+  vote_dates: [Date, Date];
+}
+
 type Props = {
   mode: 'edit' | 'create';
   model?: TaskDTO;
   onSubmit: (values: TaskDTO) => void;
-} & FormComponentProps;
+} & FormComponentProps<FormModel>;
 
 // tslint:disable-next-line:no-big-function
 const TaskForm = (props: Props) => {
@@ -56,45 +72,44 @@ const TaskForm = (props: Props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    props.form.validateFields(
-      (
-        err,
-        values: Omit<TaskDTO, 'name' | 'data'> & {
-          task_name: TaskDTO['name'];
-        } & ChoosableFormFields
-      ) => {
-        if (err) {
-          showMessage({ error: 'Wypełnij wszystkie pola' });
-          return;
-        }
-        const choosable: ChoosableSubtask[] = [];
-        if (values.subtask_id) {
-          values.subtask_id.map((v, i) => {
-            choosable.push({
-              group_capacity: values.subtask_group_capacity[i],
-              id: v,
-              max_groups: values.subtask_max_groups[i],
-            });
+    props.form.validateFields((err, values) => {
+      if (err) {
+        showMessage({ error: 'Wypełnij wszystkie pola' });
+        return;
+      }
+      const choosable: ChoosableSubtask[] = [];
+      if (values.subtask_id) {
+        values.subtask_id.map((v, i) => {
+          choosable.push({
+            group_capacity: values.subtask_group_capacity[i],
+            id: v,
+            max_groups: values.subtask_max_groups[i],
           });
-        }
-        props.onSubmit({
-          // tslint:disable:object-literal-sort-keys
-          id: values.id,
-          description: values.description,
-          kind: values.kind,
-          max_points: Number(values.max_points),
-          name: values.task_name,
-          results_date: values.results_date,
-          start_upload_date: values.start_upload_date,
-          end_upload_date: values.end_upload_date,
-          verify_upload: Boolean(values.verify_upload),
-          weight: Number(values.weight),
-          start_vote_date: values.start_vote_date,
-          end_vote_date: values.end_vote_date,
-          data: { choosable_subtasks: choosable },
         });
       }
-    );
+
+      // TODO: Fixme
+      const never = new Date(0);
+      values.upload_dates = values.upload_dates || [never, never];
+      values.vote_dates = values.vote_dates || [never, never];
+
+      props.onSubmit({
+        // tslint:disable:object-literal-sort-keys
+        id: values.id,
+        description: values.description,
+        kind: values.kind,
+        max_points: Number(values.max_points),
+        name: values.task_name,
+        results_date: values.results_date,
+        start_upload_date: values.upload_dates[0],
+        end_upload_date: values.upload_dates[1],
+        verify_upload: Boolean(values.verify_upload),
+        weight: Number(values.weight),
+        start_vote_date: values.vote_dates[0],
+        end_vote_date: values.vote_dates[1],
+        data: { choosable_subtasks: choosable },
+      });
+    });
   };
 
   useEffect(() => {
@@ -111,10 +126,14 @@ const TaskForm = (props: Props) => {
       });
       if ([TaskKind.Assignment, TaskKind.Homework].includes(task.kind)) {
         props.form.setFieldsValue({
-          end_upload_date: moment(task.end_upload_date),
-          start_upload_date: moment(task.start_upload_date),
-          end_vote_date: moment(task.end_vote_date),
-          start_vote_date: moment(task.start_vote_date),
+          upload_dates: [
+            moment(task.start_upload_date),
+            moment(task.end_upload_date),
+          ],
+          vote_dates: [
+            moment(task.start_vote_date),
+            moment(task.end_vote_date),
+          ],
           verify_upload: task.verify_upload,
         });
       }
@@ -124,10 +143,10 @@ const TaskForm = (props: Props) => {
   return (
     <Form onSubmit={handleSubmit} css={formStyles}>
       <Form.Item label="Rodzaj zadania" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('kind', {
+        {getFieldDecorator<FormModel>('kind', {
           rules: [{ required: true, message: 'rodzaj jest wymagany' }],
         })(
-          <TaskTypeSelect
+          <TaskKindSelect
             onSelect={val => {
               setTaskType(val as TaskKind);
             }}
@@ -135,7 +154,7 @@ const TaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item label="Nazwa" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('task_name', {
+        {getFieldDecorator<FormModel>('task_name', {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
           <Input
@@ -144,7 +163,7 @@ const TaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item label="Opis" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('description')(
+        {getFieldDecorator<FormModel>('description')(
           <Input
             prefix={
               <Icon type="edit" style={{ color: Colors.SemiLightGray }} />
@@ -153,12 +172,13 @@ const TaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item label="Waga" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('weight', {
+        {getFieldDecorator<FormModel>('weight', {
           rules: [{ required: true, message: 'waga jest wymagana' }],
         })(
           <Input
             type="number"
             css={smallInputStyles}
+            // step={0.5} TODO: ogarnąć czy nie chcemy przechowywać floata w bazie?
             prefix={
               <Icon type="calculator" style={{ color: Colors.SemiLightGray }} />
             }
@@ -166,7 +186,7 @@ const TaskForm = (props: Props) => {
         )}
       </Form.Item>
       <Form.Item label="Max liczba punktów" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('max_points', {
+        {getFieldDecorator<FormModel>('max_points', {
           rules: [{ required: true, message: 'waga jest wymagana' }],
         })(
           <Input
@@ -178,8 +198,8 @@ const TaskForm = (props: Props) => {
           />
         )}
       </Form.Item>
-      <Form.Item label="Data wyników" {...FORM_ITEM_LAYOUT}>
-        {getFieldDecorator('results_date', {})(
+      <Form.Item label="Data wyników" required {...FORM_ITEM_LAYOUT}>
+        {getFieldDecorator<FormModel>('results_date', {})(
           <DatePicker
             css={css`
               width: 180px;
@@ -189,22 +209,32 @@ const TaskForm = (props: Props) => {
       </Form.Item>
       {[TaskKind.Assignment, null].includes(taskType) && (
         <section>
-          <StartEndDatePicker
+          <Form.Item
+            label={'Terminy głosowania na zadanie'}
+            {...FORM_ITEM_LAYOUT}
             required
-            layout={FORM_ITEM_LAYOUT}
-            getFieldDecorator={getFieldDecorator}
-            label="Terminy oddawania zadania"
-            startKey="start_upload_date"
-            endKey="end_upload_date"
-          />
-          <StartEndDatePicker
+            css={css`
+              padding: 0;
+              margin: 0;
+            `}
+          >
+            {getFieldDecorator<FormModel>('vote_dates', {})(
+              <DatePicker.RangePicker />
+            )}
+          </Form.Item>
+          <Form.Item
+            label={'Terminy oddawania zadania'}
+            {...FORM_ITEM_LAYOUT}
             required
-            layout={FORM_ITEM_LAYOUT}
-            getFieldDecorator={getFieldDecorator}
-            label="Terminy głosowania na zadanie"
-            startKey="start_vote_date"
-            endKey="end_vote_date"
-          />
+            css={css`
+              padding: 0;
+              margin: 0;
+            `}
+          >
+            {getFieldDecorator<FormModel>('upload_dates', {})(
+              <DatePicker.RangePicker />
+            )}
+          </Form.Item>
           <Form.Item
             label="Weryfikacja wysyłanych pilików"
             {...FORM_ITEM_LAYOUT}

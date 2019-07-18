@@ -7,7 +7,9 @@ import { AddressInfo } from 'net';
 import * as requestHandlers from './requestHandlers';
 import { connectToDb, disconnectFromDb } from './store/connection';
 
-const PORT = process.env.PORT;
+const PORT = Number(process.env.PORT) || 8082;
+const HOST = process.env.HOST || 'localhost';
+
 export const app = express();
 
 if (process.env.NODE_ENV !== 'test') {
@@ -37,7 +39,7 @@ let server: import('http').Server;
 
 export const startServer = () => {
   connectToDb();
-  server = app.listen(PORT, () => {
+  server = app.listen(PORT, HOST, () => {
     console.log(
       `Your app is listening on port: ${(server.address() as AddressInfo).port}`
     );

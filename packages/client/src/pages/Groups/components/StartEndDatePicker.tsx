@@ -1,13 +1,17 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
-import styled from '@emotion/styled';
 import { DatePicker, Form } from 'antd';
 import { GetFieldDecoratorOptions } from 'antd/lib/form/Form';
 import React from 'react';
 
-const RequiredIcon = styled.span`
-  color: red;
-`;
+import { Text } from '../../../components';
+
+export const RequiredText: React.FC = ({ children }) => (
+  <Text>
+    <Text type="danger">*</Text>
+    {children}
+  </Text>
+);
 
 const datePickerStyles = css`
   width: 180px;
@@ -27,6 +31,11 @@ type Props = {
   startKey: string;
   endKey: string;
 };
+
+/**
+ * TODO:
+ * Use <DatePicker.RangePicker />
+ */
 export const StartEndDatePicker = ({
   layout,
   getFieldDecorator,
@@ -36,15 +45,7 @@ export const StartEndDatePicker = ({
   endKey,
 }: Props) => (
   <Form.Item
-    label={
-      required ? (
-        <span>
-          <RequiredIcon>*</RequiredIcon> {label}
-        </span>
-      ) : (
-        label
-      )
-    }
+    label={required ? <RequiredText>{label}</RequiredText> : label}
     {...layout}
     css={css`
       padding: 0;
@@ -66,7 +67,7 @@ export const StartEndDatePicker = ({
         width: '24px',
       }}
     >
-      -
+      –
     </span>
 
     <Form.Item {...layout} style={{ display: 'inline-block' }}>
