@@ -1,7 +1,8 @@
-import { Descriptions, Spin } from 'antd';
+import { Descriptions, Spin, Table } from 'antd';
 import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
+import { GroupDTO, UserResultsModel } from '../../../../../dist/common';
 import {
   Heading,
   LocaleContext,
@@ -10,7 +11,31 @@ import {
 } from '../../components';
 import { isNumberOrNumberString } from '../../utils';
 
+import { makeGradesSectionColumns, sortDirections } from './sections';
 import { GroupApiContext } from './GroupApiContext';
+
+type StudentGroupGradeSummaryProps = {
+  currentGroup: GroupDTO;
+};
+export const StudentGroupGradeSummary: React.FC<
+  StudentGroupGradeSummaryProps
+> = ({ currentGroup }) => {
+  return <>{JSON.stringify(currentGroup.data!, null, 2)}</>;
+  // const columns = makeGradesSectionColumns({
+  //   currentGroup,
+  //   omittedKeys: ['confirm_grade'],
+  // });
+  // return (
+  //   <Table<UserResultsModel>
+  //     sortDirections={sortDirections}
+  //     rowKey={(i: UserResultsModel) => i.userId.toString()}
+  //     columns={columns}
+  //     dataSource={tableData}
+  //     pagination={false}
+  //     bordered
+  //   />
+  // );
+};
 
 export type StudentGroupDetailsContainerProps = RouteComponentProps<{
   id: string;
@@ -59,8 +84,10 @@ export const StudentGroupDetailsContainer: React.FC<
           {currentGroup.semester}
         </Descriptions.Item>
       </Descriptions>
-      TODO:
-      {JSON.stringify(currentGroup.data, null, 2)}
+      <section>
+        <Heading>{texts.grades}</Heading>
+        <StudentGroupGradeSummary currentGroup={currentGroup} />
+      </section>
       <section>
         <Heading>{texts.tasks}</Heading>
         <StudentTasksTable groupId={Number(groupId)} />
