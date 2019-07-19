@@ -21,10 +21,9 @@ import { LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
 import { gradesToCsv, isSafari, showMessage, usePromise } from '../../../utils';
 import { evalEquation } from '../components/evalEquation';
-import { tresholdsKeys } from '../components/GradeTresholdsList';
 import { GroupApiContextState } from '../GroupApiContext';
 
-const sortDirections = ['descend', 'ascend'] as SortOrder[];
+export const sortDirections = ['descend', 'ascend'] as SortOrder[];
 
 async function computeGradeFromResults(
   studentResults: UserResultsModel,
@@ -86,7 +85,7 @@ const SuggestedGrade: React.FC<GradeDisplayProps> = ({
   );
 };
 
-const mergedResultsToTableItem = (
+export const mergedResultsToTableItem = (
   groupId: GroupDTO['id'],
   student: UserWithGroups,
   results?: UserResultsDTO
@@ -235,7 +234,60 @@ Props) => {
     saveAs(blob, `students-results-group-${currentGroup!.id}.csv`);
   }, [tableData, currentGroup]);
 
-  const columns = [
+  const columns = makeGradesSectionColumns({
+    confirmAllGrades,
+    confirmGrade,
+    currentGroup,
+    editable,
+    setGrade,
+    omittedKeys: editable ? [] : ['confirm_grade'],
+  });
+
+  return (
+    <LocaleContext.Consumer>
+      {({ texts }) => (
+        <Flex padding={theme.Padding.Standard} flexDirection="column">
+          <Button
+            type="primary"
+            icon="download"
+            onClick={handleGradesCsvDownload}
+            aria-label={texts.exportCsv}
+            style={{ width: 200, marginBottom: '10px' }}
+          >
+            {texts.exportCsv}
+          </Button>
+          <Table<UserResultsModel>
+            sortDirections={sortDirections}
+            rowKey={(i: UserResultsModel) => i.userId.toString()}
+            columns={columns}
+            dataSource={tableData}
+            pagination={false}
+            bordered
+          />
+        </Flex>
+      )}
+    </LocaleContext.Consumer>
+  );
+};
+
+export function makeGradesSectionColumns({
+  currentGroup,
+  confirmGrade,
+  confirmAllGrades,
+  editable,
+  setGrade,
+  omittedKeys,
+}: {
+  currentGroup?: GroupDTO;
+  confirmGrade?: (studentResults: UserResultsModel) => Promise<void>;
+  confirmAllGrades?: () => Promise<void>;
+  editable?: boolean;
+  setGrade?: (studentId: number, grade: Grade) => void;
+  omittedKeys: readonly string[];
+}) {
+  const omittedKeysSet = new Set(omittedKeys);
+
+  return [
     {
       dataIndex: 'userName',
       key: 'name',
@@ -315,7 +367,7 @@ Props) => {
         editable ? (
           <SetGrade
             value={studentResults.finalGrade}
-            onChange={grade => setGrade(studentResults.userId, grade)}
+            onChange={grade => setGrade!(studentResults.userId, grade)}
           />
         ) : (
           <Flex justifyContent="center">
@@ -327,35 +379,5 @@ Props) => {
       title: `Wystawiona ocena`,
       width: 150,
     },
-  ];
-
-  return (
-    <LocaleContext.Consumer>
-      {({ texts }) => (
-        <Flex padding={theme.Padding.Standard} flexDirection="column">
-          <Button
-            type="primary"
-            icon="download"
-            onClick={handleGradesCsvDownload}
-            aria-label={texts.exportCsv}
-            style={{ width: 200, marginBottom: '10px' }}
-          >
-            {texts.exportCsv}
-          </Button>
-          <Table
-            sortDirections={sortDirections}
-            rowKey={(i: UserResultsModel) => i.userId.toString()}
-            columns={
-              editable
-                ? columns
-                : columns.filter(c => c.key !== 'confirm_grade')
-            }
-            dataSource={tableData}
-            pagination={false}
-            bordered
-          />
-        </Flex>
-      )}
-    </LocaleContext.Consumer>
-  );
-};
+  ].filter(col => !omittedKeysSet.has(col.key));
+}

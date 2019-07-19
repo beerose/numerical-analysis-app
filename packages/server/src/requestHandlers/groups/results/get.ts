@@ -1,4 +1,4 @@
-import { apiMessages, GroupDTO, UserResultsDTO } from 'common';
+import { apiMessages, UserResultsDTO } from 'common';
 import codes from 'http-status-codes';
 import * as t from 'io-ts';
 
@@ -19,7 +19,6 @@ export const getResults = (
     const groupId = Number(query.group_id);
 
     db.getUsersTaskPoints({ groupId }, (err, tasksResults) => {
-      console.log('mea culpa', { tasksResults })
       if (err) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,

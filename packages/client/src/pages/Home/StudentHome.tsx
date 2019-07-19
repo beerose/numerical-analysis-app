@@ -1,6 +1,5 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
-import { Divider } from 'antd';
 import React, { useContext } from 'react';
 
 import {
@@ -25,13 +24,16 @@ export const StudentHome: React.FC<StudentHomeProps> = (
 
   return (
     <PaddingContainer>
-      <Text type="secondary" css={{ display: 'block', paddingBottom: 10 }}>
-        {texts.hello} {firstWord(user.user_name)}
-      </Text>
-      <StudentGroupsList user={user} />
-      <Divider />
-      <Heading>{texts.yourTasks}</Heading>
-      <StudentTasksTable />
+      <section>
+        <Text type="secondary" css={{ display: 'block', paddingBottom: 10 }}>
+          {texts.hello} {firstWord(user.user_name)}
+        </Text>
+        <StudentGroupsList user={user} />
+      </section>
+      <section css={{ marginTop: '2em' }}>
+        <Heading>{texts.yourTasks}</Heading>
+        <StudentTasksTable />
+      </section>
     </PaddingContainer>
   );
 };

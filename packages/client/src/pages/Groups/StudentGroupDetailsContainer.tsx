@@ -1,16 +1,74 @@
-import { Descriptions, Spin } from 'antd';
+import { Descriptions, Spin, Table } from 'antd';
+import { GroupDTO, UserDTO, UserResultsModel } from 'dist/common';
 import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
+import { ApiResponse2 } from '../../api/authFetch';
 import {
   Heading,
   LocaleContext,
   PaddingContainer,
   StudentTasksTable,
 } from '../../components';
-import { isNumberOrNumberString } from '../../utils';
+import { isNumberOrNumberString, usePromise } from '../../utils';
 
+import {
+  makeGradesSectionColumns,
+  mergedResultsToTableItem,
+  sortDirections,
+} from './sections';
 import { GroupApiContext } from './GroupApiContext';
+
+// TODO: Move this functions somewhere else
+
+type StudentGroupGradeSummaryProps = {
+  currentGroup: GroupDTO;
+  student: UserDTO;
+};
+export const StudentGroupGradeSummary: React.FC<
+  StudentGroupGradeSummaryProps
+> = ({ currentGroup, student }) => {
+  const {
+    actions: { getResults },
+  } = useContext(GroupApiContext);
+
+  const results = usePromise(
+    () =>
+      // TODO: get only student id
+      // TODO: Return only one student if logged in as student
+      getResults().then(usersResults => {
+        if (ApiResponse2.isError(usersResults)) {
+          return usersResults;
+        }
+
+        return mergedResultsToTableItem(
+          currentGroup.id,
+          student,
+          usersResults.data.find(r => Number(r.user_id) === student.id)
+        );
+      }),
+    'LOADING',
+    []
+  );
+
+  console.log({ results });
+
+  return <>{JSON.stringify(currentGroup.data!, null, 2)}</>;
+  // const columns = makeGradesSectionColumns({
+  //   currentGroup,
+  //   omittedKeys: ['confirm_grade'],
+  // });
+  // return (
+  //   <Table<UserResultsModel>
+  //     sortDirections={sortDirections}
+  //     rowKey={(i: UserResultsModel) => i.userId.toString()}
+  //     columns={columns}
+  //     dataSource={tableData}
+  //     pagination={false}
+  //     bordered
+  //   />
+  // );
+};
 
 export type StudentGroupDetailsContainerProps = RouteComponentProps<{
   id: string;
@@ -59,8 +117,10 @@ export const StudentGroupDetailsContainer: React.FC<
           {currentGroup.semester}
         </Descriptions.Item>
       </Descriptions>
-      TODO:
-      {JSON.stringify(currentGroup.data, null, 2)}
+      <section>
+        <Heading>{texts.grades}</Heading>
+        <StudentGroupGradeSummary currentGroup={currentGroup} />
+      </section>
       <section>
         <Heading>{texts.tasks}</Heading>
         <StudentTasksTable groupId={Number(groupId)} />
