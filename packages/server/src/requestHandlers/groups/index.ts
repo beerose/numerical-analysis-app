@@ -194,8 +194,8 @@ router.post(
 // results
 router.get(
   Routes.Results.Get,
-  auth.authorize(UserRole.NonStudents),
-  auth.can('read', 'groups'),
+  // Returns censored result if user is student
+  auth.authorize(UserRole.All),
   results.getResults
 );
 

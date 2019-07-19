@@ -22,7 +22,6 @@ export const getGroup = (
   handleBadRequest(GetGroupQueryV, req.query, res).then(async query => {
     const groupId = Number(query.group_id);
 
-    console.log('😀😀😀😀😀', res.locals.user);
     if (res.locals.user!.user_role === UserRole.Student) {
       const students = await listStudents(groupId);
       if (!students.find(s => s.id === res.locals.user!.id)) {

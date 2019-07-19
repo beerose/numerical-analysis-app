@@ -1,16 +1,18 @@
 import { Descriptions, Spin, Table } from 'antd';
-import { GroupDTO, UserDTO, UserResultsModel } from 'dist/common';
+import { GroupDTO, UserDTO, UserResultsModel } from 'common';
 import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { ApiResponse2 } from '../../api/authFetch';
 import {
+  Flex,
   Heading,
   LocaleContext,
   PaddingContainer,
   StudentTasksTable,
 } from '../../components';
 import { isNumberOrNumberString, usePromise } from '../../utils';
+import { useAuthStore } from '../../AuthStore';
 
 import {
   makeGradesSectionColumns,
@@ -31,11 +33,10 @@ export const StudentGroupGradeSummary: React.FC<
   const {
     actions: { getResults },
   } = useContext(GroupApiContext);
+  const user = useAuthStore(s => s.user);
 
   const results = usePromise(
     () =>
-      // TODO: get only student id
-      // TODO: Return only one student if logged in as student
       getResults().then(usersResults => {
         if (ApiResponse2.isError(usersResults)) {
           return usersResults;
@@ -43,8 +44,8 @@ export const StudentGroupGradeSummary: React.FC<
 
         return mergedResultsToTableItem(
           currentGroup.id,
-          student,
-          usersResults.data.find(r => Number(r.user_id) === student.id)
+          student, // TODO: Fetch user with groups here
+          usersResults.data[0]
         );
       }),
     'LOADING',
@@ -83,7 +84,7 @@ export const StudentGroupDetailsContainer: React.FC<
 }) => {
   const {
     currentGroup,
-    actions: { getGroup },
+    actions: { getGroup, cleanCurrentGroup },
   } = useContext(GroupApiContext);
   const { texts } = useContext(LocaleContext);
 
@@ -92,14 +93,16 @@ export const StudentGroupDetailsContainer: React.FC<
   useEffect(() => {
     if (!currentGroup) {
       getGroup(Number(groupId));
+    } else if (currentGroup.id !== Number(groupId)) {
+      cleanCurrentGroup();
     }
   }, [currentGroup]);
 
   if (!currentGroup) {
     return (
-      <PaddingContainer>
+      <Flex as={PaddingContainer} center flex={1}>
         <Spin />
-      </PaddingContainer>
+      </Flex>
     );
   }
 

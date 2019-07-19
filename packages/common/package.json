@@ -10,6 +10,7 @@
     "typescript": "^3.5.1"
   },
   "dependencies": {
-    "io-ts": "^2.0.0"
+    "io-ts": "^2.0.0",
+    "nom-ts": "^0.1.0"
   }
 }
