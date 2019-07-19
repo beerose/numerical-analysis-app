@@ -3,14 +3,13 @@ import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Button, Card, Divider, Icon, Popconfirm } from 'antd';
 import { UserDTO, UserRole } from 'common';
-import partition from 'ramda/es/partition';
+import { partition } from 'ramda';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Flex, theme } from '../../../components';
 import { Colors, LABELS, showMessage } from '../../../utils';
 import { isAlreadyPrivilegedToEdit } from '../../../utils/isPrivilegedToEdit';
-import { useAuthStore } from '../../../AuthStore';
 import { SelectLecturer } from '../components/SelectLecturer';
 import { GroupApiContextState } from '../GroupApiContext';
 
