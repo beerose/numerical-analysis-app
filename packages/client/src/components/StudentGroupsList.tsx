@@ -12,12 +12,17 @@ import { usePromise } from '../utils';
 import { Heading } from '.';
 import { LocaleContext } from './locale';
 
-type StudentGroupsListItemProps = { group: GroupDTO };
+type StudentGroupsListItemProps = { group: GroupDTO } & Pick<
+  React.ComponentProps<typeof List.Item>,
+  'className'
+>;
 const StudentGroupsListItem: React.FC<StudentGroupsListItemProps> = ({
   group,
+  className,
 }) => {
   return (
     <List.Item
+      className={className}
       css={css`
         flex-wrap: wrap;
       `}
@@ -74,7 +79,21 @@ export const StudentGroupsList: React.FC<StudentGroupsListProps> = ({
       <List
         loading={groups === 'LOADING'}
         dataSource={Array.isArray(groups) ? groups : []}
-        renderItem={group => <StudentGroupsListItem group={group} />}
+        renderItem={group => (
+          <StudentGroupsListItem
+            group={group}
+            css={css`
+              background: red;
+              border-bottom: 1px solid #e8e8e8 !important;
+            `}
+          />
+        )}
+        css={css`
+          ul.ant-list-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+          }
+        `}
       />
     </section>
   );

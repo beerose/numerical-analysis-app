@@ -1,25 +1,58 @@
 import { Descriptions, Spin, Table } from 'antd';
+import { GroupDTO, UserDTO, UserResultsModel } from 'dist/common';
 import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
-import { GroupDTO, UserResultsModel } from '../../../../../dist/common';
+import { ApiResponse2 } from '../../api/authFetch';
 import {
   Heading,
   LocaleContext,
   PaddingContainer,
   StudentTasksTable,
 } from '../../components';
-import { isNumberOrNumberString } from '../../utils';
+import { isNumberOrNumberString, usePromise } from '../../utils';
 
-import { makeGradesSectionColumns, sortDirections } from './sections';
+import {
+  makeGradesSectionColumns,
+  mergedResultsToTableItem,
+  sortDirections,
+} from './sections';
 import { GroupApiContext } from './GroupApiContext';
+
+// TODO: Move this functions somewhere else
 
 type StudentGroupGradeSummaryProps = {
   currentGroup: GroupDTO;
+  student: UserDTO;
 };
 export const StudentGroupGradeSummary: React.FC<
   StudentGroupGradeSummaryProps
-> = ({ currentGroup }) => {
+> = ({ currentGroup, student }) => {
+  const {
+    actions: { getResults },
+  } = useContext(GroupApiContext);
+
+  const results = usePromise(
+    () =>
+      // TODO: get only student id
+      // TODO: Return only one student if logged in as student
+      getResults().then(usersResults => {
+        if (ApiResponse2.isError(usersResults)) {
+          return usersResults;
+        }
+
+        return mergedResultsToTableItem(
+          currentGroup.id,
+          student,
+          usersResults.data.find(r => Number(r.user_id) === student.id)
+        );
+      }),
+    'LOADING',
+    []
+  );
+
+  console.log({ results });
+
   return <>{JSON.stringify(currentGroup.data!, null, 2)}</>;
   // const columns = makeGradesSectionColumns({
   //   currentGroup,

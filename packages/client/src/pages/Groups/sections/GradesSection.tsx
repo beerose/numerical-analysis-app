@@ -85,7 +85,7 @@ const SuggestedGrade: React.FC<GradeDisplayProps> = ({
   );
 };
 
-const mergedResultsToTableItem = (
+export const mergedResultsToTableItem = (
   groupId: GroupDTO['id'],
   student: UserWithGroups,
   results?: UserResultsDTO

@@ -337,7 +337,7 @@ export const getGrades = (taskId: TaskDTO['id']) =>
   );
 
 export const getResults = (groupId: GroupId) =>
-  authFetch<UserResultsDTO[]>(
+  authFetch2<UserResultsDTO[]>(
     `${SERVER_URL + Groups.Results.Get}?${qs.stringify({
       group_id: groupId,
     })}`
