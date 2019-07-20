@@ -3,6 +3,7 @@ import { GroupDTO } from 'common';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
+import { ApiResponse2 } from '../../../api/authFetch';
 import { DeleteWithConfirmation, Flex, theme } from '../../../components';
 import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
 import { GroupApiContextState } from '../GroupApiContext';
@@ -22,7 +23,11 @@ export const AttachedGroupsSection = (props: Props) => {
   const getAttachedGroups = async () => {
     setLoading(true);
     props.actions.getAttached().then(res => {
-      setAttached(res.groups);
+      if (ApiResponse2.isError(res)) {
+        throw res;
+      }
+
+      setAttached(res.data.groups);
       setLoading(false);
     });
   };

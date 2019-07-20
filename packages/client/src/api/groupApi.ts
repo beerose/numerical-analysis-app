@@ -20,7 +20,7 @@ import { DeepRequired } from 'utility-types';
 import { showMessage } from '../utils/showMessage';
 
 import { SERVER_URL } from '.';
-import { authFetch, authFetch2 } from './authFetch';
+import { ApiResponse2, authFetch, authFetch2 } from './authFetch';
 
 const { Groups, Grades } = ServerRoutes;
 
@@ -38,21 +38,16 @@ export const uploadUsers = async (fileContent: string, groupId: GroupId) => {
 
 export const listGroups = async (
   query?: Partial<Pick<GroupDTO, 'lecturer_id'>>
-): Promise<{ groups: GroupDTO[] }> => {
-  const options = {
-    method: 'GET',
-  };
-
-  return authFetch<{ groups: GroupDTO[] }>(
-    `${SERVER_URL}${Groups.List}?${query ? qs.stringify(query) : ''}`,
-    options
-  );
+) => {
+  return authFetch2<{ groups: GroupDTO[] }>(`${SERVER_URL}${Groups.List}`, {
+    query,
+  });
 };
 
-export const getGroup = async (groupId: GroupId): Promise<GroupDTO> =>
-  authFetch(
-    `${SERVER_URL}${Groups.Get}?${qs.stringify({ group_id: groupId })}`
-  );
+export const getGroup = async (groupId: GroupId) =>
+  authFetch2<GroupDTO>(`${SERVER_URL}${Groups.Get}`, {
+    query: { group_id: groupId },
+  });
 
 export const listStudentsWithGroup = async (groupId: GroupId) => {
   return authFetch2<{ students: UserWithGroups[] }>(
@@ -164,17 +159,12 @@ export const deleteMeeting = (id: number) => {
   });
 };
 
-export const listMeetings = (groupId: GroupId): Promise<MeetingDTO[]> => {
-  const options = {
-    method: 'GET',
-  };
-
-  return authFetch<MeetingDTO[]>(
-    `${SERVER_URL + Groups.Meetings.List}?${qs.stringify({
+export const listMeetings = (groupId: GroupId) => {
+  return authFetch2<MeetingDTO[]>(`${SERVER_URL + Groups.Meetings.List}`, {
+    query: {
       group_id: groupId,
-    })}`,
-    options
-  );
+    },
+  });
 };
 
 export const deleteGroup = async (groupId: GroupId) => {
@@ -195,20 +185,25 @@ export const getMeetingsDetails = (
     method: 'GET',
   };
 
-  return authFetch<{ details: MeetingDetailsModel[] }>(
-    `${SERVER_URL + Groups.Meetings.Details}?${qs.stringify({
-      group_id: groupId,
-    })}`,
-    options
-  ).then(res =>
-    res.details.map(item => ({
+  return authFetch2<{ details: MeetingDetailsModel[] }>(
+    `${SERVER_URL + Groups.Meetings.Details}`,
+    {
+      query: {
+        group_id: groupId,
+      },
+    }
+  ).then(res => {
+    if (ApiResponse2.isError(res)) {
+      throw res;
+    }
+    return res.data.details.map(item => ({
       data: {
         activities: item.data.activities,
         presences: new Set(item.data.presences),
       },
       student: item.student,
-    }))
-  );
+    }));
+  });
 };
 
 export const addPresence = (studentId: UserId, meetingId: MeetingDTO['id']) => {
@@ -271,12 +266,11 @@ export const setActivity = (
 };
 
 export const listTasks = (groupId?: GroupId) =>
-  authFetch<{ tasks: TaskDTO[] }>(
-    `${SERVER_URL + Groups.Tasks.List}?${groupId &&
-      qs.stringify({
-        group_id: groupId,
-      })}`
-  );
+  authFetch2<{ tasks: TaskDTO[] }>(SERVER_URL + Groups.Tasks.List, {
+    query: {
+      group_id: groupId,
+    },
+  });
 
 export const deleteTaskFromGroup = (
   groupId: GroupId,
@@ -301,12 +295,12 @@ export const createTask = (task: Omit<TaskDTO, 'id'>, groupId: GroupId) => {
 };
 
 export const getTask = (taskId: TaskDTO['id'], groupId: GroupId) =>
-  authFetch<{ task: TaskDTO }>(
-    `${SERVER_URL + Groups.Tasks.Get}?${qs.stringify({
+  authFetch2<{ task: TaskDTO }>(SERVER_URL + Groups.Tasks.Get, {
+    query: {
       group_id: groupId,
       task_id: taskId,
-    })}`
-  );
+    },
+  });
 
 export const updateTask = (task: TaskDTO, groupId: GroupId) =>
   authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Update, {
@@ -325,18 +319,18 @@ export const setTaskPoints = (
   });
 
 export const getGrades = (taskId: TaskDTO['id']) =>
-  authFetch<{ grades: UserTaskPoints[] }>(
-    `${SERVER_URL + Grades}?${qs.stringify({
+  authFetch2<{ grades: UserTaskPoints[] }>(SERVER_URL + Grades, {
+    query: {
       task_id: taskId,
-    })}`
-  );
+    },
+  });
 
 export const getResults = (groupId: GroupId) =>
-  authFetch2<UserResultsDTO[]>(
-    `${SERVER_URL + Groups.Results.Get}?${qs.stringify({
+  authFetch2<UserResultsDTO[]>(SERVER_URL + Groups.Results.Get, {
+    query: {
       group_id: groupId,
-    })}`
-  );
+    },
+  });
 
 export const setFinalGrade = (
   groupId: GroupId,
@@ -349,11 +343,11 @@ export const setFinalGrade = (
   });
 
 export const getAttached = (groupId: GroupId) =>
-  authFetch<{ groups: GroupDTO[] }>(
-    `${SERVER_URL + Groups.GetAttached}?${qs.stringify({
+  authFetch2<{ groups: GroupDTO[] }>(`${SERVER_URL + Groups.GetAttached}}`, {
+    query: {
       group_id: groupId,
-    })}`
-  );
+    },
+  });
 
 export const attachGroup = (groupId: GroupId, parentGroupId: GroupId) =>
   authFetch(SERVER_URL + Groups.Attach, {

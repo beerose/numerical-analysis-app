@@ -23,21 +23,17 @@ export const listUsers = async ({
   roles?: string[] | string;
   currentPage?: number;
   limit?: boolean;
-}): Promise<{ users: UserDTO[]; total: string }> => {
-  const options: RequestInit = {
-    method: 'GET',
-  };
-
-  const queryParams = qs.stringify({
-    roles,
-    limit: limit ? LIMIT : undefined,
-    offset: limit ? (currentPage - 1) * LIMIT : undefined,
-    search_param: searchParam,
-  });
-
-  return authFetch<{ users: UserDTO[]; total: string }>(
-    `${SERVER_URL}${Users.List}?${queryParams}`,
-    options
+}) => {
+  return authFetch2<{ users: UserDTO[]; total: string }>(
+    `${SERVER_URL}${Users.List}`,
+    {
+      query: {
+        roles,
+        limit: limit ? LIMIT : undefined,
+        offset: limit ? (currentPage - 1) * LIMIT : undefined,
+        search_param: searchParam,
+      },
+    }
   );
 };
 

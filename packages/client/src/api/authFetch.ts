@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie';
-import * as qs from 'query-string';
+import * as qss from 'qss';
 
 import { ApiResponse } from '../../../../dist/common';
 
@@ -88,7 +88,7 @@ interface AuthFetch2Options extends RequestInit {
 
 export function authFetch2<T>(
   url: string,
-  options: RequestInit & { query?: Record<string, unknown> } = {}
+  options: AuthFetch2Options = {}
 ): Promise<ApiResponse2<T>> {
   let token = '';
   if (!(options.headers && 'Authorization' in options.headers)) {
@@ -107,7 +107,7 @@ export function authFetch2<T>(
 
   if (options.query) {
     // tslint:disable-next-line:no-parameter-reassignment
-    url += '?' + qs.stringify(options.query);
+    url += '?' + qss.encode(options.query);
   }
 
   return fetch(url, options).then(async res => {
