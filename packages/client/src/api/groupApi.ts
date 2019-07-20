@@ -285,10 +285,10 @@ export const deleteTaskFromGroup = (
 };
 
 export const createTask = (task: Omit<TaskDTO, 'id'>, groupId: GroupId) => {
-  return authFetch<{ task_id: number } & ApiResponse>(
+  return authFetch2<{ task_id: number } & ApiResponse>(
     SERVER_URL + Groups.Tasks.Create,
     {
-      body: JSON.stringify({ ...task, group_id: groupId }),
+      body: { ...task, group_id: groupId },
       method: 'POST',
     }
   );

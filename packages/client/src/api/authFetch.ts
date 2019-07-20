@@ -1,7 +1,16 @@
 import Cookies from 'js-cookie';
+import { isPlainObject as lodashIsPlainObject } from 'lodash';
 import * as qss from 'qss';
+import { Primitive } from 'utility-types';
 
 import { ApiResponse } from '../../../../dist/common';
+
+type Json = Primitive | JsonArray | JsonObject;
+interface JsonArray extends Array<Json> {}
+interface JsonObject extends Record<string | number, Json> {}
+
+type PlainObject = JsonObject;
+const isPlainObject = lodashIsPlainObject as (x: unknown) => x is PlainObject;
 
 /**
  * @deprecated
@@ -82,8 +91,9 @@ export namespace ApiResponse2 {
 
 export type ApiResponse2<T> = ApiResponse2.Success<T> | ApiResponse2.Error;
 
-interface AuthFetch2Options extends RequestInit {
+interface AuthFetch2Options extends Omit<RequestInit, 'body'> {
   query?: Record<string, unknown>;
+  body?: RequestInit['body'] | PlainObject;
 }
 
 export function authFetch2<T>(
@@ -98,7 +108,8 @@ export function authFetch2<T>(
     }
   }
 
-  options.headers = {
+  const opts: RequestInit = {};
+  opts.headers = {
     Accept: 'application/json, text/plain, */*',
     Authorization: `Bearer ${token}`,
     'Content-Type': 'application/json',
@@ -110,7 +121,11 @@ export function authFetch2<T>(
     url += '?' + qss.encode(options.query);
   }
 
-  return fetch(url, options).then(async res => {
+  opts.body = isPlainObject(options.body)
+    ? JSON.stringify(options.body)
+    : options.body;
+
+  return fetch(url, opts).then(async res => {
     const json = await res.json();
     return json.error
       ? {
