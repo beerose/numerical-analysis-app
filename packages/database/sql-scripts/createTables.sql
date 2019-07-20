@@ -65,6 +65,8 @@ CREATE TABLE `tasks` (
   `verify_upload` tinyint(1) NOT NULL DEFAULT '1',
   `start_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `end_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `start_vote_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+  `end_vote_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `data` json DEFAULT NULL,
@@ -114,13 +116,13 @@ CREATE TABLE `user_has_points` (
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `active_user` int(1) GENERATED ALWAYS AS (if(isnull(`password`),0,1)) VIRTUAL,
-  `privileges` json DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci UNIQUE NOT NULL,
   `user_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_unicode_ci UNIQUE NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `student_index` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT '',
+  `privileges` json DEFAULT NULL,
   `user_role` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `active_user` int(1) GENERATED ALWAYS AS (if(isnull(`password`),0,1)) VIRTUAL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),

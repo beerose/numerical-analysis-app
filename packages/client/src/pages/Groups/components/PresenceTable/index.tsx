@@ -57,7 +57,6 @@ export type PresenceTableProps = {
 };
 export class PresenceTable extends React.Component<PresenceTableProps> {
   // TODO: Move this logic into GroupApiContextProvider and remove PresenceTableContext
-  // Issue link: https://www.notion.so/mylifeasoctopus/Remove-PresenceTableStateContext-and-move-logic-from-PresenceTable-up-to-GroupApiContext-Create-batch-presence-update-endpoints-click-for-more-info-4ceeaae14bf740259cf1cdf7e8d0ac78
   handleChange: PresenceAndActivityChangeHandler = data => {
     const {
       meetingsDetails,

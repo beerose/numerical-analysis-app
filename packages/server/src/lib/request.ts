@@ -42,7 +42,8 @@ export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
     const result = decoder.decode(payload);
     fold(_err => {
       response.status(codes.BAD_REQUEST).send({
-        error: 'Bad request: ' + PathReporter.report(result).join('\n'),
+        error: 'Bad request',
+        error_details: PathReporter.report(result).join('\n'),
       });
     }, resolve)(result);
   });

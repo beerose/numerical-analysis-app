@@ -12,7 +12,6 @@ import { GroupDTO, Tresholds } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
 import { theme } from '../../../components/theme';
 import { LABELS, useMergeKey, useMergeState } from '../../../utils';
-import { isUserPrivileged } from '../../../utils/isUserPrivileged';
 import { GradeEquationInput } from '../components/GradeEquationInput';
 import {
   GradeTresholdsList,
@@ -112,11 +111,12 @@ const SettingsSectionInternal: React.FC<Props> = ({
           .updateGroup({
             ...antFormValues,
             data: groupDataState,
-            id: group.id,
             prev_lecturer_id: group.lecturer_id,
           })
-          .then(() => {
-            actions.getGroup(group.id);
+          .then(res => {
+            if ('error' in res) {
+              actions.getGroup();
+            }
           });
       });
     },

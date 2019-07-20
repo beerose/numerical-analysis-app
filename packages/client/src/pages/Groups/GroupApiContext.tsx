@@ -114,8 +114,16 @@ export class GroupApiProvider extends React.Component<
       });
   };
 
-  updateGroup = (group: groupsService.UpdateGroupPayload) => {
-    return groupsService.updateGroup(group).then(showMessage);
+  updateGroup = (group: Omit<groupsService.UpdateGroupPayload, 'id'>) => {
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    return groupsService
+      .updateGroup({ ...group, id: this.state.currentGroup.id })
+      .then(res => {
+        showMessage(res);
+        return res;
+      });
   };
 
   listLecturers = () =>
@@ -236,7 +244,7 @@ export class GroupApiProvider extends React.Component<
     this.setState({ isLoading: true });
     const {
       currentGroup: { id: groupId },
-    } = this.state; 
+    } = this.state;
     /**
      * TODO: Stop sending all students with groups
      * Stop filtering here
