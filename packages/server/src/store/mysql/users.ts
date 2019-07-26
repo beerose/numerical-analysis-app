@@ -326,26 +326,8 @@ export const getStudentsTasks = (
 
 type StringifiedGroupData = { group_ids: string; groups_grades: string };
 
-export const listUsersWithGroup = (
-  groupId: GroupId,
-  callback: QueryCallback<Array<UserDTO & StringifiedGroupData>>
-) =>
-  connection.query(
-    sql`
-      SELECT
-        DISTINCT id, user_name, email, student_index, GROUP_CONCAT(group_id) as group_ids,
-        concat('[', GROUP_CONCAT(JSON_OBJECT('group_id', group_id, 'grade', grade) SEPARATOR ','), ']') AS groups_grades
-      FROM
-        users AS u
-      LEFT JOIN user_belongs_to_group AS ug
-      ON (u.id = ug.user_id)
-      WHERE user_role = "student" AND ug.group_id = ${groupId}
-      GROUP BY u.id;
-    `,
-    callback
-  );
-
 /**
+ * TODO:
  * This is kinda ugly and does redundant things (like group by when we know id already)
  */
 export const getStudentWithGroup = (
