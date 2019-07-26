@@ -1,4 +1,4 @@
 [build]
   base = "/"
-  command = "npm i yarn && yarn && yarn workspace client build"
+  command = "npm i yarn && yarn && yarn build-client"
   publish = "dist/client"
