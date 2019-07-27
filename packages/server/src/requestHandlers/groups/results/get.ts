@@ -1,4 +1,4 @@
-import { apiMessages, UserResultsDTO } from 'common';
+import { apiMessages, UserResultsDTO, UserRole } from 'common';
 import codes from 'http-status-codes';
 import * as t from 'io-ts';
 
@@ -17,8 +17,17 @@ export const getResults = (
 ) => {
   handleBadRequest(GetResultsQueryV, req.query, res).then(query => {
     const groupId = Number(query.group_id);
+    const user = res.locals.user;
 
-    db.getUsersTaskPoints({ groupId }, (err, tasksResults) => {
+    if (!user) {
+      res.status(codes.UNAUTHORIZED).send({
+        error: apiMessages.invalidRequest,
+      });
+      return;
+    }
+    const userId = user.user_role === UserRole.Student ? user.id : undefined;
+
+    db.getUsersTaskPoints({ groupId, userId }, (err, tasksResults) => {
       if (err) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,

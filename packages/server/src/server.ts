@@ -4,6 +4,7 @@ import express from 'express';
 import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 
+import { enhanceResponse } from './middleware/auth/enhanceResponse';
 import * as requestHandlers from './requestHandlers';
 import { connectToDb, disconnectFromDb } from './store/connection';
 
@@ -16,6 +17,7 @@ if (process.env.NODE_ENV !== 'test') {
   morganBody(app);
 }
 
+app.use(enhanceResponse);
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

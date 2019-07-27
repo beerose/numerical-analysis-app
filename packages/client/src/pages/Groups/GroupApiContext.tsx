@@ -140,8 +140,10 @@ export class GroupApiProvider extends React.Component<
     if ('error' in res) {
       showMessage(res);
       this.props.history.push('/groups/');
+    } else {
+      this.setState({ currentGroup: res.data });
     }
-    this.setState({ currentGroup: res });
+
     return res;
   };
 
@@ -150,7 +152,10 @@ export class GroupApiProvider extends React.Component<
     groupsService
       .listGroups(query)
       .then(res => {
-        this.setState({ groups: res.groups, isLoading: false });
+        if (ApiResponse2.isError(res)) {
+          throw res;
+        }
+        this.setState({ groups: res.data.groups, isLoading: false });
       })
       .catch(error => this.setState({ error, isLoading: false }));
   };
@@ -188,8 +193,12 @@ export class GroupApiProvider extends React.Component<
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
-    groupsService.listMeetings(this.state.currentGroup.id).then(meetings => {
-      this.setState({ meetings });
+    groupsService.listMeetings(this.state.currentGroup.id).then(res => {
+      if (ApiResponse2.isError(res)) {
+        throw res;
+      }
+
+      this.setState({ meetings: res.data });
     });
   };
 

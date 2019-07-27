@@ -8,6 +8,7 @@ import {
   StudentTasksSummary,
   TaskDTO,
   UserDTO,
+  UserId,
   UserResultsDTO,
   UserTaskPoints,
   UserWithGroups,
@@ -19,7 +20,7 @@ import { DeepRequired } from 'utility-types';
 import { showMessage } from '../utils/showMessage';
 
 import { SERVER_URL } from '.';
-import { authFetch, authFetch2 } from './authFetch';
+import { ApiResponse2, authFetch, authFetch2 } from './authFetch';
 
 const { Groups, Grades } = ServerRoutes;
 
@@ -37,21 +38,16 @@ export const uploadUsers = async (fileContent: string, groupId: GroupId) => {
 
 export const listGroups = async (
   query?: Partial<Pick<GroupDTO, 'lecturer_id'>>
-): Promise<{ groups: GroupDTO[] }> => {
-  const options = {
-    method: 'GET',
-  };
-
-  return authFetch<{ groups: GroupDTO[] }>(
-    `${SERVER_URL}${Groups.List}?${query ? qs.stringify(query) : ''}`,
-    options
-  );
+) => {
+  return authFetch2<{ groups: GroupDTO[] }>(`${SERVER_URL}${Groups.List}`, {
+    query,
+  });
 };
 
-export const getGroup = async (groupId: GroupId): Promise<GroupDTO> =>
-  authFetch(
-    `${SERVER_URL}${Groups.Get}?${qs.stringify({ group_id: groupId })}`
-  );
+export const getGroup = async (groupId: GroupId) =>
+  authFetch2<GroupDTO>(`${SERVER_URL}${Groups.Get}`, {
+    query: { group_id: groupId },
+  });
 
 export const listStudentsWithGroup = async (groupId: GroupId) => {
   return authFetch2<{ students: UserWithGroups[] }>(
@@ -62,10 +58,7 @@ export const listStudentsWithGroup = async (groupId: GroupId) => {
   );
 };
 
-export const deleteUserFromGroup = async (
-  userId: UserDTO['id'],
-  groupId: GroupId
-) => {
+export const deleteUserFromGroup = async (userId: UserId, groupId: GroupId) => {
   const options = {
     body: JSON.stringify({ user_id: userId, group_id: groupId }),
     method: 'DELETE',
@@ -107,7 +100,7 @@ export const addGroup = (
 };
 
 export type UpdateGroupPayload = Omit<GroupDTO, 'data' | 'lecturer_name'> &
-  Pick<DeepRequired<GroupDTO>, 'data'> & { prev_lecturer_id: UserDTO['id'] };
+  Pick<DeepRequired<GroupDTO>, 'data'> & { prev_lecturer_id: UserId };
 
 export const updateGroup = (group: UpdateGroupPayload) => {
   return authFetch<ApiResponse>(SERVER_URL + Groups.Update, {
@@ -166,17 +159,12 @@ export const deleteMeeting = (id: number) => {
   });
 };
 
-export const listMeetings = (groupId: GroupId): Promise<MeetingDTO[]> => {
-  const options = {
-    method: 'GET',
-  };
-
-  return authFetch<MeetingDTO[]>(
-    `${SERVER_URL + Groups.Meetings.List}?${qs.stringify({
+export const listMeetings = (groupId: GroupId) => {
+  return authFetch2<MeetingDTO[]>(`${SERVER_URL + Groups.Meetings.List}`, {
+    query: {
       group_id: groupId,
-    })}`,
-    options
-  );
+    },
+  });
 };
 
 export const deleteGroup = async (groupId: GroupId) => {
@@ -197,26 +185,28 @@ export const getMeetingsDetails = (
     method: 'GET',
   };
 
-  return authFetch<{ details: MeetingDetailsModel[] }>(
-    `${SERVER_URL + Groups.Meetings.Details}?${qs.stringify({
-      group_id: groupId,
-    })}`,
-    options
-  ).then(res =>
-    res.details.map(item => ({
+  return authFetch2<{ details: MeetingDetailsModel[] }>(
+    `${SERVER_URL + Groups.Meetings.Details}`,
+    {
+      query: {
+        group_id: groupId,
+      },
+    }
+  ).then(res => {
+    if (ApiResponse2.isError(res)) {
+      throw res;
+    }
+    return res.data.details.map(item => ({
       data: {
         activities: item.data.activities,
         presences: new Set(item.data.presences),
       },
       student: item.student,
-    }))
-  );
+    }));
+  });
 };
 
-export const addPresence = (
-  studentId: UserDTO['id'],
-  meetingId: MeetingDTO['id']
-) => {
+export const addPresence = (studentId: UserId, meetingId: MeetingDTO['id']) => {
   const options = {
     body: JSON.stringify({ student_id: studentId, meeting_id: meetingId }),
     method: 'POST',
@@ -232,7 +222,7 @@ export const addPresence = (
 };
 
 export const deletePresence = (
-  studentId: UserDTO['id'],
+  studentId: UserId,
   meetingId: MeetingDTO['id']
 ) => {
   const options = {
@@ -253,7 +243,7 @@ export const deletePresence = (
 };
 
 export const setActivity = (
-  studentId: UserDTO['id'],
+  studentId: UserId,
   meetingId: MeetingDTO['id'],
   points: number
 ) => {
@@ -276,12 +266,11 @@ export const setActivity = (
 };
 
 export const listTasks = (groupId?: GroupId) =>
-  authFetch<{ tasks: TaskDTO[] }>(
-    `${SERVER_URL + Groups.Tasks.List}?${groupId &&
-      qs.stringify({
-        group_id: groupId,
-      })}`
-  );
+  authFetch2<{ tasks: TaskDTO[] }>(SERVER_URL + Groups.Tasks.List, {
+    query: {
+      group_id: groupId,
+    },
+  });
 
 export const deleteTaskFromGroup = (
   groupId: GroupId,
@@ -296,22 +285,22 @@ export const deleteTaskFromGroup = (
 };
 
 export const createTask = (task: Omit<TaskDTO, 'id'>, groupId: GroupId) => {
-  return authFetch<{ task_id: number } & ApiResponse>(
+  return authFetch2<{ task_id: number } & ApiResponse>(
     SERVER_URL + Groups.Tasks.Create,
     {
-      body: JSON.stringify({ ...task, group_id: groupId }),
+      body: { ...task, group_id: groupId },
       method: 'POST',
     }
   );
 };
 
 export const getTask = (taskId: TaskDTO['id'], groupId: GroupId) =>
-  authFetch<{ task: TaskDTO }>(
-    `${SERVER_URL + Groups.Tasks.Get}?${qs.stringify({
+  authFetch2<{ task: TaskDTO }>(SERVER_URL + Groups.Tasks.Get, {
+    query: {
       group_id: groupId,
       task_id: taskId,
-    })}`
-  );
+    },
+  });
 
 export const updateTask = (task: TaskDTO, groupId: GroupId) =>
   authFetch<ApiResponse>(SERVER_URL + Groups.Tasks.Update, {
@@ -321,7 +310,7 @@ export const updateTask = (task: TaskDTO, groupId: GroupId) =>
 
 export const setTaskPoints = (
   taskId: TaskDTO['id'],
-  userId: UserDTO['id'],
+  userId: UserId,
   points: number
 ) =>
   authFetch<ApiResponse>(SERVER_URL + Grades, {
@@ -330,22 +319,22 @@ export const setTaskPoints = (
   });
 
 export const getGrades = (taskId: TaskDTO['id']) =>
-  authFetch<{ grades: UserTaskPoints[] }>(
-    `${SERVER_URL + Grades}?${qs.stringify({
+  authFetch2<{ grades: UserTaskPoints[] }>(SERVER_URL + Grades, {
+    query: {
       task_id: taskId,
-    })}`
-  );
+    },
+  });
 
 export const getResults = (groupId: GroupId) =>
-  authFetch2<UserResultsDTO[]>(
-    `${SERVER_URL + Groups.Results.Get}?${qs.stringify({
+  authFetch2<UserResultsDTO[]>(SERVER_URL + Groups.Results.Get, {
+    query: {
       group_id: groupId,
-    })}`
-  );
+    },
+  });
 
 export const setFinalGrade = (
   groupId: GroupId,
-  userId: UserDTO['id'],
+  userId: UserId,
   grade: number
 ) =>
   authFetch<ApiResponse>(SERVER_URL + Groups.Results.SetFinal, {
@@ -354,11 +343,11 @@ export const setFinalGrade = (
   });
 
 export const getAttached = (groupId: GroupId) =>
-  authFetch<{ groups: GroupDTO[] }>(
-    `${SERVER_URL + Groups.GetAttached}?${qs.stringify({
+  authFetch2<{ groups: GroupDTO[] }>(`${SERVER_URL + Groups.GetAttached}}`, {
+    query: {
       group_id: groupId,
-    })}`
-  );
+    },
+  });
 
 export const attachGroup = (groupId: GroupId, parentGroupId: GroupId) =>
   authFetch(SERVER_URL + Groups.Attach, {
@@ -382,13 +371,13 @@ export const attachTask = (
     method: 'POST',
   });
 
-export const shareForEdit = (groupId: GroupId, userId: UserDTO['id']) =>
+export const shareForEdit = (groupId: GroupId, userId: UserId) =>
   authFetch(SERVER_URL + Groups.ShareForEdit, {
     body: JSON.stringify({ group_id: groupId, user_id: userId }),
     method: 'POST',
   });
 
-export const unshareForEdit = (groupId: GroupId, userId: UserDTO['id']) =>
+export const unshareForEdit = (groupId: GroupId, userId: UserId) =>
   authFetch(SERVER_URL + Groups.UnshareForEdit, {
     body: JSON.stringify({ group_id: groupId, user_id: userId }),
     method: 'POST',
@@ -398,17 +387,23 @@ export const unshareForEdit = (groupId: GroupId, userId: UserDTO['id']) =>
  * Calls for student's part of the app
  */
 
-export const getStudentGroups = (userId: UserDTO['id']) =>
+export const getStudentGroups = (userId: UserId) =>
   authFetch2<{ groups: GroupDTO[] }>(
     SERVER_URL + ServerRoutes.Users.Student.Groups(userId)
   );
 
-export const getStudentTasksSummary = (
-  userId: UserDTO['id'],
-  groupId?: GroupId
-) =>
+export const getStudentTasksSummary = (userId: UserId, groupId?: GroupId) =>
   authFetch2<{ tasksSummary: StudentTasksSummary }>(
     SERVER_URL + ServerRoutes.Users.Student.Tasks(userId),
+    {
+      query: { groupId },
+    }
+  );
+
+// TODO: Add this to GroupApiContext and use it.
+export const getStudentWithGroupGrade = (userId: UserId, groupId?: GroupId) =>
+  authFetch2<{ studentWithGroup: UserWithGroups }>(
+    SERVER_URL + ServerRoutes.Users.Student.GroupGrade(userId),
     {
       query: { groupId },
     }

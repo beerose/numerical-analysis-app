@@ -1,4 +1,4 @@
-import { UserDTO } from './api';
+import { UserId } from './domain';
 
 export const ServerRoutes = {
   Accounts: {
@@ -53,15 +53,15 @@ export const ServerRoutes = {
   Users: {
     Create: '/users/create',
     Delete: '/users/delete',
-    Get: (userId: UserDTO['id'] | ':id') => `/users/${userId}`,
+    Get: (userId: UserId | ':id') => `/users/${userId}`,
     List: '/users',
     Student: {
-      Groups: (userId: UserDTO['id'] | ':id') =>
-        `/users/${userId}/student.groups`,
-      Results: (userId: UserDTO['id'] | ':id') =>
-        `/users/${userId}/student.results`,
-      Tasks: (userId: UserDTO['id'] | ':id') =>
-        `/users/${userId}/student.tasks`,
+      // TODO: Make Student a fuction -- it will resemble routes better
+      Groups: (userId: UserId | ':id') => `/users/${userId}/student.groups`,
+      Results: (userId: UserId | ':id') => `/users/${userId}/student.results`,
+      Tasks: (userId: UserId | ':id') => `/users/${userId}/student.tasks`,
+      GroupGrade: (userId: UserId | ':id') =>
+        `/users/${userId}/student.groupGrade`,
     },
     Update: '/users/update',
   },

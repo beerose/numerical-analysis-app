@@ -1,4 +1,4 @@
-import { UserDTO, UserPrivileges, UserRole } from 'common';
+import { GroupId, UserDTO, UserPrivileges, UserRole } from 'common';
 import { NextFunction, Request, Response } from 'express';
 import * as codes from 'http-status-codes';
 
@@ -54,12 +54,12 @@ export const can = (what: UserPrivileges.What, where: UserPrivileges.Where) => (
   return next();
 };
 
-export const extractGroupId = (req: Request): number | null => {
+export const extractGroupId = (req: Request) => {
   if (req.body && req.body.group_id) {
-    return Number(req.body.group_id);
+    return GroupId(Number(req.body.group_id));
   }
   if (req.query && req.query.group_id) {
-    return Number(req.query.group_id);
+    return GroupId(Number(req.query.group_id));
   }
   return null;
 };

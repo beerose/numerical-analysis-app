@@ -1,6 +1,5 @@
 import { apiMessages, UserDTO, UserRole } from 'common';
-import { NextFunction } from 'connect';
-import { Request, Response } from 'express';
+import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { Either, fold, left, right } from 'fp-ts/lib/Either';
 import * as codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
@@ -42,7 +41,7 @@ const decodeJwtUserToken = (
   return fail('invalid jwt format');
 };
 
-export const authorize = (roles: UserRole[]) => (
+export const authorize = (roles: UserRole[]): RequestHandler => (
   req: Request,
   res: Response,
   next: NextFunction

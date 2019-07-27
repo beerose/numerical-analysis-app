@@ -30,12 +30,12 @@ router.get(
   student.groups
 );
 router.get(
-  Routes.Student.Results(':id'),
-  auth.authorize([UserRole.Student, UserRole.SuperUser, UserRole.Admin]),
-  student.results
-);
-router.get(
   Routes.Student.Tasks(':id'),
   auth.authorize([UserRole.Student, UserRole.SuperUser, UserRole.Admin]),
   student.tasksSummary
+);
+router.get(
+  Routes.Student.GroupGrade(':id'),
+  auth.authorize(UserRole.All),
+  student.getStudentWithGroup
 );

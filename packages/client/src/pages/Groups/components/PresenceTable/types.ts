@@ -1,11 +1,15 @@
-import { MeetingDetailsModel, MeetingDTO, Student, UserDTO } from 'common';
+import {
+  MeetingDetailsModel,
+  MeetingDTO,
+  Student,
+  StudentActivities,
+} from 'common';
 
 export type MeetingId = MeetingDTO['id'];
 
 export type BoxedStudent = { student: Student };
 
 export type StudentPresences = Set<MeetingId>;
-export type StudentActivities = Record<MeetingId, number>;
 export type BoxedPresences = { data: StudentPresences };
 export type BoxedActivities = { data: StudentActivities };
 

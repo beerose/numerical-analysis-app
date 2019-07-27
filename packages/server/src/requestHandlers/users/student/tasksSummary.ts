@@ -34,11 +34,9 @@ export const tasksSummary = (
       { userId: req.params.id, groupId: req.query.groupId },
       (dbErr, dbRes) => {
         if (dbErr) {
-          return res.status(codes.INTERNAL_SERVER_ERROR).send({
-            error: apiMessages.internalError,
-            error_details: dbErr.message,
-          });
+          return res.internalError(dbErr);
         }
+
         return res.status(codes.OK).send({
           tasksSummary: dbRes,
         });

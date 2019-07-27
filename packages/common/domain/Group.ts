@@ -1,10 +1,11 @@
 import * as t from 'io-ts';
+import { Flavor } from 'nom-ts';
 import { isNumber, isString } from 'util';
 
-import { UserDTO } from '../api';
 import { Typeguard } from '../utils';
 
 import { Tresholds } from './Tresholds';
+import { UserDTO, UserId } from './User';
 
 export enum GroupType {
   Lab = 'lab',
@@ -27,17 +28,18 @@ export const groupTypeRuntimeType = new t.Type(
   t.identity
 );
 
+export type GroupId = Flavor<number, 'GroupId'>;
+export const GroupId = (x: number) => x as GroupId;
+
 export type GroupDTO = {
-  id: number;
+  id: GroupId;
   group_name: string;
   group_type: GroupType;
-  lecturer_id: UserDTO['id'];
+  lecturer_id: UserId;
   lecturer_name?: string;
   semester?: string;
   data?: GroupGradeSettings;
 };
-
-export type GroupId = GroupDTO['id'];
 
 const isGroupId: Typeguard<GroupId> = isNumber;
 export const groupIdRuntimeType = new t.Type(
