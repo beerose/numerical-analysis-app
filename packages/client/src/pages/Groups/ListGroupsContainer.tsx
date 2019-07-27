@@ -73,7 +73,6 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
     []
   );
 
-  // TODO: Add a way to clear selected lecturer
   // TODO: Hold this state in URL searchParams
   const [selectedLecturer, selectLecturer] = useState();
 

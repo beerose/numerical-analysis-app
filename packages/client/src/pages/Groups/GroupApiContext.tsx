@@ -40,9 +40,6 @@ type StateValues = {
   currentGroup?: GroupDTO;
   currentTask?: TaskDTO;
   isLoading: boolean;
-  /**
-   * TODO: Check if it works properly
-   */
   error?: ApiResponse2.Error | Error;
   lecturers?: UserDTO[];
   currentGroupStudents?: UserWithGroups[];

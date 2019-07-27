@@ -1,11 +1,11 @@
 // tslint:disable: object-literal-sort-keys
 import { UserDTO } from 'common';
+import * as zustandDevtools from 'simple-zustand-devtools';
 import createStore, { SetState } from 'zustand';
 
 import * as authService from './api/authApi';
 import { userInCookies } from './userInCookies';
 import { showMessage } from './utils';
-import * as zustandDevtools from './utils/zustandDevtools';
 
 const hoursFromNow = (expirationHours: number) => {
   const now = new Date();
@@ -125,5 +125,5 @@ export const [useAuthStore, authStore] = createStore((
 export type AuthStoreState = ReturnType<typeof authStore.getState>;
 
 if (process.env.NODE_ENV === 'development') {
-  zustandDevtools.mountStoreSinkDevtool('AuthStore', authStore);
+  zustandDevtools.mountStoreDevtool('AuthStore', authStore);
 }
