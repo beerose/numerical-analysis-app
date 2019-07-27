@@ -127,8 +127,11 @@ export class GroupApiProvider extends React.Component<
     usersService
       .listUsers({ roles: [UserRole.SuperUser, UserRole.Admin] })
       .then(res => {
-        this.setState({ lecturers: res.users });
-        return res.users;
+        if (ApiResponse2.isError(res)) {
+          throw res;
+        }
+        this.setState({ lecturers: res.data.users });
+        return res.data.users;
       });
 
   getGroup = async (groupId?: GroupDTO['id']) => {
@@ -344,7 +347,9 @@ export class GroupApiProvider extends React.Component<
     const taskId = Number(this.props.location.pathname.split('/')[4]);
     this.setState({ isLoading: true });
     const res = await groupsService.getTask(taskId, this.state.currentGroup.id);
-    this.setState({ currentTask: res.task, isLoading: false });
+    if ('data' in res) {
+      this.setState({ currentTask: res.data.task, isLoading: false });
+    }
     return res;
   };
 
@@ -375,7 +380,11 @@ export class GroupApiProvider extends React.Component<
 
   getGrades = async (taskId: TaskDTO['id']) => {
     const res = await groupsService.getGrades(taskId);
-    return res.grades;
+    if (ApiResponse2.isError(res)) {
+      showMessage({ error: res.error });
+      return;
+    }
+    return res.data.grades;
   };
 
   getResults = () => {
