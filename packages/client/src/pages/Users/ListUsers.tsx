@@ -8,6 +8,7 @@ import { UserDTO } from 'common';
 import React from 'react';
 
 import { usersService } from '../../api';
+import { ApiResponse2 } from '../../api/authFetch';
 import {
   Breadcrumbs,
   ErrorMessage,
@@ -80,11 +81,14 @@ export class ListUsersContainer extends React.Component<{}, State> {
         roles: searchRoles,
         searchParam: searchValue,
       })
-      .then(({ users, total }) => {
+      .then(res => {
+        if (ApiResponse2.isError(res)) {
+          throw res;
+        }
         this.setState({
-          users,
           isLoading: false,
-          total: parseInt(total, 10),
+          total: parseInt(res.data.total, 10),
+          users: res.data.users,
         });
       })
       .catch(error => this.setState({ error, isLoading: false }));
