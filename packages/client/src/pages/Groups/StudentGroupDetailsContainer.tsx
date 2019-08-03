@@ -1,5 +1,5 @@
 import { Descriptions, Spin, Table } from 'antd';
-import { GroupDTO, UserDTO, UserResultsModel } from 'common';
+import { GroupDTO, UserDTO, UserResultsModel, UserWithGroups } from 'common';
 import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
@@ -12,6 +12,7 @@ import {
   StudentTasksTable,
 } from '../../components';
 import { isNumberOrNumberString, usePromise } from '../../utils';
+import { assertDefined } from '../../utils/assertDefined';
 import { useAuthStore } from '../../AuthStore';
 
 import { mergedResultsToTableItem } from './sections';
@@ -21,7 +22,7 @@ import { GroupApiContext } from './GroupApiContext';
 
 type StudentGroupGradeSummaryProps = {
   currentGroup: GroupDTO;
-  student: UserDTO;
+  student: UserWithGroups;
 };
 export const StudentGroupGradeSummary: React.FC<
   StudentGroupGradeSummaryProps
@@ -74,32 +75,48 @@ export const StudentGroupDetailsContainer: React.FC<
   StudentGroupDetailsContainerProps
 > = ({
   match: {
-    params: { id: groupId },
+    params: { id: paramsGroupId },
   },
 }) => {
   const {
     currentGroup,
-    actions: { getGroup, cleanCurrentGroup },
+    actions: { getGroup, cleanCurrentGroup, getStudentWithGrade },
   } = useContext(GroupApiContext);
   const { texts } = useContext(LocaleContext);
+  const userId = useAuthStore(s => assertDefined(s.user && s.user.id));
 
-  console.assert(groupId && isNumberOrNumberString(groupId));
+  console.assert(paramsGroupId && isNumberOrNumberString(paramsGroupId));
+
+  const groupId = Number(paramsGroupId);
 
   useEffect(() => {
     if (!currentGroup) {
-      getGroup(Number(groupId));
-    } else if (currentGroup.id !== Number(groupId)) {
+      getGroup(groupId);
+    } else if (currentGroup.id !== groupId) {
       cleanCurrentGroup();
     }
   }, [currentGroup]);
 
-  if (!currentGroup) {
+  const studentWithGradeRes = usePromise(
+    () => getStudentWithGrade(userId, groupId),
+    'LOADING',
+    []
+  );
+
+  if (!currentGroup || studentWithGradeRes === 'LOADING') {
     return (
       <Flex as={PaddingContainer} center flex={1}>
         <Spin />
       </Flex>
     );
   }
+
+  if (ApiResponse2.isError(studentWithGradeRes)) {
+    // TODO: Consider showing the error here.
+    throw studentWithGradeRes;
+  }
+
+  const { studentWithGroup: student } = studentWithGradeRes.data;
 
   return (
     <PaddingContainer>
@@ -117,11 +134,14 @@ export const StudentGroupDetailsContainer: React.FC<
       </Descriptions>
       <section>
         <Heading>{texts.grades}</Heading>
-        <StudentGroupGradeSummary currentGroup={currentGroup} />
+        <StudentGroupGradeSummary
+          currentGroup={currentGroup}
+          student={student}
+        />
       </section>
       <section>
         <Heading>{texts.tasks}</Heading>
-        <StudentTasksTable groupId={Number(groupId)} />
+        <StudentTasksTable groupId={Number(paramsGroupId)} />
       </section>
     </PaddingContainer>
   );

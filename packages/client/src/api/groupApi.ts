@@ -400,8 +400,10 @@ export const getStudentTasksSummary = (userId: UserId, groupId?: GroupId) =>
     }
   );
 
-// TODO: Add this to GroupApiContext and use it.
-export const getStudentWithGroupGrade = (userId: UserId, groupId?: GroupId) =>
+/**
+ * TODO: Get all grades with it?
+ */
+export const getStudentWithGroupGrade = (userId: UserId, groupId: GroupId) =>
   authFetch2<{ studentWithGroup: UserWithGroups }>(
     SERVER_URL + ServerRoutes.Users.Student.GroupGrade(userId),
     {

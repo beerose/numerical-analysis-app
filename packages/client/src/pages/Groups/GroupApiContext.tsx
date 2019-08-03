@@ -13,16 +13,20 @@ import {
   UserRole,
   UserWithGroups,
 } from 'common';
+import { pipe } from 'fp-ts/lib/pipeable';
+import { difference, map } from 'fp-ts/lib/Array';
+import { eqString } from 'fp-ts/lib/Eq';
 import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Omit, RouteChildrenProps, RouteComponentProps } from 'react-router';
 import { FunctionKeys } from 'utility-types';
 
 import { ApiResponse2 } from '../../api/authFetch';
 import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
-import { showMessage } from '../../utils';
+import { showMessage, unsafeKeys } from '../../utils';
+import { fromEntries } from '../../utils/fromEntries';
 import { ComponentCallbacks } from '../../utils/ComponentCallbacks';
 
 const getGroupId = (location: RouteComponentProps['location']) =>
@@ -68,6 +72,10 @@ export const GroupApiContext = React.createContext<GroupApiContextState>({
   isLoading: false,
 });
 
+export function useGroupApiContext() {
+  return useContext(GroupApiContext);
+}
+
 export class GroupApiProvider extends React.Component<
   Pick<RouteChildrenProps, 'history' | 'location'>,
   StateValues
@@ -85,6 +93,17 @@ export class GroupApiProvider extends React.Component<
     // this.state.actions won't be accessible from class body
     this.state = state as StateValues;
   }
+
+  resetState = () => {
+    return pipe(
+      unsafeKeys(this.state),
+      keys =>
+        difference(eqString)(keys, ['actions']) as Array<keyof StateValues>,
+      map(k => [k, undefined] as const),
+      fromEntries,
+      resettedState => this.setState({ ...resettedState, isLoading: false })
+    );
+  };
 
   cleanCurrentGroup = () => {
     this.setState({ currentGroup: undefined });
@@ -264,11 +283,10 @@ export class GroupApiProvider extends React.Component<
   listStudentsInGroup = async (groupId?: GroupId) => {
     const { currentGroup } = this.state;
 
-    if (!currentGroup) {
+    if (!currentGroup && !groupId) {
       throw new Error(noGroupError);
     }
 
-    console.log('LOADING');
     this.setState({ isLoading: true });
 
     if (!groupId) {
@@ -288,8 +306,8 @@ export class GroupApiProvider extends React.Component<
       const students = res.data.students;
 
       this.setState({
-        currentGroupStudents: students.filter(
-          s => this.state.currentGroup && s.group_ids.includes(groupId!)
+        currentGroupStudents: students.filter(s =>
+          s.group_ids.includes(groupId!)
         ),
         isLoading: false,
       });
@@ -507,6 +525,9 @@ export class GroupApiProvider extends React.Component<
         return err;
       });
   };
+
+  // tslint:disable-next-line:member-ordering
+  getStudentWithGrade = groupsService.getStudentWithGroupGrade;
 
   render() {
     return (

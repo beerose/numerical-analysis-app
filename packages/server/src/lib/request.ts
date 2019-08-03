@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { fold } from 'fp-ts/lib/Either';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
-import { PathReporter } from 'io-ts/lib/PathReporter';
+import { reporter } from 'io-ts-reporters';
 
 type GetRequestValidator<
   QueryValidator extends t.Any,
@@ -43,7 +43,7 @@ export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
     fold(_err => {
       response.status(codes.BAD_REQUEST).send({
         error: 'Bad request',
-        error_details: PathReporter.report(result).join('\n'),
+        error_details: reporter(result).join('\n'),
       });
     }, resolve)(result);
   });
