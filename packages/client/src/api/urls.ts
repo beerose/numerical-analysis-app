@@ -1,10 +1,10 @@
 let urls;
 
 if (process.env.NODE_ENV !== 'production') {
-  const host = process.env.IP || 'localhost';
+  const serverUrl = process.env.SERVER_URL || 'http://localhost:8082';
   urls = {
     // tslint:disable:no-http-string
-    SERVER_URL: `http://${host}:8082`,
+    SERVER_URL: serverUrl,
     // tslint:enable:no-http-string
   };
 } else {
