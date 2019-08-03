@@ -54,9 +54,6 @@ const LoginForm = (props: Props) => {
       title={LoginModalHeader}
       footer={null}
       width={400}
-      bodyStyle={{
-        width: '100%',
-      }}
     >
       <Form
         onSubmit={handleSubmit}
