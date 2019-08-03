@@ -22,11 +22,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// tslint:disable-next-line:no-commented-code, We're not generating swagger :c
-// import swaggerUi from 'swagger-ui-express';
-// import * as swaggerDocument from './swagger.json';
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 app.get('/', (_, res) => {
   res.send(`Hello! 👋 ${new Date().toLocaleString()}`);
 });
