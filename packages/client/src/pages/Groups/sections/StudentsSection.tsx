@@ -122,6 +122,10 @@ export const StudentsSection: React.FC<Props> = ({
     [addNewStudentToGroup]
   );
 
+  const sendInvitation = (user: Pick<UserDTO, 'user_name' | 'email'>) => {
+    usersService.sendInvitation({ ...user, user_role: UserRole.Student });
+  };
+
   return (
     <Flex flexDirection="column">
       <WrappedNewStudentModalForm
@@ -151,6 +155,7 @@ export const StudentsSection: React.FC<Props> = ({
       </section>
       <Spin spinning={isFetching}>
         <UsersTable
+          onSendInvitation={sendInvitation}
           showPagination={false}
           onDelete={deleteStudent}
           hideDelete={!editable}
