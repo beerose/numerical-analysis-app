@@ -32,6 +32,7 @@ import { Flex, Table, theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
 import { gradesToCsv, isSafari, showMessage, usePromise } from '../../../utils';
+import { makeTableSorter } from '../../../utils/makeTableSorter';
 import { evalEquation } from '../components/evalEquation';
 import { GroupApiContextState } from '../GroupApiContext';
 
@@ -336,16 +337,14 @@ export function makeGradesSectionColumns({
     {
       dataIndex: 'userName',
       key: 'name',
-      sorter: (a: UserResultsModel, b: UserResultsModel) =>
-        Number(a.userName < b.userName),
+      sorter: makeTableSorter('userName'),
       title: 'Imię i nazwisko',
       width: 200,
     },
     {
       dataIndex: 'index',
       key: 'index',
-      sorter: (a: UserResultsModel, b: UserResultsModel) =>
-        Number((a.index || 0) < (b.index || 0)),
+      sorter: makeTableSorter<UserResultsModel>(x => x.index || 0),
       title: 'Index',
       width: 100,
     },
@@ -357,8 +356,7 @@ export function makeGradesSectionColumns({
           <b style={{ paddingLeft: 5 }}>{item.maxTasksPoints}</b>
         </Flex>
       ),
-      sorter: (a: UserResultsModel, b: UserResultsModel) =>
-        Number(a.tasksPoints < b.tasksPoints),
+      sorter: makeTableSorter('tasksPoints'),
       title: `Testy i zadania`,
       width: 120,
     },
@@ -366,8 +364,7 @@ export function makeGradesSectionColumns({
       align: 'center' as const,
       key: 'meetings_grade',
       render: (item: UserResultsModel) => item.presences + item.activity,
-      sorter: (a: UserResultsModel, b: UserResultsModel) =>
-        Number(a.presences + a.activity < b.presences + b.activity),
+      sorter: makeTableSorter<UserResultsModel>(x => x.presences + x.activity),
       title: 'Obecności i aktywności',
       width: 120,
     },

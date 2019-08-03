@@ -4,6 +4,7 @@ import { MeetingDetailsModel, MeetingDTO } from 'common';
 import React from 'react';
 
 import { Table } from '../../../../components/Table';
+import { makeTableSorter } from '../../../../utils/makeTableSorter';
 
 import { FieldIdentifier, MeetingId } from './types';
 import { AllStudentsPresenceCheckbox } from './AllStudentsPresenceCheckbox';
@@ -47,16 +48,16 @@ export class StudentsAtMeetingsTable<
       dataIndex: 'student.user_name',
       fixed: true,
       key: 'user_name',
-      sorter: (a: MeetingDetailsModel, b: MeetingDetailsModel) =>
-        Number(a.student.user_name < b.student.user_name),
+      sorter: makeTableSorter<MeetingDetailsModel>(x => x.student.user_name),
       title: 'Student',
     },
     {
       dataIndex: 'student.student_index',
       fixed: true,
       key: 'student_index',
-      sorter: (a: MeetingDetailsModel, b: MeetingDetailsModel) =>
-        Number(a.student.student_index) - Number(b.student.student_index),
+      sorter: makeTableSorter<MeetingDetailsModel>(
+        x => x.student.student_index
+      ),
       title: 'Indeks',
     },
     ...this.props.meetings.map(

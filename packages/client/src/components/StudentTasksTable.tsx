@@ -12,6 +12,7 @@ import { useContext, useMemo } from 'react';
 import { ApiResponse2 } from '../api/authFetch';
 import { GroupApiContext } from '../pages/Groups/GroupApiContext';
 import { isDateIsoString, usePromise } from '../utils';
+import { makeTableSorter } from '../utils/makeTableSorter';
 import { useAuthStore } from '../AuthStore';
 
 import { LocaleContext } from './locale';
@@ -71,10 +72,7 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
     const mappedIndexes = columnIndexes.map(s => ({
       dataIndex: s,
       key: s,
-      sorter: (a: TaskSummary, b: TaskSummary) => {
-        console.log(`${a[s]} < ${b[s]} === ${a[s] > b[s]}`, a[s], b[s], a, b);
-        return a[s] < b[s] ? 1 : -1;
-      },
+      sorter: makeTableSorter(s),
       title: getText(columnTitles[s]),
       render: (text: string) => {
         if (isDateIsoString(text)) {
