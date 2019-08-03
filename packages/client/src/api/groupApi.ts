@@ -337,7 +337,7 @@ export const setFinalGrade = (
   userId: UserId,
   grade: number
 ) =>
-  authFetch<ApiResponse>(SERVER_URL + Groups.Results.SetFinal, {
+  authFetch2(SERVER_URL + Groups.Results.SetFinal, {
     body: JSON.stringify({ grade, group_id: groupId, user_id: userId }),
     method: 'POST',
   });

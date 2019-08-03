@@ -178,29 +178,29 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
                 )}
               </Route>
               <Route exact path={'/groups/:id/tasks/new'}>
-                {({ history }) => (
-                  <TaskSection {...context} history={history} mode={'create'} />
+                {routerProps => (
+                  <TaskSection {...context} {...routerProps} mode={'create'} />
                 )}
               </Route>
               <Route exact path={'/groups/:id/tasks/:task_id'}>
-                {({ history }) => (
-                  <TaskSection {...context} mode={'edit'} history={history} />
+                {routerProps => (
+                  <TaskSection {...context} {...routerProps} mode={'edit'} />
                 )}
               </Route>
               <Route exact path={'/groups/:id/grades'}>
-                {({ history }) => (
+                {routerProps => (
                   <GradesSection
                     {...context}
-                    history={history}
+                    {...routerProps}
                     editable={editable}
                   />
                 )}
               </Route>
               <Route exact path={'/groups/:id/attached'}>
-                {({ history }) => (
+                {routerProps => (
                   <AttachedGroupsSection
                     {...context}
-                    history={history}
+                    {...routerProps}
                     editable={editable}
                   />
                 )}

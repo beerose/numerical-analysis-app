@@ -5,6 +5,7 @@
 import {
   ApiResponse,
   GroupDTO,
+  GroupId,
   MeetingDetailsModel,
   MeetingDTO,
   TaskDTO,
@@ -15,7 +16,7 @@ import {
 import fromPairs from 'lodash.frompairs';
 import { Moment } from 'moment';
 import React from 'react';
-import { Omit, RouteChildrenProps } from 'react-router';
+import { Omit, RouteChildrenProps, RouteComponentProps } from 'react-router';
 import { FunctionKeys } from 'utility-types';
 
 import { ApiResponse2 } from '../../api/authFetch';
@@ -23,6 +24,9 @@ import * as groupsService from '../../api/groupApi';
 import * as usersService from '../../api/userApi';
 import { showMessage } from '../../utils';
 import { ComponentCallbacks } from '../../utils/ComponentCallbacks';
+
+const getGroupId = (location: RouteComponentProps['location']) =>
+  Number(location.pathname.split('/')[2]);
 
 const noGroupError = 'No group in state.';
 const noTaskError = 'No task in state.';
@@ -137,7 +141,7 @@ export class GroupApiProvider extends React.Component<
   getGroup = async (groupId?: GroupDTO['id']) => {
     if (!groupId) {
       // tslint:disable-next-line:no-parameter-reassignment // runtime default arg
-      groupId = Number(this.props.location.pathname.split('/')[2]);
+      groupId = getGroupId(this.props.location);
     }
     const res = await groupsService.getGroup(groupId);
     if ('error' in res) {
@@ -149,6 +153,17 @@ export class GroupApiProvider extends React.Component<
 
     return res;
   };
+
+  getCurrentGroup() {
+    const { currentGroup } = this.state;
+
+    const groupId = getGroupId(this.props.location);
+
+    if (currentGroup && currentGroup.id !== groupId) {
+      this.cleanCurrentGroup();
+    }
+    return this.getGroup(groupId);
+  }
 
   listGroups = (query?: Parameters<typeof groupsService.listGroups>[0]) => {
     this.setState({ isLoading: true });
@@ -246,19 +261,26 @@ export class GroupApiProvider extends React.Component<
     this.setState({ isLoading: false });
   };
 
-  listStudentsInGroup = async () => {
-    if (!this.state.currentGroup) {
+  listStudentsInGroup = async (groupId?: GroupId) => {
+    const { currentGroup } = this.state;
+
+    if (!currentGroup) {
       throw new Error(noGroupError);
     }
+
+    console.log('LOADING');
     this.setState({ isLoading: true });
-    const {
-      currentGroup: { id: groupId },
-    } = this.state;
+
+    if (!groupId) {
+      // tslint:disable-next-line:no-parameter-reassignment // runtime default arg
+      groupId = getGroupId(this.props.location);
+    }
+
     /**
      * TODO: Stop sending all students with groups
      * Stop filtering here
      */
-    return groupsService.listStudentsWithGroup(groupId).then(res => {
+    return groupsService.listStudentsWithGroup(groupId!).then(res => {
       if (ApiResponse2.isError(res)) {
         throw res;
       }
@@ -267,9 +289,7 @@ export class GroupApiProvider extends React.Component<
 
       this.setState({
         currentGroupStudents: students.filter(
-          s =>
-            this.state.currentGroup &&
-            s.group_ids.includes(this.state.currentGroup.id)
+          s => this.state.currentGroup && s.group_ids.includes(groupId!)
         ),
         isLoading: false,
       });

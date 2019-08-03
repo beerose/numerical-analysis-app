@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
 import { groupsService, usersService } from '../../../api';
+import { ApiResponse2 } from '../../../api/authFetch';
 import { UsersTable } from '../../../components';
 import { theme } from '../../../components/theme';
 import { Flex } from '../../../components/Flex';
@@ -62,9 +63,12 @@ export const StudentsSection: React.FC<Props> = ({
         setMyStudents(myGroupStudents);
         return myGroupStudents;
       }),
-      usersService
-        .listUsers({})
-        .then(res => res.users.filter(u => u.user_role === UserRole.Student)),
+      usersService.listUsers({}).then(res => {
+        if (ApiResponse2.isError(res)) {
+          throw res;
+        }
+        return res.data.users.filter(u => u.user_role === UserRole.Student);
+      }),
     ]).then(([ms, os]) => {
       setIsFetching(false);
       const myStudentsIds = new Set(ms.map(s => s.id));

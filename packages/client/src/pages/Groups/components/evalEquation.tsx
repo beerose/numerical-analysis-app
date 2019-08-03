@@ -37,7 +37,7 @@ export async function evalEquation<PointCategories extends string>(
           if (!settled) {
             reject('equation evaluation timeout');
           }
-        }, 2000);
+        }, 10000);
       }
     );
   });

@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { Spin, Table } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import Text from 'antd/lib/typography/Text';
-import { GroupDTO, StudentTasksSummary } from 'common';
+import { GroupDTO, StudentTasksSummary, TaskDTO } from 'common';
 import { formatRelative } from 'date-fns';
 // Import en if needed.
 import { pl } from 'date-fns/locale';
@@ -71,7 +71,10 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
     const mappedIndexes = columnIndexes.map(s => ({
       dataIndex: s,
       key: s,
-      sorter: true,
+      sorter: (a: TaskSummary, b: TaskSummary) => {
+        console.log(`${a[s]} < ${b[s]} === ${a[s] > b[s]}`, a[s], b[s], a, b);
+        return a[s] < b[s] ? 1 : -1;
+      },
       title: getText(columnTitles[s]),
       render: (text: string) => {
         if (isDateIsoString(text)) {
@@ -82,7 +85,7 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
       },
     }));
 
-    // This will be kind
+    // task kind is translated with getText
     Object.assign(mappedIndexes[0], {
       render: getText,
     });
