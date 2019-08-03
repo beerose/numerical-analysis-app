@@ -112,7 +112,7 @@ export const listUsers = (
     {
       sql: /* sql */ `
     SELECT
-      id, user_name, email, student_index, user_role, privileges
+      id, user_name, email, student_index, user_role, privileges, active_user
     FROM
       users
       ${searchParam || roles ? 'WHERE' : ''}

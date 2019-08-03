@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Popconfirm, Table } from 'antd';
+import { Popconfirm, Table, Tooltip } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 // tslint:disable-next-line:no-submodule-imports
@@ -16,6 +16,7 @@ import { EditableCell, EditableFormRow } from './EditableRow';
 
 const ActionLink = styled('a')`
   margin-right: 8px;
+  color: ${props => props.color && 'red'};
 `;
 
 type TableColumn = {
@@ -47,7 +48,7 @@ const extraTableColumns: Record<ExtraColumnTypes, TableColumn> = {
     dataIndex: 'student_index',
     editable: true,
     title: 'Indeks',
-    width: '250px',
+    width: '200px',
   },
   role: {
     dataIndex: 'user_role',
@@ -76,6 +77,9 @@ type UsersTableProps = {
   onUpdate: (user: UserDTO) => void;
   hideEdit?: boolean;
   onDelete: (id: UserDTO['id']) => void;
+  onSendInvitation: (
+    user: Pick<UserDTO, 'email' | 'user_name' | 'user_role'>
+  ) => void;
   hideDelete?: boolean;
   onTableChange?: (cfg: PaginationConfig) => void;
   className?: string;
@@ -122,12 +126,14 @@ export class UsersTable extends React.Component<
                   </ActionLink>
                 )}
               </EditableConsumer>
-              <ActionLink onClick={this.handleCancelEdit}>
+              <ActionLink onClick={() => this.setState({ editingKey: '' })}>
                 {LABELS.cancel}
               </ActionLink>
             </div>
           ) : (
-            <ActionLink onClick={() => this.handleEdit(record.email)}>
+            <ActionLink
+              onClick={() => this.setState({ editingKey: record.email })}
+            >
               {LABELS.edit}
             </ActionLink>
           ))
@@ -141,7 +147,7 @@ export class UsersTable extends React.Component<
           !this.props.hideDelete && (
             <Popconfirm
               title={LABELS.areYouSure}
-              onConfirm={() => this.handleDelete(record.id)}
+              onConfirm={() => this.props.onDelete(record.id)}
               okText={LABELS.yes}
               okType="danger"
               placement="topRight"
@@ -153,18 +159,33 @@ export class UsersTable extends React.Component<
         );
       },
     },
+    {
+      dataIndex: 'invitation',
+      render: (_: any, record: UserDTO) => {
+        return record.active_user ? null : (
+          <Popconfirm
+            title={
+              <div style={{ width: 300 }}>
+                Użytkownik nie jest aktywny, ale prawodpodobnie dostał już maila
+                aktywującego konto, podczas dodawania go do systemu. Jeśli nie,
+                możesz wysłać ponownie.
+              </div>
+            }
+            onConfirm={() => this.props.onSendInvitation(record)}
+            okText="wyslij"
+            okType="danger"
+            placement="topRight"
+            cancelText="anuluj"
+          >
+            <ActionLink color="red">zaproś</ActionLink>
+          </Popconfirm>
+        );
+      },
+    },
   ];
 
   isEditing = ({ email }: UserDTO) => {
     return email === this.state.editingKey;
-  };
-
-  handleEdit(email: string) {
-    this.setState({ editingKey: email });
-  }
-
-  handleCancelEdit = () => {
-    this.setState({ editingKey: '' });
   };
 
   handleUpdate(form: WrappedFormUtils, id: UserDTO['id']) {
@@ -172,10 +193,6 @@ export class UsersTable extends React.Component<
       this.props.onUpdate({ id, ...row });
     });
     this.setState({ editingKey: '' });
-  }
-
-  handleDelete(id: UserDTO['id']) {
-    this.props.onDelete(id);
   }
 
   componentDidMount() {

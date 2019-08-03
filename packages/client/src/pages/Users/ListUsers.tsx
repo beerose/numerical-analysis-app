@@ -127,6 +127,12 @@ export class ListUsersContainer extends React.Component<{}, State> {
     });
   };
 
+  handleSendInvitation = (
+    user: Pick<UserDTO, 'email' | 'user_name' | 'user_role'>
+  ) => {
+    usersService.sendInvitation(user);
+  };
+
   handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Enter') {
       this.updateUsersList(1);
@@ -197,6 +203,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
               currentPage={currentPage}
               onDelete={this.handleDeleteUser}
               onUpdate={this.handleUpdateUser}
+              onSendInvitation={this.handleSendInvitation}
               users={users}
               total={total}
               extraColumns={['role', 'index']}

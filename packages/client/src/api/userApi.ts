@@ -1,5 +1,4 @@
-import { ApiResponse, GroupDTO, ServerRoutes, UserDTO } from 'common';
-import * as qs from 'query-string';
+import { ApiResponse, ServerRoutes, UserDTO } from 'common';
 
 import { showMessage } from '../utils/showMessage';
 
@@ -58,6 +57,18 @@ export const deleteUser = async (id: UserDTO['id']) => {
 export const updateUser = (user: UserDTO) => {
   return authFetch<ApiResponse>(SERVER_URL + Users.Update, {
     body: JSON.stringify(user),
+    headers: {
+      Accept: 'application/json, text/plain, */*',
+    },
+    method: 'POST',
+  }).then(showMessage);
+};
+
+export const sendInvitation = (
+  payload: Pick<UserDTO, 'email' | 'user_name' | 'user_role'>
+) => {
+  authFetch<ApiResponse>(SERVER_URL + Users.SendInvitation, {
+    body: JSON.stringify(payload),
     headers: {
       Accept: 'application/json, text/plain, */*',
     },
