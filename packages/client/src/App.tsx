@@ -11,7 +11,7 @@ export class App extends React.Component {
   render() {
     return (
       <Router basename={process.env.PUBLIC_URL}>
-        <Route>{routeContext => <Main {...routeContext} />}</Route>
+        <Route component={Main} />
       </Router>
     );
   }

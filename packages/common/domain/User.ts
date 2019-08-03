@@ -5,7 +5,7 @@ import { isNumber } from 'util';
 import { Typeguard } from '../utils';
 
 import { Grade } from './Grade';
-import { GroupDTO, GroupId } from './Group';
+import { GroupId } from './Group';
 import { TaskDTO } from './Task';
 
 export type UserId = Flavor<number, 'UserId'>;

@@ -1,7 +1,8 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/core';
 import { List, Spin } from 'antd';
-import { GroupDTO, UserDTO } from 'common';
+import { GroupDTO, UserDTO, UserId } from 'common';
+import { Flavor } from 'nom-ts';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -67,13 +68,12 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
     }
   }, [groupApi.lecturers]);
 
-  const lecturersDict = usePromise(
+  const lecturersDict: Record<number, UserDTO> = usePromise(
     () => groupApi.actions.listLecturers().then(makeIdDict),
     groupApi.lecturers ? makeIdDict(groupApi.lecturers) : {},
     []
   );
 
-  // TODO: Add a way to clear selected lecturer
   // TODO: Hold this state in URL searchParams
   const [selectedLecturer, selectLecturer] = useState();
 

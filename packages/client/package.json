@@ -32,6 +32,7 @@
     "react-router-dom": "^5.0.0",
     "react-spring": "^8.0.22",
     "react-use": "^9.11.0",
+    "simple-zustand-devtools": "^1.0.0",
     "src": "^1.1.2",
     "tagged-template-noop": "^2.1.0",
     "ts-debounce": "^1.0.0",
