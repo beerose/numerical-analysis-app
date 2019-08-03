@@ -35,17 +35,15 @@ function getRegisteredRoutes(expressApp: ExpressApp) {
     return [];
   });
 }
-// <[string, string[]]>;
 function formatRoutesArray(routes: Route[]) {
   return pipe(
-    routes.map(route => ({
-      path: route.path,
-      methods: Object.entries(route.methods)
+    routes,
+    sortBy(x => x.path),
+    map(x => ({
+      [x.path]: Object.entries(x.methods)
         .filter(([_, isOn]) => isOn)
         .map(([method]) => method),
     })),
-    sortBy(x => x.path),
-    map(x => ({ [x.path]: x.methods })),
     reduce(mergeDeepWith(concat), {})
   );
 }
