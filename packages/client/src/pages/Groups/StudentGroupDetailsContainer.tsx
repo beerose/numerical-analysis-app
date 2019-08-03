@@ -14,11 +14,7 @@ import {
 import { isNumberOrNumberString, usePromise } from '../../utils';
 import { useAuthStore } from '../../AuthStore';
 
-import {
-  makeGradesSectionColumns,
-  mergedResultsToTableItem,
-  sortDirections,
-} from './sections';
+import { mergedResultsToTableItem } from './sections';
 import { GroupApiContext } from './GroupApiContext';
 
 // TODO: Move this functions somewhere else
@@ -43,7 +39,6 @@ export const StudentGroupGradeSummary: React.FC<
         }
 
         return mergedResultsToTableItem(
-          currentGroup.id,
           student, // TODO: Fetch user with groups here
           usersResults.data[0]
         );
@@ -111,7 +106,7 @@ export const StudentGroupDetailsContainer: React.FC<
       <Heading>{currentGroup.group_name}</Heading>
       <Descriptions column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}>
         <Descriptions.Item label={texts.groupType}>
-          {currentGroup.group_type}
+          {texts[currentGroup.group_type]}
         </Descriptions.Item>
         <Descriptions.Item label={texts.lecturer}>
           {currentGroup.lecturer_name}
