@@ -32,7 +32,10 @@ export const email = {
 const DEVELOPMENT_MAIL_REGEX = /(hasparus)|(ola.zxcvbnm)@gmail\.com/;
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:1234';
 
-export const sendRegistrationLink = (user: Omit<UserDTO, 'id'>) => {
+export const sendRegistrationLink = (
+  user: Omit<UserDTO, 'id'>,
+  callback?: (err: Error | null, info: any) => void
+) => {
   if (
     process.env.NODE_ENV !== 'production' &&
     !user.email.match(DEVELOPMENT_MAIL_REGEX)
@@ -61,7 +64,12 @@ export const sendRegistrationLink = (user: Omit<UserDTO, 'id'>) => {
       subject: 'Zaproszenie do aplikacji',
       to: user.email,
     },
-    logError
+    (...args) => {
+      logError(...args);
+      if (callback) {
+        callback(...args);
+      }
+    }
   );
 };
 
@@ -84,9 +92,7 @@ export const sendResetPasswordLink = (
     user_role: user.user_role,
   });
 
-  const link = `${CLIENT_URL}${
-    ServerRoutes.Accounts.ResetPassword
-  }?token=${token}`;
+  const link = `${CLIENT_URL}${ServerRoutes.Accounts.ResetPassword}?token=${token}`;
 
   email.transporter.sendMail(
     {

@@ -55,6 +55,7 @@ export const ServerRoutes = {
     Delete: '/users/delete',
     Get: (userId: UserId | ':id') => `/users/${userId}`,
     List: '/users',
+    SendInvitation: '/accounts/send_invitation',
     Student: {
       // TODO: Make Student a fuction -- it will resemble routes better
       Groups: (userId: UserId | ':id') => `/users/${userId}/student.groups`,

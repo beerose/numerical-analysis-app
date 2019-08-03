@@ -7,6 +7,7 @@ import { create } from './create';
 import { deleteUser } from './delete';
 import { get } from './get';
 import { list } from './list';
+import { sendInvitation } from './sendInvitation';
 import * as student from './student';
 import { update } from './update';
 
@@ -42,4 +43,9 @@ router.get(
   Routes.Student.GroupGrade(':id'),
   auth.authorize(UserRole.All),
   student.getStudentWithGroup
+);
+router.post(
+  Routes.SendInvitation,
+  auth.authorize([UserRole.Admin]),
+  sendInvitation
 );

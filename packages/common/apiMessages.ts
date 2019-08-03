@@ -37,6 +37,7 @@ export const apiMessages = {
   meetingDeleted: 'Spotkanie zostało usunięte',
   meetingIdRequired: 'meeting_id jest wymagane',
   meetingUpdated: 'Spotkanie zostało zaktualizowane',
+  // tslint:disable-next-line:no-hardcoded-credentials
   passwordChanged: 'Hasło zostało zmienione',
   presenceAdded: 'Obecność dodana',
   presenceDeleted: 'Obecność usunięta',
@@ -55,4 +56,5 @@ export const apiMessages = {
   userUpdated: 'Użytkownik został poprawnie zedytowany',
   usersUploaded: 'Użytkownicy zostali dodani',
   cannotChangeAdminPrivileges: 'Nie można zmienić uprawnień admina',
+  invitationSent: 'Mail z zaproszeniem został wysłany',
 };

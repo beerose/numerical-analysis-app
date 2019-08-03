@@ -37,7 +37,6 @@ router.post(
   auth.authorize(UserRole.NonStudents),
   auth.can('edit', 'groups'),
   upload
-  // auth.sendMagicLinks
 );
 router.get(Routes.Get, auth.authorize(UserRole.All), getGroup);
 router.delete(
