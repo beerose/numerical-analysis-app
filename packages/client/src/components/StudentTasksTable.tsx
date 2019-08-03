@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { Spin, Table } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import Text from 'antd/lib/typography/Text';
-import { GroupDTO, StudentTasksSummary } from 'common';
+import { GroupDTO, StudentTasksSummary, TaskDTO } from 'common';
 import { formatRelative } from 'date-fns';
 // Import en if needed.
 import { pl } from 'date-fns/locale';
@@ -12,6 +12,7 @@ import { useContext, useMemo } from 'react';
 import { ApiResponse2 } from '../api/authFetch';
 import { GroupApiContext } from '../pages/Groups/GroupApiContext';
 import { isDateIsoString, usePromise } from '../utils';
+import { makeTableSorter } from '../utils/makeTableSorter';
 import { useAuthStore } from '../AuthStore';
 
 import { LocaleContext } from './locale';
@@ -71,7 +72,7 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
     const mappedIndexes = columnIndexes.map(s => ({
       dataIndex: s,
       key: s,
-      sorter: true,
+      sorter: makeTableSorter(s),
       title: getText(columnTitles[s]),
       render: (text: string) => {
         if (isDateIsoString(text)) {
@@ -82,7 +83,7 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
       },
     }));
 
-    // This will be kind
+    // task kind is translated with getText
     Object.assign(mappedIndexes[0], {
       render: getText,
     });

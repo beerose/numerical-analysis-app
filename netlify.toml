@@ -2,3 +2,8 @@
   base = "/"
   command = "npm i yarn && yarn && yarn build-client"
   publish = "dist/client"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

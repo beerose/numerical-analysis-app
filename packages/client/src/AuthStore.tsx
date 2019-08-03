@@ -21,6 +21,12 @@ type State = {
   user?: UserDTO;
 };
 
+const initialState: State = {
+  errorMessage: undefined,
+  token: undefined,
+  user: undefined,
+};
+
 /**
  * Actions won't change
  */
@@ -53,7 +59,7 @@ function makeActions(set: SetState<State>) {
     logout: () => {
       userInCookies.clear();
 
-      set({ user: undefined });
+      set(initialState);
     },
     resetPassword: (email: string) => {
       return authService
@@ -109,15 +115,9 @@ export const [useAuthStore, authStore] = createStore((
               we want to infer store type,
               and typing `set` makes it impossible */
 ) => {
-  const initialState: State = {
-    errorMessage: undefined,
-    token: undefined,
-    user: undefined,
-    ...userInCookies.get(),
-  };
-
   return {
     ...initialState,
+    ...userInCookies.get(),
     actions: makeActions(set),
   };
 });

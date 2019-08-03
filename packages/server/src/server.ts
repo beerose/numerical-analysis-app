@@ -1,9 +1,11 @@
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
+import stringify from 'json-stringify-pretty-compact';
 import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 
+import { displayRegisteredRoutes } from './lib/displayRegisteredRoutes';
 import { enhanceResponse } from './middleware/auth/enhanceResponse';
 import * as requestHandlers from './requestHandlers';
 import { connectToDb, disconnectFromDb } from './store/connection';
@@ -22,13 +24,13 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// tslint:disable-next-line:no-commented-code, We're not generating swagger :c
-// import swaggerUi from 'swagger-ui-express';
-// import * as swaggerDocument from './swagger.json';
-// app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 app.get('/', (_, res) => {
-  res.send(`Hello! 👋 ${new Date().toLocaleString()}`);
+  res.type('json').send(
+    stringify({
+      message: `Hello! 👋 ${new Date().toLocaleString()}`,
+      routes: displayRegisteredRoutes(app),
+    })
+  );
 });
 
 app.use(requestHandlers.accountsRouter);

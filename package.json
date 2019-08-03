@@ -4,7 +4,6 @@
     "packages/*"
   ],
   "scripts": {
-    "build-client": "yarn workspace common build && yarn workspace client build",
     "dev": "concurrently -c blue,green,yellow -n c,s,f \"yarn workspace common tsc\" \"yarn workspace server dev\" \"yarn workspace client dev\"",
     "clean": "rm -rf node_modules/",
     "lint": "tslint -p ./packages/client && tslint -p ./packages/server",
@@ -17,7 +16,12 @@
     "db:remove": "yarn workspace database remove",
     "prod:ssh": "ssh anumuser@rno.ii.uni.wroc.pl",
     "prod:mysql": "mysql -u root -h rno.ii.uni.wroc.pl -u anumuser",
-    "password:set": "yarn workspace server setPassword"
+    "password:set": "yarn workspace server setPassword",
+    "build-and-deploy-server": "yarn workspace scripts build-and-deploy-server",
+    "deploy-server": "yarn workspace scripts deploy-server",
+    "build-client": "yarn workspace common build && yarn workspace client build",
+    "build-and-deploy-client-prod": "yarn workspace scripts build-and-deploy-client-prod",
+    "ssh-server": "ssh anumuser@rno.ii.uni.wroc.pl"
   },
   "devDependencies": {
     "@hasparus/tslint-config": "hasparus/tslint-config-hasparus",

@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie';
 import { isPlainObject as lodashIsPlainObject } from 'lodash';
 import * as qss from 'qss';
+import { omit } from 'ramda';
 import { Primitive } from 'utility-types';
 
 import { ApiResponse } from '../../../../dist/common';
@@ -108,7 +109,8 @@ export function authFetch2<T>(
     }
   }
 
-  const opts: RequestInit = {};
+  const opts: RequestInit = omit(['body', 'query'], { ...options });
+
   opts.headers = {
     Accept: 'application/json, text/plain, */*',
     Authorization: `Bearer ${token}`,

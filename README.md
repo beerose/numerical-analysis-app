@@ -57,6 +57,8 @@ yarn
 
 ### Server
 
+**TODO UPDATE THIS INFORMATION ABOUT DATABASE**
+
 This project is using MySQL Database to store data.
 For DB migrations make sure you have migrate tool installed:
 [DbMate installation](https://dbmate.readthedocs.io/en/latest/)
@@ -141,15 +143,9 @@ Here's a list of VSCode extensions we've found useful while developing this proj
 
 <img style="width:400px" src="https://raw.githubusercontent.com/mjbvz/vscode-comment-tagged-templates/master/docs/example.png"/>
 
-## API Documentation
+## Server API
 
-Documentation was created with [Swagger UI](https://swagger.io/) and is hosted within the app:
-
-```
-yarn workspaces server start
-```
-
-Documentation will be server on `localhost:8082/api-docs`
+Server lists available routes on `GET /`.
 
 ## Authorization
 

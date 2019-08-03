@@ -12,14 +12,27 @@ import {
   UserResultsModel,
   UserWithGroups,
 } from 'common';
-import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { RouteComponentProps } from 'react-router';
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import {
+  RouteChildrenProps,
+  RouteComponentProps,
+  RouterChildContext,
+} from 'react-router';
 import { DeepRequired } from 'utility-types';
 
+import { ApiResponse2 } from '../../../api/authFetch';
 import { Flex, Table, theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
 import { gradesToCsv, isSafari, showMessage, usePromise } from '../../../utils';
+import { makeTableSorter } from '../../../utils/makeTableSorter';
 import { evalEquation } from '../components/evalEquation';
 import { GroupApiContextState } from '../GroupApiContext';
 
@@ -86,13 +99,10 @@ const SuggestedGrade: React.FC<GradeDisplayProps> = ({
 };
 
 export const mergedResultsToTableItem = (
-  groupId: GroupDTO['id'],
   student: UserWithGroups,
   results?: UserResultsDTO
 ) => {
-  const final = student.groups_grades
-    ? student.groups_grades.find(g => g.group_id === groupId)
-    : undefined;
+  const final = student.groups_grades ? student.groups_grades[0] : undefined;
 
   return {
     activity: results ? results.sum_activity : 0,
@@ -135,7 +145,7 @@ const SetGrade = ({
 );
 
 type Props = GroupApiContextState &
-  Pick<RouteComponentProps, 'history'> & {
+  RouteChildrenProps<{ id: string }> & {
     editable: boolean;
   };
 
@@ -144,22 +154,50 @@ export const GradesSection = ({
   currentGroup,
   currentGroupStudents,
   editable,
+  match,
 }: // tslint:disable-next-line:no-big-function
 Props) => {
   const [tableData, setTableData] = useState<UserResultsModel[]>([]);
   const gradeSettings = currentGroup && currentGroup.data;
 
+  const groupId = Number(match && match.params.id);
+  console.assert(!Number.isNaN(groupId));
+
+  const fetching = useRef(false);
   useEffect(() => {
-    if (!currentGroup) {
-      actions.getGroup();
-    }
-    if (!currentGroupStudents) {
-      actions.listStudentsInGroup();
-    } else if (currentGroup) {
+    if (!currentGroup || groupId !== currentGroup.id) {
+      if (fetching.current) {
+        return;
+      }
+      fetching.current = true;
+      Promise.all([
+        actions.getCurrentGroup(),
+        actions.listStudentsInGroup(groupId),
+      ]).then(() => {
+        fetching.current = false;
+      });
+    } else if (!currentGroupStudents) {
+      if (fetching.current) {
+        return;
+      }
+      fetching.current = true;
+      actions.listStudentsInGroup(groupId).then(() => {
+        fetching.current = false;
+      });
+    } else if (
+      currentGroup &&
+      currentGroupStudents &&
+      groupId === currentGroup.id
+    ) {
       actions.getResults().then(usersResults => {
+        if (ApiResponse2.isError(usersResults)) {
+          throw usersResults;
+        }
         const data = currentGroupStudents.map(s => {
-          const results = usersResults.find(r => Number(r.user_id) === s.id);
-          return mergedResultsToTableItem(currentGroup.id, s, results);
+          const results = usersResults.data.find(
+            r => Number(r.user_id) === s.id
+          );
+          return mergedResultsToTableItem(s, results);
         });
         setTableData(data);
       });
@@ -218,9 +256,17 @@ Props) => {
           })
         );
 
-        newTableData.forEach(({ userId, finalGrade }) =>
-          actions.setFinalGrade(userId, finalGrade)
-        );
+        newTableData.forEach(({ userId, finalGrade }) => {
+          console.log('setting final grade', finalGrade, 'for', userId);
+          actions.setFinalGrade(userId, finalGrade).then(res => {
+            if (ApiResponse2.isError(res)) {
+              console.error(res);
+            } else {
+              console.log('set final grade for', userId, res.data);
+              return res;
+            }
+          });
+        });
 
         setTableData(newTableData);
       }),
@@ -291,16 +337,14 @@ export function makeGradesSectionColumns({
     {
       dataIndex: 'userName',
       key: 'name',
-      sorter: (a: UserResultsModel, b: UserResultsModel) =>
-        Number(a.userName < b.userName),
+      sorter: makeTableSorter('userName'),
       title: 'Imię i nazwisko',
       width: 200,
     },
     {
       dataIndex: 'index',
       key: 'index',
-      sorter: (a: UserResultsModel, b: UserResultsModel) =>
-        Number((a.index || 0) < (b.index || 0)),
+      sorter: makeTableSorter<UserResultsModel>(x => x.index || 0),
       title: 'Index',
       width: 100,
     },
@@ -312,8 +356,7 @@ export function makeGradesSectionColumns({
           <b style={{ paddingLeft: 5 }}>{item.maxTasksPoints}</b>
         </Flex>
       ),
-      sorter: (a: UserResultsModel, b: UserResultsModel) =>
-        Number(a.tasksPoints < b.tasksPoints),
+      sorter: makeTableSorter('tasksPoints'),
       title: `Testy i zadania`,
       width: 120,
     },
@@ -321,8 +364,7 @@ export function makeGradesSectionColumns({
       align: 'center' as const,
       key: 'meetings_grade',
       render: (item: UserResultsModel) => item.presences + item.activity,
-      sorter: (a: UserResultsModel, b: UserResultsModel) =>
-        Number(a.presences + a.activity < b.presences + b.activity),
+      sorter: makeTableSorter<UserResultsModel>(x => x.presences + x.activity),
       title: 'Obecności i aktywności',
       width: 120,
     },
