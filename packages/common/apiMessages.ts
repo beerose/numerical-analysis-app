@@ -57,4 +57,6 @@ export const apiMessages = {
   usersUploaded: 'Użytkownicy zostali dodani',
   cannotChangeAdminPrivileges: 'Nie można zmienić uprawnień admina',
   invitationSent: 'Mail z zaproszeniem został wysłany',
+  invitationNotSent:
+    'Wystąpił problem poczas wysyłania maila z zaproszeniem do aplikacji',
 };

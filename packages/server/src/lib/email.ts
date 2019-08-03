@@ -34,13 +34,14 @@ const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:1234';
 
 export const sendRegistrationLink = (
   user: Omit<UserDTO, 'id'>,
-  callback?: (err: Error | null, info: any) => void
+  callback: (err: Error | null, info: any) => void
 ) => {
   if (
     process.env.NODE_ENV !== 'production' &&
     !user.email.match(DEVELOPMENT_MAIL_REGEX)
   ) {
     // We don't want to send emails to some poor students we ended up having addresses to.
+    callback(null, 'Email was not send -- development environment.');
     return;
   }
 

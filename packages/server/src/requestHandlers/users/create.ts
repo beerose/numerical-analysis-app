@@ -40,9 +40,15 @@ export const create = (req: AddUserRequest, res: BackendResponse) => {
         });
       }
 
-      sendStudentActivationLink(user);
-
-      return res.status(codes.OK).send({ message: apiMessages.userCreated });
+      return sendStudentActivationLink(user, emailErr => {
+        if (emailErr) {
+          return res.status(codes.INTERNAL_SERVER_ERROR).send({
+            error: apiMessages.invitationNotSent,
+            error_details: emailErr.message,
+          });
+        }
+        return res.status(codes.OK).send({ message: apiMessages.userCreated });
+      });
     });
   });
 };

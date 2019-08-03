@@ -67,7 +67,7 @@ export const updateUser = (user: UserDTO) => {
 export const sendInvitation = (
   payload: Pick<UserDTO, 'email' | 'user_name' | 'user_role'>
 ) => {
-  authFetch<ApiResponse>(SERVER_URL + Users.SendInvitation, {
+  return authFetch<ApiResponse>(SERVER_URL + Users.SendInvitation, {
     body: JSON.stringify(payload),
     headers: {
       Accept: 'application/json, text/plain, */*',
