@@ -420,7 +420,7 @@ export class GroupApiProvider extends React.Component<
     const res = await groupsService.getGrades(taskId);
     if (ApiResponse2.isError(res)) {
       showMessage({ error: res.error });
-      return;
+      return [];
     }
     return res.data.grades;
   };

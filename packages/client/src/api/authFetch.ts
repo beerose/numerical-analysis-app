@@ -45,6 +45,13 @@ export namespace ApiResponse2 {
     status: number;
   };
 
+  export function getData<T>(res: ApiResponse2.Success<T> | ApiResponse): T {
+    if ('data' in res) {
+      return res.data;
+    }
+    return {} as T;
+  }
+
   export namespace Error {
     type ErrorLike = { message: string };
 

@@ -7,6 +7,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { TaskDTO } from '../../../../../../dist/common';
+import { ApiResponse2 } from '../../../api/authFetch';
 import { theme } from '../../../components/theme';
 import { Flex } from '../../../components/Flex';
 import { findStringifiedLowercase, LABELS, showMessage } from '../../../utils';
@@ -37,7 +38,11 @@ export const TasksSection = ({
 
   useEffect(() => {
     if (!tasks.length) {
-      actions.listTasks({ all: false }).then(res => setTasks(res.tasks));
+      actions.listTasks({ all: false }).then(res => {
+        if ('data' in res) {
+          setTasks(res.data.tasks);
+        }
+      });
     }
     if (!currentGroupStudents) {
       actions.listStudentsInGroup();
@@ -49,7 +54,11 @@ export const TasksSection = ({
       const { deleteTaskFromGroup, listTasks } = actions;
       deleteTaskFromGroup(taskId).then(res => {
         showMessage(res);
-        listTasks({ all: false }).then(listRes => setTasks(listRes.tasks));
+        listTasks({ all: false }).then(listRes => {
+          if ('data' in listRes) {
+            setTasks(listRes.data.tasks);
+          }
+        });
       });
     },
     [actions]
@@ -66,11 +75,13 @@ export const TasksSection = ({
     const groupTasksIds = tasks.map(t => t.id);
     setModalVisible(true);
     if (!allTasks.length) {
-      actions
-        .listTasks({ all: true })
-        .then(res =>
-          setAllTasks(res.tasks.filter(t => !groupTasksIds.includes(t.id)))
-        );
+      actions.listTasks({ all: true }).then(res => {
+        if ('data' in res) {
+          setAllTasks(
+            res.data.tasks.filter(t => !groupTasksIds.includes(t.id))
+          );
+        }
+      });
     }
   };
 
@@ -78,9 +89,13 @@ export const TasksSection = ({
     actions.attachTask(selectedTask!.id!, selectedTask!.weight!).then(res => {
       setModalVisible(false);
       showMessage(res);
-      actions
-        .listTasks({ all: false })
-        .then(listRes => setTasks(listRes.tasks));
+      actions.listTasks({ all: false }).then(listRes => {
+        setTasks(
+          ApiResponse2.getData(listRes)
+            ? ApiResponse2.getData(listRes).tasks
+            : []
+        );
+      });
     });
   };
 
