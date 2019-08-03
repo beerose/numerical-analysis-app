@@ -14,7 +14,11 @@ const { Users: Routes } = ServerRoutes;
 
 export const router = Router();
 
-router.get(Routes.Get(':id'), get);
+router.get(
+  Routes.Get(':id'),
+  auth.authorize([UserRole.Admin, UserRole.SuperUser, UserRole.Student]),
+  get
+);
 router.get(
   Routes.List,
   auth.authorize([UserRole.Admin, UserRole.SuperUser]),

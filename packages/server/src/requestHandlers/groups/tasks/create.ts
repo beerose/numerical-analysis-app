@@ -15,12 +15,8 @@ const CreateTaskBodyV = t.type({
   kind: t.union([
     t.literal(TaskKind.Assignment),
     t.literal(TaskKind.Homework),
-    t.literal(TaskKind.Colloquium),
     t.literal(TaskKind.Exam),
-    t.literal(TaskKind.MidtermExam),
-    t.literal(TaskKind.MidtermTest),
     t.literal(TaskKind.Retake),
-    t.literal(TaskKind.ShortTest),
     t.literal(TaskKind.Test),
   ]),
   max_points: t.number,

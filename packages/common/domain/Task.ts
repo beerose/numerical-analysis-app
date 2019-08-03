@@ -25,11 +25,7 @@ export enum TaskKind {
   Assignment = 'assignment', // pracownia
   Exam = 'exam', // egzamin
   Test = 'test', // sprawdzian
-  MidtermTest = 'midtermTest', // sprawdzian połówkowy
-  ShortTest = 'shortTest', // kartkówka
   Retake = 'retake', // egzamin poprawkowy
-  MidtermExam = 'midtermExam', // egzamin połówkowy
-  Colloquium = 'colloquium', // kolokwium
 }
 
 export type ChoosableSubtask = {
