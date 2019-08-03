@@ -1,4 +1,4 @@
-import { apiMessages, UserWithGroups } from 'common';
+import { UserWithGroups } from 'common';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { NumberFromString } from 'io-ts-types/lib/NumberFromString';
