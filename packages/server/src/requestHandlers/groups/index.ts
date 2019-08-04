@@ -17,7 +17,6 @@ import * as students from './students';
 import * as tasks from './tasks';
 import { unshare } from './unshareForEdit';
 import { update } from './update';
-import { upload } from './upload';
 
 export const router = Router();
 
@@ -32,12 +31,6 @@ router.post(
 router.get(Routes.List, auth.authorize(UserRole.NonStudents), list);
 
 // Inside a particular group
-router.post(
-  Routes.Upload,
-  auth.authorize(UserRole.NonStudents),
-  auth.can('edit', 'groups'),
-  upload
-);
 router.get(Routes.Get, auth.authorize(UserRole.All), getGroup);
 router.delete(
   Routes.Delete,
@@ -83,6 +76,12 @@ router.post(
 );
 
 // Students
+router.post(
+  Routes.Students.Upload,
+  auth.authorize(UserRole.NonStudents),
+  auth.can('edit', 'groups'),
+  students.upload
+);
 router.get(
   Routes.Students.List,
   auth.authorize(UserRole.NonStudents),

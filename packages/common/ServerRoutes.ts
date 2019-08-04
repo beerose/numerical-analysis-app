@@ -38,6 +38,7 @@ export const ServerRoutes = {
       AddToGroup: '/groups/students.add',
       List: '/groups/students',
       RemoveFromGroup: '/groups/students.delete',
+      Upload: '/groups/students.upload',
     },
     Tasks: {
       Attach: '/groups/tasks.attach',
@@ -48,7 +49,6 @@ export const ServerRoutes = {
       Update: '/groups/tasks.update',
     },
     Update: '/groups/update',
-    Upload: '/groups/upload',
   },
   Users: {
     Create: '/users/create',

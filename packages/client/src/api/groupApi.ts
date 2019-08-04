@@ -31,7 +31,7 @@ export const uploadUsers = async (fileContent: string, groupId: GroupId) => {
   };
 
   await authFetch<{ message: string }>(
-    SERVER_URL + Groups.Upload,
+    SERVER_URL + Groups.Students.Upload,
     options
   ).then(showMessage);
 };
