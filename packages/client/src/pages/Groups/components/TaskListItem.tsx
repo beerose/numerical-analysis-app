@@ -17,6 +17,9 @@ import { Colors, LABELS, showMessage, useToggle } from '../../../utils';
 import { TaskMeta } from './TaskMeta';
 
 const StyledTaskCard = styled(Card)`
+  .ant-table-thead > tr > th {
+    border-bottom: none !important;
+  }
   .ant-card-body {
     padding: 0 15px;
     * {
