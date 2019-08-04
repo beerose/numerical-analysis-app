@@ -88,11 +88,6 @@ const TaskForm = (props: Props) => {
         });
       }
 
-      // TODO: Fixme
-      const never = new Date(0);
-      values.upload_dates = values.upload_dates || [never, never];
-      values.vote_dates = values.vote_dates || [never, never];
-
       props.onSubmit({
         // tslint:disable:object-literal-sort-keys
         id: values.id,
@@ -101,12 +96,12 @@ const TaskForm = (props: Props) => {
         max_points: Number(values.max_points),
         name: values.task_name,
         results_date: values.results_date,
-        start_upload_date: values.upload_dates[0],
-        end_upload_date: values.upload_dates[1],
+        start_upload_date: values.upload_dates && values.upload_dates[0],
+        end_upload_date: values.upload_dates && values.upload_dates[1],
         verify_upload: Boolean(values.verify_upload),
         weight: Number(values.weight),
-        start_vote_date: values.vote_dates[0],
-        end_vote_date: values.vote_dates[1],
+        start_vote_date: values.vote_dates && values.vote_dates[0],
+        end_vote_date: values.vote_dates && values.vote_dates[1],
         data: { choosable_subtasks: choosable },
       });
     });
