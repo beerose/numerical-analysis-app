@@ -15,6 +15,7 @@ import {
 import {
   Fragment,
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -29,7 +30,7 @@ import { DeepRequired } from 'utility-types';
 
 import { ApiResponse2 } from '../../../api/authFetch';
 import { Flex, Table, theme } from '../../../components';
-import { LocaleContext } from '../../../components/locale';
+import { Locale, LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
 import { gradesToCsv, isSafari, showMessage, usePromise } from '../../../utils';
 import { makeTableSorter } from '../../../utils/makeTableSorter';
@@ -78,7 +79,7 @@ const ComputedGrade: React.FC<Required<GradeDisplayProps>> = ({
   return <b title={`${points} pkt.`}>{grade}</b>;
 };
 
-const SuggestedGrade: React.FC<GradeDisplayProps> = ({
+export const SuggestedGrade: React.FC<GradeDisplayProps> = ({
   userResults,
   currentGroup,
 }) => {
@@ -159,6 +160,7 @@ export const GradesSection = ({
 Props) => {
   const [tableData, setTableData] = useState<UserResultsModel[]>([]);
   const gradeSettings = currentGroup && currentGroup.data;
+  const { texts } = useContext(LocaleContext);
 
   const groupId = Number(match && match.params.id);
   console.assert(!Number.isNaN(groupId));
@@ -286,33 +288,30 @@ Props) => {
     currentGroup,
     editable,
     setGrade,
+    texts,
     omittedKeys: editable ? [] : ['confirm_grade'],
   });
 
   return (
-    <LocaleContext.Consumer>
-      {({ texts }) => (
-        <Flex padding={theme.Padding.Standard} flexDirection="column">
-          <Button
-            type="primary"
-            icon="download"
-            onClick={handleGradesCsvDownload}
-            aria-label={texts.exportCsv}
-            style={{ width: 200, marginBottom: '10px' }}
-          >
-            {texts.exportCsv}
-          </Button>
-          <Table<UserResultsModel>
-            sortDirections={sortDirections}
-            rowKey={(i: UserResultsModel) => i.userId.toString()}
-            columns={columns}
-            dataSource={tableData}
-            pagination={false}
-            bordered
-          />
-        </Flex>
-      )}
-    </LocaleContext.Consumer>
+    <Flex padding={theme.Padding.Standard} flexDirection="column">
+      <Button
+        type="primary"
+        icon="download"
+        onClick={handleGradesCsvDownload}
+        aria-label={texts.exportCsv}
+        style={{ width: 200, marginBottom: '10px' }}
+      >
+        {texts.exportCsv}
+      </Button>
+      <Table<UserResultsModel>
+        sortDirections={sortDirections}
+        rowKey={(i: UserResultsModel) => i.userId.toString()}
+        columns={columns}
+        dataSource={tableData}
+        pagination={false}
+        bordered
+      />
+    </Flex>
   );
 };
 
@@ -323,6 +322,7 @@ export function makeGradesSectionColumns({
   editable,
   setGrade,
   omittedKeys,
+  texts,
 }: {
   currentGroup?: GroupDTO;
   confirmGrade?: (studentResults: UserResultsModel) => Promise<void>;
@@ -330,6 +330,7 @@ export function makeGradesSectionColumns({
   editable?: boolean;
   setGrade?: (studentId: number, grade: Grade) => void;
   omittedKeys: readonly string[];
+  texts: Locale;
 }) {
   const omittedKeysSet = new Set(omittedKeys);
 
@@ -357,7 +358,7 @@ export function makeGradesSectionColumns({
         </Flex>
       ),
       sorter: makeTableSorter('tasksPoints'),
-      title: `Testy i zadania`,
+      title: texts.testsAndTasks,
       width: 120,
     },
     {
@@ -365,7 +366,7 @@ export function makeGradesSectionColumns({
       key: 'meetings_grade',
       render: (item: UserResultsModel) => item.presences + item.activity,
       sorter: makeTableSorter<UserResultsModel>(x => x.presences + x.activity),
-      title: 'Obecności i aktywności',
+      title: texts.presenceAndActivity,
       width: 120,
     },
     {
@@ -374,7 +375,7 @@ export function makeGradesSectionColumns({
       render: (item: UserResultsModel) => (
         <SuggestedGrade userResults={item} currentGroup={currentGroup} />
       ),
-      title: 'Proponowana ocena',
+      title: texts.suggestedGrade,
       width: 100,
     },
     {
@@ -418,7 +419,7 @@ export function makeGradesSectionColumns({
         ),
       sorter: (a: UserResultsModel, b: UserResultsModel) =>
         Number((a.finalGrade || 0) < (b.finalGrade || 0)),
-      title: `Wystawiona ocena`,
+      title: texts.finalGrade,
       width: 150,
     },
   ].filter(col => !omittedKeysSet.has(col.key));

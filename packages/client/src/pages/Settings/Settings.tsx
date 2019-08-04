@@ -3,7 +3,12 @@ import { jsx } from '@emotion/core';
 import { Button, Modal } from 'antd';
 import { useState } from 'react';
 
-import { NewPasswordForm, PaddingContainer, UserInfo } from '../../components';
+import {
+  Breadcrumbs,
+  NewPasswordForm,
+  PaddingContainer,
+  UserInfo,
+} from '../../components';
 import { showMessage } from '../../utils';
 import { useAuthStore } from '../../AuthStore';
 
@@ -24,6 +29,7 @@ export const SettingsContainer = () => {
 
   return (
     <PaddingContainer>
+      <Breadcrumbs />
       <UserInfo {...user!} />
       <Button css={{ width: 150 }} onClick={() => setModalVisible(true)}>
         Zmień hasło

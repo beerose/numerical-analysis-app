@@ -1,9 +1,23 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
+import { assertType, TypeEq } from 'typepark';
 
 import { loadLanguage } from './loadLanguage';
 
-type Locale = typeof import('./pl.json');
+// Hiding Locale under interface because it's **really** bad tooltip content
+type __Locale = typeof import('./pl.json');
+// tslint:disable-next-line:no-empty-interface
+export interface Locale extends __Locale {}
+
 export type LocaleEntry = keyof Locale;
+
+{
+  type Missing<Loc> = Exclude<LocaleEntry, keyof Loc>;
+  /**
+   * Assert that all locale files have the same keys
+   */
+  type MissingInEnglish = Missing<typeof import('./en.json')>;
+  assertType<TypeEq<MissingInEnglish, never>>();
+}
 
 const supportedLanguages = ['pl', 'en'];
 export type SupportedLanguageCode = typeof supportedLanguages[number];
@@ -41,6 +55,10 @@ export const LocaleContextStatefulProvider: React.FC = ({ children }) => {
 
   const changeLanguage = useCallback((lang: SupportedLanguageCode) => {
     localStorage.setItem('language', lang);
+    /**
+     * If a line below errors, you can find the reason around line 15.
+     * Check which assertion fails.
+     */
     loadLanguage(lang)
       .then(createLanguagePack)
       .then(setLanguagePack);

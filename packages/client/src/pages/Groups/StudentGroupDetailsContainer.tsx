@@ -1,10 +1,19 @@
-import { Descriptions, Spin, Table } from 'antd';
-import { GroupDTO, UserDTO, UserResultsModel, UserWithGroups } from 'common';
+/** @jsx jsx */
+import { jsx } from '@emotion/core';
+import {
+  Descriptions as AntDescriptions,
+  Divider,
+  Result,
+  Spin,
+  Table,
+} from 'antd';
+import { GroupDTO, UserResultsModel, UserWithGroups } from 'common';
 import React, { useContext, useEffect } from 'react';
 import { RouteComponentProps } from 'react-router';
 
 import { ApiResponse2 } from '../../api/authFetch';
 import {
+  Breadcrumbs,
   Flex,
   Heading,
   LocaleContext,
@@ -15,22 +24,35 @@ import { isNumberOrNumberString, usePromise } from '../../utils';
 import { assertDefined } from '../../utils/assertDefined';
 import { useAuthStore } from '../../AuthStore';
 
-import { mergedResultsToTableItem } from './sections';
+import {
+  makeGradesSectionColumns,
+  mergedResultsToTableItem,
+  sortDirections,
+  SuggestedGrade,
+} from './sections';
 import { GroupApiContext } from './GroupApiContext';
 
-// TODO: Move this functions somewhere else
+const Descriptions = (props: React.ComponentProps<typeof AntDescriptions>) => (
+  <AntDescriptions
+    column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}
+    {...props}
+  />
+);
+Descriptions.Item = AntDescriptions.Item;
 
 type StudentGroupGradeSummaryProps = {
   currentGroup: GroupDTO;
   student: UserWithGroups;
 };
-export const StudentGroupGradeSummary: React.FC<
-  StudentGroupGradeSummaryProps
-> = ({ currentGroup, student }) => {
+const StudentGroupGradeSummary: React.FC<StudentGroupGradeSummaryProps> = ({
+  currentGroup,
+  student,
+}) => {
   const {
     actions: { getResults },
   } = useContext(GroupApiContext);
   const user = useAuthStore(s => s.user);
+  const { texts } = useContext(LocaleContext);
 
   const results = usePromise(
     () =>
@@ -48,23 +70,42 @@ export const StudentGroupGradeSummary: React.FC<
     []
   );
 
-  console.log({ results });
+  if (ApiResponse2.isError(results)) {
+    return (
+      <Result
+        status="500"
+        title={texts.somethingWentWrong}
+        subTitle={texts.couldntGetGradeSummary}
+      />
+    );
+  }
 
-  return <>{JSON.stringify(currentGroup.data!, null, 2)}</>;
-  // const columns = makeGradesSectionColumns({
-  //   currentGroup,
-  //   omittedKeys: ['confirm_grade'],
-  // });
-  // return (
-  //   <Table<UserResultsModel>
-  //     sortDirections={sortDirections}
-  //     rowKey={(i: UserResultsModel) => i.userId.toString()}
-  //     columns={columns}
-  //     dataSource={tableData}
-  //     pagination={false}
-  //     bordered
-  //   />
-  // );
+  if (results === 'LOADING') {
+    return <Spin />;
+  }
+
+  const columns = makeGradesSectionColumns({
+    texts,
+    currentGroup,
+    omittedKeys: ['confirm_grade'],
+  });
+
+  return (
+    <Descriptions>
+      <Descriptions.Item label={texts.testsAndTasks}>
+        <Flex justifyContent="center" flexDirection="row">
+          {results.tasksPoints} /
+          <b style={{ paddingLeft: 5 }}>{results.maxTasksPoints}</b>
+        </Flex>
+      </Descriptions.Item>
+      <Descriptions.Item label={texts.suggestedGrade}>
+        <SuggestedGrade userResults={results} currentGroup={currentGroup} />
+      </Descriptions.Item>
+      <Descriptions.Item label={texts.finalGrade}>
+        {results.finalGrade || '-'}
+      </Descriptions.Item>
+    </Descriptions>
+  );
 };
 
 export type StudentGroupDetailsContainerProps = RouteComponentProps<{
@@ -120,8 +161,9 @@ export const StudentGroupDetailsContainer: React.FC<
 
   return (
     <PaddingContainer>
+      <Breadcrumbs css={{ paddingBottom: 10 }} />
       <Heading>{currentGroup.group_name}</Heading>
-      <Descriptions column={{ xxl: 4, xl: 3, lg: 3, md: 3, sm: 2, xs: 1 }}>
+      <Descriptions>
         <Descriptions.Item label={texts.groupType}>
           {texts[currentGroup.group_type]}
         </Descriptions.Item>
@@ -132,15 +174,10 @@ export const StudentGroupDetailsContainer: React.FC<
           {currentGroup.semester}
         </Descriptions.Item>
       </Descriptions>
+      <StudentGroupGradeSummary currentGroup={currentGroup} student={student} />
+      <Divider />
       <section>
-        <Heading>{texts.grades}</Heading>
-        <StudentGroupGradeSummary
-          currentGroup={currentGroup}
-          student={student}
-        />
-      </section>
-      <section>
-        <Heading>{texts.tasks}</Heading>
+        <Heading level={2}>{texts.tasks}</Heading>
         <StudentTasksTable groupId={Number(paramsGroupId)} />
       </section>
     </PaddingContainer>
