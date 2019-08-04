@@ -48,7 +48,7 @@ const EditMeetingForm = (props: Props) => {
   const { getFieldDecorator, setFieldsValue, getFieldValue } = props.form;
 
   return (
-    <Form onSubmit={handleSubmit} className={formStyles}>
+    <Form onSubmit={handleSubmit} css={formStyles}>
       <Form.Item>
         {getFieldDecorator('meeting_name', {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
@@ -56,7 +56,7 @@ const EditMeetingForm = (props: Props) => {
           <Input
             prefix={<Icon type="tag" style={{ color: Colors.SemiLightGray }} />}
             placeholder="Nazwa spotkania"
-            className={formItems}
+            css={formItems}
           />
         )}
       </Form.Item>
