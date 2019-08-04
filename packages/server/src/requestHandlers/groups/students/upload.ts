@@ -3,9 +3,9 @@ import { NextFunction } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
-import { BackendResponse, GetRequest } from '../../lib';
-import { db } from '../../store';
-import { connection } from '../../store/connection';
+import { BackendResponse, GetRequest } from '../../../lib';
+import { db } from '../../../store';
+import { connection } from '../../../store/connection';
 
 const UploadBodyV = t.type({
   data: t.string,

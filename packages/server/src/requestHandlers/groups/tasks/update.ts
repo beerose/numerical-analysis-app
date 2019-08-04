@@ -41,15 +41,22 @@ export const updateTask = (
     db.updateTask(
       {
         ...task,
-        end_upload_date: task.end_upload_date && new Date(task.end_upload_date),
-        end_vote_date: task.end_vote_date && new Date(task.end_vote_date),
+        end_upload_date: task.end_upload_date
+          ? new Date(task.end_upload_date)
+          : new Date(),
+        end_vote_date: task.end_vote_date
+          ? new Date(task.end_vote_date)
+          : new Date(),
         max_points: isNumber(task.max_points) ? Number(task.max_points) : 0,
         results_date: task.results_date
           ? new Date(task.results_date)
-          : task.end_upload_date && new Date(task.end_upload_date),
-        start_upload_date:
-          task.start_upload_date && new Date(task.start_upload_date),
-        start_vote_date: task.start_vote_date && new Date(task.start_vote_date),
+          : new Date(),
+        start_upload_date: task.start_upload_date
+          ? new Date(task.start_upload_date)
+          : new Date(),
+        start_vote_date: task.start_vote_date
+          ? new Date(task.start_vote_date)
+          : new Date(),
       },
       err => {
         if (err) {
