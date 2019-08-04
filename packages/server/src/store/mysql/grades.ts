@@ -57,9 +57,9 @@ export const getUsersTaskPoints = (
     sql`
       SELECT uhp.user_id, sum(points * weight) as tasks_grade FROM
       user_belongs_to_group ubg
-      JOIN group_has_task ght USING (group_id)
-      JOIN user_has_points uhp USING (task_id)
-      WHERE group_id = ${groupId}
+      JOIN user_has_points uhp USING (user_id)
+      JOIN group_has_task ght USING (task_id)
+      WHERE ght.group_id = ${groupId}
       ${userId ? sql`AND uhp.user_id = ${userId}` : sql.empty}
       GROUP BY uhp.user_id;
     `,
