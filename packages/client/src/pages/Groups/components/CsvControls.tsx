@@ -38,7 +38,13 @@ export const CsvControls: React.FC<CsvControlsProps> = ({
             <Upload
               accept="text/csv"
               showUploadList={false}
-              customRequest={onUploadClick}
+              customRequest={x => {
+                if ('file' in x) {
+                  onUploadClick(x as { file: File });
+                } else {
+                  console.error('CSV upload not possible');
+                }
+              }}
             >
               <Tooltip title={texts.importCsv}>
                 <Button

@@ -4,8 +4,9 @@ export const findStringifiedLowercase: SelectProps['filterOption'] = (
   input,
   { props: { children } }
 ) =>
-  children &&
   children
-    .toString()
-    .toLowerCase()
-    .indexOf(input.toLowerCase()) >= 0;
+    ? children
+        .toString()
+        .toLowerCase()
+        .indexOf(input.toLowerCase()) >= 0
+    : false;

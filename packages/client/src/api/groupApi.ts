@@ -13,7 +13,6 @@ import {
   UserTaskPoints,
   UserWithGroups,
 } from 'common';
-import * as qs from 'query-string';
 import { Omit } from 'react-router';
 import { DeepRequired } from 'utility-types';
 

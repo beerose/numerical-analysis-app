@@ -6,9 +6,11 @@ import { Primitive } from 'utility-types';
 
 import { ApiResponse } from '../../../../dist/common';
 
-type Json = Primitive | JsonArray | JsonObject;
-interface JsonArray extends Array<Json> {}
-interface JsonObject extends Record<string | number, Json> {}
+type Json = null | Primitive | JsonArray | JsonObject;
+// We can pass this to body, since it's serializable without problem.
+type JsonExtended = undefined | Date | Json;
+interface JsonArray extends Array<JsonExtended> {}
+interface JsonObject extends Record<string | number, JsonExtended> {}
 
 type PlainObject = JsonObject;
 const isPlainObject = lodashIsPlainObject as (x: unknown) => x is PlainObject;

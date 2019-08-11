@@ -1,8 +1,6 @@
 import { Input } from 'antd';
-// tslint:disable: no-submodule-imports
 import Form, { FormComponentProps, WrappedFormUtils } from 'antd/lib/form/Form';
 import FormItem from 'antd/lib/form/FormItem';
-// tslint:enable: no-submodule-imports
 import { UserDTO } from 'common';
 import * as React from 'react';
 
@@ -11,7 +9,10 @@ import { LABELS } from '../../utils/labels';
 
 import { EditableConsumer, EditableProvider } from './Context';
 
-const EditableRow = ({ form, ...props }: FormComponentProps) => (
+interface EditableRowProps
+  extends FormComponentProps,
+    React.ComponentProps<'tr'> {}
+const EditableRow = ({ form, ...props }: EditableRowProps) => (
   <EditableProvider value={form}>
     <tr {...props} />
   </EditableProvider>

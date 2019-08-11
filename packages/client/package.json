@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "parcel src/index.html -d ../../dist/client",
     "build": "parcel build src/index.html -d ../../dist/client",
+    "typecheck": "tsc --noEmit --skipLibCheck",
     "test": "jest"
   },
   "dependencies": {

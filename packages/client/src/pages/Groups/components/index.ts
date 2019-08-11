@@ -3,4 +3,3 @@ export { WrappedNewGroupForm as NewGroupForm } from './NewGroupForm';
 export { StudentsSection } from '../sections/StudentsSection';
 export * from './DynamicChoosableTasksForm';
 export * from './NewGroupButton';
-export * from './ShareGroupForEdit';

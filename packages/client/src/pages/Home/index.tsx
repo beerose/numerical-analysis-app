@@ -7,7 +7,7 @@ import { LecturerHome } from './LecturerHome';
 import StudentHome from './StudentHome';
 
 export const Home = () => {
-  const authStore = useAuthStore();
+  const authStore = useAuthStore(s => s);
 
   console.assert(authStore.user);
 

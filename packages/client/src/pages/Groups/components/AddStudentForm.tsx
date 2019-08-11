@@ -7,7 +7,7 @@ import { UserDTO } from 'common';
 import * as React from 'react';
 
 import { RemoveSelected } from '../../../components/RemoveSelected';
-import { Colors, LABELS } from '../../../utils';
+import { Colors, findStringifiedLowercase, LABELS } from '../../../utils';
 
 const FormItem = Form.Item;
 
@@ -79,13 +79,7 @@ export class AddStudentForm extends React.Component<Props, State> {
           placeholder={LABELS.selectFromList}
           optionFilterProp="children"
           onChange={this.handleSelectChange}
-          filterOption={(input, option) =>
-            option.props.children &&
-            option.props.children
-              .toString()
-              .toLowerCase()
-              .indexOf(input.toLowerCase()) >= 0
-          }
+          filterOption={findStringifiedLowercase}
         >
           {this.props.allStudents.map(student => (
             <Select.Option key={`${student.id}`} value={student.id}>

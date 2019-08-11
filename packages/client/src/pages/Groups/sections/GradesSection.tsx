@@ -265,7 +265,6 @@ Props) => {
               console.error(res);
             } else {
               console.log('set final grade for', userId, res.data);
-              return res;
             }
           });
         });
