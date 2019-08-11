@@ -3,6 +3,7 @@ import { TaskDTO } from 'common';
 import React, { useCallback, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
+import { ApiResponse2 } from '../../../api/authFetch';
 import { Flex } from '../../../components';
 import { theme } from '../../../components/theme';
 import { showMessage } from '../../../utils';
@@ -36,11 +37,12 @@ export const TaskSection = (props: Props) => {
         })
       : props.actions.createTask(values).then(res => {
           showMessage(res);
-          if ('error' in res) {
+          if (ApiResponse2.isError(res)) {
+            console.error('Error:', res);
             return;
           }
 
-          navigateTo(String(res.task_id));
+          navigateTo(String(res.data.task_id));
         });
   };
 
