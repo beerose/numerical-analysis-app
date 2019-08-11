@@ -1,16 +1,6 @@
 /** @jsx jsx */
 import { css, jsx, ObjectInterpolation } from '@emotion/core';
-import {
-  ComponentProps,
-  CSSProperties,
-  FC,
-  forwardRef,
-  ReactNode,
-  ReactSVG,
-  ReactType,
-} from 'react';
-
-import { theme as Theme } from './theme';
+import { CSSProperties, forwardRef, ReactNode, ReactType } from 'react';
 
 type FlexProps = CSSProperties & {
   children?: ReactNode;
