@@ -7,8 +7,6 @@
 
 **/db/
 
-**/.vscode/
-
 .DS_Store
 
 # migration tool data
