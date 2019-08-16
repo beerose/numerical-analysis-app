@@ -1,0 +1,47 @@
+scalar DateTime
+
+type Task {
+  id: Int!
+  selectableSubtasks: [SelectableSubtask!]!
+}
+
+type SelectableSubtask {
+  id: Int!
+  # How many times can this task be selected?
+  maxGroups: Int!
+  # Maximum number of students in a team taking this task
+  groupCapacity: Int!
+  # Teams that have taken the task
+  takenBy: [Team!]!
+}
+
+type Team {
+  students: [Student!]!
+}
+
+# Student may grow if we need more data from GraphQL API
+type Student {
+  id: Int!
+}
+
+# --- root types ---
+
+type Query {
+  selectableSubtask(taskId: Int!, selectableSubtaskId: Int!): SelectableSubtask
+  task(id: Int!): Task
+}
+
+type Mutation {
+  selectSelectableTask(
+    taskId: Int!
+    selectableSubtaskId: Int!
+  ): SelectableSubtask
+}
+
+input SubtaskSelectedInput {
+  taskId: Int!
+}
+
+type Subscription {
+  subtaskSelected(in: SubtaskSelectedInput!): SelectableSubtask
+}

@@ -5,6 +5,7 @@ import stringify from 'json-stringify-pretty-compact';
 import morganBody from 'morgan-body';
 import { AddressInfo } from 'net';
 
+import { apolloServer } from './graphql';
 import { displayRegisteredRoutes } from './lib/displayRegisteredRoutes';
 import { enhanceResponse } from './middleware/auth/enhanceResponse';
 import * as requestHandlers from './requestHandlers';
@@ -38,6 +39,15 @@ app.use(requestHandlers.filesRouter);
 app.use(requestHandlers.groupsRouter);
 app.use(requestHandlers.usersRouter);
 app.use(requestHandlers.gradesRouter);
+
+apolloServer.applyMiddleware({
+  app,
+  cors: {
+    credentials: true,
+    origin: true,
+  },
+  path: '/graphql',
+});
 
 let server: import('http').Server;
 

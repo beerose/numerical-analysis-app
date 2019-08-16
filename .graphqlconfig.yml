@@ -1,0 +1,4 @@
+projects:
+  common:
+    schemaPath: packages/common/graphql/schema.graphql
+    includes: ['**/*.graphql']

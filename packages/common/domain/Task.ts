@@ -16,7 +16,7 @@ export type TaskDTO = {
   start_vote_date: string | Date;
   end_vote_date: string | Date;
   data?: {
-    choosable_subtasks: ChoosableSubtask[];
+    choosable_subtasks: SelectableSubtask[];
   };
 };
 
@@ -28,7 +28,7 @@ export enum TaskKind {
   Retake = 'retake', // egzamin poprawkowy
 }
 
-export type ChoosableSubtask = {
+export type SelectableSubtask = {
   id: number;
   group_capacity: number;
   max_groups: number;
