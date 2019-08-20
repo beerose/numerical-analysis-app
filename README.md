@@ -139,6 +139,10 @@ yarn start
 
 Here's a list of VSCode extensions we've found useful while developing this project
 
+- VSCode TypeScript TSLint Plugin [(link)](https://marketplace.visualstudio.com/items?itemName=ms-vscode.vscode-typescript-tslint-plugin)
+
+- VSCode Styled Components [(link)](https://marketplace.visualstudio.com/items?itemName=jpoissonnier.vscode-styled-components)
+
 - Comment Tagged Templates [(link)](https://marketplace.visualstudio.com/items?itemName=bierner.comment-tagged-templates)
 
 <img style="width:400px" src="https://raw.githubusercontent.com/mjbvz/vscode-comment-tagged-templates/master/docs/example.png"/>
