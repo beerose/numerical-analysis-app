@@ -14,42 +14,67 @@ export type Scalars = {
   DateTime: Date;
 };
 
-export type Mutation = {
-  __typename?: 'Mutation';
-  selectSelectableTask?: Maybe<SelectableSubtask>;
+export type JoinTeamResponse = {
+  __typename?: 'JoinTeamResponse';
+  error?: Maybe<JoinTeamResponseError>;
+  data: Team;
 };
 
-export type MutationSelectSelectableTaskArgs = {
-  taskId: Scalars['Int'];
-  selectableSubtaskId: Scalars['Int'];
+export enum JoinTeamResponseError {
+  TeamTooBig = 'TeamTooBig',
+}
+
+export type Mutation = {
+  __typename?: 'Mutation';
+  selectSubtask: SelectSubtaskResponse;
+  joinTeam: JoinTeamResponse;
+  leaveTeam?: Maybe<Team>;
+};
+
+export type MutationSelectSubtaskArgs = {
+  taskId: Scalars['ID'];
+  subtaskId: Scalars['ID'];
+};
+
+export type MutationJoinTeamArgs = {
+  teamId: Scalars['ID'];
+};
+
+export type MutationLeaveTeamArgs = {
+  teamId: Scalars['ID'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  selectableSubtask?: Maybe<SelectableSubtask>;
   task?: Maybe<Task>;
 };
 
-export type QuerySelectableSubtaskArgs = {
-  taskId: Scalars['Int'];
-  selectableSubtaskId: Scalars['Int'];
-};
-
 export type QueryTaskArgs = {
-  id: Scalars['Int'];
+  id: Scalars['ID'];
 };
 
 export type SelectableSubtask = {
   __typename?: 'SelectableSubtask';
-  id: Scalars['Int'];
-  maxGroups: Scalars['Int'];
-  groupCapacity: Scalars['Int'];
+  id: Scalars['ID'];
+  maxTeams: Scalars['Int'];
+  teamCapacity: Scalars['Int'];
   takenBy: Array<Team>;
 };
 
+export type SelectSubtaskResponse = {
+  __typename?: 'SelectSubtaskResponse';
+  error?: Maybe<SelectSubtaskResponseError>;
+  createdTeam?: Maybe<Team>;
+  subtask: SelectableSubtask;
+};
+
+export enum SelectSubtaskResponseError {
+  TooManyTeamsTookThisSubtask = 'TooManyTeamsTookThisSubtask',
+}
+
 export type Student = {
   __typename?: 'Student';
-  id: Scalars['Int'];
+  id: Scalars['ID'];
 };
 
 export type Subscription = {
@@ -62,17 +87,23 @@ export type SubscriptionSubtaskSelectedArgs = {
 };
 
 export type SubtaskSelectedInput = {
-  taskId: Scalars['Int'];
+  taskId: Scalars['ID'];
 };
 
 export type Task = {
   __typename?: 'Task';
-  id: Scalars['Int'];
+  id: Scalars['ID'];
+  selectableSubtask?: Maybe<SelectableSubtask>;
   selectableSubtasks: Array<SelectableSubtask>;
+};
+
+export type TaskSelectableSubtaskArgs = {
+  id: Scalars['ID'];
 };
 
 export type Team = {
   __typename?: 'Team';
+  id: Scalars['ID'];
   students: Array<Student>;
 };
 
@@ -148,12 +179,17 @@ export type DirectiveResolverFn<
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  Task: ResolverTypeWrapper<Task>;
   SelectableSubtask: ResolverTypeWrapper<SelectableSubtask>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Team: ResolverTypeWrapper<Team>;
   Student: ResolverTypeWrapper<Student>;
-  Task: ResolverTypeWrapper<Task>;
   Mutation: ResolverTypeWrapper<{}>;
+  SelectSubtaskResponse: ResolverTypeWrapper<SelectSubtaskResponse>;
+  SelectSubtaskResponseError: SelectSubtaskResponseError;
+  JoinTeamResponse: ResolverTypeWrapper<JoinTeamResponse>;
+  JoinTeamResponseError: JoinTeamResponseError;
   Subscription: ResolverTypeWrapper<{}>;
   SubtaskSelectedInput: SubtaskSelectedInput;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -164,12 +200,17 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Query: {};
-  Int: Scalars['Int'];
+  ID: Scalars['ID'];
+  Task: Task;
   SelectableSubtask: SelectableSubtask;
+  Int: Scalars['Int'];
   Team: Team;
   Student: Student;
-  Task: Task;
   Mutation: {};
+  SelectSubtaskResponse: SelectSubtaskResponse;
+  SelectSubtaskResponseError: SelectSubtaskResponseError;
+  JoinTeamResponse: JoinTeamResponse;
+  JoinTeamResponseError: JoinTeamResponseError;
   Subscription: {};
   SubtaskSelectedInput: SubtaskSelectedInput;
   String: Scalars['String'];
@@ -182,15 +223,39 @@ export interface DateTimeScalarConfig
   name: 'DateTime';
 }
 
+export type JoinTeamResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['JoinTeamResponse'] = ResolversParentTypes['JoinTeamResponse']
+> = {
+  error?: Resolver<
+    Maybe<ResolversTypes['JoinTeamResponseError']>,
+    ParentType,
+    ContextType
+  >;
+  data?: Resolver<ResolversTypes['Team'], ParentType, ContextType>;
+};
+
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
-  selectSelectableTask?: Resolver<
-    Maybe<ResolversTypes['SelectableSubtask']>,
+  selectSubtask?: Resolver<
+    ResolversTypes['SelectSubtaskResponse'],
     ParentType,
     ContextType,
-    MutationSelectSelectableTaskArgs
+    MutationSelectSubtaskArgs
+  >;
+  joinTeam?: Resolver<
+    ResolversTypes['JoinTeamResponse'],
+    ParentType,
+    ContextType,
+    MutationJoinTeamArgs
+  >;
+  leaveTeam?: Resolver<
+    Maybe<ResolversTypes['Team']>,
+    ParentType,
+    ContextType,
+    MutationLeaveTeamArgs
   >;
 };
 
@@ -198,12 +263,6 @@ export type QueryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
-  selectableSubtask?: Resolver<
-    Maybe<ResolversTypes['SelectableSubtask']>,
-    ParentType,
-    ContextType,
-    QuerySelectableSubtaskArgs
-  >;
   task?: Resolver<
     Maybe<ResolversTypes['Task']>,
     ParentType,
@@ -216,17 +275,38 @@ export type SelectableSubtaskResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['SelectableSubtask'] = ResolversParentTypes['SelectableSubtask']
 > = {
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  maxGroups?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  groupCapacity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  maxTeams?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  teamCapacity?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   takenBy?: Resolver<Array<ResolversTypes['Team']>, ParentType, ContextType>;
+};
+
+export type SelectSubtaskResponseResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['SelectSubtaskResponse'] = ResolversParentTypes['SelectSubtaskResponse']
+> = {
+  error?: Resolver<
+    Maybe<ResolversTypes['SelectSubtaskResponseError']>,
+    ParentType,
+    ContextType
+  >;
+  createdTeam?: Resolver<
+    Maybe<ResolversTypes['Team']>,
+    ParentType,
+    ContextType
+  >;
+  subtask?: Resolver<
+    ResolversTypes['SelectableSubtask'],
+    ParentType,
+    ContextType
+  >;
 };
 
 export type StudentResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Student'] = ResolversParentTypes['Student']
 > = {
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
 };
 
 export type SubscriptionResolvers<
@@ -245,7 +325,13 @@ export type TaskResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Task'] = ResolversParentTypes['Task']
 > = {
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  selectableSubtask?: Resolver<
+    Maybe<ResolversTypes['SelectableSubtask']>,
+    ParentType,
+    ContextType,
+    TaskSelectableSubtaskArgs
+  >;
   selectableSubtasks?: Resolver<
     Array<ResolversTypes['SelectableSubtask']>,
     ParentType,
@@ -257,6 +343,7 @@ export type TeamResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Team'] = ResolversParentTypes['Team']
 > = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   students?: Resolver<
     Array<ResolversTypes['Student']>,
     ParentType,
@@ -266,9 +353,11 @@ export type TeamResolvers<
 
 export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
+  JoinTeamResponse?: JoinTeamResponseResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   SelectableSubtask?: SelectableSubtaskResolvers<ContextType>;
+  SelectSubtaskResponse?: SelectSubtaskResponseResolvers<ContextType>;
   Student?: StudentResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   Task?: TaskResolvers<ContextType>;

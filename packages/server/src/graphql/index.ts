@@ -5,9 +5,15 @@ import {
   gql,
   withFilter,
 } from 'apollo-server-express';
+import { UserRole } from 'common';
+import { flow, identity } from 'fp-ts/lib/function';
+import { fold } from 'fp-ts/lib/Either';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 
+import { authorizeWithToken } from '../middleware/auth/authorize';
+
+import { Context } from './context';
 import { resolvers } from './resolvers';
 
 const typeDefs = gql(
@@ -19,25 +25,18 @@ const typeDefs = gql(
 export const apolloServer = new ApolloServer({
   typeDefs,
   resolvers: resolvers as any,
-  context: ({ req, connection }) => {
-    const ctx = connection ? connection.context : req.headers;
+  context: async ({ req, connection }): Promise<Context> => {
+    const { authorization } = connection ? connection.context : req.headers;
 
-    if (!ctx.authorization) {
-      console.error('bad headers.authorization', ctx, ctx.authorization);
-      throw new AuthenticationError('headers.authorization is required');
-    }
+    const user = await authorizeWithToken(authorization, UserRole.All)().then(
+      flow(
+        fold(err => {
+          throw new AuthenticationError(err.error);
+        }, identity)
+      )
+    );
 
-    try {
-      // TODO: Check JWT Token
-      return {
-        // SiteConfig.decode(ctx.authorization),
-        someData: '???',
-      };
-    } catch (err) {
-      throw new AuthenticationError(
-        `headers.authorization is incorrect \n${err.message}`
-      );
-    }
+    return { user };
   },
   // Enable GraphQL Playground in production.
   // We don't believe in security by obscurity.

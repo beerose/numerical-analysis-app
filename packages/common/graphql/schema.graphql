@@ -1,45 +1,68 @@
 scalar DateTime
 
 type Task {
-  id: Int!
+  id: ID!
+  selectableSubtask(id: ID!): SelectableSubtask
   selectableSubtasks: [SelectableSubtask!]!
 }
 
 type SelectableSubtask {
-  id: Int!
+  id: ID!
   # How many times can this task be selected?
-  maxGroups: Int!
+  maxTeams: Int!
   # Maximum number of students in a team taking this task
-  groupCapacity: Int!
+  teamCapacity: Int!
   # Teams that have taken the task
   takenBy: [Team!]!
 }
 
 type Team {
+  id: ID!
   students: [Student!]!
 }
 
 # Student may grow if we need more data from GraphQL API
 type Student {
-  id: Int!
+  id: ID!
+}
+
+# --- input and response types ---
+
+enum SelectSubtaskResponseError {
+  TooManyTeamsTookThisSubtask
+}
+
+type SelectSubtaskResponse {
+  error: SelectSubtaskResponseError
+  createdTeam: Team
+  subtask: SelectableSubtask!
+}
+
+enum JoinTeamResponseError {
+  TeamTooBig
+}
+
+type JoinTeamResponse {
+  error: JoinTeamResponseError
+  data: Team!
 }
 
 # --- root types ---
 
 type Query {
-  selectableSubtask(taskId: Int!, selectableSubtaskId: Int!): SelectableSubtask
-  task(id: Int!): Task
+  task(id: ID!): Task
 }
 
 type Mutation {
-  selectSelectableTask(
-    taskId: Int!
-    selectableSubtaskId: Int!
-  ): SelectableSubtask
+  # Creates a team
+  selectSubtask(taskId: ID!, subtaskId: ID!): SelectSubtaskResponse!
+  # It should be possible to derive taskId and subtaskId from teamId.
+  joinTeam(teamId: ID!): JoinTeamResponse!
+  leaveTeam(teamId: ID!): Team
 }
 
 input SubtaskSelectedInput {
-  taskId: Int!
+  taskId: ID!
 }
 
 type Subscription {

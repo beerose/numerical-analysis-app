@@ -8,26 +8,27 @@ import { formatRelative } from 'date-fns';
 // Import en if needed.
 import { pl } from 'date-fns/locale';
 import { useContext, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 import { ApiResponse2 } from '../api/authFetch';
 import { GroupApiContext } from '../pages/Groups/GroupApiContext';
-import { isDateIsoString, usePromise } from '../utils';
+import { identity, usePromise } from '../utils';
 import { makeTableSorter } from '../utils/makeTableSorter';
 import { useAuthStore } from '../AuthStore';
 
 import { LocaleContext } from './locale';
 import { Flex } from './Flex';
 
-function renderDate(date: Date) {
+function renderDate(s: string) {
   const now = new Date();
-  return formatRelative(date, now, { locale: pl });
+  return formatRelative(new Date(s), now, { locale: pl });
 }
 
 type TaskSummary = StudentTasksSummary[number];
 
 const columnIndexes: Array<keyof TaskSummary> = [
-  'kind',
   'name',
+  'kind',
   'pts',
   'max_pts',
   'start_upload_date',
@@ -35,6 +36,9 @@ const columnIndexes: Array<keyof TaskSummary> = [
   'updated_at',
   'created_at',
 ];
+
+const NAME_INDEX = columnIndexes.indexOf('name');
+const KIND_INDEX = columnIndexes.indexOf('kind');
 
 // tslint:disable: object-literal-sort-keys
 const columnTitles = {
@@ -74,19 +78,22 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
       key: s,
       sorter: makeTableSorter(s),
       title: getText(columnTitles[s]),
-      render: (text: string) => {
-        if (isDateIsoString(text)) {
-          return renderDate(new Date(text));
-        }
-
-        return text;
-      },
+      render: s.match(/_date|_at/) ? renderDate : identity,
     }));
 
-    // task kind is translated with getText
-    Object.assign(mappedIndexes[0], {
-      render: getText,
+    Object.assign(mappedIndexes[NAME_INDEX], {
+      render(taskName: string, task: TaskDTO) {
+        return (
+          <Link
+            css={{ fontWeight: 'bold' }}
+            to={`/groups/${groupId}/tasks/${task.id}`}
+          >
+            {taskName}
+          </Link>
+        );
+      },
     });
+    Object.assign(mappedIndexes[KIND_INDEX], { render: getText });
 
     return mappedIndexes;
   }, [getText]);

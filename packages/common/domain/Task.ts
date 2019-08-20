@@ -1,5 +1,7 @@
 import { Flavor } from 'nom-ts';
 
+import { StudentTeam } from './selectableSubtasks';
+
 export type TaskId = Flavor<number, 'TaskId'>;
 
 export type TaskDTO = {
@@ -30,6 +32,8 @@ export enum TaskKind {
 
 export type SelectableSubtask = {
   id: number;
+  // TODO: Migrate this name to `team_capacity`
   group_capacity: number;
   max_groups: number;
+  takenBy: StudentTeam[];
 };

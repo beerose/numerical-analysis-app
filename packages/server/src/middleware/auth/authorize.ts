@@ -1,22 +1,29 @@
 import { apiMessages, UserDTO, UserRole } from 'common';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-import { Either, fold, left, right } from 'fp-ts/lib/Either';
+import { flow } from 'fp-ts/lib/function';
+import { pipe } from 'fp-ts/lib/pipeable';
+import {
+  chain as chainEither,
+  Either,
+  fold,
+  left,
+  right,
+} from 'fp-ts/lib/Either';
+import { task } from 'fp-ts/lib/Task';
+import * as TaskEither from 'fp-ts/lib/TaskEither';
 import * as codes from 'http-status-codes';
 import jwt from 'jsonwebtoken';
+import { MysqlError } from 'mysql';
 
 import { UserJwtTokenPayload } from '../../lib';
 import { db } from '../../store';
 
-type ErrorMsg = { error: string };
-
-const fail = (msg: string): Either<ErrorMsg, UserJwtTokenPayload> =>
-  left({ error: msg });
-
-const decodeJwtUserToken = (
-  str: string | undefined
-): Either<ErrorMsg, UserJwtTokenPayload> => {
+const decodeJwtUserToken = (str: string | undefined) => {
   if (!str || !str.startsWith('Bearer ')) {
-    return fail('token is malformed or missing');
+    return left({
+      code: codes.UNAUTHORIZED,
+      error: 'token is malformed or missing',
+    });
   }
 
   const token = str.substring(7, str.length);
@@ -25,7 +32,10 @@ const decodeJwtUserToken = (
   try {
     decoded = jwt.verify(token, process.env.JWT_SECRET || '');
   } catch {
-    return fail('cannot verify jwt');
+    return left({
+      code: codes.UNAUTHORIZED,
+      error: 'cannot verify jwt',
+    });
   }
 
   if (
@@ -38,41 +48,81 @@ const decodeJwtUserToken = (
     return right(decoded as UserJwtTokenPayload);
   }
 
-  return fail('invalid jwt format');
+  return fail({
+    code: codes.UNAUTHORIZED,
+    error: 'invalid jwt format',
+  });
 };
 
+const findByEmail = ({ email }: { email: string }) =>
+  TaskEither.tryCatch(
+    () =>
+      new Promise<UserDTO | null>((resolve, reject) =>
+        db.findUserByEmail({ email }, (err, result) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(result);
+        })
+      ),
+    err => ({
+      code: codes.INTERNAL_SERVER_ERROR,
+      error: (err as MysqlError).message,
+    })
+  );
+
+// TODO: Move this function to a better place?
+export const authorizeWithToken = (
+  authorizationHeader: string | undefined,
+  roles: UserRole[]
+) =>
+  pipe(
+    decodeJwtUserToken(authorizationHeader),
+    TaskEither.fromEither,
+    TaskEither.chain(findByEmail),
+    TaskEither.chain(
+      flow(
+        userRes => {
+          if (!userRes) {
+            return left({
+              code: codes.FORBIDDEN,
+              error: 'failed to find user',
+            });
+          }
+          if (!roles.includes(userRes.user_role)) {
+            return left({
+              code: codes.FORBIDDEN,
+              error: 'not authorized',
+            });
+          }
+          return right(userRes);
+        },
+        TaskEither.fromEither
+      )
+    )
+  );
+
+/**
+ * Authorization middleware
+ */
 export const authorize = (roles: UserRole[]): RequestHandler => (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const decoded = decodeJwtUserToken(req.headers.authorization);
-  fold<ErrorMsg, UserJwtTokenPayload, void>(
-    error => {
-      res.status(codes.UNAUTHORIZED).send(error);
-    },
-    ({ email }) => {
-      db.findUserByEmail({ email }, (err, userRes) => {
-        if (err) {
-          res
-            .status(codes.INTERNAL_SERVER_ERROR)
-            .send({ error: apiMessages.internalError });
-          return;
+  authorizeWithToken(req.headers.authorization, roles)().then(
+    flow(
+      fold(
+        error => {
+          res.status(error.code).send(error);
+        },
+        user => {
+          res.locals.user = user;
+          next();
         }
-        if (!userRes) {
-          res.status(codes.FORBIDDEN).send({ error: 'failed to find user' });
-          return;
-        }
-        if (!roles.includes(userRes.user_role)) {
-          res.status(codes.FORBIDDEN).send({ error: 'not authorized' });
-          return;
-        }
-
-        res.locals.user = userRes;
-        return next();
-      });
-    }
-  )(decoded);
+      )
+    )
+  );
 };
 
 declare module 'express' {
