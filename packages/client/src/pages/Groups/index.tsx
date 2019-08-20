@@ -9,6 +9,7 @@ import { GroupDetailsContainer } from './GroupDetailsContainer';
 import { ListGroupsContainer } from './ListGroupsContainer';
 import { StudentGroupsListContainer } from './StudentGroupsListContainer';
 import { StudentGroupDetailsContainer } from './StudentGroupDetailsContainer';
+import { StudentTaskDetailsContainer } from './StudentTaskDetailsContainer';
 
 export const Groups = () => {
   const userRole = useAuthStore(s => s.user && s.user.user_role);
@@ -17,7 +18,16 @@ export const Groups = () => {
     return (
       <Switch>
         <Route exact path="/groups" component={StudentGroupsListContainer} />
-        <Route path="/groups/:id" component={StudentGroupDetailsContainer} />
+        <Route
+          exact
+          path="/groups/:id"
+          component={StudentGroupDetailsContainer}
+        />
+        <Route
+          exact
+          path="/groups/:groupId/tasks/:taskId"
+          component={StudentTaskDetailsContainer}
+        />
       </Switch>
     );
   }

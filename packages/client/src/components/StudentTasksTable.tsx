@@ -86,7 +86,10 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
         return (
           <Link
             css={{ fontWeight: 'bold' }}
-            to={`/groups/${groupId}/tasks/${task.id}`}
+            to={{
+              pathname: `/groups/${groupId}/tasks/${task.id}`,
+              state: { task },
+            }}
           >
             {taskName}
           </Link>
