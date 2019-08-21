@@ -1,5 +1,7 @@
 import { Flavor } from 'nom-ts';
 
+import { StudentTeam } from './selectableSubtasks';
+
 export type TaskId = Flavor<number, 'TaskId'>;
 
 export type TaskDTO = {
@@ -16,7 +18,7 @@ export type TaskDTO = {
   start_vote_date: string | Date;
   end_vote_date: string | Date;
   data?: {
-    choosable_subtasks: ChoosableSubtask[];
+    choosable_subtasks: SelectableSubtask[];
   };
 };
 
@@ -28,8 +30,10 @@ export enum TaskKind {
   Retake = 'retake', // egzamin poprawkowy
 }
 
-export type ChoosableSubtask = {
+export type SelectableSubtask = {
   id: number;
+  // TODO: Migrate this name to `team_capacity`
   group_capacity: number;
   max_groups: number;
+  takenBy: StudentTeam[];
 };

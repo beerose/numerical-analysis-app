@@ -4,10 +4,19 @@
   "scripts": {
     "build": "tsc --build . && cp ./package.json ../../dist/common",
     "tsc": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch",
+    "graphql-codegen": "graphql-codegen --config graphql/codegen.yml && yarn build"
   },
   "devDependencies": {
-    "typescript": "^3.5.1"
+    "@graphql-codegen/cli": "^1.5.0",
+    "@graphql-codegen/fragment-matcher": "1.5.0",
+    "@graphql-codegen/introspection": "^1.5.0",
+    "@graphql-codegen/typescript": "1.5.0",
+    "@graphql-codegen/typescript-graphql-files-modules": "1.5.0",
+    "@graphql-codegen/typescript-operations": "^1.5.0",
+    "@graphql-codegen/typescript-resolvers": "1.5.0",
+    "graphql": "^14.4.2",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "io-ts": "^2.0.0",

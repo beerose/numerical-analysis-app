@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import { Button, Form, Icon, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import { SelectableSubtask, TaskDTO } from 'common';
 import React, { useEffect, useState } from 'react';
 
-import { ChoosableSubtask, TaskDTO } from '../../../../../../dist/common';
 import { Flex } from '../../../components';
 import { Colors } from '../../../utils';
 
@@ -49,7 +49,7 @@ export const DynamicChoosableTasksForm = ({ model, form, mode }: Props) => {
   const [keys, setKeys] = useState<number[]>([]);
   const [subtasks, setSubtasks] = useState<
     Array<
-      | ChoosableSubtask
+      | SelectableSubtask
       | {
           id?: number;
           group_capacity?: number;

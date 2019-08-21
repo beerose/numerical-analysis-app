@@ -6,3 +6,4 @@ export * from './Student';
 export * from './Task';
 export * from './Tresholds';
 export * from './User';
+export * from './selectableSubtasks';
