@@ -1,4 +1,5 @@
 import { apiMessages, GroupDTO } from 'common';
+import { Request } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { NumberFromString } from 'io-ts-types/lib/NumberFromString';
@@ -13,11 +14,11 @@ const GetStudentGroupsParamsV = t.type({
 type GetStudentGroups = GetRequest<t.Any, typeof GetStudentGroupsParamsV>;
 
 export const groups = (
-  req: GetStudentGroups,
+  req: Request,
   res: BackendResponse<{ groups: GroupDTO[] }>
 ) => {
-  handleBadRequest(GetStudentGroupsParamsV, req.params, res).then(() => {
-    return db.getStudentGroups({ userId: req.params.id }, (dbErr, dbRes) => {
+  handleBadRequest(GetStudentGroupsParamsV, req.params, res).then(params => {
+    return db.getStudentGroups({ userId: params.id }, (dbErr, dbRes) => {
       if (dbErr) {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,

@@ -1,9 +1,10 @@
 import { UserWithGroups } from 'common';
+import { Request } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { NumberFromString } from 'io-ts-types/lib/NumberFromString';
 
-import { BackendResponse, GetRequest, handleBadRequest } from '../../../lib';
+import { BackendResponse, handleBadRequest } from '../../../lib';
 import { db } from '../../../store';
 
 const GetStudentWithGroupRequestV = t.type({
@@ -15,12 +16,8 @@ const GetStudentWithGroupRequestV = t.type({
   }),
 });
 
-type GetStudentWithGroupRequest = GetRequest<
-  typeof GetStudentWithGroupRequestV
->;
-
 export const getStudentWithGroup = (
-  req: GetStudentWithGroupRequest,
+  req: Request,
   res: BackendResponse<{ studentWithGroup: UserWithGroups }>
 ) => {
   handleBadRequest(
