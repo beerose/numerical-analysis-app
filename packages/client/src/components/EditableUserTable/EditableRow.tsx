@@ -62,9 +62,7 @@ export class EditableCell extends React.Component<EditableCellProps> {
                     rules: [
                       {
                         message: LABELS.requiredField,
-                        required: requiredFields.find(f => f === dataIndex)
-                          ? true
-                          : false,
+                        required: !!requiredFields.find(f => f === dataIndex),
                       },
                     ],
                   })(this.getInput())}

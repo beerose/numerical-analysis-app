@@ -23,7 +23,5 @@ export const isUserPrivileged = (
     return false;
   }
 
-  return to.every(what => privilegesSection[withId].includes(what))
-    ? true
-    : false;
+  return to.every(what => privilegesSection[withId].includes(what));
 };

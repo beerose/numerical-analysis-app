@@ -298,7 +298,7 @@ export class GroupApiProvider extends React.Component<
      * TODO: Stop sending all students with groups
      * Stop filtering here
      */
-    return groupsService.listStudentsWithGroup(groupId!).then(res => {
+    return groupsService.listStudentsWithGroup(groupId).then(res => {
       if (ApiResponse2.isError(res)) {
         throw res;
       }

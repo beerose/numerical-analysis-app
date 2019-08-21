@@ -79,7 +79,7 @@ const TaskForm = (props: Props) => {
       }
       const choosable: ChoosableSubtask[] = [];
       if (values.subtask_id) {
-        values.subtask_id.map((v, i) => {
+        values.subtask_id.forEach((v, i) => {
           choosable.push({
             group_capacity: values.subtask_group_capacity[i],
             id: v,

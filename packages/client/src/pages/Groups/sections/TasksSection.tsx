@@ -86,17 +86,19 @@ export const TasksSection = ({
   };
 
   const handleAttachTask = () => {
-    actions.attachTask(selectedTask!.id!, selectedTask!.weight!).then(res => {
-      setModalVisible(false);
-      showMessage(res);
-      actions.listTasks({ all: false }).then(listRes => {
-        setTasks(
-          ApiResponse2.getData(listRes)
-            ? ApiResponse2.getData(listRes).tasks
-            : []
-        );
+    actions
+      .attachTask(selectedTask.id || -1, selectedTask.weight || 0)
+      .then(res => {
+        setModalVisible(false);
+        showMessage(res);
+        actions.listTasks({ all: false }).then(listRes => {
+          setTasks(
+            ApiResponse2.getData(listRes)
+              ? ApiResponse2.getData(listRes).tasks
+              : []
+          );
+        });
       });
-    });
   };
 
   const handleInputChange = useCallback(

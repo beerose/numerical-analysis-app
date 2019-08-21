@@ -51,7 +51,6 @@ const StudentGroupGradeSummary: React.FC<StudentGroupGradeSummaryProps> = ({
   const {
     actions: { getResults },
   } = useContext(GroupApiContext);
-  const user = useAuthStore(s => s.user);
   const { texts } = useContext(LocaleContext);
 
   const results = usePromise(
@@ -83,12 +82,6 @@ const StudentGroupGradeSummary: React.FC<StudentGroupGradeSummaryProps> = ({
   if (results === 'LOADING') {
     return <Spin />;
   }
-
-  const columns = makeGradesSectionColumns({
-    texts,
-    currentGroup,
-    omittedKeys: ['confirm_grade'],
-  });
 
   return (
     <Descriptions>

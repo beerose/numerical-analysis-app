@@ -15,7 +15,7 @@ const renameKeys = (
 
 const meetingsIdsToNames = (meetings: MeetingDTO[]) => {
   const meetingsIdsNamesMap: Record<number, string> = {};
-  meetings.map(m => {
+  meetings.forEach(m => {
     meetingsIdsNamesMap[m.id] = `${new Date(m.date).toLocaleDateString()} ${
       m.meeting_name
     }`;

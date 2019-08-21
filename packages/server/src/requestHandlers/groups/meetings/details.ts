@@ -30,7 +30,7 @@ export const getMeetingsDetails = (
         });
       }
       const details = data.map(item => {
-        let activities: StudentActivities = {};
+        const activities: StudentActivities = {};
         item.meetings_data.forEach(o => {
           activities[o.meeting_id] = o.points;
         });

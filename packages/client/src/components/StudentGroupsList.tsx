@@ -64,9 +64,9 @@ export const StudentGroupsList: React.FC<StudentGroupsListProps> = ({
   const groups = usePromise(
     async () =>
       cachedGroups ||
-      getGroupsForStudent(user!.id!).catch((error: Error) => ({ error })),
+      getGroupsForStudent(user.id).catch((error: Error) => ({ error })),
     'LOADING',
-    [user!.id]
+    [user.id]
   );
 
   if (typeof groups === 'object' && 'error' in groups && groups.error) {

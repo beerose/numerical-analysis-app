@@ -180,10 +180,6 @@ export const deleteGroup = async (groupId: GroupId) => {
 export const getMeetingsDetails = (
   groupId: GroupId
 ): Promise<MeetingDetailsModel[]> => {
-  const options = {
-    method: 'GET',
-  };
-
   return authFetch2<{ details: MeetingDetailsModel[] }>(
     `${SERVER_URL + Groups.Meetings.Details}`,
     {

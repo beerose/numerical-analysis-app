@@ -1,8 +1,9 @@
-import * as t from 'io-ts';
 import { apiMessages } from 'common';
-import { handleBadRequest, BackendResponse, PostRequest } from '../../lib';
-import { db } from '../../store';
 import * as codes from 'http-status-codes';
+import * as t from 'io-ts';
+
+import { BackendResponse, handleBadRequest, PostRequest } from '../../lib';
+import { db } from '../../store';
 
 const AttachBodyV = t.type({
   group_id: t.number,

@@ -81,9 +81,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
   const [groupDataState, mergeGroupDataState] = useMergeState<GroupDataState>(
     () => {
       const {
-        tresholds = fromPairs(
-          tresholdsKeys.map(k => [k, 0] as [keyof Tresholds, number])
-        ),
+        tresholds = fromPairs(tresholdsKeys.map(k => [k, 0])),
         grade_equation = '1 * presence + 1 * activity + 1 * tasks',
       } = group.data || {};
 
