@@ -1,5 +1,6 @@
 import {
   gqlApi,
+  GroupId,
   SelectableSubtask,
   StudentTeam,
   TaskDTO,
@@ -12,34 +13,34 @@ import * as Arr from 'fp-ts/lib/Array';
 import * as Either from 'fp-ts/lib/Either';
 import * as Option from 'fp-ts/lib/Option';
 import { GraphQLDateTime } from 'graphql-iso-date';
+import { PubSub, withFilter } from 'graphql-subscriptions';
 import { Dict, Flavor } from 'nom-ts';
 
 import { fail } from '../lib/fail';
 
-import { Context } from './context';
+import { Context } from './Context';
+import { TeamId } from './TeamId';
 
-type TeamId = Flavor<string, 'TeamId'>;
+namespace pubsub {
+  const _pubsub = new PubSub();
 
-function TeamId(
-  taskId: string | number,
-  subtaskId: string | number,
-  teamIndex: number
-): TeamId {
-  return `${taskId}.${subtaskId}.${teamIndex}` as TeamId;
-}
+  export interface SubtaskSelectedEventPayload {
+    taskId: string;
+    subtaskId: string;
+    studentId: UserId;
+    groupId: GroupId;
+  }
 
-namespace TeamId {
-  export function unpack(teamId: TeamId) {
-    const segments = teamId.split('.');
-    console.assert(segments[0] && segments[1]);
-    return segments.map(Number);
+  // tslint:disable-next-line: no-duplicate-string
+  type Action = ['subtask-selected', SubtaskSelectedEventPayload];
+
+  export function publish(...[triggerName, payload]: Action) {
+    return _pubsub.publish(triggerName, payload);
   }
-  export function subtaskId(teamId: TeamId) {
-    return TeamId.unpack(teamId)[0];
-  }
-  export function teamIndex(teamId: TeamId) {
-    return TeamId.unpack(teamId)[1];
-  }
+
+  export const asyncIterator: (
+    triggers: Action[0] | Array<Action[0]>
+  ) => AsyncIterator<unknown> = _pubsub.asyncIterator.bind(_pubsub);
 }
 
 const fakeDb = {
@@ -175,7 +176,53 @@ export const resolvers: gqlApi.Resolvers<Context> = {
     selectSubtask(_parent, { taskId, subtaskId }, ctx) {
       const studentId = ctx.user.id;
 
-      return fakeDb.selectSubtaskAndCreateTeam(taskId, subtaskId, studentId);
+      const res = fakeDb.selectSubtaskAndCreateTeam(
+        taskId,
+        subtaskId,
+        studentId
+      );
+
+      pubsub.publish('subtask-selected', {
+        studentId,
+        subtaskId,
+        taskId,
+        groupId: ctx.groupId,
+      });
+
+      return res;
+    },
+  },
+  Subscription: {
+    subtaskSelected: {
+      // resolve: payload => {
+      //   // TODO:  fix lib typings?
+      //   const { message } = (payload as any) as MessageAddedPayload;
+      //   return message;
+      // },
+      subscribe: withFilter(
+        () => pubsub.asyncIterator('subtask-selected'),
+        (
+          event: pubsub.SubtaskSelectedEventPayload,
+          input: gqlApi.SubtaskSelectedInput,
+          ctx: Context
+        ) => {
+          if (event.taskId === input.taskId && event.groupId === ctx.groupId) {
+            // TODO:
+            // Should return true if user is in a group
+            // that has this task and a taskId is in variables
+            console.log(
+              event.studentId,
+              event.subtaskId,
+              event.taskId,
+              ctx.groupId,
+              ctx.user
+            );
+            return true;
+          }
+
+          return false;
+        }
+      ),
     },
   },
 };
