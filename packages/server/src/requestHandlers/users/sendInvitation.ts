@@ -1,4 +1,5 @@
 import { apiMessages, UserRole } from 'common';
+import { Response } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 
@@ -21,7 +22,7 @@ export const sendInvitation = (
   req: SendInvitationRequest,
   res: BackendResponse
 ) => {
-  handleBadRequest(SendInvitationBodyV, req.body, res).then(() => {
+  handleBadRequest(SendInvitationBodyV, req.body, res as Response).then(() => {
     sendRegistrationLink(req.body, err => {
       if (err) {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({

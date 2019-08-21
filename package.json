@@ -36,5 +36,10 @@
   },
   "resolutions": {
     "ts-node": "8.0.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "yarn typecheck"
+    }
   }
 }

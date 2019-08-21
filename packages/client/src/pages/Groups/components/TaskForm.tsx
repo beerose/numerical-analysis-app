@@ -7,11 +7,7 @@ import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
-import {
-  ChoosableSubtask,
-  TaskDTO,
-  TaskKind,
-} from '../../../../../../dist/common';
+import { SelectableSubtask, TaskDTO, TaskKind } from 'common';
 import { TaskKindSelect } from '../../../components';
 import { Colors, showMessage } from '../../../utils';
 
@@ -19,7 +15,6 @@ import {
   ChoosableFormFields,
   DynamicChoosableTasksForm,
 } from './DynamicChoosableTasksForm';
-import { RequiredText, StartEndDatePicker } from './StartEndDatePicker';
 
 const smallInputStyles = css`
   width: 100px !important;
@@ -77,13 +72,14 @@ const TaskForm = (props: Props) => {
         showMessage({ error: 'Wypełnij wszystkie pola' });
         return;
       }
-      const choosable: ChoosableSubtask[] = [];
+      const choosable: SelectableSubtask[] = [];
       if (values.subtask_id) {
         values.subtask_id.map((v, i) => {
           choosable.push({
             group_capacity: values.subtask_group_capacity[i],
             id: v,
             max_groups: values.subtask_max_groups[i],
+            takenBy: [],
           });
         });
       }
