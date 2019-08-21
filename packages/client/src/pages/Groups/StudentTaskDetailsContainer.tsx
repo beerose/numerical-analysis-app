@@ -1,14 +1,15 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
+import { Divider } from 'antd';
 import React from 'react';
+import { RouteComponentProps } from 'react-router';
+
 import {
-  PaddingContainer,
   Breadcrumbs,
   Heading,
+  PaddingContainer,
   StudentTasksTable,
 } from '../../components';
-import { Divider } from 'antd';
-import { RouteComponentProps } from 'react-router';
 
 type StudentTaskDetailsContainerProps = RouteComponentProps;
 export const StudentTaskDetailsContainer: React.FC<
