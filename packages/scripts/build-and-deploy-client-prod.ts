@@ -8,7 +8,10 @@ exec(
   { dir: './packages/client' }
 );
 
-exec('yarn build-client --public-url ./');
+exec(`
+  rm -rf dist/client/
+  yarn build-client --public-url ./
+`);
 
 exec(
   `
