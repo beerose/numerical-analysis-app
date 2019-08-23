@@ -15,16 +15,8 @@ const { Users: Routes } = ServerRoutes;
 
 export const router = Router();
 
-router.get(
-  Routes.Get(':id'),
-  auth.authorize([UserRole.Admin, UserRole.SuperUser, UserRole.Student]),
-  get
-);
-router.get(
-  Routes.List,
-  auth.authorize([UserRole.Admin, UserRole.SuperUser]),
-  list
-);
+router.get(Routes.Get(':id'), auth.authorize(UserRole.All), get);
+router.get(Routes.List, auth.authorize(UserRole.NonStudents), list);
 router.post(Routes.Create, /*auth.authorize([UserRole.Admin]),*/ create);
 router.post(Routes.Update, auth.authorize([UserRole.Admin]), update);
 router.delete(Routes.Delete, auth.authorize([UserRole.Admin]), deleteUser);
@@ -36,7 +28,7 @@ router.get(
 );
 router.get(
   Routes.Student.Tasks(':id'),
-  auth.authorize([UserRole.Student, UserRole.SuperUser, UserRole.Admin]),
+  auth.authorize(UserRole.All),
   student.tasksSummary
 );
 router.get(

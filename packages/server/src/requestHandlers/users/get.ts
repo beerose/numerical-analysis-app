@@ -1,9 +1,10 @@
 import { apiMessages, UserDTO } from 'common';
+import { Request } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { NumberFromString } from 'io-ts-types/lib/NumberFromString';
 
-import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
+import { BackendResponse, handleBadRequest } from '../../lib';
 import { db } from '../../store';
 
 // TODO:
@@ -21,9 +22,7 @@ const GetUserV = t.type({
   id: NumberFromString,
 });
 
-type GetUserRequest = GetRequest<t.Any, typeof GetUserV>;
-
-export const get = (req: GetUserRequest, res: BackendResponse<UserDTO>) => {
+export const get = (req: Request, res: BackendResponse<UserDTO>) => {
   handleBadRequest(GetUserV, req.params, res).then(({ id }) =>
     db.getUser(id, (dbError, [user]) => {
       if (dbError) {

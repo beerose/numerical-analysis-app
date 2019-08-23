@@ -13,8 +13,8 @@ import { join } from 'path';
 
 import { authorizeWithToken } from '../middleware/auth/authorize';
 
-import { Context } from './context';
 import { resolvers } from './resolvers';
+import { Context } from './Context';
 
 const typeDefs = gql(
   readFileSync(join(__dirname, '../../../common/graphql/schema.graphql'), {
@@ -26,7 +26,13 @@ export const apolloServer = new ApolloServer({
   typeDefs,
   resolvers: resolvers as any,
   context: async ({ req, connection }): Promise<Context> => {
-    const { authorization } = connection ? connection.context : req.headers;
+    const { authorization, 'x-group-id': groupId } = connection
+      ? connection.context
+      : req.headers;
+
+    if (Number.isNaN(Number(groupId))) {
+      throw new AuthenticationError('x-group-id missing or not a number');
+    }
 
     const user = await authorizeWithToken(authorization, UserRole.All)().then(
       flow(
@@ -36,7 +42,10 @@ export const apolloServer = new ApolloServer({
       )
     );
 
-    return { user };
+    return {
+      user,
+      groupId,
+    };
   },
   // Enable GraphQL Playground in production.
   // We don't believe in security by obscurity.

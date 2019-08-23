@@ -1,4 +1,5 @@
 import { apiMessages, StudentTasksSummary } from 'common';
+import { Request } from 'express';
 import * as codes from 'http-status-codes';
 import * as t from 'io-ts';
 import { NumberFromString } from 'io-ts-types/lib/NumberFromString';
@@ -22,14 +23,14 @@ type StudentTasksResponse = {
 };
 
 export const tasksSummary = (
-  req: GetStudentTasks,
+  req: Request,
   res: BackendResponse<StudentTasksResponse>
 ) => {
   handleBadRequest(
     GetStudentTasksV,
     { query: req.query, params: req.params },
     res
-  ).then(() => {
+  ).then(req => {
     return db.getStudentsTasks(
       { userId: req.params.id, groupId: req.query.groupId },
       (dbErr, dbRes) => {

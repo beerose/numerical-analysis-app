@@ -24,12 +24,7 @@ import { isNumberOrNumberString, usePromise } from '../../utils';
 import { assertDefined } from '../../utils/assertDefined';
 import { useAuthStore } from '../../AuthStore';
 
-import {
-  makeGradesSectionColumns,
-  mergedResultsToTableItem,
-  sortDirections,
-  SuggestedGrade,
-} from './sections';
+import { mergedResultsToTableItem, SuggestedGrade } from './sections';
 import { GroupApiContext } from './GroupApiContext';
 
 const Descriptions = (props: React.ComponentProps<typeof AntDescriptions>) => (

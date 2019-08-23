@@ -33,11 +33,13 @@ export interface PostRequest<BodyValidator extends t.Any> extends Request {
   body: t.TypeOf<BodyValidator>;
 }
 
-export function handleBadRequest<Decoder extends t.Decoder<any, A>, A>(
+type GetDecoded<Decoder> = Decoder extends t.Decoder<any, infer A> ? A : never;
+
+export function handleBadRequest<Decoder extends t.Decoder<any, any>>(
   decoder: Decoder,
-  payload: A,
+  payload: unknown,
   response: Response
-): Promise<A> {
+): Promise<GetDecoded<Decoder>> {
   return new Promise(resolve => {
     const result = decoder.decode(payload);
     fold(_err => {
