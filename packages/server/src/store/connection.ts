@@ -1,5 +1,7 @@
 import mysql, { createConnection } from 'mysql';
 
+import { echo } from '../lib';
+
 let dbConfig = {
   database: process.env.DB_NAME,
   host: process.env.DB_HOST,
@@ -59,11 +61,11 @@ let connection = mysql.createConnection(dbConfig);
 export { connection };
 
 export const connectToDb = () => {
-  console.log(`
+  echo`
     Connecting to database...
     Local conState.status is ${conState.status}.
     connection.state is ${connection.state}.
-  `);
+  `;
   if (connection.state !== 'connected') {
     connection.connect(err => {
       connection = createConnection(dbConfig);
@@ -76,7 +78,7 @@ export const connectToDb = () => {
         setConState({ retriesLeft: conState.retriesLeft - 1 });
         setTimeout(connectToDb, 2000);
       } else {
-        console.log('Connected to database!');
+        echo`Connected to database!`;
         setConState({ status: ConnectionStatus.On, retriesLeft: MAX_RETRIES });
       }
     });
@@ -89,7 +91,7 @@ export const connectToDb = () => {
             status: ConnectionStatus.Off,
           });
 
-          console.log('Connection to database lost!');
+          echo`Connection to database lost!`;
           connectToDb();
         } else {
           throw err;
