@@ -16,3 +16,6 @@ _prod
 
 # databse seed data
 *.seed.sql
+
+# certs
+**/cert
