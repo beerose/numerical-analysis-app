@@ -155,6 +155,7 @@ export const Welcome: React.FC = () => {
               @media (max-width: 1000px) {
                 background-color: rgba(0, 0, 0, 0.5);
                 backdrop-filter: blur(8px);
+                box-shadow: 3px 2px 21px rgba(0, 0, 0, 0.35);
               }
             `}
           >
@@ -168,17 +169,29 @@ export const Welcome: React.FC = () => {
             >
               {texts.welcomeToTheApp}
             </h1>
-            <p>Lorem ipsum, ta aplikacja pozwala Ci robić rzeczy</p>
             <Flex center>
               <LinkButton
+                ghost
                 to="/login"
-                type="dashed"
                 size="large"
                 css={css`
-                  margin-top: 0.5em;
-                  font-size: inherit;
-                  padding: 0.5em 1em;
                   height: auto;
+                  margin-top: 0.5em;
+                  padding: 0.5em 1em;
+                  border-width: 2px;
+
+                  font-size: inherit;
+                  font-weight: 600;
+
+                  box-shadow: 0 0 0 1px transparent;
+
+                  :hover,
+                  :focus {
+                    color: unset;
+                    border-color: unset;
+
+                    box-shadow: 0 0 0 1px currentColor;
+                  }
                 `}
               >
                 {texts.login}
