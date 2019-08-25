@@ -1,9 +1,5 @@
 ## Numerical Analysis App
 
-## More README
-
-- [How to setup database docker container?](./database/DOCKER_README)
-
 ## Setup
 
 ### Set up your MySQL database

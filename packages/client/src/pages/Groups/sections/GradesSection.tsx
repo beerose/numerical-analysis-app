@@ -259,11 +259,13 @@ Props) => {
         );
 
         newTableData.forEach(({ userId, finalGrade }) => {
+          // tslint:disable-next-line:no-console
           console.log('setting final grade', finalGrade, 'for', userId);
           actions.setFinalGrade(userId, finalGrade).then(res => {
             if (ApiResponse2.isError(res)) {
               console.error(res);
             } else {
+              // tslint:disable-next-line:no-console
               console.log('set final grade for', userId, res.data);
             }
           });
