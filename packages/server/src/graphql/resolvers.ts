@@ -24,15 +24,15 @@ import { TeamId } from './TeamId';
 namespace pubsub {
   const _pubsub = new PubSub();
 
-  export interface SubtaskSelectedEventPayload {
+  export interface SubtaskModifiedEventPayload {
+    subtask: gqlApi.SelectableSubtask;
     taskId: string;
-    subtaskId: string;
     studentId: UserId;
     groupId: GroupId;
   }
 
   // tslint:disable-next-line: no-duplicate-string
-  type Action = ['subtask-selected', SubtaskSelectedEventPayload];
+  type Action = ['subtask-modified', SubtaskModifiedEventPayload];
 
   export function publish(...[triggerName, payload]: Action) {
     return _pubsub.publish(triggerName, payload);
@@ -139,13 +139,12 @@ function transformSubtaskFromDb(
 export const resolvers: gqlApi.Resolvers<Context> = {
   DateTime: GraphQLDateTime,
   SelectableSubtask: {
-    takenBy: (selectableSubtask, _args, ctx) => {
-      console.log(selectableSubtask.id, (ctx as any).currentTeamId);
+    takenBy: (selectableSubtask, _args) => {
       return selectableSubtask.takenBy || [];
     },
   },
   Task: {
-    selectableSubtask({ selectableSubtasks }, { id }, _ctx) {
+    selectableSubtask({ selectableSubtasks }, { id }) {
       return selectableSubtasks.find(s => s.id === id) || null;
     },
   },
@@ -182,10 +181,10 @@ export const resolvers: gqlApi.Resolvers<Context> = {
         studentId
       );
 
-      pubsub.publish('subtask-selected', {
+      pubsub.publish('subtask-modified', {
         studentId,
-        subtaskId,
         taskId,
+        subtask: res.subtask,
         groupId: ctx.groupId,
       });
 
@@ -193,16 +192,16 @@ export const resolvers: gqlApi.Resolvers<Context> = {
     },
   },
   Subscription: {
-    subtaskSelected: {
+    subtaskModified: {
       // resolve: payload => {
       //   // TODO:  fix lib typings?
       //   const { message } = (payload as any) as MessageAddedPayload;
       //   return message;
       // },
       subscribe: withFilter(
-        () => pubsub.asyncIterator('subtask-selected'),
+        () => pubsub.asyncIterator('subtask-modified'),
         (
-          event: pubsub.SubtaskSelectedEventPayload,
+          event: pubsub.SubtaskModifiedEventPayload,
           input: gqlApi.SubtaskSelectedInput,
           ctx: Context
         ) => {
@@ -211,8 +210,8 @@ export const resolvers: gqlApi.Resolvers<Context> = {
             // Should return true if user is in a group
             // that has this task and a taskId is in variables
             console.log(
+              event.subtask,
               event.studentId,
-              event.subtaskId,
               event.taskId,
               ctx.groupId,
               ctx.user

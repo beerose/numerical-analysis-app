@@ -2,7 +2,7 @@
   "name": "common",
   "version": "1.0.0-alpha.0",
   "scripts": {
-    "build": "tsc --build . && cp ./package.json ../../dist/common",
+    "build": "sh ./build.sh",
     "tsc": "tsc",
     "watch": "tsc --watch",
     "graphql-codegen": "graphql-codegen --config graphql/codegen.yml && yarn build"
@@ -11,7 +11,7 @@
     "@graphql-codegen/cli": "^1.5.0",
     "@graphql-codegen/fragment-matcher": "1.5.0",
     "@graphql-codegen/introspection": "^1.5.0",
-    "@graphql-codegen/typescript": "1.5.0",
+    "@graphql-codegen/typescript": "1.6.1",
     "@graphql-codegen/typescript-graphql-files-modules": "1.5.0",
     "@graphql-codegen/typescript-operations": "^1.5.0",
     "@graphql-codegen/typescript-resolvers": "1.5.0",

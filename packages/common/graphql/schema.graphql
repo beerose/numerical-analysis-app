@@ -66,5 +66,5 @@ input SubtaskSelectedInput {
 }
 
 type Subscription {
-  subtaskSelected(in: SubtaskSelectedInput!): SelectableSubtask
+  subtaskModified(in: SubtaskSelectedInput!): SelectableSubtask
 }

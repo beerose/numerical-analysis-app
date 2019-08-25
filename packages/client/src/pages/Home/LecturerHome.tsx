@@ -68,15 +68,21 @@ const TilesNavigation = () => {
 export const LecturerHome: React.FC<AuthStoreState> = ({ user }) => {
   const { texts } = useContext(LocaleContext);
 
+  if (!user) {
+    throw new Error('user must be logged in');
+  }
+
   return (
     <PaddingContainer as="section">
       <h1
         css={css`
           font-size: 2.5em;
           margin: 1em;
+
+          display: flex;
         `}
       >
-        {texts.hello} {user!.user_name}!
+        {texts.hello} {user.user_name}!
       </h1>
       <TilesNavigation />
     </PaddingContainer>
