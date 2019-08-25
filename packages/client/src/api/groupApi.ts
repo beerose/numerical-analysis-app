@@ -338,7 +338,7 @@ export const setFinalGrade = (
   });
 
 export const getAttached = (groupId: GroupId) =>
-  authFetch2<{ groups: GroupDTO[] }>(`${SERVER_URL + Groups.GetAttached}}`, {
+  authFetch2<{ groups: GroupDTO[] }>(`${SERVER_URL + Groups.GetAttached}`, {
     query: {
       group_id: groupId,
     },
