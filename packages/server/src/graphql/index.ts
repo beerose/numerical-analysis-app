@@ -1,29 +1,16 @@
-import {
-  ApolloServer,
-  AuthenticationError,
-  Config as ApolloServerBaseConfig,
-  gql,
-  withFilter,
-} from 'apollo-server-express';
+import { ApolloServer, AuthenticationError, gql } from 'apollo-server-express';
 import { UserRole } from 'common';
+import { schemaString } from 'common/graphql/schemaString';
 import { flow, identity } from 'fp-ts/lib/function';
 import { fold } from 'fp-ts/lib/Either';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 
 import { authorizeWithToken } from '../middleware/auth/authorize';
 
 import { resolvers } from './resolvers';
 import { Context } from './Context';
 
-const typeDefs = gql(
-  readFileSync(join(__dirname, '../../../common/graphql/schema.graphql'), {
-    encoding: 'utf-8',
-  })
-);
-
 export const apolloServer = new ApolloServer({
-  typeDefs,
+  typeDefs: gql(schemaString),
   resolvers: resolvers as any,
   context: async ({ req, connection }): Promise<Context> => {
     const { authorization, 'x-group-id': groupId } = connection
