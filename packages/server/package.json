@@ -9,6 +9,7 @@
     "tsnode": "cross-env TS_NODE_FILES=true PORT=8082 node --inspect=5858 -r ts-node/register src/index.ts",
     "dev": "nodemon",
     "setPassword": "ts-node --files ./scripts/setPassword p",
+    "createFirstAdmin": "ts-node --files ./scripts/createFirstAdmin",
     "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {

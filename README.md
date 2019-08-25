@@ -4,26 +4,14 @@
 
 ### Set up your MySQL database
 
-Run all sql queries in `server/migrations/` to set up the database.
+Run all sql queries in `database/scripts/createTables.sql` to set up the database.
 
 ### Create the first admin
 
 Insert the first admin into the users table. He can add more admins, superusers and users.
 
-```sql
-
-insert into users (
-    user_name,
-    email,
-    user_role,
-    password
-) values (
-    'user_name',
-    'your_email',
-    'admin',
-    '$2b$10$e17/rZAeRLlLfSRV4fMPE.ROjHGL0.qgEuWq9PpCJ6YtfU2rul/HW' -- this is "haslo" hashed
-)
-
+```
+    yarn workspace server createFirstAdmin --username admin --email admin@example.com
 ```
 
 ### Environment variables
