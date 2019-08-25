@@ -14,7 +14,7 @@ import * as Either from 'fp-ts/lib/Either';
 import * as Option from 'fp-ts/lib/Option';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import { PubSub, withFilter } from 'graphql-subscriptions';
-import { Dict, Flavor } from 'nom-ts';
+import { Dict } from 'nom-ts';
 
 import { fail } from '../lib/fail';
 
