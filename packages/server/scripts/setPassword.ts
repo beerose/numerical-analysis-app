@@ -3,14 +3,14 @@ process.env.NODE_ENV = 'development';
 import { compare } from 'bcrypt';
 import program from 'commander';
 import dotenv from 'dotenv';
-import { prompt, Questions } from 'inquirer';
+import { prompt, QuestionCollection } from 'inquirer';
 
 import { storePassword } from '../src/requestHandlers/accounts/storePassword';
 import { db } from '../src/store';
 
 dotenv.config();
 
-const questions: Questions<{
+const questions: QuestionCollection<{
   email: string;
   password: string;
 }> = [
@@ -26,7 +26,7 @@ const questions: Questions<{
   },
 ];
 
-const newPassQuestions: Questions<{
+const newPassQuestions: QuestionCollection<{
   email: string;
   password: string;
 }> = [

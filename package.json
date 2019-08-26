@@ -21,7 +21,8 @@
     "deploy-server": "yarn workspace scripts deploy-server",
     "build-client": "yarn workspace common build && yarn workspace client build",
     "build-and-deploy-client-prod": "yarn workspace scripts build-and-deploy-client-prod",
-    "ssh-server": "ssh anumuser@rno.ii.uni.wroc.pl"
+    "ssh-server": "ssh anumuser@rno.ii.uni.wroc.pl",
+    "graphql-codegen": "yarn workspace common graphql-codegen"
   },
   "devDependencies": {
     "@hasparus/tslint-config": "hasparus/tslint-config-hasparus",

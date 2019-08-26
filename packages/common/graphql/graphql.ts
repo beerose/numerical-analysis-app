@@ -58,7 +58,7 @@ export type SelectableSubtask = {
   id: Scalars['ID'];
   maxTeams: Scalars['Int'];
   teamCapacity: Scalars['Int'];
-  takenBy: Array<Team>;
+  takenBy: Team[];
 };
 
 export type SelectSubtaskResponse = {
@@ -79,10 +79,10 @@ export type Student = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  subtaskSelected?: Maybe<SelectableSubtask>;
+  subtaskModified?: Maybe<SelectableSubtask>;
 };
 
-export type SubscriptionSubtaskSelectedArgs = {
+export type SubscriptionSubtaskModifiedArgs = {
   in: SubtaskSelectedInput;
 };
 
@@ -94,7 +94,7 @@ export type Task = {
   __typename?: 'Task';
   id: Scalars['ID'];
   selectableSubtask?: Maybe<SelectableSubtask>;
-  selectableSubtasks: Array<SelectableSubtask>;
+  selectableSubtasks: SelectableSubtask[];
 };
 
 export type TaskSelectableSubtaskArgs = {
@@ -104,7 +104,7 @@ export type TaskSelectableSubtaskArgs = {
 export type Team = {
   __typename?: 'Team';
   id: Scalars['ID'];
-  students: Array<Student>;
+  students: Student[];
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -313,11 +313,11 @@ export type SubscriptionResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
 > = {
-  subtaskSelected?: SubscriptionResolver<
+  subtaskModified?: SubscriptionResolver<
     Maybe<ResolversTypes['SelectableSubtask']>,
     ParentType,
     ContextType,
-    SubscriptionSubtaskSelectedArgs
+    SubscriptionSubtaskModifiedArgs
   >;
 };
 

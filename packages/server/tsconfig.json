@@ -16,7 +16,7 @@
     "downlevelIteration": false,
     "noUnusedLocals": false
   },
-  "include": ["src"],
+  "include": ["src", "scripts"],
   "exclude": ["**/__tests__/*.ts"],
   "references": [{ "path": "../common" }]
 }
