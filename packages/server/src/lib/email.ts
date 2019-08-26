@@ -21,7 +21,9 @@ export const email = {
           user: process.env.EMAIL,
         },
         host: 'smtp.gmail.com',
-        port: 587,
+        // port: 587,
+        port: 465,
+        secure: true,
         service: 'gmail',
       });
     }
