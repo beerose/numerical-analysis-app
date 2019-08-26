@@ -127,12 +127,10 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
                 {texts.presence}
               </MenuLink>
             )}
-            {features.hasTasks && (
-              <MenuLink to={`${matchUrl}/tasks`} key="tasks">
-                <Icon type="calculator" />
-                {texts.tasks}
-              </MenuLink>
-            )}
+            <MenuLink to={`${matchUrl}/tasks`} key="tasks">
+              <Icon type="calculator" />
+              {texts.tasks}
+            </MenuLink>
             {features.hasAttachedGroups && (
               <MenuLink to={`${matchUrl}/attached`} key="attached">
                 <Icon type="pushpin" />
