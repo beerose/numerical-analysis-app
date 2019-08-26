@@ -1,5 +1,5 @@
 import { Button, List, Modal, Select, Spin } from 'antd';
-import { GroupDTO } from 'common';
+import { GroupDTO, GroupId } from 'common';
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 
@@ -77,6 +77,7 @@ export const AttachedGroupsSection = (props: Props) => {
         </Button>
       )}
       <Modal
+        destroyOnClose
         visible={modalVisible}
         cancelText="Cofnij"
         okText={LABELS.save}
@@ -93,7 +94,11 @@ export const AttachedGroupsSection = (props: Props) => {
         >
           {props.groups ? (
             props.groups
-              .filter(g => !attachedGroupIds.includes(g.id))
+              .filter(
+                g =>
+                  !attachedGroupIds.includes(g.id) &&
+                  (props.currentGroup && g.id !== props.currentGroup.id)
+              )
               .map(group => (
                 <Select.Option key={group.id.toString()} value={group.id}>
                   {group.group_name}
