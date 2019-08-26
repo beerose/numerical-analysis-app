@@ -3,9 +3,9 @@ import { css, jsx } from '@emotion/core';
 
 import { Colors } from '../utils';
 export const DateRange = ({ start, end }: { start: string; end: string }) => {
-  const startDate = new Date(Date.parse(start)).toLocaleString();
-  const endDate = new Date(Date.parse(end)).toLocaleString();
-  const now = new Date().toLocaleString();
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  const now = new Date();
   return (
     <span>
       <p
@@ -20,7 +20,7 @@ export const DateRange = ({ start, end }: { start: string; end: string }) => {
           color: startDate < now && endDate > now ? 'green' : Colors.Blackish,
         })}
       >
-        {startDate} - {endDate}
+        {startDate.toLocaleDateString()} - {endDate.toLocaleDateString()}
       </p>
     </span>
   );

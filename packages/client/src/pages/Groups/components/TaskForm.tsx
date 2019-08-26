@@ -3,11 +3,11 @@ import { css, jsx } from '@emotion/core';
 import { Button, DatePicker, Form, Icon, Input, Switch } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
+import { SelectableSubtask, TaskDTO, TaskKind } from 'common';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Omit } from 'react-router';
 
-import { SelectableSubtask, TaskDTO, TaskKind } from 'common';
 import { TaskKindSelect } from '../../../components';
 import { Colors, showMessage } from '../../../utils';
 
@@ -206,7 +206,7 @@ const TaskForm = (props: Props) => {
             required
             css={css`
               padding: 0;
-              margin: 0;
+              margin-bottom: 20px;
             `}
           >
             {getFieldDecorator<FormModel>('vote_dates', {})(
@@ -219,7 +219,7 @@ const TaskForm = (props: Props) => {
             required
             css={css`
               padding: 0;
-              margin: 0;
+              margin-bottom: 20px;
             `}
           >
             {getFieldDecorator<FormModel>('upload_dates', {})(

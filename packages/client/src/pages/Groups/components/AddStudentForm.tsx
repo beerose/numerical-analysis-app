@@ -62,7 +62,7 @@ export class AddStudentForm extends React.Component<Props, State> {
     return (
       <Modal
         visible={this.props.visible}
-        title={LABELS.newUser}
+        title="Nowy student"
         onCancel={this.props.onCancel}
         footer={null}
       >
