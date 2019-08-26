@@ -72,10 +72,10 @@ function main() {
             user_role,
             password
           ) values (
-            '${username}',
-            '${email}',
+            ${username},
+            ${email},
             'admin',
-            '${hashed}'
+            ${hashed}
           )
       `,
         (err, res) => {
@@ -84,8 +84,9 @@ function main() {
             process.exit(1);
           }
           echo`
-        ${res}
-      `;
+            ${res}
+          `;
+          process.exit(0);
         }
       )
     );
