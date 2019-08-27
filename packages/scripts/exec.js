@@ -1,11 +1,11 @@
 const { execSync } = require('child_process');
 
 /**
- * @param {string} commands
- * @param {{ dir?: string }} arg2=
+ * @param {string} commandsStr
+ * @param {{ dir?: string | undefined }} arg2=
  */
-function exec(commands, { dir = undefined } = {}) {
-  commands = commands
+function exec(commandsStr, { dir } = {}) {
+  const commands = commandsStr
     .trim()
     .split('\n')
     .map(x => x.trim())
