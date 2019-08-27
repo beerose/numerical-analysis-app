@@ -48,5 +48,3 @@ export const UserDetailsPage: React.FC<UserDetailsPageProps> = ({
     </PaddingContainer>
   );
 };
-
-export default UserDetailsPage;

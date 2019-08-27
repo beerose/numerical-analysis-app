@@ -61,5 +61,8 @@
   "yourTasks": "Your tasks",
   "suggestedGrade": "Suggested grade",
   "presenceAndActivity": "Presence and activity",
-  "testsAndTasks": "Tests and tasks"
+  "testsAndTasks": "Tests and tasks",
+  "admin": "Admin",
+  "superUser": "SuperUser",
+  "student": "Student"
 }

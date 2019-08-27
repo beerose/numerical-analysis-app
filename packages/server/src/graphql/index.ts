@@ -37,5 +37,4 @@ export const apolloServer = new ApolloServer({
   // Enable GraphQL Playground in production.
   // We don't believe in security by obscurity.
   introspection: true,
-  // playground: true,
 });
