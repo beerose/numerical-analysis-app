@@ -19,8 +19,6 @@ import { useAuthStore } from '../AuthStore';
 import { LocaleContext } from './locale';
 import { Flex } from './Flex';
 
-const SCROLL_OPTIONS = { x: true };
-
 function renderDate(s: string) {
   const now = new Date();
   return formatRelative(new Date(s), now, { locale: pl });
@@ -131,7 +129,6 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
       dataSource={tasksSummary}
       rowKey={rowKey}
       columns={columns}
-      scroll={SCROLL_OPTIONS}
       css={css`
         box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
         &:hover {
@@ -142,6 +139,10 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
 
         .ant-pagination {
           margin-right: 1em;
+        }
+
+        .ant-table-body {
+          overflow-x: auto;
         }
       `}
       {...rest}
