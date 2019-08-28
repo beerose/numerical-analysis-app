@@ -57,7 +57,6 @@ export const ServerRoutes = {
     List: '/users',
     SendInvitation: '/users/send_invitation',
     Student: {
-      // TODO: Make Student a fuction -- it will resemble routes better
       Groups: (userId: UserId | ':id') => `/users/${userId}/student.groups`,
       Results: (userId: UserId | ':id') => `/users/${userId}/student.results`,
       Tasks: (userId: UserId | ':id') => `/users/${userId}/student.tasks`,

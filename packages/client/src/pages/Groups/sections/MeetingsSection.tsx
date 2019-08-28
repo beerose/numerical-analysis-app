@@ -17,6 +17,10 @@ import { GroupApiContextState } from '../GroupApiContext';
 
 const Container = styled.section`
   padding: ${theme.Padding.Standard};
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 `;
 
 type Props = GroupApiContextState & {
@@ -112,7 +116,7 @@ export class MeetingsSection extends React.Component<Props, State> {
             itemLayout="horizontal"
             dataSource={meetings}
             css={css`
-              max-height: 100vh;
+              flex: 1;
               width: 400px;
             `}
             renderItem={(meeting: MeetingDTO) => {

@@ -140,6 +140,10 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
         .ant-pagination {
           margin-right: 1em;
         }
+
+        .ant-table-body {
+          overflow-x: auto;
+        }
       `}
       {...rest}
     />

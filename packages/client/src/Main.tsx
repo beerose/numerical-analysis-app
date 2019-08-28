@@ -17,7 +17,14 @@ import {
 import { LocaleContextStatefulProvider } from './components/locale';
 import { ForgotPasswordForm } from './components/ForgotPasswordForm.tsx';
 import { VisibleForRoles } from './components/VisibleForRoles';
-import { Groups, Home, NotFoundPage, Users, Welcome } from './pages';
+import {
+  Groups,
+  Home,
+  ListUsersContainer,
+  NotFoundPage,
+  UserDetailsPage,
+  Welcome,
+} from './pages';
 import { GroupApiProvider } from './pages/Groups/GroupApiContext';
 import { Logout } from './pages/Logout';
 import { SettingsContainer } from './pages/Settings';
@@ -111,8 +118,13 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                   <Fragment>
                     <Route exact path="/" component={Home} />
                     <VisibleForRoles admin superUser>
-                      <Route path="/users" component={Users} />
+                      <Route
+                        exact
+                        path="/users"
+                        component={ListUsersContainer}
+                      />
                     </VisibleForRoles>
+                    <Route path="/users/:id" component={UserDetailsPage} />
                     <Route path="/groups" component={Groups} />
                     <Route path="/settings" component={SettingsContainer} />
                     <Route path="/logout" component={Logout} />

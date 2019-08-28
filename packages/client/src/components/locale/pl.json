@@ -61,5 +61,8 @@
   "yourTasks": "Twoje zadania",
   "suggestedGrade": "Sugerowana ocena",
   "presenceAndActivity": "Obecności i aktywności",
-  "testsAndTasks": "Testy i zadania"
+  "testsAndTasks": "Testy i zadania",
+  "admin": "Admin",
+  "superUser": "Prowadzący",
+  "student": "Student"
 }
