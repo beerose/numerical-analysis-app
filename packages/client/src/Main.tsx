@@ -116,21 +116,19 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                 <Route path="/accounts/new" component={NewAccount} />
                 {user ? (
                   <Fragment>
-                    <Switch>
-                      <Route exact path="/" component={Home} />
-                      <VisibleForRoles admin superUser>
-                        <Route
-                          exact
-                          path="/users"
-                          component={ListUsersContainer}
-                        />
-                      </VisibleForRoles>
-                      <Route path="/users/:id" component={UserDetailsPage} />
-                      <Route path="/groups" component={Groups} />
-                      <Route path="/settings" component={SettingsContainer} />
-                      <Route path="/logout" component={Logout} />
-                      <Route component={NotFoundPage} />
-                    </Switch>
+                    <Route exact path="/" component={Home} />
+                    <VisibleForRoles admin superUser>
+                      <Route
+                        exact
+                        path="/users"
+                        component={ListUsersContainer}
+                      />
+                    </VisibleForRoles>
+                    <Route path="/users/:id" component={UserDetailsPage} />
+                    <Route path="/groups" component={Groups} />
+                    <Route path="/settings" component={SettingsContainer} />
+                    <Route path="/logout" component={Logout} />
+                    {/* <Route component={NotFoundPage} /> */}
                   </Fragment>
                 ) : (
                   <Switch>
