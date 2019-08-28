@@ -306,10 +306,16 @@ export const updateTask = (task: TaskDTO, groupId: GroupId) =>
 export const setTaskPoints = (
   taskId: TaskDTO['id'],
   userId: UserId,
+  groupId: GroupId,
   points: number
 ) =>
   authFetch<ApiResponse>(SERVER_URL + Grades, {
-    body: JSON.stringify({ points, task_id: taskId, user_id: userId }),
+    body: JSON.stringify({
+      points,
+      task_id: taskId,
+      user_id: userId,
+      group_id: groupId,
+    }),
     method: 'POST',
   });
 

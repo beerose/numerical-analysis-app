@@ -413,7 +413,15 @@ export class GroupApiProvider extends React.Component<
     userId: UserDTO['id'],
     points: number
   ) => {
-    return groupsService.setTaskPoints(taskId, userId, points);
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    return groupsService.setTaskPoints(
+      taskId,
+      userId,
+      this.state.currentGroup.id,
+      points
+    );
   };
 
   getGrades = async (taskId: TaskDTO['id']) => {
