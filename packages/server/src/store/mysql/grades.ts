@@ -38,13 +38,13 @@ export const setTaskPoints = (
   );
 
 export const getGrades = (
-  { taskId }: { taskId: TaskDTO['id'] },
+  { taskId, groupId }: { taskId: TaskDTO['id']; groupId: GroupDTO['id'] },
   callback: QueryCallback<UserTaskPoints[]>
 ) =>
   connection.query(
     {
-      sql: `SELECT * FROM user_has_points WHERE task_id = ?;`,
-      values: [taskId],
+      sql: `SELECT * FROM user_has_points WHERE task_id = ? AND group_id = ?;`,
+      values: [taskId, groupId],
     },
     callback
   );
@@ -76,8 +76,8 @@ export const getUsersTaskPoints = (
       WHERE
         group_id = ${groupId}) ght ON (uhp.task_id = ght.task_id)
     ${userId ? sql`WHERE ubg.user_id = ${userId}` : sql.empty}
-  GROUP BY
-    ubg.user_id;
+    GROUP BY
+      ubg.user_id;
     `,
     callback
   );
