@@ -417,7 +417,13 @@ export class GroupApiProvider extends React.Component<
   };
 
   getGrades = async (taskId: TaskDTO['id']) => {
-    const res = await groupsService.getGrades(taskId);
+    if (!this.state.currentGroup) {
+      throw new Error(noGroupError);
+    }
+    const res = await groupsService.getGrades(
+      taskId,
+      this.state.currentGroup.id
+    );
     if (ApiResponse2.isError(res)) {
       showMessage({ error: res.error });
       return [];

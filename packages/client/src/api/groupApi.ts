@@ -313,10 +313,11 @@ export const setTaskPoints = (
     method: 'POST',
   });
 
-export const getGrades = (taskId: TaskDTO['id']) =>
+export const getGrades = (taskId: TaskDTO['id'], groupId: GroupId) =>
   authFetch2<{ grades: UserTaskPoints[] }>(SERVER_URL + Grades, {
     query: {
       task_id: taskId,
+      group_id: groupId,
     },
   });
 
