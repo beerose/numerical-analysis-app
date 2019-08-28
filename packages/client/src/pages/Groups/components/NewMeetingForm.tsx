@@ -53,6 +53,7 @@ const NewMeetingForm = (props: Props) => {
           rules: [{ required: true, message: 'nazwa jest wymagana' }],
         })(
           <Input
+            autoFocus
             prefix={<Icon type="tag" style={{ color: Colors.SemiLightGray }} />}
             placeholder="Nazwa spotkania"
             css={formItems}
