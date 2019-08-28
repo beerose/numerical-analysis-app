@@ -57,29 +57,32 @@ export const getUsersTaskPoints = (
 ) =>
   connection.query(
     sql`
-    SELECT
-      ubg.user_id,
-      sum(points * weight) AS tasks_grade
-    FROM ( SELECT DISTINCT
-      user_id
-    FROM
-      user_belongs_to_group
-    WHERE
-      group_id = ${groupId}
-    GROUP BY
-      user_id) ubg
-    LEFT JOIN user_has_points uhp ON (ubg.user_id = uhp.user_id)
-    LEFT JOIN (
-      SELECT
-        weight,
-        task_id
-      FROM
-        group_has_task
-      WHERE
-        group_id = ${groupId}) ght ON (uhp.task_id = ght.task_id)
-    ${userId ? sql`WHERE ubg.user_id = ${userId}` : sql.empty}
-    GROUP BY
-      ubg.user_id;
+SELECT
+	user_id,
+	sum(uhp.points * ght.weight) as tasks_grade
+FROM
+	user_belongs_to_group ubg
+	LEFT JOIN (
+		SELECT
+			user_id,
+			points,
+			task_id
+		FROM
+			user_has_points
+		WHERE
+			group_id = ${groupId}) uhp USING (user_id)
+	RIGHT JOIN (
+		SELECT
+			task_id, weight
+		FROM
+			group_has_task
+		WHERE
+			group_id = ${groupId}) ght ON (uhp.task_id = ght.task_id)
+WHERE
+  ubg.group_id = ${groupId}
+  ${userId ? sql`AND user_id = ${userId}` : sql.empty}
+GROUP BY
+	user_id;
     `,
     callback
   );
