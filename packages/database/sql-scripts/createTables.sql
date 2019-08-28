@@ -105,8 +105,9 @@ DROP TABLE IF EXISTS `user_has_points`;
 CREATE TABLE `user_has_points` (
   `user_id` int(11) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   `task_id` int(11) NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
+  `group_id` int(11) NOT NULL REFERENCES `groups`(id) ON DELETE CASCADE,
   `points` decimal(16,1) DEFAULT NULL,
-  UNIQUE KEY `user_id` (`user_id`,`task_id`)
+  UNIQUE KEY `unique_data` (`user_id`,`task_id`, `group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
