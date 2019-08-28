@@ -122,8 +122,7 @@ export const AttachedGroupsSection = (props: Props) => {
                   ? [
                       <DeleteWithConfirmation
                         onConfirm={() => handleDetachGroup(item.id)}
-                        label="Odepnij grupę"
-                      />,
+                      >Odepnij grupę</DeleteWithConfirmation>,
                     ]
                   : []
               }

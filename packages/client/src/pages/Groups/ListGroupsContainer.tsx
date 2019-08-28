@@ -1,8 +1,7 @@
 /** @jsx jsx */
-import { jsx } from '@emotion/core';
-import { List, Spin } from 'antd';
+import { jsx, css } from '@emotion/core';
+import { Icon, List, Spin } from 'antd';
 import { GroupDTO, UserDTO, UserId } from 'common';
-import { Flavor } from 'nom-ts';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
@@ -13,6 +12,7 @@ import { DeleteWithConfirmation } from '../../components/DeleteWithConfirmation'
 import { IfUserPrivileged } from '../../components/IfUserPrivileged';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { RemoveSelected } from '../../components/RemoveSelected';
+import { ResetButton } from '../../components/ResetButton';
 import { usePromise } from '../../utils';
 import { LABELS } from '../../utils/labels';
 import { makeIdDict } from '../../utils/makeDict';
@@ -36,7 +36,7 @@ const GroupListItem = (props: GroupListItemProps) => {
           withId={props.id}
           render={
             <DeleteWithConfirmation onConfirm={props.handleDelete}>
-              <a>{LABELS.delete}</a>
+              <Icon type="delete" css={{ height: 48 }} />
             </DeleteWithConfirmation>
           }
         />,
@@ -75,7 +75,9 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
   );
 
   // TODO: Hold this state in URL searchParams
-  const [selectedLecturer, selectLecturer] = useState();
+  const [selectedLecturer, selectLecturer] = useState<UserId | undefined>(
+    undefined
+  );
 
   const {
     groups,
@@ -106,10 +108,19 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
         onChange={selectLecturer}
         value={selectedLecturer}
       />
-      <RemoveSelected
-        type="close-circle"
-        onClick={() => selectLecturer(null)}
-      />
+      <ResetButton
+        disabled={selectedLecturer === undefined}
+        onClick={() => selectLecturer(undefined)}
+        css={css`
+          background: none;
+          :disabled {
+            opacity: 0;
+          }
+          transition: opacity 150ms linear;
+        `}
+      >
+        <RemoveSelected type="close-circle" />
+      </ResetButton>
       <Spin spinning={isLoading}>
         {error ? (
           <ErrorMessage

@@ -17,7 +17,7 @@ import { useAuthStore } from '../../AuthStore';
 import {
   AttachedGroupsSection,
   GradesSection,
-  MeetingsDetailsSections,
+  MeetingsDetailsSection,
   MeetingsSection,
   SettingsSection,
   StudentsSection,
@@ -161,7 +161,7 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
                 <StudentsSection {...context} editable={editable} />
               </Route>
               <Route exact path={'/groups/:id/presence'}>
-                <MeetingsDetailsSections {...context} editable={editable} />
+                <MeetingsDetailsSection {...context} editable={editable} />
               </Route>
               <Route exact path={'/groups/:id/meetings'}>
                 <MeetingsSection {...context} editable={editable} />

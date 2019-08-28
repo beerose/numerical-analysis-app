@@ -12,7 +12,7 @@ type Props = GroupApiContextState & {
   editable: boolean;
 };
 
-export class MeetingsDetailsSections extends React.Component<Props> {
+export class MeetingsDetailsSection extends React.Component<Props> {
   handleSetActivity = this.withErrorHandler(this.props.actions.setActivity);
   handleAddPresence = this.withErrorHandler(this.props.actions.addPresence);
   handleDeletePresence = this.withErrorHandler(
@@ -70,7 +70,11 @@ export class MeetingsDetailsSections extends React.Component<Props> {
     return (
       <LocaleContext.Consumer>
         {({ texts }) => (
-          <Flex flexDirection="column" padding={theme.Padding.Standard}>
+          <Flex
+            flexDirection="column"
+            padding={theme.Padding.Standard}
+            height="100%"
+          >
             <Button
               type="primary"
               icon="download"

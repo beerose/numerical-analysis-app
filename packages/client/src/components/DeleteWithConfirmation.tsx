@@ -1,3 +1,5 @@
+/** @jsx jsx */
+import { css, jsx } from '@emotion/core';
 import { Popconfirm } from 'antd';
 import React from 'react';
 
@@ -5,8 +7,7 @@ import { LABELS } from '../utils/labels';
 
 export const DeleteWithConfirmation: React.FC<{
   onConfirm: (e?: React.MouseEvent<any>) => void;
-  label?: React.ReactNode;
-}> = ({ onConfirm, label }) => (
+}> = ({ onConfirm, children }) => (
   <Popconfirm
     title={LABELS.areYouSure}
     onConfirm={onConfirm}
@@ -15,8 +16,14 @@ export const DeleteWithConfirmation: React.FC<{
     placement="topRight"
     cancelText={LABELS.no}
   >
-    <a role="button" onClick={e => e.stopPropagation()}>
-      {label ? label : LABELS.delete}
+    <a
+      role="button"
+      onClick={e => e.stopPropagation()}
+      css={css`
+        color: rgba(0, 0, 0, 0.35);
+      `}
+    >
+      {children}
     </a>
   </Popconfirm>
 );
