@@ -9,6 +9,7 @@ const SetTaskGradeBodyV = t.type({
   points: t.number,
   task_id: t.number,
   user_id: t.number,
+  group_id: t.number,
 });
 
 type SetTaskPointsRequest = PostRequest<typeof SetTaskGradeBodyV>;
@@ -18,8 +19,13 @@ export const setTaskPoints = (
   res: BackendResponse
 ) => {
   handleBadRequest(SetTaskGradeBodyV, req.body, res).then(() => {
-    const { task_id: taskId, user_id: userId, points } = req.body;
-    return db.setTaskPoints({ userId, taskId, points }, err => {
+    const {
+      task_id: taskId,
+      user_id: userId,
+      points,
+      group_id: groupId,
+    } = req.body;
+    return db.setTaskPoints({ userId, taskId, points, groupId }, err => {
       if (err) {
         return res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,

@@ -17,9 +17,11 @@ export const setTaskPoints = (
     userId,
     taskId,
     points,
+    groupId,
   }: {
     userId: UserDTO['id'];
     taskId: TaskDTO['id'];
+    groupId: GroupDTO['id'];
     points: number;
   },
   callback: QueryCallback
@@ -27,12 +29,12 @@ export const setTaskPoints = (
   connection.query(
     {
       sql: /*sql*/ `
-      INSERT INTO user_has_points(user_id, task_id, points)
-      VALUES(?, ?, ?)
+      INSERT INTO user_has_points(user_id, task_id, group_id, points)
+      VALUES(?, ?, ?, ?)
       ON DUPLICATE KEY UPDATE
       points = VALUES(points);
     `,
-      values: [userId, taskId, points],
+      values: [userId, taskId, groupId, points],
     },
     callback
   );
