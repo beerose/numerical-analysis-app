@@ -128,6 +128,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                     <Route path="/groups" component={Groups} />
                     <Route path="/settings" component={SettingsContainer} />
                     <Route path="/logout" component={Logout} />
+                    <Route component={NotFoundPage} />
                   </Fragment>
                 ) : (
                   <Switch>
@@ -176,7 +177,6 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                     </Route>
                   </Switch>
                 )}
-                <NotFoundPage />
               </Switch>
             </StyledContent>
           </GroupApiProvider>
