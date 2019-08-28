@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Layout, Modal } from 'antd';
 import { identity } from 'io-ts';
 import React, { Fragment } from 'react';
+import { UserRole } from 'common';
 import { Route, RouteChildrenProps, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -68,7 +69,7 @@ const Title: React.FC = ({ children }) => (
         color: white;
       }
     `}
-  >
+>[]
     {children}
   </Link>
 );
@@ -112,72 +113,66 @@ export const Main: React.FC<Props> = ({ history, location }) => {
         <ErrorBoundary>
           <GroupApiProvider history={history} location={location}>
             <StyledContent>
-              <Switch>
-                <Route path="/accounts/new" component={NewAccount} />
-                {user ? (
-                  <Fragment>
-                    <Route exact path="/" component={Home} />
-                    <VisibleForRoles admin superUser>
-                      <Route
-                        exact
-                        path="/users"
-                        component={ListUsersContainer}
-                      />
-                    </VisibleForRoles>
-                    <Route path="/users/:id" component={UserDetailsPage} />
-                    <Route path="/groups" component={Groups} />
-                    <Route path="/settings" component={SettingsContainer} />
-                    <Route path="/logout" component={Logout} />
-                    {/* <Route component={NotFoundPage} /> */}
-                  </Fragment>
-                ) : (
-                  <Switch>
-                    <Route exact path="/" component={Welcome} />
-                    <Route path="/forgot-password">
-                      <Welcome />
-                      <ForgotPasswordForm
-                        onSubmit={actions.resetPassword}
-                        errorMessage={errorMessage}
-                        onExit={() => {
-                          actions.resetError();
-                          history.push('/');
-                        }}
-                      />
-                    </Route>
-                    <Route
-                      path="/accounts/reset_password"
-                      render={props => {
-                        const token = new URLSearchParams(
-                          props.location.search
-                        ).get('token');
-                        return (
-                          <Fragment>
-                            <Welcome />
-                            <Modal visible centered width={400} footer={false}>
-                              <NewPasswordForm
-                                onSubmit={newPassword =>
-                                  handleResetPassword(newPassword, token || '')
-                                }
-                              />
-                            </Modal>
-                          </Fragment>
-                        );
+              <Route path="/accounts/new" component={NewAccount} />
+              {user ? (
+                <Switch>
+                  <Route exact path="/" component={Home} />
+                  {UserRole.NonStudents.includes(user.user_role) && (
+                    <Route exact path="/users" component={ListUsersContainer} />
+                  )}
+                  <Route path="/users/:id" component={UserDetailsPage} />
+                  <Route path="/groups" component={Groups} />
+                  <Route path="/settings" component={SettingsContainer} />
+                  <Route path="/logout" component={Logout} />
+                  <Route component={NotFoundPage} />
+                </Switch>
+              ) : (
+                <Switch>
+                  <Route exact path="/" component={Welcome} />
+                  <Route path="/forgot-password">
+                    <Welcome />
+                    <ForgotPasswordForm
+                      onSubmit={actions.resetPassword}
+                      errorMessage={errorMessage}
+                      onExit={() => {
+                        actions.resetError();
+                        history.push('/');
                       }}
                     />
-                    <Route>
-                      <Welcome />
-                      <LoginForm
-                        onExit={() => {
-                          actions.resetError();
-                          history.push('/');
-                        }}
-                        onSubmit={handleLoginSuccess}
-                        errorMessage={errorMessage}
-                      />
-                    </Route>
-                  </Switch>
-                )}
-              </Switch>
+                  </Route>
+                  <Route
+                    path="/accounts/reset_password"
+                    render={props => {
+                      const token = new URLSearchParams(
+                        props.location.search
+                      ).get('token');
+                      return (
+                        <Fragment>
+                          <Welcome />
+                          <Modal visible centered width={400} footer={false}>
+                            <NewPasswordForm
+                              onSubmit={newPassword =>
+                                handleResetPassword(newPassword, token || '')
+                              }
+                            />
+                          </Modal>
+                        </Fragment>
+                      );
+                    }}
+                  />
+                  <Route>
+                    <Welcome />
+                    <LoginForm
+                      onExit={() => {
+                        actions.resetError();
+                        history.push('/');
+                      }}
+                      onSubmit={handleLoginSuccess}
+                      errorMessage={errorMessage}
+                    />
+                  </Route>
+                </Switch>
+              )}
             </StyledContent>
           </GroupApiProvider>
         </ErrorBoundary>
