@@ -69,7 +69,7 @@ const Title: React.FC = ({ children }) => (
         color: white;
       }
     `}
->[]
+>
     {children}
   </Link>
 );
