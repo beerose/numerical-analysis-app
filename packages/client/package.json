@@ -26,6 +26,7 @@
     "fp-ts": "^2.0.0-rc.3",
     "lodash.frompairs": "^4.0.1",
     "node-sass": "^4.12.0",
+    "parcel-plugin-static-files-copy": "^2.2.1",
     "qss": "^2.0.3",
     "ramda": "^0.26.1",
     "react": "^16.9.0-alpha.0",
@@ -63,5 +64,8 @@
     "tslint-microsoft-contrib": "^6.2.0",
     "typescript": "^3.5.1",
     "webpack-cli": "^3.3.1"
+  },
+  "staticFiles": {
+    "staticPath": "public"
   }
 }

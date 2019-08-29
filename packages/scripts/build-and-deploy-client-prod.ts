@@ -22,5 +22,5 @@ exec(
 
 exec(`
   ssh anumuser@rno.ii.uni.wroc.pl rm -rf ~/www-lagrange/*
-  scp -r dist/client/* anumuser@rno.ii.uni.wroc.pl:~/www-lagrange
+  scp -rp dist/client/* dist/client/.htaccess anumuser@rno.ii.uni.wroc.pl:~/www-lagrange
 `);
