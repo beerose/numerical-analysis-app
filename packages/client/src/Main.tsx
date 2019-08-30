@@ -113,7 +113,6 @@ export const Main: React.FC<Props> = ({ history, location }) => {
         <ErrorBoundary>
           <GroupApiProvider history={history} location={location}>
             <StyledContent>
-              <Route path="/accounts/new" component={NewAccount} />
               {user ? (
                 <Switch>
                   <Route exact path="/" component={Home} />
@@ -125,6 +124,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                   <Route path="/settings" component={SettingsContainer} />
                   <Route path="/logout" component={Logout} />
                   <Route component={NotFoundPage} />
+                  <Route path="/accounts/new" component={NewAccount} />
                 </Switch>
               ) : (
                 <Switch>
@@ -166,6 +166,14 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                       );
                     }}
                   />
+                  <Route path="/accounts/new">
+                    {route => (
+                      <Fragment>
+                        <Welcome />
+                        <NewAccount {...route} />
+                      </Fragment>
+                    )}
+                  </Route>
                   <Route>
                     <Welcome />
                     <LoginForm
