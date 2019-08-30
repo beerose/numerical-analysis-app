@@ -58,9 +58,7 @@ export const loginUser = (
         hashedPassword,
         (comparisonError, comparisonResult) => {
           if (comparisonError) {
-            return res
-              .status(codes.INTERNAL_SERVER_ERROR)
-              .send({ error: apiMessages.internalError });
+            return res.internalError(comparisonError);
           }
           if (!comparisonResult) {
             return res
