@@ -37,7 +37,7 @@ function makeActions(set: SetState<State>) {
     },
     changePassword: authService.changePassword,
     createNewAccount: (token: string, password: string) => {
-      authService
+      return authService
         .newAccount(token, password)
         .then(res => {
           if ('error' in res) {

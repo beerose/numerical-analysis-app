@@ -29,6 +29,7 @@ exec(
   pm2 flush; \
   cd ~/app/common && yarn; \
   cd ~/app/server && yarn; \
+  echo "require('./src/index.js')" > index.js; \
   cd ~; \
   pm2 start ecosystem.config.js
 `
