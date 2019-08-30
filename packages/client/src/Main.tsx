@@ -2,9 +2,9 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Layout, Modal } from 'antd';
+import { UserRole } from 'common';
 import { identity } from 'io-ts';
 import React, { Fragment } from 'react';
-import { UserRole } from 'common';
 import { Route, RouteChildrenProps, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -69,7 +69,7 @@ const Title: React.FC = ({ children }) => (
         color: white;
       }
     `}
->
+  >
     {children}
   </Link>
 );
