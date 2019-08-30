@@ -149,7 +149,13 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                       return (
                         <Fragment>
                           <Welcome />
-                          <Modal visible centered width={400} footer={false}>
+                          <Modal
+                            visible
+                            centered
+                            width={400}
+                            footer={false}
+                            closable={false}
+                          >
                             <NewPasswordForm
                               onSubmit={newPassword =>
                                 handleResetPassword(newPassword, token || '')
