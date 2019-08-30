@@ -2,7 +2,7 @@ import { exec } from './exec';
 
 exec(`
   rm -rf dist/client/
-  yarn build-client --public-url /lagrange
+  yarn build-client --public-url /lagrange --no-minify
 `);
 
 exec(`
