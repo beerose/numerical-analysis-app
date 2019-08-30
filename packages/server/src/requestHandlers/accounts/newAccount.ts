@@ -64,8 +64,7 @@ export const checkNewAccountToken = (
 
 export const storeUserPassword = (
   req: CreateWithTokenRequest,
-  res: BackendResponse,
-  next: NextFunction
+  res: BackendResponse
 ) => {
   if (!res.locals.user) {
     res
