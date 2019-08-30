@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "build": "sh ./scripts/build.sh",
+    "build": "tsc --build && sh ./scripts/build.sh",
     "test": "jest",
     "start": "cross-env NODE_ENV=production NODE_PATH=.. node index.js",
     "tsnode": "cross-env TS_NODE_FILES=true PORT=8082 node --inspect=5858 -r ts-node/register src/index.ts",
