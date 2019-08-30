@@ -1,5 +1,11 @@
-import { GroupDTO, MeetingDTO, UserDTO } from 'common';
-import { MysqlError } from 'mysql';
+import {
+  GroupDTO,
+  GroupId,
+  MeetingDTO,
+  MeetingId,
+  UserDTO,
+  UserId,
+} from 'common';
 import { sql } from 'tag-sql';
 
 import { connection } from '../connection';
@@ -94,11 +100,38 @@ export const getUsersMeetingsPoints = (
           SELECT
             id
           FROM
-            meetings
+          meetings
           WHERE
             group_id = ${groupId})
         GROUP BY
           user_id;
         `,
+    callback
+  );
+
+export const getStudentsPresenceAndActivity = (
+  { studentId, groupId }: { studentId: UserId; groupId?: GroupId },
+  callback: QueryCallback<
+    Array<{
+      meeting_id: MeetingId;
+      meeting_name: string;
+      date: Date;
+      groupId: GroupId;
+      points: number | null;
+    }>
+  >
+) =>
+  connection.query(
+    sql`
+    select meetings.id meeting_id, meeting_name, date, ubg.group_id, points
+      from users u
+      join user_belongs_to_group ubg on ubg.user_id = u.id
+      join meetings on ubg.group_id = meetings.group_id
+      left join user_attended_meeting uam
+        on uam.meeting_id = meetings.id and uam.user_id = u.id
+      where u.id = ${studentId} ${
+      groupId !== undefined ? sql`and group_id = ${groupId}` : sql.empty
+    }
+  `,
     callback
   );

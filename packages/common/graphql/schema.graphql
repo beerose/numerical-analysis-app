@@ -22,20 +22,24 @@ type Team {
 }
 
 # Student may grow if we need more data from GraphQL API
+
 type Student {
   id: ID!
+  allStudentMeetings(where: AllUsersMeetingsInput): [StudentMeeting!]
+}
+
+type StudentMeeting {
+  meetingId: ID!
+  meetingName: String!
+  date: DateTime!
+  groupId: ID!
+  points: Float
 }
 
 # --- input and response types ---
 
-enum SelectSubtaskResponseError {
-  TooManyTeamsTookThisSubtask
-}
-
-type SelectSubtaskResponse {
-  error: SelectSubtaskResponseError
-  createdTeam: Team
-  subtask: SelectableSubtask!
+input AllUsersMeetingsInput {
+  groupId: ID!
 }
 
 enum JoinTeamResponseError {
@@ -47,10 +51,25 @@ type JoinTeamResponse {
   data: Team!
 }
 
+input SubtaskSelectedInput {
+  taskId: ID!
+}
+
+enum SelectSubtaskResponseError {
+  TooManyTeamsTookThisSubtask
+}
+
+type SelectSubtaskResponse {
+  error: SelectSubtaskResponseError
+  createdTeam: Team
+  subtask: SelectableSubtask!
+}
+
 # --- root types ---
 
 type Query {
   task(id: ID!): Task
+  student(id: ID!): Student
 }
 
 type Mutation {
@@ -59,10 +78,6 @@ type Mutation {
   # It should be possible to derive taskId and subtaskId from teamId.
   joinTeam(teamId: ID!): JoinTeamResponse!
   leaveTeam(teamId: ID!): Team
-}
-
-input SubtaskSelectedInput {
-  taskId: ID!
 }
 
 type Subscription {
