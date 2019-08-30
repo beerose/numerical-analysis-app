@@ -81,7 +81,10 @@ export const storeUserPassword = (
         .send({ error: result.error, error_details: result.error_details });
       return;
     }
-    return next();
+
+    res.status(result.code).send({
+      message: apiMessages.userCreated,
+    });
   });
 };
 
