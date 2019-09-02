@@ -6,7 +6,7 @@ import { Popconfirm, Table, Tooltip } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 // tslint:disable-next-line:no-submodule-imports
 import { PaginationConfig } from 'antd/lib/table';
-import { UserDTO, userRoleOptions } from 'common';
+import { UserDTO, userRoleOptions, UserId } from 'common';
 import * as React from 'react';
 
 import { LABELS } from '../../utils/labels';
@@ -76,7 +76,7 @@ type UsersTableProps = {
   extraColumns?: ExtraColumnTypes[];
   onUpdate: (user: UserDTO) => void;
   hideEdit?: boolean;
-  onDelete: (id: UserDTO['id']) => void;
+  onDelete: (id: UserId) => void;
   onSendInvitation: (
     user: Pick<UserDTO, 'email' | 'user_name' | 'user_role'>
   ) => void;
@@ -188,7 +188,7 @@ export class UsersTable extends React.Component<
     return email === this.state.editingKey;
   };
 
-  handleUpdate(form: WrappedFormUtils, id: UserDTO['id']) {
+  handleUpdate(form: WrappedFormUtils, id: UserId) {
     form.validateFields((_, row) => {
       this.props.onUpdate({ id, ...row });
     });

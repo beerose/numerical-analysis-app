@@ -1,4 +1,12 @@
-import { GroupDTO, GroupWithLecturer, TaskDTO, UserDTO } from 'common';
+import {
+  GroupDTO,
+  GroupId,
+  GroupWithLecturer,
+  TaskDTO,
+  TaskId,
+  UserDTO,
+  UserId,
+} from 'common';
 import { Omit } from 'lodash';
 import { sql } from 'tag-sql';
 
@@ -10,7 +18,7 @@ type DbExtractedGroup = Omit<GroupWithLecturer, 'data'> & { data: string };
 type DbExtractedTask = Omit<TaskDTO, 'data'> & { data: string };
 
 export const getGroup = (
-  { groupId }: { groupId: GroupDTO['id'] },
+  { groupId }: { groupId: GroupId },
   callback: QueryCallback<[DbExtractedGroup]>
 ) =>
   connection.query(
@@ -80,7 +88,7 @@ export const updateGroup = (
   );
 
 export const deleteGroup = (
-  { groupId }: { groupId: GroupDTO['id'] },
+  { groupId }: { groupId: GroupId },
   callback: QueryCallback
 ) =>
   connection.query(
@@ -92,7 +100,7 @@ export const deleteGroup = (
   );
 
 export const listUsersWithGroup = (
-  groupId: GroupDTO['id'],
+  groupId: GroupId,
   callback: QueryCallback<
     Array<UserDTO & { group_ids: string; groups_grades: string }>
   >
@@ -117,8 +125,8 @@ export const deleteFromGroup = (
     userId,
     groupId,
   }: {
-    userId: UserDTO['id'];
-    groupId: GroupDTO['id'];
+    userId: UserId;
+    groupId: GroupId;
   },
   callback: QueryCallback
 ) =>
@@ -151,7 +159,7 @@ export const listTasksForGroup = (
   {
     groupId,
   }: {
-    groupId?: GroupDTO['id'];
+    groupId?: GroupId;
   },
   callback: QueryCallback<TaskDTO[]>
 ) => {
@@ -179,8 +187,8 @@ export const deleteTaskFromGroup = (
     groupId,
     taskId,
   }: {
-    groupId: GroupDTO['id'];
-    taskId: TaskDTO['id'];
+    groupId: GroupId;
+    taskId: TaskId;
   },
   callback: QueryCallback
 ) =>
@@ -269,8 +277,8 @@ export const attachTaskToGroup = (
     groupId,
     weight,
   }: {
-    taskId: TaskDTO['id'];
-    groupId: GroupDTO['id'];
+    taskId: TaskId;
+    groupId: GroupId;
     weight: TaskDTO['weight'];
   },
   callback: QueryCallback
@@ -290,8 +298,8 @@ export const updateTaskInGroup = (
     groupId,
     weight,
   }: {
-    taskId: TaskDTO['id'];
-    groupId: GroupDTO['id'];
+    taskId: TaskId;
+    groupId: GroupId;
     weight: TaskDTO['weight'];
   },
   callback: QueryCallback
@@ -306,7 +314,7 @@ export const updateTaskInGroup = (
   );
 
 export const getTask = (
-  { taskId, groupId }: { taskId: TaskDTO['id']; groupId: GroupDTO['id'] },
+  { taskId, groupId }: { taskId: TaskId; groupId: GroupId },
   callback: QueryCallback<DbExtractedTask | null>
 ) =>
   connection.query(
@@ -332,7 +340,7 @@ export const getAttachedGroups = (
   {
     groupId,
   }: {
-    groupId: GroupDTO['id'];
+    groupId: GroupId;
   },
   callback: QueryCallback<GroupDTO[]>
 ) =>
@@ -349,8 +357,8 @@ export const attachGroup = (
     parentGroupId,
     groupId,
   }: {
-    parentGroupId: GroupDTO['id'];
-    groupId: GroupDTO['id'];
+    parentGroupId: GroupId;
+    groupId: GroupId;
   },
   callback: QueryCallback
 ) =>
@@ -366,7 +374,7 @@ export const detachGroup = (
   {
     groupId,
   }: {
-    groupId: GroupDTO['id'];
+    groupId: GroupId;
   },
   callback: QueryCallback
 ) =>

@@ -15,7 +15,7 @@ import { connection } from '../connection';
 import { QueryCallback } from './QueryCallback';
 
 export const getUser = (
-  userId: UserDTO['id'],
+  userId: UserId,
   callback: QueryCallback<
     Array<Omit<UserWithPassword, 'privileges'> & { privileges: string }>
   >
@@ -240,7 +240,7 @@ export const attachStudentToGroup = (
   );
 
 export const setUserPrivileges = (
-  { privileges, userId }: { privileges: UserPrivileges; userId: UserDTO['id'] },
+  { privileges, userId }: { privileges: UserPrivileges; userId: UserId },
   callback: QueryCallback
 ) =>
   connection.query(
@@ -256,7 +256,7 @@ export const setUserPrivileges = (
   );
 
 export const getUserPrivileges = (
-  { userId }: { userId: UserDTO['id'] },
+  { userId }: { userId: UserId },
   callback: QueryCallback<string | null>
 ) =>
   connection.query(
@@ -277,7 +277,7 @@ export const getUserPrivileges = (
 
 // student
 export const getStudentGroups = (
-  { userId }: { userId: UserDTO['id'] },
+  { userId }: { userId: UserId },
   callback: QueryCallback<GroupDTO[]>
 ) =>
   connection.query(
@@ -302,7 +302,7 @@ export const getStudentGroups = (
   );
 
 export const getStudentsTasks = (
-  { userId, groupId }: { userId: UserDTO['id']; groupId?: GroupDTO['id'] },
+  { userId, groupId }: { userId: UserId; groupId?: GroupDTO['id'] },
   callback: QueryCallback<StudentTasksSummary>
 ) =>
   connection.query(

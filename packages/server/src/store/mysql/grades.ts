@@ -1,11 +1,4 @@
-import {
-  GroupDTO,
-  GroupId,
-  TaskDTO,
-  UserDTO,
-  UserId,
-  UserTaskPoints,
-} from 'common';
+import { GroupDTO, GroupId, TaskId, UserId, UserTaskPoints } from 'common';
 import { sql } from 'tag-sql';
 
 import { connection } from '../connection';
@@ -19,9 +12,9 @@ export const setTaskPoints = (
     points,
     groupId,
   }: {
-    userId: UserDTO['id'];
-    taskId: TaskDTO['id'];
-    groupId: GroupDTO['id'];
+    userId: UserId;
+    taskId: TaskId;
+    groupId: GroupId;
     points: number;
   },
   callback: QueryCallback
@@ -40,7 +33,7 @@ export const setTaskPoints = (
   );
 
 export const getGrades = (
-  { taskId, groupId }: { taskId: TaskDTO['id']; groupId: GroupDTO['id'] },
+  { taskId, groupId }: { taskId: TaskId; groupId: GroupId },
   callback: QueryCallback<UserTaskPoints[]>
 ) =>
   connection.query(
@@ -93,8 +86,8 @@ export const setFinalGrade = (
     userId,
     grade,
   }: {
-    groupId: GroupDTO['id'];
-    userId: UserDTO['id'];
+    groupId: GroupId;
+    userId: UserId;
     grade: number;
   },
   callback: QueryCallback
@@ -112,7 +105,7 @@ export const setFinalGrade = (
   );
 
 export const getTasksMaxPointsPerGroup = (
-  { groupId }: { groupId: GroupDTO['id'] },
+  { groupId }: { groupId: GroupId },
   callback: QueryCallback<Array<{ max: number }>>
 ) =>
   connection.query(

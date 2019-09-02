@@ -4,7 +4,7 @@ import { Button, Form, Icon, Input } from 'antd';
 // tslint:disable: no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
 // tslint:enable: no-submodule-imports
-import { GroupType, UserDTO } from 'common';
+import { GroupType, UserDTO, UserId } from 'common';
 import * as React from 'react';
 
 import { Colors, LABELS } from '../../../utils';
@@ -34,7 +34,7 @@ export type NewGroupFormValues = {
   semester: string;
   group: GroupType;
   group_name: string;
-  lecturer_id: UserDTO['id'];
+  lecturer_id: UserId;
 };
 
 type Props = {

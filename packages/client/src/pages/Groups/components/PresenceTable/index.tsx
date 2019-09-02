@@ -1,5 +1,6 @@
 import { Spin } from 'antd';
-import { MeetingDetailsModel, MeetingDTO, UserDTO } from 'common';
+import { Brand } from 'nom-ts';
+import { MeetingDetailsModel, MeetingDTO, UserDTO, UserId } from 'common';
 import React from 'react';
 
 import { PaddingContainer } from '../../../../components/PaddingContainer';
@@ -14,7 +15,7 @@ import {
 import { PresenceTableStateProvider } from './PresenceTableStateContext';
 import { StudentsAtMeetingsTable } from './StudentsAtMeetingsTable';
 
-type ActivityNumber = number & { __brand: 'ActivityNumber' };
+type ActivityNumber = Brand<number, 'ActivityNumber'>;
 const boundActivity = (num: number) =>
   Math.max(-99, Math.min(99, num)) as ActivityNumber;
 
@@ -46,10 +47,10 @@ export type PresenceTableProps = {
     studentId: number,
     newStudentMeetingDetails: MeetingDetailsModel
   ) => void;
-  addPresence: (userId: UserDTO['id'], meetingId: number) => void;
-  deletePresence: (userId: UserDTO['id'], meetingId: number) => void;
+  addPresence: (userId: UserId, meetingId: number) => void;
+  deletePresence: (userId: UserId, meetingId: number) => void;
   setActivity: (
-    userId: UserDTO['id'],
+    userId: UserId,
     meetingId: number,
     activity: number
   ) => void;

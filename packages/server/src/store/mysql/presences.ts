@@ -13,10 +13,10 @@ import { connection } from '../connection';
 import { QueryCallback } from './QueryCallback';
 
 export const getMeetingsData = (
-  { groupId, userId }: { groupId: GroupDTO['id']; userId?: UserDTO['id'] },
+  { groupId, userId }: { groupId: GroupDTO['id']; userId?: UserId },
   callback: QueryCallback<
     Array<{
-      id: UserDTO['id'];
+      id: UserId;
       user_name: UserDTO['user_name'];
       student_index: UserDTO['student_index'];
       meetings_data: Array<{ meeting_id: MeetingDTO['id']; points: number }>;
@@ -54,7 +54,7 @@ export const getMeetingsData = (
   );
 
 export const addPresence = (
-  { userId, meetingId }: { userId: UserDTO['id']; meetingId: MeetingDTO['id'] },
+  { userId, meetingId }: { userId: UserId; meetingId: MeetingDTO['id'] },
   callback: QueryCallback
 ) =>
   connection.query(
@@ -66,7 +66,7 @@ export const addPresence = (
   );
 
 export const deletePresence = (
-  { userId, meetingId }: { userId: UserDTO['id']; meetingId: MeetingDTO['id'] },
+  { userId, meetingId }: { userId: UserId; meetingId: MeetingDTO['id'] },
   callback: QueryCallback
 ) =>
   connection.query(
@@ -81,7 +81,7 @@ export const getUsersMeetingsPoints = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
     Array<{
-      user_id: UserDTO['id'];
+      user_id: UserId;
       activity_points: number;
       sum_presences: number;
     }>

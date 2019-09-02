@@ -8,6 +8,7 @@ import {
   UserDTO,
   UserTaskPoints,
   UserWithGroups,
+  UserId,
 } from 'common';
 import { ChangeEvent, useEffect, useState } from 'react';
 
@@ -43,12 +44,8 @@ const StyledTaskCard = styled(Card)`
 
 type TaskPointsInputProps = {
   task: TaskDTO;
-  userId: UserDTO['id'];
-  onChange: (
-    taskId: TaskDTO['id'],
-    userId: UserDTO['id'],
-    points: number
-  ) => void;
+  userId: UserId;
+  onChange: (taskId: TaskDTO['id'], userId: UserId, points: number) => void;
   grade?: UserTaskPoints;
   disabled?: boolean;
 };
@@ -83,7 +80,7 @@ type Props = {
   deleteTask: (taskId: TaskDTO['id']) => void;
   setTaskPoints: (
     taskId: TaskDTO['id'],
-    userId: UserDTO['id'],
+    userId: UserId,
     points: number
   ) => Promise<ApiResponse>;
   students?: UserWithGroups[];
@@ -115,7 +112,7 @@ export const TaskListItem = ({
 
   const handleSetTaskPoints = (
     taskId: TaskDTO['id'],
-    userId: UserDTO['id'],
+    userId: UserId,
     points: number
   ) => {
     setTaskPoints(taskId, userId, points).then(res => {

@@ -1,8 +1,8 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { Button, Card, Divider, Icon, Popconfirm } from 'antd';
-import { UserDTO, UserRole } from 'common';
+import { Button, Divider, Icon, Popconfirm } from 'antd';
+import { UserDTO, UserRole, UserId } from 'common';
 import { partition } from 'ramda';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -66,7 +66,7 @@ export const PrivilegesSection = (props: Props) => {
     [UserDTO[], UserDTO[]]
   >([[], []]);
 
-  const [selectedUser, setSelectedUser] = useState<UserDTO['id'] | null>(null);
+  const [selectedUser, setSelectedUser] = useState<UserId | null>(null);
 
   useEffect(() => {
     updateLecturers();
@@ -100,7 +100,7 @@ export const PrivilegesSection = (props: Props) => {
     });
   };
 
-  const handleUnshare = (userId: UserDTO['id']) => {
+  const handleUnshare = (userId: UserId) => {
     props.actions.unshareForEdit(userId).then(res => {
       showMessage(res);
       updateLecturers();

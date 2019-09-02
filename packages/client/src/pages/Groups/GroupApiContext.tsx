@@ -12,6 +12,7 @@ import {
   UserDTO,
   UserRole,
   UserWithGroups,
+  UserId,
 } from 'common';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { difference, map } from 'fp-ts/lib/Array';
@@ -249,7 +250,7 @@ export class GroupApiProvider extends React.Component<
   };
 
   setStudentMeetingDetails = (
-    studentId: UserDTO['id'],
+    studentId: UserId,
     newStudentMeetingDetails: MeetingDetailsModel
   ) => {
     this.setState(({ meetingsDetails }) => {
@@ -316,7 +317,7 @@ export class GroupApiProvider extends React.Component<
     });
   };
 
-  deleteStudentFromGroup = async (userId: UserDTO['id']) => {
+  deleteStudentFromGroup = async (userId: UserId) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
@@ -408,11 +409,7 @@ export class GroupApiProvider extends React.Component<
     return res;
   };
 
-  setTaskPoints = (
-    taskId: TaskDTO['id'],
-    userId: UserDTO['id'],
-    points: number
-  ) => {
+  setTaskPoints = (taskId: TaskDTO['id'], userId: UserId, points: number) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
@@ -446,7 +443,7 @@ export class GroupApiProvider extends React.Component<
     return groupsService.getResults(this.state.currentGroup.id);
   };
 
-  setFinalGrade = (userId: UserDTO['id'], grade: number) => {
+  setFinalGrade = (userId: UserId, grade: number) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
@@ -488,7 +485,7 @@ export class GroupApiProvider extends React.Component<
     return groupsService.attachTask(this.state.currentGroup.id, taskId, weight);
   };
 
-  shareForEdit = async (userId: UserDTO['id']) => {
+  shareForEdit = async (userId: UserId) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
@@ -496,7 +493,7 @@ export class GroupApiProvider extends React.Component<
     return groupsService.shareForEdit(this.state.currentGroup.id, userId);
   };
 
-  unshareForEdit = async (userId: UserDTO['id']) => {
+  unshareForEdit = async (userId: UserId) => {
     if (!this.state.currentGroup) {
       throw new Error(noGroupError);
     }
