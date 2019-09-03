@@ -54,8 +54,8 @@ export const GradeEquationInput: React.FC<GroupEquationProps> = ({
   );
 
   const [kvargs, _setKvargs] = useState({
+    presence: 0,
     activity: 1,
-    presence: 1,
     tasks: 1,
   });
   const setKvargs = useCallback(

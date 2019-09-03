@@ -8,7 +8,7 @@ import fromPairs from 'lodash.frompairs';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { DeepRequired } from 'utility-types';
 
-import { GroupDTO, Tresholds } from '../../../../../../dist/common';
+import { GroupDTO } from '../../../../../../dist/common';
 import { LocaleContext } from '../../../components/locale';
 import { theme } from '../../../components/theme';
 import { LABELS, useMergeKey, useMergeState } from '../../../utils';
@@ -82,7 +82,7 @@ const SettingsSectionInternal: React.FC<Props> = ({
     () => {
       const {
         tresholds = fromPairs(tresholdsKeys.map(k => [k, 0])),
-        grade_equation = '1 * presence + 1 * activity + 1 * tasks',
+        grade_equation = '0 * presence + 1 * activity + 1 * tasks',
       } = group.data || {};
 
       return {
