@@ -174,7 +174,11 @@ Props) => {
       ]).then(() => {
         fetching.current = false;
       });
-    } else if (!currentGroupStudents) {
+    } else if (
+      !currentGroupStudents ||
+      (currentGroupStudents &&
+        currentGroupStudents.some(s => !s.group_ids.includes(groupId)))
+    ) {
       if (fetching.current) {
         return;
       }
