@@ -6,7 +6,7 @@ import { Typeguard } from '../utils';
 
 import { Grade } from './Grade';
 import { GroupId } from './Group';
-import { TaskDTO } from './Task';
+import { TaskId } from './Task';
 
 export type UserId = Flavor<number, 'UserId'>;
 
@@ -57,17 +57,17 @@ export namespace UserPrivileges {
 }
 
 export type UserPrivileges = {
-  [key in UserPrivileges.Where]?: Dict<GroupId, UserPrivileges.What[]>
+  [key in UserPrivileges.Where]?: Dict<GroupId, UserPrivileges.What[]>;
 };
 
 export type UserTaskPoints = {
-  user_id: UserDTO['id'];
-  task_id: TaskDTO['id'];
+  user_id: UserId;
+  task_id: TaskId;
   points: number;
 };
 
 export type UserResultsDTO = {
-  user_id: UserDTO['id'];
+  user_id: UserId;
   tasks_grade: number;
   max_tasks_grade: number;
   presences: number; // presences and activity
@@ -75,7 +75,7 @@ export type UserResultsDTO = {
 };
 
 export type UserResultsModel = {
-  userId: UserDTO['id'];
+  userId: UserId;
   userName: UserDTO['user_name'];
   index: UserDTO['student_index'];
   finalGrade?: Grade;

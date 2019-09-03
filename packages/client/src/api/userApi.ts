@@ -1,4 +1,4 @@
-import { ApiResponse, ServerRoutes, UserDTO } from 'common';
+import { ApiResponse, ServerRoutes, UserDTO, UserId } from 'common';
 
 import { showMessage } from '../utils/showMessage';
 
@@ -9,7 +9,7 @@ const { Users } = ServerRoutes;
 
 const LIMIT = 10;
 
-export const getUser = (userId: UserDTO['id']) =>
+export const getUser = (userId: UserId) =>
   authFetch2<UserDTO>(SERVER_URL + Users.Get(userId));
 
 export const listUsers = async ({
@@ -43,7 +43,7 @@ export const addUser = async (user: UserDTO) => {
   }).then(showMessage);
 };
 
-export const deleteUser = async (id: UserDTO['id']) => {
+export const deleteUser = async (id: UserId) => {
   const options = {
     body: JSON.stringify({ id }),
     method: 'DELETE',

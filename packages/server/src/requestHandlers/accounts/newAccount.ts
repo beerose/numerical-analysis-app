@@ -9,6 +9,7 @@ import jwt from 'jsonwebtoken';
 import { BackendResponse, GetRequest, handleBadRequest } from '../../lib';
 import { db } from '../../store';
 
+import { doLoginUser, LoginUserResponse } from './loginUser';
 import { storePassword } from './storePassword';
 
 const CreateWithTokenRequestV = t.type({
@@ -64,8 +65,7 @@ export const checkNewAccountToken = (
 
 export const storeUserPassword = (
   req: CreateWithTokenRequest,
-  res: BackendResponse,
-  next: NextFunction
+  res: LoginUserResponse
 ) => {
   if (!res.locals.user) {
     res
@@ -81,7 +81,11 @@ export const storeUserPassword = (
         .send({ error: result.error, error_details: result.error_details });
       return;
     }
-    return next();
+
+    doLoginUser(res.locals.user!.email, req.body.password, res);
+    // res.status(result.code).send({
+    //   message: apiMessages.userCreated,
+    // });
   });
 };
 

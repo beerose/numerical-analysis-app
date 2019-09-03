@@ -8,18 +8,26 @@ import {
   UserDTO,
   UserId,
 } from 'common';
+import { flow } from 'fp-ts/lib/function';
 import { pipe } from 'fp-ts/lib/pipeable';
 import * as Arr from 'fp-ts/lib/Array';
 import * as Either from 'fp-ts/lib/Either';
 import * as Option from 'fp-ts/lib/Option';
+import * as Task from 'fp-ts/lib/Task';
+import * as TaskEither from 'fp-ts/lib/TaskEither';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import { PubSub, withFilter } from 'graphql-subscriptions';
 import { Dict } from 'nom-ts';
 
 import { fail } from '../lib/fail';
+import { db } from '../store';
 
 import { Context } from './Context';
 import { TeamId } from './TeamId';
+
+const getStudentsPresenceAndActivity = TaskEither.taskify(
+  db.getStudentsPresenceAndActivity
+);
 
 namespace pubsub {
   const _pubsub = new PubSub();
@@ -148,6 +156,30 @@ export const resolvers: gqlApi.Resolvers<Context> = {
       return selectableSubtasks.find(s => s.id === id) || null;
     },
   },
+  Student: {
+    async allStudentMeetings(student, { where }, _ctx) {
+      return getStudentsPresenceAndActivity({
+        studentId: Number(student.id),
+        groupId: where ? Number(where.groupId) : undefined,
+      })().then(
+        flow(
+          Either.fold(
+            mysqlError => fail(mysqlError.message, 500),
+            studentMeetings =>
+              studentMeetings.map(
+                (x): gqlApi.StudentMeeting => ({
+                  date: x.date,
+                  groupId: String(x.groupId),
+                  meetingId: String(x.meeting_id),
+                  meetingName: x.meeting_name,
+                  points: x.points,
+                })
+              )
+          )
+        )
+      );
+    },
+  },
   Query: {
     async task(_parent, { id }, _ctx) {
       const dbTask = fakeDb.tasks[id];
@@ -169,6 +201,9 @@ export const resolvers: gqlApi.Resolvers<Context> = {
             ),
           }
         : null;
+    },
+    async student(_, { id }) {
+      return { id };
     },
   },
   Mutation: {

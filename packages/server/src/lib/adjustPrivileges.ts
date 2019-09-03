@@ -1,4 +1,4 @@
-import { GroupDTO, UserDTO, UserPrivileges } from 'common';
+import { GroupDTO, UserPrivileges, UserId } from 'common';
 
 import { db } from '../store';
 
@@ -6,14 +6,14 @@ type AdjustCallback = (res: void | { error: string }) => void;
 interface AdjustPrivilegesFunc {
   add: (
     groupId: GroupDTO['id'],
-    userId: UserDTO['id'],
+    userId: UserId,
     privileges: UserPrivileges.What[],
     callback: AdjustCallback
   ) => void;
   update: (
     groupId: GroupDTO['id'],
-    prevUserId: UserDTO['id'],
-    nextUserId: UserDTO['id'],
+    prevUserId: UserId,
+    nextUserId: UserId,
     privileges: UserPrivileges.What[],
     callback: AdjustCallback
   ) => void;

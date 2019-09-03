@@ -39,7 +39,7 @@ export const getGroup = (
         });
       }
 
-      const group = results[0];
+      const group = results && results[0];
       if (!group) {
         return res
           .status(codes.NOT_FOUND)

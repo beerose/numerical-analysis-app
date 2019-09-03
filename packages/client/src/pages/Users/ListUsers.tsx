@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import { Button, Input as AntInput, Spin } from 'antd';
 import { SelectValue } from 'antd/lib/select';
 import { PaginationConfig } from 'antd/lib/table';
-import { UserDTO } from 'common';
+import { UserDTO, UserId } from 'common';
 import React from 'react';
 
 import { usersService } from '../../api';
@@ -121,7 +121,7 @@ export class ListUsersContainer extends React.Component<{}, State> {
     });
   };
 
-  handleDeleteUser = (id: UserDTO['id']) => {
+  handleDeleteUser = (id: UserId) => {
     usersService.deleteUser(id).then(() => {
       this.updateUsersList(this.state.currentPage);
     });

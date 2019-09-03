@@ -17,10 +17,6 @@ export const apolloServer = new ApolloServer({
       ? connection.context
       : req.headers;
 
-    if (Number.isNaN(Number(groupId))) {
-      throw new AuthenticationError('x-group-id missing or not a number');
-    }
-
     const user = await authorizeWithToken(authorization, UserRole.All)().then(
       flow(
         fold(err => {

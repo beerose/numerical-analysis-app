@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, Spin, Tooltip } from 'antd';
-import { UserDTO, UserRole, UserWithGroups } from 'common';
+import { UserDTO, UserRole, UserWithGroups, UserId } from 'common';
 import { saveAs } from 'file-saver';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Omit } from 'react-router';
@@ -80,7 +80,7 @@ export const StudentsSection: React.FC<Props> = ({
     updateStudentsLists();
   }, []);
 
-  const deleteStudent = (userId: UserDTO['id']) => {
+  const deleteStudent = (userId: UserId) => {
     deleteStudentFromGroup(userId);
     updateStudentsLists();
   };

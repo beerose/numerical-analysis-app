@@ -2,9 +2,9 @@
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
 import { Layout, Modal } from 'antd';
+import { UserRole } from 'common';
 import { identity } from 'io-ts';
 import React, { Fragment } from 'react';
-import { UserRole } from 'common';
 import { Route, RouteChildrenProps, Switch } from 'react-router';
 import { Link } from 'react-router-dom';
 
@@ -69,7 +69,7 @@ const Title: React.FC = ({ children }) => (
         color: white;
       }
     `}
->[]
+  >
     {children}
   </Link>
 );
@@ -113,7 +113,6 @@ export const Main: React.FC<Props> = ({ history, location }) => {
         <ErrorBoundary>
           <GroupApiProvider history={history} location={location}>
             <StyledContent>
-              <Route path="/accounts/new" component={NewAccount} />
               {user ? (
                 <Switch>
                   <Route exact path="/" component={Home} />
@@ -125,6 +124,7 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                   <Route path="/settings" component={SettingsContainer} />
                   <Route path="/logout" component={Logout} />
                   <Route component={NotFoundPage} />
+                  <Route path="/accounts/new" component={NewAccount} />
                 </Switch>
               ) : (
                 <Switch>
@@ -149,7 +149,13 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                       return (
                         <Fragment>
                           <Welcome />
-                          <Modal visible centered width={400} footer={false}>
+                          <Modal
+                            visible
+                            centered
+                            width={400}
+                            footer={false}
+                            closable={false}
+                          >
                             <NewPasswordForm
                               onSubmit={newPassword =>
                                 handleResetPassword(newPassword, token || '')
@@ -160,6 +166,14 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                       );
                     }}
                   />
+                  <Route path="/accounts/new">
+                    {route => (
+                      <Fragment>
+                        <Welcome />
+                        <NewAccount {...route} />
+                      </Fragment>
+                    )}
+                  </Route>
                   <Route>
                     <Welcome />
                     <LoginForm

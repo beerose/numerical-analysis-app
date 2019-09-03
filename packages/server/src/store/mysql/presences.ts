@@ -1,5 +1,11 @@
-import { GroupDTO, MeetingDTO, UserDTO } from 'common';
-import { MysqlError } from 'mysql';
+import {
+  GroupDTO,
+  GroupId,
+  MeetingDTO,
+  MeetingId,
+  UserDTO,
+  UserId,
+} from 'common';
 import { sql } from 'tag-sql';
 
 import { connection } from '../connection';
@@ -7,10 +13,10 @@ import { connection } from '../connection';
 import { QueryCallback } from './QueryCallback';
 
 export const getMeetingsData = (
-  { groupId, userId }: { groupId: GroupDTO['id']; userId?: UserDTO['id'] },
+  { groupId, userId }: { groupId: GroupDTO['id']; userId?: UserId },
   callback: QueryCallback<
     Array<{
-      id: UserDTO['id'];
+      id: UserId;
       user_name: UserDTO['user_name'];
       student_index: UserDTO['student_index'];
       meetings_data: Array<{ meeting_id: MeetingDTO['id']; points: number }>;
@@ -48,7 +54,7 @@ export const getMeetingsData = (
   );
 
 export const addPresence = (
-  { userId, meetingId }: { userId: UserDTO['id']; meetingId: MeetingDTO['id'] },
+  { userId, meetingId }: { userId: UserId; meetingId: MeetingDTO['id'] },
   callback: QueryCallback
 ) =>
   connection.query(
@@ -60,7 +66,7 @@ export const addPresence = (
   );
 
 export const deletePresence = (
-  { userId, meetingId }: { userId: UserDTO['id']; meetingId: MeetingDTO['id'] },
+  { userId, meetingId }: { userId: UserId; meetingId: MeetingDTO['id'] },
   callback: QueryCallback
 ) =>
   connection.query(
@@ -75,7 +81,7 @@ export const getUsersMeetingsPoints = (
   { groupId }: { groupId: GroupDTO['id'] },
   callback: QueryCallback<
     Array<{
-      user_id: UserDTO['id'];
+      user_id: UserId;
       activity_points: number;
       sum_presences: number;
     }>
@@ -94,11 +100,38 @@ export const getUsersMeetingsPoints = (
           SELECT
             id
           FROM
-            meetings
+          meetings
           WHERE
             group_id = ${groupId})
         GROUP BY
           user_id;
         `,
+    callback
+  );
+
+export const getStudentsPresenceAndActivity = (
+  { studentId, groupId }: { studentId: UserId; groupId?: GroupId },
+  callback: QueryCallback<
+    Array<{
+      meeting_id: MeetingId;
+      meeting_name: string;
+      date: Date;
+      groupId: GroupId;
+      points: number | null;
+    }>
+  >
+) =>
+  connection.query(
+    sql`
+    select meetings.id meeting_id, meeting_name, date, ubg.group_id, points
+      from users u
+      join user_belongs_to_group ubg on ubg.user_id = u.id
+      join meetings on ubg.group_id = meetings.group_id
+      left join user_attended_meeting uam
+        on uam.meeting_id = meetings.id and uam.user_id = u.id
+      where u.id = ${studentId} ${
+      groupId !== undefined ? sql`and group_id = ${groupId}` : sql.empty
+    }
+  `,
     callback
   );

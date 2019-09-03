@@ -1,7 +1,8 @@
 let urls;
 
 if (process.env.NODE_ENV !== 'production') {
-  const serverUrl = 'http://rno.ii.uni.wroc.pl:8082'; // process.env.SERVER_URL || 'http://localhost:8082';
+  // const serverUrl = 'http://rno.ii.uni.wroc.pl:8082';
+  const serverUrl = process.env.SERVER_URL || 'http://localhost:8082';
   urls = {
     // tslint:disable:no-http-string
     SERVER_URL: serverUrl,

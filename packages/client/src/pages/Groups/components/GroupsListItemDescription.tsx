@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import styled from '@emotion/styled';
-import { GroupDTO, UserDTO } from 'common';
+import { GroupDTO, UserDTO, UserId } from 'common';
 import { Any } from 'io-ts';
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { theme } from '../../../components';
 import { LocaleContext } from '../../../components/locale';
 
 export type GroupsListItemDescriptionProps = {
-  lecturerId: UserDTO['id'];
+  lecturerId: UserId;
   lecturerName: string;
   group: GroupDTO;
 };

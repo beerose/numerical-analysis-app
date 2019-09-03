@@ -1,4 +1,4 @@
-import { GroupDTO, MeetingDTO, MeetingId, UserDTO } from 'common';
+import { GroupDTO, MeetingDTO, MeetingId, UserDTO, UserId } from 'common';
 
 import { connection } from '../connection';
 
@@ -81,7 +81,7 @@ export const removeStudentFromGroup = (
     userId,
     groupId,
   }: {
-    userId: UserDTO['id'];
+    userId: UserId;
     groupId: GroupDTO['id'];
   },
   callback: QueryCallback
@@ -101,7 +101,7 @@ export const setActivity = (
     userId,
     meetingId,
     points,
-  }: { userId: UserDTO['id']; meetingId: MeetingDTO['id']; points: number },
+  }: { userId: UserId; meetingId: MeetingDTO['id']; points: number },
   callback: QueryCallback
 ) =>
   connection.query(

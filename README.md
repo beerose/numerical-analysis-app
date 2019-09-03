@@ -152,3 +152,8 @@ Following the Attribute Based Access Control (ABAC) we define waht a SuperUser i
 
 The lecturer of the group has full access in it, but he can also share privileges to edit this group to the another user. So when a new group is created privilege `edit` is granted to its `lecturer`.
 This model will allow us to extend it to a different attributes, for example: `EditUsers`, `ReadUsers`, `EditMeetings` and so on. By default each SuperUser is granted with `Read` attribute for each group.
+
+## Known Problems
+
+- GraphQL Code Generator generated type don't allow partial resolution which is one of the main features and source of performance benefits of GraphQL.
+  We could use https://github.com/prisma/graphqlgen instead.

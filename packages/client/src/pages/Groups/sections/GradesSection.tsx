@@ -11,6 +11,7 @@ import {
   UserResultsDTO,
   UserResultsModel,
   UserWithGroups,
+  UserId,
 } from 'common';
 import {
   Fragment,
@@ -202,7 +203,7 @@ Props) => {
     }
   }, [currentGroup, currentGroupStudents]);
 
-  const setGrade = useCallback((studentId: UserDTO['id'], grade: Grade) => {
+  const setGrade = useCallback((studentId: UserId, grade: Grade) => {
     actions.setFinalGrade(studentId, grade).then(res => {
       if ('error' in res) {
         showMessage(res);

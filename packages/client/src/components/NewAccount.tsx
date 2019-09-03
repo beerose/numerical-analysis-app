@@ -45,9 +45,9 @@ const NewAccountModalHeader = () => (
 );
 const errorModalHeader = <ModalHeader title="Wystąpił błąd" />;
 
-type Props = RouteComponentProps;
+type Props = Pick<RouteComponentProps, 'history' | 'location'>;
 export const NewAccount: React.FC<Props> = props => {
-  const { actions, errorMessage: authError, user } = useAuthStore();
+  const { actions, errorMessage: authError, user } = useAuthStore(s => s);
 
   const token = new URLSearchParams(props.location.search).get('token');
 
@@ -76,7 +76,9 @@ export const NewAccount: React.FC<Props> = props => {
       ) : (
         <NewPasswordForm
           onSubmit={(password: string) =>
-            actions.createNewAccount(token!, password)
+            actions
+              .createNewAccount(token!, password)
+              .finally(() => props.history.push('/'))
           }
         />
       )}
