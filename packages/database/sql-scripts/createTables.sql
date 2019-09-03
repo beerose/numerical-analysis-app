@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS `group_has_task`;
 CREATE TABLE `group_has_task` (
   `group_id` int(11) NOT NULL REFERENCES `groups`(id) ON DELETE CASCADE,
   `task_id` int(11) NOT NULL REFERENCES `tasks`(id) ON DELETE CASCADE,
-  `weight` int(11) DEFAULT NULL,
+  `weight` decimal(16,2) DEFAULT NULL,
   UNIQUE KEY `task_id` (`task_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -65,8 +65,8 @@ CREATE TABLE `tasks` (
   `verify_upload` tinyint(1) NOT NULL DEFAULT '1',
   `start_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `end_upload_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `start_vote_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
-  `end_vote_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
+  `start_vote_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `end_vote_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `data` json DEFAULT NULL,
@@ -81,7 +81,7 @@ DROP TABLE IF EXISTS `user_attended_meeting`;
 CREATE TABLE `user_attended_meeting` (
   `user_id` int(11) NOT NULL,
   `meeting_id` int(11) NOT NULL,
-  `points` int(11) DEFAULT '0',
+  `points` decimal(16,2) DEFAULT '0',
   UNIQUE KEY `user_id` (`user_id`,`meeting_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -93,7 +93,7 @@ DROP TABLE IF EXISTS `user_belongs_to_group`;
 CREATE TABLE `user_belongs_to_group` (
   `user_id` int(11) DEFAULT NULL REFERENCES users(id) ON DELETE CASCADE,
   `group_id` int(11) DEFAULT NULL REFERENCES `groups`(id) ON DELETE CASCADE,
-  `grade` decimal(16,1) DEFAULT NULL,
+  `grade` decimal(16,2) DEFAULT NULL,
   UNIQUE KEY `unique_ids` (`user_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -106,7 +106,7 @@ CREATE TABLE `user_has_points` (
   `user_id` int(11) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   `task_id` int(11) NOT NULL REFERENCES tasks(id) ON DELETE CASCADE,
   `group_id` int(11) NOT NULL REFERENCES `groups`(id) ON DELETE CASCADE,
-  `points` decimal(16,1) DEFAULT NULL,
+  `points` decimal(16,2) DEFAULT NULL,
   UNIQUE KEY `unique_data` (`user_id`,`task_id`, `group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
