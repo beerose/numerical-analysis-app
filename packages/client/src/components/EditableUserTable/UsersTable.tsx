@@ -6,14 +6,14 @@ import { Popconfirm, Table, Tooltip } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 // tslint:disable-next-line:no-submodule-imports
 import { PaginationConfig } from 'antd/lib/table';
-import { UserDTO, userRoleOptions, UserId, UserRole } from 'common';
+import { UserDTO, UserId, UserRole } from 'common';
 import * as React from 'react';
 
 import { LABELS } from '../../utils/labels';
+import { LocaleContext } from '../locale';
 
 import { EditableConsumer } from './Context';
 import { EditableCell, EditableFormRow } from './EditableRow';
-import { LocaleContext, Locale } from '../locale';
 
 const ActionLink = styled('a')`
   margin-right: 8px;
