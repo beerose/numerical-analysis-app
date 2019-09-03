@@ -66,7 +66,9 @@ export const TasksSection = ({
 
   const navigateTo = useCallback(
     (path: string) => {
-      history.push(join(location.pathname, path));
+      history.push(
+        join(location.pathname.replace(process.env.PUBLIC_URL, ''), path)
+      );
     },
     [location.pathname]
   );
