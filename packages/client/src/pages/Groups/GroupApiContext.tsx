@@ -10,9 +10,9 @@ import {
   MeetingDTO,
   TaskDTO,
   UserDTO,
+  UserId,
   UserRole,
   UserWithGroups,
-  UserId,
 } from 'common';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { difference, map } from 'fp-ts/lib/Array';
