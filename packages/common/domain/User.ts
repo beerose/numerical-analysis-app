@@ -84,7 +84,3 @@ export type UserResultsModel = {
   presences: number;
   activity: number;
 };
-
-export const userRoleOptions: string[] = Object.values(UserRole).filter(
-  o => typeof o === 'string'
-);

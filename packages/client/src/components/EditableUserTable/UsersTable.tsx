@@ -6,13 +6,14 @@ import { Popconfirm, Table, Tooltip } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 // tslint:disable-next-line:no-submodule-imports
 import { PaginationConfig } from 'antd/lib/table';
-import { UserDTO, userRoleOptions, UserId } from 'common';
+import { UserDTO, userRoleOptions, UserId, UserRole } from 'common';
 import * as React from 'react';
 
 import { LABELS } from '../../utils/labels';
 
 import { EditableConsumer } from './Context';
 import { EditableCell, EditableFormRow } from './EditableRow';
+import { LocaleContext, Locale } from '../locale';
 
 const ActionLink = styled('a')`
   margin-right: 8px;
@@ -43,24 +44,35 @@ const tableColumns: TableColumn[] = [
 ];
 
 type ExtraColumnTypes = 'role' | 'index';
-const extraTableColumns: Record<ExtraColumnTypes, TableColumn> = {
-  index: {
-    dataIndex: 'student_index',
-    editable: true,
-    title: 'Indeks',
-    width: '200px',
-  },
-  role: {
-    dataIndex: 'user_role',
-    editable: true,
-    options: userRoleOptions,
-    title: 'Rola',
-    width: '160px',
-  },
-};
 
-const getExtraColumnsForRender = (extraColumns: ExtraColumnTypes[] = []) =>
-  extraColumns.map(column => extraTableColumns[column]);
+const getExtraColumnsForRender = (
+  extraColumns: ExtraColumnTypes[] = [],
+  getText: (_: string) => string | undefined
+) =>
+  extraColumns.map(column => {
+    switch (column) {
+      case 'index':
+        return {
+          dataIndex: 'student_index',
+          editable: true,
+          title: 'Indeks',
+          width: '200px',
+        };
+
+      case 'role':
+        return {
+          dataIndex: 'user_role',
+          editable: true,
+          options: UserRole.All,
+          render: getText,
+          title: 'Rola',
+          width: '160px',
+        };
+
+      default:
+        throw new Error('switch not exhaustive');
+    }
+  });
 
 type UsersTableState = {
   currentPage: number;
@@ -96,6 +108,9 @@ export class UsersTable extends React.Component<
   UsersTableProps,
   UsersTableState
 > {
+  static contextType = LocaleContext;
+  context!: React.ContextType<typeof LocaleContext>;
+
   state: UsersTableState = {
     currentPage: 1,
     editingKey: '',
@@ -106,7 +121,7 @@ export class UsersTable extends React.Component<
 
   columns: TableColumn[] = [
     ...tableColumns,
-    ...getExtraColumnsForRender(this.props.extraColumns),
+    ...getExtraColumnsForRender(this.props.extraColumns, this.context.getText),
     {
       dataIndex: 'edit',
       render: (_: any, record: UserDTO) => {
