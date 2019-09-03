@@ -111,10 +111,8 @@ const SettingsSectionInternal: React.FC<Props> = ({
             data: groupDataState,
             prev_lecturer_id: group.lecturer_id,
           })
-          .then(res => {
-            if ('error' in res) {
-              actions.getGroup();
-            }
+          .then(() => {
+            actions.getGroup();
           });
       });
     },

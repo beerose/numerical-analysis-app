@@ -164,8 +164,8 @@ export class GroupApiProvider extends React.Component<
       groupId = getGroupId(this.props.location);
     }
     const res = await groupsService.getGroup(groupId);
+    showMessage(res);
     if ('error' in res) {
-      showMessage(res);
       this.props.history.push('/groups/');
     } else {
       this.setState({ currentGroup: res.data });
