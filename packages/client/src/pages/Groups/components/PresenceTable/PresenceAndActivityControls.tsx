@@ -29,7 +29,7 @@ const Checkbox = styled(AntCheckbox)`
 `;
 
 const Input = styled(AntInput)`
-  width: 56px;
+  width: 76px;
 `;
 
 type PresenceOrActivityValue =

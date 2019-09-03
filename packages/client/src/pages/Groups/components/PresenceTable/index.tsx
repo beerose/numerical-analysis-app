@@ -1,6 +1,6 @@
 import { Spin } from 'antd';
-import { Brand } from 'nom-ts';
 import { MeetingDetailsModel, MeetingDTO, UserDTO, UserId } from 'common';
+import { Brand } from 'nom-ts';
 import React from 'react';
 
 import { PaddingContainer } from '../../../../components/PaddingContainer';
@@ -16,8 +16,6 @@ import { PresenceTableStateProvider } from './PresenceTableStateContext';
 import { StudentsAtMeetingsTable } from './StudentsAtMeetingsTable';
 
 type ActivityNumber = Brand<number, 'ActivityNumber'>;
-const boundActivity = (num: number) =>
-  Math.max(-99, Math.min(99, num)) as ActivityNumber;
 
 const makeRenderCheckboxAndInput = (
   meetingId: MeetingId,
@@ -49,11 +47,7 @@ export type PresenceTableProps = {
   ) => void;
   addPresence: (userId: UserId, meetingId: number) => void;
   deletePresence: (userId: UserId, meetingId: number) => void;
-  setActivity: (
-    userId: UserId,
-    meetingId: number,
-    activity: number
-  ) => void;
+  setActivity: (userId: UserId, meetingId: number, activity: number) => void;
   editable: boolean;
 };
 export class PresenceTable extends React.Component<PresenceTableProps> {
@@ -91,7 +85,7 @@ export class PresenceTable extends React.Component<PresenceTableProps> {
         deletePresence(studentId, meetingId);
       }
     } else {
-      const activity = boundActivity((data as { activity: number }).activity);
+      const activity = (data as { activity: number }).activity;
 
       newMeetingData.activities = {
         ...newMeetingData.activities,
