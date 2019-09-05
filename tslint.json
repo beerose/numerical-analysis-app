@@ -1,6 +1,7 @@
 {
   "extends": ["@hasparus/tslint-config"],
   "rules": {
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "detect-child-process": false
   }
 }
