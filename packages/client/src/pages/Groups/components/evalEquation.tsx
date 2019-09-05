@@ -12,7 +12,7 @@ export async function evalEquation<PointCategories extends string>(
   document.body.appendChild(temporaryRoot);
 
   const kvargsString = inspect(pointsInAllCategories);
-  const argumentKeys = `(${kvargsString.replace(/\: [\d]+/g, '')})`;
+  const argumentKeys = `(${kvargsString.replace(/\: [\d|(.\d)?]+/g, '')})`;
 
   const res = await new Promise<number>((resolve, reject) => {
     let settled = false;

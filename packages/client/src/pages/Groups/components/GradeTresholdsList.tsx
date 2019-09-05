@@ -49,14 +49,15 @@ export const GradeTresholdsList: React.FC<GradeTresholdsListProps> = ({
       const leftKey = String(Number(key) - 1);
       const rightKey = String(Number(key) - 1);
 
-      if (
-        (leftKey in tresholds &&
-          tresholds[leftKey as keyof Tresholds] > newVal) ||
-        (rightKey in tresholds &&
-          tresholds[rightKey as keyof Tresholds] < newVal)
-      ) {
-        showBadTresholdsError();
-      }
+      // tslint:disable-next-line:no-commented-code
+      // if (
+      //   (leftKey in tresholds &&
+      //     tresholds[leftKey as keyof Tresholds] > newVal) ||
+      //   (rightKey in tresholds &&
+      //     tresholds[rightKey as keyof Tresholds] < newVal)
+      // ) {
+      //   showBadTresholdsError();
+      // }
 
       onChange({
         ...tresholds,

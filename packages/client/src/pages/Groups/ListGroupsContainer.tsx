@@ -1,20 +1,18 @@
 /** @jsx jsx */
-import { jsx, css } from '@emotion/core';
+import { css, jsx } from '@emotion/core';
 import { Icon, List, Spin } from 'antd';
 import { GroupDTO, UserDTO, UserId } from 'common';
 import React, { useContext, useEffect, useState } from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-import { Breadcrumbs, ErrorMessage, theme } from '../../components';
-import { LocaleContext } from '../../components/locale';
+import { Breadcrumbs, ErrorMessage, Flex, theme } from '../../components';
 import { DeleteWithConfirmation } from '../../components/DeleteWithConfirmation';
 import { IfUserPrivileged } from '../../components/IfUserPrivileged';
 import { PaddingContainer } from '../../components/PaddingContainer';
 import { RemoveSelected } from '../../components/RemoveSelected';
 import { ResetButton } from '../../components/ResetButton';
 import { usePromise } from '../../utils';
-import { LABELS } from '../../utils/labels';
 import { makeIdDict } from '../../utils/makeDict';
 
 import { GroupsListItemDescription } from './components/GroupsListItemDescription';
@@ -88,7 +86,11 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
   } = groupApi;
 
   if (!lecturers) {
-    return <Spin />;
+    return (
+      <Flex justifyContent="center" alignItems="center">
+        <Spin />
+      </Flex>
+    );
   }
 
   const dataSource =

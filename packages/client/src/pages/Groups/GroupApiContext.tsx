@@ -10,9 +10,9 @@ import {
   MeetingDTO,
   TaskDTO,
   UserDTO,
+  UserId,
   UserRole,
   UserWithGroups,
-  UserId,
 } from 'common';
 import { pipe } from 'fp-ts/lib/pipeable';
 import { difference, map } from 'fp-ts/lib/Array';
@@ -164,8 +164,8 @@ export class GroupApiProvider extends React.Component<
       groupId = getGroupId(this.props.location);
     }
     const res = await groupsService.getGroup(groupId);
+    showMessage(res);
     if ('error' in res) {
-      showMessage(res);
       this.props.history.push('/groups/');
     } else {
       this.setState({ currentGroup: res.data });

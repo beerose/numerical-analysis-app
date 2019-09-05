@@ -7,11 +7,10 @@ import {
   Grade,
   GroupDTO,
   GroupGradeSettings,
-  UserDTO,
+  UserId,
   UserResultsDTO,
   UserResultsModel,
   UserWithGroups,
-  UserId,
 } from 'common';
 import {
   Fragment,
@@ -175,7 +174,11 @@ Props) => {
       ]).then(() => {
         fetching.current = false;
       });
-    } else if (!currentGroupStudents) {
+    } else if (
+      !currentGroupStudents ||
+      (currentGroupStudents &&
+        currentGroupStudents.some(s => !s.group_ids.includes(groupId)))
+    ) {
       if (fetching.current) {
         return;
       }
@@ -361,11 +364,19 @@ export function makeGradesSectionColumns({
     },
     {
       align: 'center' as const,
-      key: 'meetings_grade',
-      render: (item: UserResultsModel) => item.presences + item.activity,
-      sorter: makeTableSorter<UserResultsModel>(x => x.presences + x.activity),
-      title: texts.presenceAndActivity,
-      width: 120,
+      key: 'meetings_activities',
+      render: (item: UserResultsModel) => item.activity,
+      sorter: makeTableSorter<UserResultsModel>(x => x.activity),
+      title: 'Aktywności',
+      width: 100,
+    },
+    {
+      align: 'center' as const,
+      key: 'meetings_presences',
+      render: (item: UserResultsModel) => item.presences,
+      sorter: makeTableSorter<UserResultsModel>(x => x.presences),
+      title: 'Obecności',
+      width: 100,
     },
     {
       align: 'center' as const,
