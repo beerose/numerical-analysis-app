@@ -6,7 +6,7 @@ import { Popconfirm, Table, Tooltip } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 // tslint:disable-next-line:no-submodule-imports
 import { PaginationConfig } from 'antd/lib/table';
-import { UserDTO, UserId, UserRole, userRoleOptions } from 'common';
+import { UserDTO, UserId, UserRole } from 'common';
 import * as React from 'react';
 
 import { LABELS } from '../../utils/labels';

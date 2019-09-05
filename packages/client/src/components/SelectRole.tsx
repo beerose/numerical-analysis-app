@@ -1,7 +1,7 @@
 import { Icon, Select } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { SelectValue } from 'antd/lib/select';
-import { UserRole, userRoleOptions } from 'common';
+import { UserRole } from 'common';
 import React, { useContext } from 'react';
 
 import { Colors } from '../utils';

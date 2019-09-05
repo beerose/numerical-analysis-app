@@ -27,12 +27,7 @@ router.get(
   listFiles
 );
 
-router.post(
-  ServerRoutes.Files,
-  // auth.authorize(userRoleOptions),
-  upload.array('files'),
-  uploadFiles
-);
+router.post(ServerRoutes.Files, upload.array('files'), uploadFiles);
 
 if (process.env.NODE_ENV === 'development') {
   router.get(`${ServerRoutes.Files}/test-upload`, uploadDemoPage);
