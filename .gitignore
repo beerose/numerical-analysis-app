@@ -19,3 +19,5 @@ _prod
 
 # certs
 **/cert
+
+yarn-error.log

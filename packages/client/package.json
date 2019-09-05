@@ -15,7 +15,7 @@
     "@emotion/styled-base": "^10.0.5",
     "@reach/visually-hidden": "^0.1.4",
     "@types/file-saver": "^2.0.0",
-    "@types/react": "^16.8.15",
+    "@types/react": "^16.9.2",
     "@types/react-dom": "^16.8.4",
     "@types/react-router-dom": "^4.3.2",
     "antd": "^3.16.6",
