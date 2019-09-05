@@ -13,7 +13,4 @@ RUN apt-get update \
   && curl -sSL "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose \
   && chmod +x /usr/local/bin/docker-compose
 
-RUN curl -s https://raw.githubusercontent.com/tophat/yvm/master/scripts/install.js | node \
-  && /root/.yvm/yvm.sh use 1.12.3 \
-  && yarn
-
+RUN yarn
