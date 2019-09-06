@@ -1,6 +1,6 @@
 import { Button } from 'antd';
 import { ApiResponse } from 'common';
-import * as React from 'react';
+import React, { useEffect } from 'react';
 
 import { Flex, LocaleContext, theme } from '../../../components';
 import { isSafari } from '../../../utils';
@@ -12,90 +12,78 @@ type Props = GroupApiContextState & {
   editable: boolean;
 };
 
-export class MeetingsDetailsSection extends React.Component<Props> {
-  handleSetActivity = this.withErrorHandler(this.props.actions.setActivity);
-  handleAddPresence = this.withErrorHandler(this.props.actions.addPresence);
-  handleDeletePresence = this.withErrorHandler(
-    this.props.actions.deletePresence
-  );
-
-  setStateFromApi() {
-    const { listMeetings, getMeetingsDetails } = this.props.actions;
+export const MeetingsDetailsSection: React.FC<Props> = ({
+  actions,
+  meetings,
+  meetingsDetails,
+  actions: { setStudentMeetingDetails },
+  editable,
+  currentGroup,
+}) => {
+  function setStateFromApi() {
+    const { listMeetings, getMeetingsDetails } = actions;
     listMeetings();
     getMeetingsDetails();
   }
 
-  componentDidMount() {
-    this.setStateFromApi();
-  }
+  const handleSetActivity = withErrorHandler(actions.setActivity);
+  const handleAddPresence = withErrorHandler(actions.addPresence);
+  const handleDeletePresence = withErrorHandler(actions.deletePresence);
 
-  withErrorHandler<Args extends any[]>(
+  useEffect(() => {
+    setStateFromApi();
+  }, [currentGroup]);
+
+  function withErrorHandler<Args extends any[]>(
     func: (...args: Args) => Promise<ApiResponse>
   ) {
     return (...args: Args) =>
       func(...args).then(result => {
         if ('error' in result) {
-          this.setStateFromApi();
+          setStateFromApi();
         }
         return result;
       });
   }
 
-  handleMeetingsDetailsCsvDownload() {
+  function handleMeetingsDetailsCsvDownload() {
     const mimeType = isSafari() ? 'application/csv' : 'text/csv';
     const blob = new Blob(
-      [
-        meetingsDetailsToCsv(
-          this.props.meetingsDetails || [],
-          this.props.meetings || []
-        ),
-      ],
+      [meetingsDetailsToCsv(meetingsDetails || [], meetings || [])],
       { type: mimeType }
     );
 
-    saveAs(
-      blob,
-      `students-meetings-details-${this.props.currentGroup!.id}.csv`
-    );
+    saveAs(blob, `students-meetings-details-${currentGroup!.id}.csv`);
   }
 
-  render() {
-    const {
-      meetings,
-      meetingsDetails,
-      actions: { setStudentMeetingDetails },
-      editable,
-    } = this.props;
-
-    return (
-      <LocaleContext.Consumer>
-        {({ texts }) => (
-          <Flex
-            flexDirection="column"
-            padding={theme.Padding.Standard}
-            height="100%"
+  return (
+    <LocaleContext.Consumer>
+      {({ texts }) => (
+        <Flex
+          flexDirection="column"
+          padding={theme.Padding.Standard}
+          height="100%"
+        >
+          <Button
+            type="primary"
+            icon="download"
+            onClick={() => handleMeetingsDetailsCsvDownload()}
+            aria-label={texts.exportCsv}
+            style={{ width: 200, marginBottom: '10px', marginLeft: 1 }}
           >
-            <Button
-              type="primary"
-              icon="download"
-              onClick={() => this.handleMeetingsDetailsCsvDownload()}
-              aria-label={texts.exportCsv}
-              style={{ width: 200, marginBottom: '10px', marginLeft: 1 }}
-            >
-              {texts.exportCsv}
-            </Button>
-            <PresenceTable
-              editable={editable}
-              meetings={meetings}
-              meetingsDetails={meetingsDetails}
-              setStudentMeetingDetails={setStudentMeetingDetails}
-              setActivity={this.handleSetActivity}
-              addPresence={this.handleAddPresence}
-              deletePresence={this.handleDeletePresence}
-            />
-          </Flex>
-        )}
-      </LocaleContext.Consumer>
-    );
-  }
-}
+            {texts.exportCsv}
+          </Button>
+          <PresenceTable
+            editable={editable}
+            meetings={meetings}
+            meetingsDetails={meetingsDetails}
+            setStudentMeetingDetails={setStudentMeetingDetails}
+            setActivity={handleSetActivity}
+            addPresence={handleAddPresence}
+            deletePresence={handleDeletePresence}
+          />
+        </Flex>
+      )}
+    </LocaleContext.Consumer>
+  );
+};

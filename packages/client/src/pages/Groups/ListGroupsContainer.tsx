@@ -87,7 +87,7 @@ export const ListGroupsContainer: React.FC<RouteComponentProps> = props => {
 
   if (!lecturers) {
     return (
-      <Flex justifyContent="center" alignItems="center">
+      <Flex flex={1} justifyContent="center" alignItems="center">
         <Spin />
       </Flex>
     );
