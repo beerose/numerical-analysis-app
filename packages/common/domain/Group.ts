@@ -19,7 +19,7 @@ export type GroupGradeSettings = {
 };
 
 export const isGroupType = (x: unknown): x is GroupType =>
-  Object.values(GroupType).includes(x);
+  Object.values(GroupType).includes(x as GroupType);
 
 export const groupTypeRuntimeType = new t.Type(
   'GroupDTO.group_type',
