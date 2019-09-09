@@ -136,7 +136,7 @@ export class MeetingsSection extends React.Component<Props, State> {
                               this.handleDeleteMeeting(meeting.id)
                             }
                           >
-                            <a>{LABELS.delete}</a>
+                            {LABELS.delete}
                           </DeleteWithConfirmation>,
                         ]
                       : []

@@ -64,5 +64,6 @@
   "testsAndTasks": "Tests and tasks",
   "admin": "Admin",
   "superUser": "SuperUser",
-  "student": "Student"
+  "student": "Student",
+  "absent": "Absent"
 }

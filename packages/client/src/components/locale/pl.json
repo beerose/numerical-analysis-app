@@ -64,5 +64,6 @@
   "testsAndTasks": "Testy i zadania",
   "admin": "Admin",
   "superUser": "Prowadzący",
-  "student": "Student"
+  "student": "Student",
+  "absent": "Nieobecny"
 }

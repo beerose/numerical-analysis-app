@@ -116,7 +116,7 @@ export const getStudentsPresenceAndActivity = (
       meeting_id: MeetingId;
       meeting_name: string;
       date: Date;
-      groupId: GroupId;
+      group_id: GroupId;
       points: number | null;
     }>
   >
@@ -130,7 +130,7 @@ export const getStudentsPresenceAndActivity = (
       left join user_attended_meeting uam
         on uam.meeting_id = meetings.id and uam.user_id = u.id
       where u.id = ${studentId} ${
-      groupId !== undefined ? sql`and group_id = ${groupId}` : sql.empty
+      groupId !== undefined ? sql`and ubg.group_id = ${groupId}` : sql.empty
     }
   `,
     callback

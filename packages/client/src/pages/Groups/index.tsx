@@ -1,7 +1,9 @@
-import { UserRole } from 'common';
+import { Menu } from 'antd';
+import { UserRole, groupFeatures } from 'common';
 import React from 'react';
-import { Route, Switch } from 'react-router';
+import { Route, Switch, RouteComponentProps } from 'react-router';
 
+import { GraphqlApiProvider } from '../../components/GraphqlApiProvider';
 import { useAuthStore } from '../../AuthStore';
 
 import { CreateGroupContainer } from './CreateGroupContainer';
@@ -9,6 +11,7 @@ import { GroupDetailsContainer } from './GroupDetailsContainer';
 import { ListGroupsContainer } from './ListGroupsContainer';
 import { StudentGroupsListContainer } from './StudentGroupsListContainer';
 import { StudentGroupDetailsContainer } from './StudentGroupDetailsContainer';
+import { StudentGroupMeetingsContainer } from './StudentGroupMeetingsContainer';
 import { StudentTaskDetailsContainer } from './StudentTaskDetailsContainer';
 
 export const Groups = () => {
@@ -16,19 +19,12 @@ export const Groups = () => {
 
   if (userRole === UserRole.Student) {
     return (
-      <Switch>
-        <Route exact path="/groups" component={StudentGroupsListContainer} />
-        <Route
-          exact
-          path="/groups/:id"
-          component={StudentGroupDetailsContainer}
-        />
-        <Route
-          exact
-          path="/groups/:groupId/tasks/:taskId"
-          component={StudentTaskDetailsContainer}
-        />
-      </Switch>
+      <GraphqlApiProvider>
+        <Switch>
+          <Route exact path="/groups" component={StudentGroupsListContainer} />
+          <Route path="/groups/:id" component={StudentGroupDetailsContainer} />
+        </Switch>
+      </GraphqlApiProvider>
     );
   }
 

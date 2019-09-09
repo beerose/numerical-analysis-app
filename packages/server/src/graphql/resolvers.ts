@@ -13,7 +13,6 @@ import { pipe } from 'fp-ts/lib/pipeable';
 import * as Arr from 'fp-ts/lib/Array';
 import * as Either from 'fp-ts/lib/Either';
 import * as Option from 'fp-ts/lib/Option';
-import * as Task from 'fp-ts/lib/Task';
 import * as TaskEither from 'fp-ts/lib/TaskEither';
 import { GraphQLDateTime } from 'graphql-iso-date';
 import { PubSub, withFilter } from 'graphql-subscriptions';
@@ -169,7 +168,7 @@ export const resolvers: gqlApi.Resolvers<Context> = {
               studentMeetings.map(
                 (x): gqlApi.StudentMeeting => ({
                   date: x.date,
-                  groupId: String(x.groupId),
+                  groupId: String(x.group_id),
                   meetingId: String(x.meeting_id),
                   meetingName: x.meeting_name,
                   points: x.points,

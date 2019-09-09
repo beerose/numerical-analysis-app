@@ -19,6 +19,7 @@ import {
   LocaleContext,
   PaddingContainer,
   StudentTasksTable,
+  theme,
 } from '../../components';
 import { isNumberOrNumberString, usePromise } from '../../utils';
 import { assertDefined } from '../../utils/assertDefined';
@@ -26,6 +27,61 @@ import { useAuthStore } from '../../AuthStore';
 
 import { mergedResultsToTableItem, SuggestedGrade } from './sections';
 import { GroupApiContext } from './GroupApiContext';
+
+// TODO:
+// const StudentGroupDetailsMenu = () => (
+//   <Menu mode="inline">
+//   {features.hasMeetings && (
+//     <MenuLink to={`${matchUrl}/meetings`} key="meetings">
+//       <Icon type="schedule" />
+//       {texts.meetings}
+//     </MenuLink>
+//   )}
+//   {features.hasPresence && (
+//     <MenuLink to={`${matchUrl}/presence`} key="presence">
+//       <Icon type="calendar" />
+//       {texts.presence}
+//     </MenuLink>
+//   )}
+//   <MenuLink to={`${matchUrl}/tasks`} key="tasks">
+//     <Icon type="calculator" />
+//     {texts.tasks}
+//   </MenuLink>
+//   {features.hasAttachedGroups && (
+//     <MenuLink to={`${matchUrl}/attached`} key="attached">
+//       <Icon type="pushpin" />
+//       {texts.attached}
+//     </MenuLink>
+//   )}
+//   <MenuLink to={`${matchUrl}/grades`} key="grades">
+//     <Icon type="line-chart" />
+//     {texts.grades}
+//   </MenuLink>
+//   <MenuLink to={`${matchUrl}/privileges`} key="privileges">
+//     <Icon type="edit" />
+//     {texts.privileges}
+//   </MenuLink>
+// </Menu>
+// )
+
+// TODO:
+/**
+ * Add a Menu and Switch with these two guys, move presentation logic out to StudentGroupInfoSection
+ *                                                                           StudentGroupMeetingsSection
+ *                                                                           StudentGroupTaskDetailsSection
+ *           <Route
+            exact
+            path="/groups/:groupId/meetings"
+            component={StudentGroupMeetingsContainer}
+          />
+          <Route
+            exact
+            path="/groups/:groupId/tasks/:taskId"
+            component={StudentTaskDetailsContainer}
+          />
+ * 
+ */
+
 
 const Descriptions = (props: React.ComponentProps<typeof AntDescriptions>) => (
   <AntDescriptions
@@ -149,7 +205,7 @@ export const StudentGroupDetailsContainer: React.FC<
 
   return (
     <PaddingContainer>
-      <Breadcrumbs css={{ paddingBottom: 10 }} />
+      <Breadcrumbs css={{ paddingBottom: theme.Padding.Half }} />
       <Heading>{currentGroup.group_name}</Heading>
       <Descriptions>
         <Descriptions.Item label={texts.groupType}>

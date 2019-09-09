@@ -1,0 +1,11 @@
+query StudentMeetings($id: ID!) {
+  student(id: $id) {
+    allStudentMeetings {
+      meetingName
+      meetingId
+      date
+      groupId
+      points
+    }
+  }
+}

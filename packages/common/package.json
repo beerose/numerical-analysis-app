@@ -8,18 +8,18 @@
     "graphql-codegen": "graphql-codegen --config graphql/codegen.yml && yarn build"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.5.0",
-    "@graphql-codegen/fragment-matcher": "1.5.0",
-    "@graphql-codegen/introspection": "^1.5.0",
-    "@graphql-codegen/typescript": "1.6.1",
-    "@graphql-codegen/typescript-graphql-files-modules": "1.5.0",
-    "@graphql-codegen/typescript-operations": "^1.5.0",
-    "@graphql-codegen/typescript-resolvers": "1.5.0",
-    "graphql": "^14.4.2",
-    "typescript": "^3.5.3"
+    "@graphql-codegen/cli": "^1.7.0",
+    "@graphql-codegen/fragment-matcher": "1.7.0",
+    "@graphql-codegen/introspection": "^1.7.0",
+    "@graphql-codegen/typescript": "1.7.0",
+    "@graphql-codegen/typescript-graphql-files-modules": "1.7.0",
+    "@graphql-codegen/typescript-operations": "^1.7.0",
+    "@graphql-codegen/typescript-resolvers": "1.7.0",
+    "graphql": "^14.5.4",
+    "typescript": "^3.6.2"
   },
   "dependencies": {
-    "io-ts": "^2.0.0",
+    "io-ts": "^2.0.1",
     "nom-ts": "^0.1.0"
   }
 }
