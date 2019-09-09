@@ -5,7 +5,6 @@ import { Card, Input, List, Spin, Table } from 'antd';
 import {
   ApiResponse,
   TaskDTO,
-  UserDTO,
   UserTaskPoints,
   UserWithGroups,
   UserId,
@@ -127,7 +126,7 @@ export const TaskListItem = ({
       fixed: true,
       key: 'user_name',
       render: (user: UserWithGroups) => (
-        <p>
+        <p css={{ margin: 0 }}>
           {user.user_name} ({user.student_index})
         </p>
       ),
@@ -169,7 +168,7 @@ export const TaskListItem = ({
                   {LABELS.edit}
                 </a>,
                 <DeleteWithConfirmation onConfirm={() => deleteTask(task.id)}>
-                  <a>{LABELS.delete}</a>
+                  {LABELS.delete}
                 </DeleteWithConfirmation>,
               ]
             : []
