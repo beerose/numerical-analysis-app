@@ -21,7 +21,7 @@ export const listUsers = async ({
   searchParam?: string;
   roles?: string[] | string;
   currentPage?: number;
-  limit?: boolean;
+  limit?: number;
 }) => {
   return authFetch2<{ users: UserDTO[]; total: string }>(
     `${SERVER_URL}${Users.List}`,

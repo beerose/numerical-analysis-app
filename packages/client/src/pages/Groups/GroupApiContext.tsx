@@ -149,7 +149,7 @@ export class GroupApiProvider extends React.Component<
 
   listLecturers = () =>
     usersService
-      .listUsers({ roles: [UserRole.SuperUser, UserRole.Admin] })
+      .listUsers({ roles: [UserRole.SuperUser, UserRole.Admin], limit: 999999 })
       .then(res => {
         if (ApiResponse2.isError(res)) {
           throw res;

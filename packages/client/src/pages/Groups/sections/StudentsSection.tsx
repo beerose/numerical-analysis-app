@@ -1,7 +1,7 @@
 /** @jsx jsx */
 import { css, jsx } from '@emotion/core';
 import { Button, Spin, Tooltip } from 'antd';
-import { UserDTO, UserRole, UserWithGroups, UserId } from 'common';
+import { UserDTO, UserId, UserRole, UserWithGroups } from 'common';
 import { saveAs } from 'file-saver';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Omit } from 'react-router';
@@ -63,12 +63,14 @@ export const StudentsSection: React.FC<Props> = ({
         setMyStudents(myGroupStudents);
         return myGroupStudents;
       }),
-      usersService.listUsers({}).then(res => {
-        if (ApiResponse2.isError(res)) {
-          throw res;
-        }
-        return res.data.users.filter(u => u.user_role === UserRole.Student);
-      }),
+      usersService
+        .listUsers({ roles: [UserRole.Student], limit: 999999 })
+        .then(res => {
+          if (ApiResponse2.isError(res)) {
+            throw res;
+          }
+          return res.data.users;
+        }),
     ]).then(([ms, os]) => {
       setIsFetching(false);
       const myStudentsIds = new Set(ms.map(s => s.id));
