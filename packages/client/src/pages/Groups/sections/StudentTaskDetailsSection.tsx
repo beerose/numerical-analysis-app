@@ -2,9 +2,9 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router';
 
-type StudentTaskDetailsContainerProps = RouteComponentProps;
-export const StudentTaskDetailsContainer: React.FC<
-  StudentTaskDetailsContainerProps
+type StudentTaskDetailsSectionProps = RouteComponentProps;
+export const StudentTaskDetailsSection: React.FC<
+  StudentTaskDetailsSectionProps
 > = props => {
   console.log(props);
 
@@ -14,13 +14,10 @@ export const StudentTaskDetailsContainer: React.FC<
   return null;
 
   // return (
-  //   <PaddingContainer>
-  //     <Breadcrumbs css={{ paddingBottom: 10 }} />
   //     <Heading>{task.group_name}</Heading>
   //     <Divider />
   //     <section>
   //       {JSON.stringify(task)}
   //     </section>
-  //   </PaddingContainer>
   // )
 };

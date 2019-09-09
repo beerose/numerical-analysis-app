@@ -65,5 +65,6 @@
   "admin": "Admin",
   "superUser": "SuperUser",
   "student": "Student",
-  "absent": "Absent"
+  "absent": "Absent",
+  "info": "Info"
 }

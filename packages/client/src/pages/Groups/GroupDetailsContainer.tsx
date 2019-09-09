@@ -14,6 +14,7 @@ import { Flex } from '../../components/Flex';
 import { isUserPrivileged } from '../../utils/isUserPrivileged';
 import { useAuthStore } from '../../AuthStore';
 
+import { MenuLink } from './components/MenuLink';
 import {
   AttachedGroupsSection,
   GradesSection,
@@ -25,17 +26,7 @@ import {
   TasksSection,
 } from './sections';
 import { PrivilegesSection } from './sections/PrivilegesSection';
-import { GroupApiContext, GroupApiContextState } from './GroupApiContext';
-
-type MenuLinkProps = {
-  to: LinkProps['to'];
-} & React.ComponentProps<typeof Menu.Item>;
-
-const MenuLink = ({ children, to, ...rest }: MenuLinkProps) => (
-  <Menu.Item {...rest}>
-    <Link to={to}>{children}</Link>
-  </Menu.Item>
-);
+import { GroupApiContext } from './GroupApiContext';
 
 const menuStyles = css`
   width: 250px;

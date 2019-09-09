@@ -11,8 +11,8 @@ import { GroupDetailsContainer } from './GroupDetailsContainer';
 import { ListGroupsContainer } from './ListGroupsContainer';
 import { StudentGroupsListContainer } from './StudentGroupsListContainer';
 import { StudentGroupDetailsContainer } from './StudentGroupDetailsContainer';
-import { StudentGroupMeetingsContainer } from './StudentGroupMeetingsContainer';
-import { StudentTaskDetailsContainer } from './StudentTaskDetailsContainer';
+import { StudentGroupMeetingsSection } from './sections/StudentGroupMeetingsSection';
+import { StudentTaskDetailsContainer } from './StudentTaskDetailsSection';
 
 export const Groups = () => {
   const userRole = useAuthStore(s => s.user && s.user.user_role);

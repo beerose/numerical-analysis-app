@@ -319,7 +319,9 @@ export const getStudentsTasks = (
       JOIN tasks t
         ON t.id = task_id 
       WHERE user_id = ${userId} ${
-      groupId === undefined ? sql.empty : sql`AND group_id = ${groupId}`
+      groupId === undefined
+        ? sql.empty
+        : sql`AND group_has_task.group_id = ${groupId}`
     };`,
     callback
   );

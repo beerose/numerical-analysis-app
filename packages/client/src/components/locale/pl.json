@@ -65,5 +65,6 @@
   "admin": "Admin",
   "superUser": "Prowadzący",
   "student": "Student",
-  "absent": "Nieobecny"
+  "absent": "Nieobecny",
+  "info": "Informacje"
 }
