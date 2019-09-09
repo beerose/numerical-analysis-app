@@ -1,7 +1,6 @@
-import { Menu } from 'antd';
-import { UserRole, groupFeatures } from 'common';
+import { UserRole } from 'common';
 import React from 'react';
-import { Route, Switch, RouteComponentProps } from 'react-router';
+import { Route, Switch } from 'react-router';
 
 import { GraphqlApiProvider } from '../../components/GraphqlApiProvider';
 import { useAuthStore } from '../../AuthStore';
@@ -11,8 +10,6 @@ import { GroupDetailsContainer } from './GroupDetailsContainer';
 import { ListGroupsContainer } from './ListGroupsContainer';
 import { StudentGroupsListContainer } from './StudentGroupsListContainer';
 import { StudentGroupDetailsContainer } from './StudentGroupDetailsContainer';
-import { StudentGroupMeetingsSection } from './sections/StudentGroupMeetingsSection';
-import { StudentTaskDetailsContainer } from './StudentTaskDetailsSection';
 
 export const Groups = () => {
   const userRole = useAuthStore(s => s.user && s.user.user_role);
