@@ -16,9 +16,7 @@ Insert the first admin into the users table. He can add more admins, superusers 
 
 ### Environment variables
 
-Set `DB_NAME, DB_HOST, DB_PASSWORD, DB_USER` in your ENV
-
--- TBD --
+Set `DB_NAME, DB_HOST, DB_PASSWORD, DB_USER` in your ENV.
 
 ## Deploy
 
