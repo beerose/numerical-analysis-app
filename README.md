@@ -43,21 +43,16 @@ yarn
 
 **TODO UPDATE THIS INFORMATION ABOUT DATABASE**
 
-This project is using MySQL Database to store data.
-For DB migrations make sure you have migrate tool installed:
-[DbMate installation](https://dbmate.readthedocs.io/en/latest/)
-
 1. Start MySQL server and create `numerical_analysis` database:
 
 ```
-
+yarn db:setup
+yarn db:start
 ```
 
-2. Create database structure:
+2. Create database tables
 
-```
-
-```
+Enter database cli with `yarn db:interactive` and run `packages/database/sql-scripts/createTables.sql`.
 
 3. Starting the service
 
