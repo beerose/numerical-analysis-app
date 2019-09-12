@@ -30,6 +30,8 @@ if (process.env.NODE_ENV !== 'test') {
 
 app.use(enhanceResponse);
 app.use(cors());
+// app.use(/\/((?!graphql).)*/, bodyParser.urlencoded({ extended: true }));
+// app.use(/\/((?!graphql).)*/, bodyParser.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -62,18 +64,21 @@ const httpsOptions = {
   cert: fs.readFileSync(join(process.env.CERT_PATH!, 'cert.pem')),
 };
 
-let servers: [http.Server, https.Server];
+let servers: Array<http.Server | https.Server>;
 
 export const startServer = () => {
   connectToDb();
 
-  servers = [
-    http.createServer(app).listen(PORT, HOST),
-    https.createServer(httpsOptions, app).listen(HTTPS_PORT, HOST),
-  ];
+  servers =
+    process.env.NODE_ENV !== 'production'
+      ? [http.createServer(app).listen(PORT, HOST)]
+      : [https.createServer(httpsOptions, app).listen(HTTPS_PORT, HOST)];
+
+  servers.forEach(s => apolloServer.installSubscriptionHandlers(s));
 
   echo`
     Your app is listening on
+      ${servers.map(s => `- ${chalk.blue(String(s.address()))}`).join('\n')}
       - ${chalk.blue(`http://${HOST}:${PORT}`)}
       - ${chalk.blue(`https://${HOST}:${HTTPS_PORT}`)}
   `;

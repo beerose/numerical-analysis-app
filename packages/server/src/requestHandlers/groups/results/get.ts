@@ -31,7 +31,7 @@ export const getResults = (
       if (err) {
         res.status(codes.INTERNAL_SERVER_ERROR).send({
           error: apiMessages.internalError,
-          error_details: err.message,
+          error_details: 'getUsersTaskPoints\n' + err.message,
         });
         return;
       }
@@ -40,7 +40,7 @@ export const getResults = (
         if (maxErr) {
           res.status(codes.INTERNAL_SERVER_ERROR).send({
             error: apiMessages.internalError,
-            error_details: maxErr.message,
+            error_details: 'getTasksMaxPointsPerGroup\n' + maxErr.message,
           });
           return;
         }
@@ -51,7 +51,7 @@ export const getResults = (
             if (meetingsErr) {
               res.status(codes.INTERNAL_SERVER_ERROR).send({
                 error: apiMessages.internalError,
-                error_details: meetingsErr.message,
+                error_details: 'getUsersMeetingsPoints\n' + meetingsErr.message,
               });
               return;
             }
