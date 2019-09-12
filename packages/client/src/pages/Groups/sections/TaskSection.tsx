@@ -60,6 +60,7 @@ export const TaskSection = (props: Props) => {
         onSubmit={handleSubmit}
         mode={props.mode}
         model={props.currentTask}
+        groupType={props.currentGroup!.group_type}
       />
     </Flex>
   );

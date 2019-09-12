@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { Button, DatePicker, Form, Icon, Input, Switch } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { FormComponentProps } from 'antd/lib/form';
-import { SelectableSubtask, TaskDTO, TaskKind } from 'common';
+import { GroupType, SelectableSubtask, TaskDTO, TaskKind } from 'common';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react';
 import { Omit } from 'react-router';
@@ -58,6 +58,7 @@ type Props = {
   mode: 'edit' | 'create';
   model?: TaskDTO;
   onSubmit: (values: TaskDTO) => void;
+  groupType: GroupType;
 } & FormComponentProps<FormModel>;
 
 // tslint:disable-next-line:no-big-function
@@ -138,6 +139,7 @@ const TaskForm = (props: Props) => {
           rules: [{ required: true, message: 'rodzaj jest wymagany' }],
         })(
           <TaskKindSelect
+            groupType={props.groupType}
             onSelect={val => {
               setTaskType(val as TaskKind);
             }}
