@@ -73,7 +73,7 @@ FROM
 			group_id = ${groupId}) ght ON (uhp.task_id = ght.task_id)
 WHERE
   ubg.group_id = ${groupId}
-  ${userId ? sql`AND user_id = ${userId}` : sql.empty}
+ ${userId ? sql`AND user_id = ${userId}` : sql.empty}
 GROUP BY
 	user_id;
     `,

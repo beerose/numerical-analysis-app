@@ -45,11 +45,11 @@ export const GradeTresholdsList: React.FC<GradeTresholdsListProps> = ({
         throw new Error('data-key is required on grade treshold input');
       }
 
-      const newVal = Number(event.target.value);
-      const leftKey = String(Number(key) - 1);
-      const rightKey = String(Number(key) - 1);
+      const newVal = event.target.value && Number(event.target.value);
 
       // tslint:disable-next-line:no-commented-code
+      // const leftKey = String(Number(key) - 1);
+      // const rightKey = String(Number(key) - 1);
       // if (
       //   (leftKey in tresholds &&
       //     tresholds[leftKey as keyof Tresholds] > newVal) ||

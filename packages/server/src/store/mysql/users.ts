@@ -309,7 +309,7 @@ export const getStudentsTasks = (
     sql`
       SELECT 
         t.id, t.name, t.kind, 
-        (task_id * weight) AS pts, 
+        (points * weight) AS pts, 
         (t.max_points * weight) AS max_pts, 
         t.start_upload_date, t.end_upload_date, 
         t.created_at, t.updated_at, t.data 

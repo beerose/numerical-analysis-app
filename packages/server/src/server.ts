@@ -31,7 +31,7 @@ if (process.env.NODE_ENV !== 'test') {
 const corsOptions = {
   credentials: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  origin: ['https://rno.ii.uni.wroc.pl', 'http://localhost'],
+  origin: ['https://rno.ii.uni.wroc.pl', /http:\/\/localhost:.*/],
 };
 
 app.use(enhanceResponse);
