@@ -29,7 +29,7 @@ export const Breadcrumbs = withRouter(
         pathTokens,
         prettyPathTokens: replaceTokens(pathTokens).map(t => getText(t) || t),
       };
-    }, [location]);
+    }, [location, replaceTokens]);
 
     return (
       <Breadcrumb className={className}>

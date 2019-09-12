@@ -63,12 +63,7 @@ export const GroupDetailsContainer = (props: RouteComponentProps) => {
       ) {
         return currentGroup.group_name;
       }
-
-      // TO DO
-      // if (previousToken === 'tasks' && currentTask && Number(token)) {
-      //   return currentTask.name;
-      // }
-
+      
       return token;
     });
   };

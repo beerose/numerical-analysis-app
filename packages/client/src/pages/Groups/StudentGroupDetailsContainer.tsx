@@ -3,7 +3,7 @@ import { jsx } from '@emotion/core';
 import { Icon, Menu, Spin } from 'antd';
 import { GroupDTO, groupFeatures, UserWithGroups } from 'common';
 import { Location } from 'history';
-import React, { Fragment, useContext, useEffect } from 'react';
+import React, { Fragment, useCallback, useContext, useEffect } from 'react';
 import { Route, RouteComponentProps } from 'react-router';
 
 import {
@@ -91,11 +91,32 @@ export const StudentGroupDetailsContainer: React.FC<
     }
   }, [currentGroup]);
 
+  const replaceGroupIdBreadcrumb = useCallback(
+    (tokens: string[]) => {
+      return tokens.map((token, i) => {
+        const previousToken = tokens[i - 1];
+        if (
+          previousToken === 'groups' &&
+          currentGroup &&
+          Number(token) === currentGroup.id
+        ) {
+          return currentGroup.group_name;
+        }
+
+        return token;
+      });
+    },
+    [currentGroup]
+  );
+
   return (
     <Flex flexDirection="row" flex={1}>
       <StudentGroupDetailsMenu group={currentGroup} location={location} />
       <PaddingContainer css={{ flex: 1 }}>
-        <Breadcrumbs css={{ paddingBottom: theme.Padding.Half }} />
+        <Breadcrumbs
+          css={{ paddingBottom: theme.Padding.Half }}
+          replaceTokens={replaceGroupIdBreadcrumb}
+        />
         {currentGroup ? (
           <Fragment>
             <Route
