@@ -1,0 +1,22 @@
+diff --git a/node_modules/@emotion/serialize/dist/serialize.browser.esm.js b/node_modules/@emotion/serialize/dist/serialize.browser.esm.js
+index a5591b3..4bc888d 100644
+--- a/node_modules/@emotion/serialize/dist/serialize.browser.esm.js
++++ b/node_modules/@emotion/serialize/dist/serialize.browser.esm.js
+@@ -237,7 +237,7 @@ var serializeStyles = function serializeStyles(args, registered, mergedProps) {
+     styles += handleInterpolation(mergedProps, registered, strings, false);
+   } else {
+     if (process.env.NODE_ENV !== 'production' && strings[0] === undefined) {
+-      console.error(ILLEGAL_ESCAPE_SEQUENCE_ERROR);
++      // console.error(ILLEGAL_ESCAPE_SEQUENCE_ERROR);
+     }
+ 
+     styles += strings[0];
+@@ -249,7 +249,7 @@ var serializeStyles = function serializeStyles(args, registered, mergedProps) {
+ 
+     if (stringMode) {
+       if (process.env.NODE_ENV !== 'production' && strings[i] === undefined) {
+-        console.error(ILLEGAL_ESCAPE_SEQUENCE_ERROR);
++        // console.error(ILLEGAL_ESCAPE_SEQUENCE_ERROR);
+       }
+ 
+       styles += strings[i];
