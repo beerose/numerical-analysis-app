@@ -52,7 +52,7 @@ apolloServer.applyMiddleware({
   app,
   cors: {
     credentials: true,
-    origin: true,
+    origin: ['https://rno.ii.uni.wroc.pl/*', 'http://localhost'],
   },
   path: '/graphql',
 });

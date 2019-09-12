@@ -50,9 +50,9 @@ export const makeGqlClient = (
 
   const wsLink = new WebSocketLink({
     options: {
-      connectionParams: () => ({
+      connectionParams: {
         authorization: authorizationToken,
-      }),
+      },
       reconnect: true,
     },
     uri: uri.replace(/^http/, 'ws'),
