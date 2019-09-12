@@ -69,18 +69,21 @@ let servers: Array<http.Server | https.Server>;
 export const startServer = () => {
   connectToDb();
 
+  const listen = (server: http.Server, port: number, host: string) => {
+    Object.assign(server, { port, host });
+    return server.listen(port, host);
+  };
+
   servers =
     process.env.NODE_ENV !== 'production'
-      ? [http.createServer(app).listen(PORT, HOST)]
-      : [https.createServer(httpsOptions, app).listen(HTTPS_PORT, HOST)];
+      ? [listen(http.createServer(app), PORT, HOST)]
+      : [listen(https.createServer(httpsOptions, app), HTTPS_PORT, HOST)];
 
   servers.forEach(s => apolloServer.installSubscriptionHandlers(s));
 
   echo`
     Your app is listening on
-      ${servers.map(s => `- ${chalk.blue(String(s.address()))}`).join('\n')}
-      - ${chalk.blue(`http://${HOST}:${PORT}`)}
-      - ${chalk.blue(`https://${HOST}:${HTTPS_PORT}`)}
+      ${servers.map(s => `- ${chalk.blue(`${s.host}:${s.port}`)}`).join('\n')}
   `;
 };
 
@@ -88,3 +91,16 @@ export const stopServer = () => {
   servers.forEach(s => s.close());
   disconnectFromDb();
 };
+
+declare module 'http' {
+  interface Server {
+    port: number;
+    host: string;
+  }
+}
+declare module 'https' {
+  interface Server {
+    port: number;
+    host: string;
+  }
+}

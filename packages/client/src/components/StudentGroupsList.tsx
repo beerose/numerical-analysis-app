@@ -20,7 +20,6 @@ const StudentGroupsListItem: React.FC<StudentGroupsListItemProps> = ({
   group,
   className,
 }) => {
-  console.log({ group });
   return (
     <List.Item
       className={className}
