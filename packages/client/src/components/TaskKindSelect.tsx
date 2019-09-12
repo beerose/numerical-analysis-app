@@ -1,7 +1,7 @@
 import { Icon, Select } from 'antd';
 // tslint:disable-next-line:no-submodule-imports
 import { SelectProps, SelectValue } from 'antd/lib/select';
-import { TaskKind } from 'common';
+import { GroupType, TaskKind } from 'common';
 import React, { useContext } from 'react';
 
 import { Colors, findStringifiedLowercase } from '../utils';
@@ -13,11 +13,21 @@ const taskTypeValues = Object.values(TaskKind).reverse();
 type Props = {
   onChange?: (value: SelectValue) => void;
   value?: TaskKind;
+  groupType: GroupType;
 } & SelectProps;
 
 export const TaskKindSelect = React.forwardRef(
-  ({ onChange, value, ...props }: Props, ref: React.Ref<Select<TaskKind>>) => {
+  (
+    { onChange, value, groupType, ...props }: Props,
+    ref: React.Ref<Select<TaskKind>>
+  ) => {
     const { getText } = useContext(LocaleContext);
+
+    const options = {
+      lab: [TaskKind.Assignment, TaskKind.Homework, TaskKind.Test],
+      exercise: [TaskKind.Homework, TaskKind.Test],
+      lecture: [TaskKind.Exam, TaskKind.Test, TaskKind.Retake],
+    };
 
     return (
       <Select<TaskKind>
@@ -39,7 +49,7 @@ export const TaskKindSelect = React.forwardRef(
         value={value}
         ref={ref}
       >
-        {taskTypeValues.map((kind: TaskKind) => (
+        {options[groupType].map((kind: TaskKind) => (
           <Select.Option key={kind} value={kind}>
             {getText(kind)}
           </Select.Option>
