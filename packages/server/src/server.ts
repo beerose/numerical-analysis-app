@@ -28,10 +28,14 @@ if (process.env.NODE_ENV !== 'test') {
   morganBody(app);
 }
 
+const corsOptions = {
+  credentials: true,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  origin: ['https://rno.ii.uni.wroc.pl', 'http://localhost'],
+};
+
 app.use(enhanceResponse);
-app.use(cors());
-// app.use(/\/((?!graphql).)*/, bodyParser.urlencoded({ extended: true }));
-// app.use(/\/((?!graphql).)*/, bodyParser.json());
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -52,10 +56,7 @@ app.use(requestHandlers.gradesRouter);
 
 apolloServer.applyMiddleware({
   app,
-  cors: {
-    credentials: true,
-    origin: ['https://rno.ii.uni.wroc.pl/*', 'http://localhost'],
-  },
+  cors: corsOptions,
   path: '/graphql',
 });
 
