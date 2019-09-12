@@ -17,6 +17,7 @@ import {
 } from './components';
 import { LocaleContextStatefulProvider } from './components/locale';
 import { ForgotPasswordForm } from './components/ForgotPasswordForm.tsx';
+import { UserLogged } from './components/UserLogged';
 import { VisibleForRoles } from './components/VisibleForRoles';
 import {
   Groups,
@@ -123,8 +124,13 @@ export const Main: React.FC<Props> = ({ history, location }) => {
                   <Route path="/groups" component={Groups} />
                   <Route path="/settings" component={SettingsContainer} />
                   <Route path="/logout" component={Logout} />
+                  <Route path="/accounts/new" component={UserLogged} />
+                  <Route path="/forgot-password" component={UserLogged} />
+                  <Route
+                    path="/accounts/reset_password"
+                    component={UserLogged}
+                  />
                   <Route component={NotFoundPage} />
-                  <Route path="/accounts/new" component={NewAccount} />
                 </Switch>
               ) : (
                 <Switch>
