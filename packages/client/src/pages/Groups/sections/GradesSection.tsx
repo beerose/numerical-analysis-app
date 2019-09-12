@@ -12,6 +12,8 @@ import {
   UserResultsModel,
   UserWithGroups,
 } from 'common';
+import { pipe } from 'fp-ts/lib/pipeable';
+import * as TE from 'fp-ts/lib/TaskEither';
 import {
   Fragment,
   useCallback,
@@ -30,6 +32,8 @@ import { Locale, LocaleContext } from '../../../components/locale';
 import { ArrowRightButton } from '../../../components/ArrowRightButton';
 import { gradesToCsv, isSafari, showMessage, usePromise } from '../../../utils';
 import { makeTableSorter } from '../../../utils/makeTableSorter';
+import { panic } from '../../../utils/panic';
+import { retry } from '../../../utils/retry';
 import { evalEquation } from '../components/evalEquation';
 import { GroupApiContextState } from '../GroupApiContext';
 
@@ -38,20 +42,28 @@ export const sortDirections = ['descend', 'ascend'] as SortOrder[];
 async function computeGradeFromResults(
   studentResults: UserResultsModel,
   { tresholds, grade_equation: gradeEquation }: DeepRequired<GroupDTO>['data']
-): Promise<[Grade, number]> {
+): Promise<readonly [Grade, number]> {
   const { tasksPoints, presences, activity } = studentResults;
 
-  const points = await evalEquation(
-    {
-      activity,
-      presence: presences,
-      tasks: tasksPoints,
-    },
-    gradeEquation
-  );
-  const grade = getGradeFromTresholds(points, tresholds);
+  const lazyEquation = () =>
+    evalEquation(
+      {
+        activity,
+        presence: presences,
+        tasks: tasksPoints,
+      },
+      gradeEquation
+    );
 
-  return [grade, points];
+  return pipe(
+    lazyEquation,
+    TE.alt(() => lazyEquation /* one retry */),
+    TE.map(
+      points =>
+        [Grade(getGradeFromTresholds(points, tresholds)), points] as const
+    ),
+    TE.getOrElse(panic)
+  )();
 }
 
 type GradeDisplayProps = {
@@ -229,14 +241,15 @@ Props) => {
   const confirmGrade = useMemo(
     () =>
       gradeSettings &&
-      (async (studentResults: UserResultsModel) => {
-        const [grade] = await computeGradeFromResults(
-          studentResults,
-          gradeSettings as Required<GroupGradeSettings>
-        );
-        const studentId = studentResults.userId;
-        setGrade(studentId, grade);
-      }),
+      ((studentResults: UserResultsModel) =>
+        retry(4, async () => {
+          const [grade] = await computeGradeFromResults(
+            studentResults,
+            gradeSettings as Required<GroupGradeSettings>
+          );
+          const studentId = studentResults.userId;
+          setGrade(studentId, grade);
+        })),
     [gradeSettings]
   );
 
