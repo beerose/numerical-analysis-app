@@ -3,8 +3,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": { "*": ["types/*"] },
-    "lib": ["es2017"],
-    "target": "es5",
+    "lib": ["es2017", "es2018"],
+    // As of Node.js 10.0.0, 100% of ES2018 is supported.
+    "target": "es2018",
     "module": "commonjs",
     "jsx": "react",
     "typeRoots": [
