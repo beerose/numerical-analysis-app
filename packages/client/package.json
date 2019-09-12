@@ -82,5 +82,8 @@
   },
   "staticFiles": {
     "staticPath": "public"
-  }
+  },
+  "browserslist": [
+    "since 2018"
+  ]
 }
