@@ -312,7 +312,8 @@ export const getStudentsTasks = (
         (points * weight) AS pts, 
         (t.max_points * weight) AS max_pts, 
         t.start_upload_date, t.end_upload_date, 
-        t.created_at, t.updated_at, t.data 
+        t.created_at, t.updated_at, t.data,
+        group_has_task.group_id
       FROM user_has_points
       JOIN group_has_task
         USING(task_id)

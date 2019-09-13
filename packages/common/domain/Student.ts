@@ -18,6 +18,7 @@ export type StudentTasksSummary = Array<{
   created_at: Date;
   updated_at: Date;
   data: Exclude<TaskDTO['data'], undefined>;
+  group_id: GroupId;
 }>;
 
 export type StudentPresences = Set<MeetingId>;

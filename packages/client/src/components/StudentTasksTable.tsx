@@ -3,7 +3,7 @@ import { css, jsx } from '@emotion/core';
 import { Spin, Table } from 'antd';
 import { TableProps } from 'antd/lib/table';
 import Text from 'antd/lib/typography/Text';
-import { GroupDTO, StudentTasksSummary, TaskDTO } from 'common';
+import { GroupDTO, StudentTasksSummary, TaskDTO, TaskKind } from 'common';
 import { formatRelative } from 'date-fns';
 // Import en if needed.
 import { pl } from 'date-fns/locale';
@@ -44,6 +44,7 @@ const KIND_INDEX = columnIndexes.indexOf('kind');
 const columnTitles = {
   id: '',
   data: '',
+  group_id: 'groupName',
   kind: 'taskKind',
   name: 'taskName',
   pts: 'points',
@@ -82,18 +83,23 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
     }));
 
     Object.assign(mappedIndexes[NAME_INDEX], {
-      render(taskName: string, task: TaskDTO) {
-        return (
-          <Link
-            css={{ fontWeight: 'bold' }}
-            to={{
-              pathname: `/groups/${groupId}/tasks/${task.id}`,
-              state: { task },
-            }}
-          >
-            {taskName}
-          </Link>
-        );
+      render(taskName: string, _task: StudentTasksSummary[number]) {
+        // Uncomment after adding file upload.
+        // if ([TaskKind.Homework, TaskKind.Assignment].includes(task.kind)) {
+        //   return (
+        //     <Link
+        //       css={{ fontWeight: 'bold' }}
+        //       to={{
+        //         pathname: `/groups/${task.group_id}/tasks/${task.id}`,
+        //         state: { task },
+        //       }}
+        //     >
+        //       {taskName}
+        //     </Link>
+        //   );
+        // }
+
+        return <div css={{ fontWeight: 'bold' }}>{taskName}</div>;
       },
     });
     Object.assign(mappedIndexes[KIND_INDEX], { render: getText });

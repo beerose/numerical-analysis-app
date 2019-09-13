@@ -93,12 +93,18 @@ const TaskForm = (props: Props) => {
         max_points: Number(values.max_points),
         name: values.task_name,
         results_date: values.results_date,
-        start_upload_date: values.upload_dates && values.upload_dates[0],
-        end_upload_date: values.upload_dates && values.upload_dates[1],
+        start_upload_date:
+          (values.upload_dates && values.upload_dates[0]) || new Date(),
+        // end_upload_date: values.upload_dates && values.upload_dates[1],
+        // workaround na end_upload_date cannot be NULL
+        end_upload_date:
+          (values.upload_dates && values.upload_dates[1]) || new Date(),
         verify_upload: Boolean(values.verify_upload),
         weight: Number(values.weight),
-        start_vote_date: values.vote_dates && values.vote_dates[0],
-        end_vote_date: values.vote_dates && values.vote_dates[1],
+        start_vote_date:
+          (values.vote_dates && values.vote_dates[0]) || new Date(),
+        end_vote_date:
+          (values.vote_dates && values.vote_dates[1]) || new Date(),
         data: { choosable_subtasks: choosable },
       });
     });
@@ -171,7 +177,7 @@ const TaskForm = (props: Props) => {
           <Input
             type="number"
             css={smallInputStyles}
-            // step={0.5} TODO: ogarnąć czy nie chcemy przechowywać floata w bazie?
+            // step={0.5} Change INT to FLOAT in group_has_task
             prefix={
               <Icon type="calculator" style={{ color: Colors.SemiLightGray }} />
             }
