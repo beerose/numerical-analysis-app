@@ -83,21 +83,20 @@ export const StudentTasksTable: React.FC<StudentTasksTableProps> = ({
     }));
 
     Object.assign(mappedIndexes[NAME_INDEX], {
-      render(taskName: string, _task: StudentTasksSummary[number]) {
-        // Uncomment after adding file upload.
-        // if ([TaskKind.Homework, TaskKind.Assignment].includes(task.kind)) {
-        //   return (
-        //     <Link
-        //       css={{ fontWeight: 'bold' }}
-        //       to={{
-        //         pathname: `/groups/${task.group_id}/tasks/${task.id}`,
-        //         state: { task },
-        //       }}
-        //     >
-        //       {taskName}
-        //     </Link>
-        //   );
-        // }
+      render(taskName: string, task: StudentTasksSummary[number]) {
+        if ([TaskKind.Homework, TaskKind.Assignment].includes(task.kind)) {
+          return (
+            <Link
+              css={{ fontWeight: 'bold' }}
+              to={{
+                pathname: `/groups/${task.group_id}/tasks/${task.id}`,
+                state: { task },
+              }}
+            >
+              {taskName}
+            </Link>
+          );
+        }
 
         return <div css={{ fontWeight: 'bold' }}>{taskName}</div>;
       },
