@@ -44,7 +44,7 @@ function makeQuery<A, P extends any[]>(
 
 const getFileMeta = makeQuery(
   t.array(FileMeta.runtimeType),
-  (filepath: string) => sql`
-
+  (_filepath: string) => sql`
+  
   `
 );
