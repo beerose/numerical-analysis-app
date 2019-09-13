@@ -34,7 +34,8 @@ const ChoosableTaskContainer = styled(Flex)`
   border: 1px solid ${Colors.SemiLightGray};
   width: 540px;
   overflow-x: scroll;
-  max-height: 57px;
+  min-height: 57px;
+  overflow: auto;
 `;
 
 export type ChoosableFormFields = {

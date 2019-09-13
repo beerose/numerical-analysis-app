@@ -314,16 +314,19 @@ export const getStudentsTasks = (
         t.start_upload_date, t.end_upload_date, 
         t.created_at, t.updated_at, t.data,
         group_has_task.group_id
-      FROM user_has_points
-      JOIN group_has_task
+      FROM group_has_task
+      JOIN user_belongs_to_group ubg 
+      LEFT JOIN user_has_points
         USING(task_id)
       JOIN tasks t
         ON t.id = task_id 
-      WHERE user_id = ${userId} ${
-      groupId === undefined
-        ? sql.empty
-        : sql`AND group_has_task.group_id = ${groupId}`
-    };`,
+      WHERE ubg.user_id = ${userId}
+      AND user_has_points.user_id = ubg.user_id
+      AND group_has_task.group_id = ubg.group_id ${
+        groupId === undefined
+          ? sql.empty
+          : sql`AND group_has_task.group_id = ${groupId}`
+      };`,
     callback
   );
 
