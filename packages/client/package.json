@@ -38,7 +38,7 @@
     "fp-ts": "^2.0.0-rc.3",
     "graphql": "^14.3.1",
     "lodash.frompairs": "^4.0.1",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.13.1",
     "parcel-plugin-static-files-copy": "^2.2.1",
     "qss": "^2.0.3",
     "ramda": "^0.26.1",
